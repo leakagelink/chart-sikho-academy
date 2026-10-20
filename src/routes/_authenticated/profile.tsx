@@ -46,7 +46,7 @@ function ProfilePage() {
     await qc.cancelQueries();
     qc.clear();
     await supabase.auth.signOut();
-    navigate({ to: "/auth", replace: true });
+    navigate({ to: "/auth", search: { redirect: undefined }, replace: true });
   }
 
   const input = "w-full rounded-lg border border-input bg-card px-3 py-2.5 text-sm";
