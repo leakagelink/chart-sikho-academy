@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import { Bell, BookOpen, Home, Search, User } from "lucide-react";
+import { Bell, BookOpen, GraduationCap, Home, Search, User } from "lucide-react";
 import logo from "@/assets/logo.jpeg.asset.json";
 import { useLang } from "@/lib/i18n";
+import { useAuth } from "@/hooks/use-auth";
 
 export function LangToggle() {
   const { lang, setLang } = useLang();
