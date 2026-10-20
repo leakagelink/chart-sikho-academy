@@ -8,7 +8,7 @@ import { MiniChart } from "@/components/site/CourseCard";
 import { courses, inr } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
 
-export const Route = createFileRoute("/courses/$courseId")({
+export const Route = createFileRoute("/courses_/$courseId")({
   head: ({ params }) => {
     const c = courses.find((x) => x.id === params.courseId);
     const title = c ? `${c.title.en} — Chartसीखो` : "Course — Chartसीखो";
