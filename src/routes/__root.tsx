@@ -13,6 +13,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { LangProvider } from "../lib/i18n";
+import { AuthProvider } from "../hooks/use-auth";
 import { Footer, Header, MobileNav } from "../components/site/SiteChrome";
 
 function NotFoundComponent() {
@@ -118,6 +119,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <AuthProvider>
       <LangProvider>
         <Header />
         <main>
@@ -126,6 +128,7 @@ function RootComponent() {
         <Footer />
         <MobileNav />
       </LangProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

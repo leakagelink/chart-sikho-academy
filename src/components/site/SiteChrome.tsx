@@ -24,6 +24,7 @@ export function LangToggle() {
 
 export function Header() {
   const { t } = useLang();
+  const { session } = useAuth();
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4">
@@ -44,7 +45,14 @@ export function Header() {
             <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-destructive" />
           </button>
           <LangToggle />
-          <button className="hidden rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 sm:block">{t("signup")}</button>
+          {session ? (
+            <>
+              <Link to="/dashboard" className="hidden rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 sm:block">{t("my_learning")}</Link>
+              <Link to="/profile" aria-label={t("profile")} className="rounded-full bg-muted p-2 text-navy"><User className="h-5 w-5" /></Link>
+            </>
+          ) : (
+            <Link to="/auth" search={{ redirect: undefined }} className="hidden rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 sm:block">{t("login")} / {t("signup")}</Link>
+          )}
         </div>
       </div>
     </header>
@@ -53,12 +61,20 @@ export function Header() {
 
 export function MobileNav() {
   const { t } = useLang();
+  const { session } = useAuth();
   const cls = "flex flex-1 flex-col items-center gap-0.5 py-2 text-[11px] text-muted-foreground";
   return (
     <nav className="fixed inset-x-0 bottom-0 z-40 flex border-t border-border bg-background md:hidden">
       <Link to="/" activeOptions={{ exact: true }} activeProps={{ className: "!text-primary" }} className={cls}><Home className="h-5 w-5" />{t("nav_home")}</Link>
       <Link to="/courses" activeProps={{ className: "!text-primary" }} className={cls}><BookOpen className="h-5 w-5" />{t("nav_courses")}</Link>
-      <button className={cls}><User className="h-5 w-5" />{t("login")}</button>
+      {session ? (
+        <>
+          <Link to="/dashboard" activeProps={{ className: "!text-primary" }} className={cls}><GraduationCap className="h-5 w-5" />{t("my_learning")}</Link>
+          <Link to="/profile" activeProps={{ className: "!text-primary" }} className={cls}><User className="h-5 w-5" />{t("profile")}</Link>
+        </>
+      ) : (
+        <Link to="/auth" search={{ redirect: undefined }} className={cls}><User className="h-5 w-5" />{t("login")}</Link>
+      )}
     </nav>
   );
 }
