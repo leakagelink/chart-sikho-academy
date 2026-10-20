@@ -18,7 +18,7 @@ import { Route as PlansRouteImport } from './routes/plans'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
-import { Route as CoursesCourseIdRouteImport } from './routes/courses.$courseId'
+import { Route as CoursesCourseIdRouteImport } from './routes/courses_.$courseId'
 import { Route as LiveClassIdRouteImport } from './routes/live.$classId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -66,9 +66,9 @@ const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const CoursesCourseIdRoute = CoursesCourseIdRouteImport.update({
-  id: '/$courseId',
-  path: '/$courseId',
-  getParentRoute: () => CoursesRoute,
+  id: '/courses_/$courseId',
+  path: '/courses/$courseId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const LiveClassIdRoute = LiveClassIdRouteImport.update({
   id: '/live/$classId',
@@ -79,7 +79,7 @@ const LiveClassIdRoute = LiveClassIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/courses': typeof CoursesRouteWithChildren
+  '/courses': typeof CoursesRoute
   '/demo': typeof DemoRoute
   '/plans': typeof PlansRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -91,7 +91,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/courses': typeof CoursesRouteWithChildren
+  '/courses': typeof CoursesRoute
   '/demo': typeof DemoRoute
   '/plans': typeof PlansRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -105,13 +105,13 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
-  '/courses': typeof CoursesRouteWithChildren
+  '/courses': typeof CoursesRoute
   '/demo': typeof DemoRoute
   '/plans': typeof PlansRoute
   '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
-  '/courses/$courseId': typeof CoursesCourseIdRoute
+  '/courses_/$courseId': typeof CoursesCourseIdRoute
   '/live/$classId': typeof LiveClassIdRoute
 }
 export interface FileRouteTypes {
@@ -150,7 +150,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/_authenticated/dashboard'
     | '/_authenticated/profile'
-    | '/courses/$courseId'
+    | '/courses_/$courseId'
     | '/live/$classId'
   fileRoutesById: FileRoutesById
 }
@@ -158,10 +158,11 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
-  CoursesRoute: typeof CoursesRouteWithChildren
+  CoursesRoute: typeof CoursesRoute
   DemoRoute: typeof DemoRoute
   PlansRoute: typeof PlansRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  CoursesCourseIdRoute: typeof CoursesCourseIdRoute
   LiveClassIdRoute: typeof LiveClassIdRoute
 }
 
@@ -230,12 +231,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProfileRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/courses/$courseId': {
-      id: '/courses/$courseId'
-      path: '/$courseId'
+    '/courses_/$courseId': {
+      id: '/courses_/$courseId'
+      path: '/courses/$courseId'
       fullPath: '/courses/$courseId'
       preLoaderRoute: typeof CoursesCourseIdRouteImport
-      parentRoute: typeof CoursesRoute
+      parentRoute: typeof rootRouteImport
     }
     '/live/$classId': {
       id: '/live/$classId'
@@ -260,25 +261,15 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
-interface CoursesRouteChildren {
-  CoursesCourseIdRoute: typeof CoursesCourseIdRoute
-}
-
-const CoursesRouteChildren: CoursesRouteChildren = {
-  CoursesCourseIdRoute: CoursesCourseIdRoute,
-}
-
-const CoursesRouteWithChildren =
-  CoursesRoute._addFileChildren(CoursesRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
-  CoursesRoute: CoursesRouteWithChildren,
+  CoursesRoute: CoursesRoute,
   DemoRoute: DemoRoute,
   PlansRoute: PlansRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  CoursesCourseIdRoute: CoursesCourseIdRoute,
   LiveClassIdRoute: LiveClassIdRoute,
 }
 export const routeTree = rootRouteImport
