@@ -15,6 +15,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { LangProvider } from "../lib/i18n";
 import { AuthProvider } from "../hooks/use-auth";
 import { Footer, Header, MobileNav } from "../components/site/SiteChrome";
+import { Toaster } from "../components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -127,6 +128,7 @@ function RootComponent() {
         </main>
         <Footer />
         <MobileNav />
+        <Toaster />
       </LangProvider>
       </AuthProvider>
     </QueryClientProvider>

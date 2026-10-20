@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { Star } from "lucide-react";
 import { inr, type Course } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
@@ -49,7 +50,7 @@ export function CourseCard({ course }: { course: Course }) {
             {off > 0 && <span className="text-xs font-semibold text-success">{off}% off</span>}
           </div>
         </div>
-        <button className="mt-3 w-full rounded-lg bg-primary py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">{t("enroll")}</button>
+        <Link to="/courses/$courseId" params={{ courseId: course.id }} className="mt-3 block w-full rounded-lg bg-primary py-2 text-center text-sm font-semibold text-primary-foreground hover:bg-primary/90">{t("enroll")}</Link>
       </div>
     </article>
   );
