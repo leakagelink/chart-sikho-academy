@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      demo_bookings: {
+        Row: {
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          phone: string
+          preferred_slot: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          phone: string
+          preferred_slot?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          phone?: string
+          preferred_slot?: string
+        }
+        Relationships: []
+      }
       enrollments: {
         Row: {
           course_id: string
