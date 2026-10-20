@@ -24,6 +24,45 @@ export function LangToggle() {
   );
 }
 
+const sampleNotifs: { t: DictKey; s: DictKey }[] = [
+  { t: "notif_1_t", s: "notif_1_s" },
+  { t: "notif_2_t", s: "notif_2_s" },
+  { t: "notif_3_t", s: "notif_3_s" },
+];
+
+export function NotificationsBell() {
+  const { t } = useLang();
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const close = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", close);
+    return () => document.removeEventListener("mousedown", close);
+  }, [open]);
+  return (
+    <div ref={ref} className="relative">
+      <button aria-label={t("notif_title")} aria-expanded={open} onClick={() => setOpen((v) => !v)} className="relative rounded-full p-2 text-muted-foreground hover:bg-muted">
+        <Bell className="h-5 w-5" />
+        <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-destructive" />
+      </button>
+      {open && (
+        <div className="absolute right-0 top-11 w-72 rounded-2xl border border-border bg-card p-2 shadow-card">
+          <p className="px-3 py-2 font-display text-sm font-bold text-navy">{t("notif_title")}</p>
+          {sampleNotifs.map((n) => (
+            <div key={n.t} className="rounded-xl px-3 py-2 hover:bg-muted">
+              <p className="text-sm font-semibold">{t(n.t)}</p>
+              <p className="text-xs text-muted-foreground">{t(n.s)}</p>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function Header() {
   const { t } = useLang();
   const { session } = useAuth();
