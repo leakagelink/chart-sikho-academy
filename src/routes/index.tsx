@@ -40,9 +40,9 @@ function Index() {
           </h1>
           <p className="mt-3 opacity-85">{t("hero_sub")}</p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <button className="inline-flex items-center gap-2 rounded-full bg-success px-5 py-3 font-semibold text-success-foreground hover:bg-success/90">
+            <Link to="/demo" className="inline-flex items-center gap-2 rounded-full bg-success px-5 py-3 font-semibold text-success-foreground hover:bg-success/90">
               <PlayCircle className="h-5 w-5" /> {t("demo_cta")}
-            </button>
+            </Link>
             <Link to="/courses" className="inline-flex items-center gap-2 rounded-full border border-navy-foreground/30 px-5 py-3 font-semibold hover:bg-navy-foreground/10">
               {t("explore")} <ArrowRight className="h-4 w-4" />
             </Link>
@@ -81,9 +81,9 @@ function Index() {
                 <span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5" />{t(c.day)}, {c.time}</span>
                 <span className="flex items-center gap-1"><Users className="h-3.5 w-3.5" />{c.joining} {t("joining")}</span>
               </div>
-              <button className={`mt-3 w-full rounded-lg py-2 text-sm font-semibold ${c.live ? "bg-primary text-primary-foreground" : "border border-primary text-primary"}`}>
+              <Link to="/live/$classId" params={{ classId: c.id }} className={`mt-3 block w-full rounded-lg py-2 text-center text-sm font-semibold ${c.live ? "bg-primary text-primary-foreground" : "border border-primary text-primary"}`}>
                 {c.live ? t("join_live") : t("remind")}
-              </button>
+              </Link>
             </article>
           ))}
         </div>
@@ -107,7 +107,7 @@ function Index() {
           <h2 className="font-display text-2xl font-bold">{t("membership_t")}</h2>
           <p className="mt-1 opacity-85">{t("membership_s")}</p>
         </div>
-        <button className="rounded-full bg-gold px-6 py-3 font-semibold text-navy hover:bg-gold/90">{t("membership_cta")}</button>
+        <Link to="/plans" className="rounded-full bg-gold px-6 py-3 font-semibold text-navy hover:bg-gold/90">{t("membership_cta")}</Link>
       </section>
     </div>
   );
