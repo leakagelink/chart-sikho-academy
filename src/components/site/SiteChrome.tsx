@@ -1,5 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Bell, BookOpen, GraduationCap, Home, Search, User } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import type { DictKey } from "@/lib/i18n";
 import logo from "@/assets/logo.jpeg.asset.json";
 import { useLang } from "@/lib/i18n";
 import { useAuth } from "@/hooks/use-auth";
