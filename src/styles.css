@@ -176,7 +176,7 @@
   background: linear-gradient(90deg, var(--primary) 0% 55%, var(--success) 55% 80%, var(--gold) 80%);
 }
 .splash-center { position: relative; display: flex; flex-direction: column; align-items: center; padding: 32px 20px; }
-.splash-logo { position: relative; object-fit: contain; border-radius: 50%; animation: splash-logo-in 650ms cubic-bezier(.2,.8,.2,1) both; }
+.splash-logo { position: relative; object-fit: contain; animation: splash-logo-in 650ms cubic-bezier(.2,.8,.2,1) both; }
 .splash-name { position: relative; margin-top: 22px; line-height: 1.3; letter-spacing: 0; animation: splash-rise 650ms 150ms both; }
 .splash-tagline { position: relative; margin-top: 8px; text-align: center; animation: splash-rise 650ms 250ms both; }
 .splash-loader { width: 120px; height: 3px; margin-top: 32px; background: var(--secondary); border-radius: 3px; overflow: hidden; }
