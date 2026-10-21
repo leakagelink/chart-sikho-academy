@@ -156,3 +156,48 @@
     color: var(--color-foreground);
   }
 }
+
+/* Brand launch sequence: one run per app load, never on internal navigation. */
+.brand-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--card);
+  transition: opacity 400ms ease, visibility 400ms ease;
+  overflow: hidden;
+}
+.brand-splash-exit { opacity: 0; visibility: hidden; pointer-events: none; }
+.splash-topline {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary) 0% 55%, var(--success) 55% 80%, var(--gold) 80%);
+}
+.splash-center { position: relative; display: flex; flex-direction: column; align-items: center; padding: 32px 20px; }
+.splash-logo { position: relative; object-fit: contain; border-radius: 50%; animation: splash-logo-in 650ms cubic-bezier(.2,.8,.2,1) both; }
+.splash-name { position: relative; margin-top: 22px; line-height: 1.3; letter-spacing: 0; animation: splash-rise 650ms 150ms both; }
+.splash-tagline { position: relative; margin-top: 8px; text-align: center; animation: splash-rise 650ms 250ms both; }
+.splash-loader { width: 120px; height: 3px; margin-top: 32px; background: var(--secondary); border-radius: 3px; overflow: hidden; }
+.splash-loader span { display: block; width: 100%; height: 100%; background: var(--primary); transform-origin: left; animation: splash-load 2s ease-in-out both; }
+.splash-disclaimer { position: absolute; bottom: max(28px, env(safe-area-inset-bottom)); left: 24px; right: 24px; max-width: 480px; margin: 0 auto; text-align: center; line-height: 1.6; }
+.splash-candles { position: absolute; top: -40px; width: 300px; height: 150px; display: flex; align-items: center; justify-content: space-between; opacity: .16; }
+.splash-candle { position: relative; width: 18px; height: 52px; background: var(--success); border-radius: 2px; animation: splash-candle-in 850ms ease-out both; }
+.splash-candle::before { content: ""; position: absolute; width: 2px; height: calc(100% + 26px); top: -13px; left: 8px; background: inherit; }
+.splash-candle-0 { transform: translateY(38px); animation-delay: 0ms; }
+.splash-candle-1 { height: 34px; transform: translateY(28px); background: var(--destructive); animation-delay: 80ms; }
+.splash-candle-2 { height: 60px; transform: translateY(18px); animation-delay: 160ms; }
+.splash-candle-3 { height: 40px; transform: translateY(0); animation-delay: 240ms; }
+.splash-candle-4 { height: 28px; transform: translateY(-12px); background: var(--destructive); animation-delay: 320ms; }
+.splash-candle-5 { height: 66px; transform: translateY(-24px); animation-delay: 400ms; }
+.splash-candle-6 { height: 44px; transform: translateY(-48px); animation-delay: 480ms; }
+.app-reveal { animation: splash-rise 450ms ease-out both; }
+@keyframes splash-logo-in { from { opacity: 0; scale: .85; } to { opacity: 1; scale: 1; } }
+@keyframes splash-rise { from { opacity: 0; translate: 0 12px; } to { opacity: 1; translate: 0 0; } }
+@keyframes splash-candle-in { from { opacity: 0; scale: 1 .4; } to { opacity: 1; scale: 1 1; } }
+@keyframes splash-load { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@media (prefers-reduced-motion: reduce) {
+  .splash-logo, .splash-name, .splash-tagline, .splash-candle, .splash-loader span, .app-reveal { animation: none; }
+  .brand-splash { transition: none; }
+}

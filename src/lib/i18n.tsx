@@ -3,6 +3,9 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export type Lang = "en" | "hi";
 
 const dict = {
+  splash_tagline: { en: "Learn charts. Build understanding.", hi: "चार्ट सीखें। समझ बढ़ाएँ।" },
+  splash_loading: { en: "Opening Chartसीखो", hi: "Chartसीखो खुल रहा है" },
+  splash_skip: { en: "Open app", hi: "ऐप खोलें" },
   sandbox: { en: "Test Portal", hi: "टेस्ट पोर्टल" },
   test_mode: { en: "TEST MODE · Sample data · No real money or account access", hi: "टेस्ट मोड · नमूना डेटा · असली पैसा या अकाउंट एक्सेस नहीं" },
   student_demo: { en: "Student Preview", hi: "छात्र प्रीव्यू" },
