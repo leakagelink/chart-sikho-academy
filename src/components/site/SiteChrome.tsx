@@ -5,6 +5,7 @@ import type { DictKey } from "@/lib/i18n";
 import logo from "@/assets/logo.jpeg.asset.json";
 import { useLang } from "@/lib/i18n";
 import { useAuth } from "@/hooks/use-auth";
+import { Button } from "@/components/ui/button";
 
 export function LangToggle() {
   const { lang, setLang } = useLang();
@@ -78,6 +79,7 @@ export function Header() {
         <nav className="ml-4 hidden gap-6 text-sm font-medium md:flex">
           <Link to="/" activeOptions={{ exact: true }} activeProps={{ className: "text-primary" }} className="text-foreground/80 hover:text-primary">{t("nav_home")}</Link>
           <Link to="/courses" activeProps={{ className: "text-primary" }} className="text-foreground/80 hover:text-primary">{t("nav_courses")}</Link>
+          <Button asChild variant="link" size="sm" className="h-auto p-0"><Link to="/sandbox">{t("sandbox")}</Link></Button>
         </nav>
         <div className="ml-auto flex items-center gap-3">
           <Link to="/courses" aria-label={t("search")} className="hidden rounded-full p-2 text-muted-foreground hover:bg-muted sm:block"><Search className="h-5 w-5" /></Link>
@@ -105,6 +107,7 @@ export function MobileNav() {
     <nav className="fixed inset-x-0 bottom-0 z-40 flex border-t border-border bg-background md:hidden">
       <Link to="/" activeOptions={{ exact: true }} activeProps={{ className: "!text-primary" }} className={cls}><Home className="h-5 w-5" />{t("nav_home")}</Link>
       <Link to="/courses" activeProps={{ className: "!text-primary" }} className={cls}><BookOpen className="h-5 w-5" />{t("nav_courses")}</Link>
+      <Link to="/sandbox" activeProps={{ className: "!text-primary" }} className={cls}><GraduationCap className="h-5 w-5" />{t("sandbox")}</Link>
       {session ? (
         <>
           <Link to="/dashboard" activeProps={{ className: "!text-primary" }} className={cls}><GraduationCap className="h-5 w-5" />{t("my_learning")}</Link>

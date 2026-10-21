@@ -11,6 +11,8 @@ export const Route = createFileRoute("/live/$classId")({
     const title = c ? `${c.title.en} — Chartसीखो Live` : "Live Class — Chartसीखो";
     return {
       meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
         { title },
         { name: "description", content: "Join free live stock-market classes on Chartसीखो." },
         { property: "og:title", content: title },

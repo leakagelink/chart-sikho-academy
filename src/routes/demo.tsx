@@ -7,6 +7,8 @@ import { useLang } from "@/lib/i18n";
 export const Route = createFileRoute("/demo")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Free Demo Class — Chartसीखो" },
       { name: "description", content: "Book a free stock-market demo class with Chartसीखो." },
       { property: "og:title", content: "Free Demo Class — Chartसीखो" },

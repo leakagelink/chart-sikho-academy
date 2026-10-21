@@ -16,6 +16,8 @@ export const Route = createFileRoute("/auth")({
   validateSearch: (s: Record<string, unknown>) => ({ redirect: typeof s["redirect"] === "string" ? s["redirect"] : undefined }),
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Login / Sign up — Chartसीखो" },
       { name: "description", content: "Sign in or create your Chartसीखो student account to start learning." },
       { property: "og:title", content: "Login / Sign up — Chartसीखो" },

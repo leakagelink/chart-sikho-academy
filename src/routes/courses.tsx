@@ -8,6 +8,8 @@ import { useLang, type DictKey } from "@/lib/i18n";
 export const Route = createFileRoute("/courses")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Courses — Chartसीखो" },
       { name: "description", content: "Browse stock-market courses: chart reading, options trading, price action, swing trading and more." },
       { property: "og:title", content: "Courses — Chartसीखो" },
