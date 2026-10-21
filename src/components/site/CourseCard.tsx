@@ -18,7 +18,7 @@ const tagCls = {
 export function MiniChart() {
   const bars = [30, 45, 38, 55, 48, 62, 58, 72, 66, 80];
   return (
-    <div className="flex h-16 items-end gap-1.5">
+    <div className="mini-chart flex h-16 items-end gap-1.5" aria-hidden="true">
       {bars.map((h, i) => (
         <span key={i} className={`w-2 rounded-sm ${i % 3 === 1 ? "bg-destructive" : "bg-success"}`} style={{ height: `${h}%` }} />
       ))}
@@ -30,7 +30,7 @@ export function CourseCard({ course }: { course: Course }) {
   const { t, lang } = useLang();
   const off = course.mrp ? Math.round((1 - course.price / course.mrp) * 100) : 0;
   return (
-    <article className="group overflow-hidden rounded-2xl border border-border bg-card shadow-card transition-transform hover:-translate-y-1">
+    <article className="course-motion group overflow-hidden rounded-2xl border border-border bg-card shadow-card transition-transform hover:-translate-y-1">
       <div className={`relative flex h-36 items-end justify-end bg-gradient-to-br p-4 ${thumb[course.hue]}`}>
         <span className={`absolute left-3 top-3 rounded-full px-2.5 py-0.5 text-[11px] font-bold ${tagCls[course.tag]}`}>{course.tag}</span>
         <MiniChart />

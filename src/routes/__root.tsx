@@ -17,6 +17,7 @@ import { AuthProvider } from "../hooks/use-auth";
 import { Footer, Header, MobileNav } from "../components/site/SiteChrome";
 import { Toaster } from "../components/ui/sonner";
 import { SplashScreen } from "../components/site/SplashScreen";
+import { PageMotion } from "../components/site/PageMotion";
 
 function NotFoundComponent() {
   return (
@@ -125,9 +126,9 @@ function RootComponent() {
       <LangProvider>
         <SplashScreen>
         <Header />
-        <main>
+        <PageMotion>
           <Outlet />
-        </main>
+        </PageMotion>
         <Footer />
         <MobileNav />
         <Toaster />
