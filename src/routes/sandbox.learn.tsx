@@ -17,7 +17,7 @@ function Screen() {
   }
   return <><h1 className="font-display text-3xl font-bold">{t("mock_learning")}</h1>
     <div className="mt-5 grid gap-6 lg:grid-cols-[1fr_280px]">
-      <section className="min-w-0"><video key={index} controls playsInline preload="metadata" src="/media/chart-sample.mp4" className="aspect-video w-full rounded-md bg-navy" aria-label={t("sample_video")} />
+      <section className="min-w-0"><video key={index} controls playsInline preload="metadata" src="/media/chart-sample.webm" className="aspect-video w-full rounded-md bg-navy" aria-label={t("sample_video")} />
         <p className="mt-2 text-xs text-muted-foreground">{t("sample_video")}</p><h2 className="mt-4 font-display text-2xl font-bold">{index + 1}. {t(lesson.title)}</h2>
         <p className="mt-3 leading-7">{t(lesson.body)}</p>
         <div className="mt-5 flex flex-wrap gap-2"><Button onClick={() => update((s) => ({ ...s, completed: [...new Set([...s.completed, index])] }))} disabled={state.completed.includes(index)}><Check />{t(state.completed.includes(index) ? "completed" : "complete_lesson")}</Button>
