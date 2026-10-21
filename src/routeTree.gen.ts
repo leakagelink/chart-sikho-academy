@@ -16,10 +16,15 @@ import { Route as CoursesRouteImport } from './routes/courses'
 import { Route as DemoRouteImport } from './routes/demo'
 import { Route as PlansRouteImport } from './routes/plans'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as SandboxRouteImport } from './routes/sandbox'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as CoursesCourseIdRouteImport } from './routes/courses_.$courseId'
 import { Route as LiveClassIdRouteImport } from './routes/live.$classId'
+import { Route as SandboxIndexRouteImport } from './routes/sandbox.index'
+import { Route as SandboxCertificatesRouteImport } from './routes/sandbox.certificates'
+import { Route as SandboxLearnRouteImport } from './routes/sandbox.learn'
+import { Route as SandboxQuizRouteImport } from './routes/sandbox.quiz'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -55,6 +60,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SandboxRoute = SandboxRouteImport.update({
+  id: '/sandbox',
+  path: '/sandbox',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -75,6 +85,26 @@ const LiveClassIdRoute = LiveClassIdRouteImport.update({
   path: '/live/$classId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SandboxIndexRoute = SandboxIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SandboxRoute,
+} as any)
+const SandboxCertificatesRoute = SandboxCertificatesRouteImport.update({
+  id: '/certificates',
+  path: '/certificates',
+  getParentRoute: () => SandboxRoute,
+} as any)
+const SandboxLearnRoute = SandboxLearnRouteImport.update({
+  id: '/learn',
+  path: '/learn',
+  getParentRoute: () => SandboxRoute,
+} as any)
+const SandboxQuizRoute = SandboxQuizRouteImport.update({
+  id: '/quiz',
+  path: '/quiz',
+  getParentRoute: () => SandboxRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -83,10 +113,15 @@ export interface FileRoutesByFullPath {
   '/demo': typeof DemoRoute
   '/plans': typeof PlansRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/sandbox': typeof SandboxRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
   '/live/$classId': typeof LiveClassIdRoute
+  '/sandbox/certificates': typeof SandboxCertificatesRoute
+  '/sandbox/learn': typeof SandboxLearnRoute
+  '/sandbox/quiz': typeof SandboxQuizRoute
+  '/sandbox/': typeof SandboxIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -99,6 +134,10 @@ export interface FileRoutesByTo {
   '/profile': typeof AuthenticatedProfileRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
   '/live/$classId': typeof LiveClassIdRoute
+  '/sandbox/certificates': typeof SandboxCertificatesRoute
+  '/sandbox/learn': typeof SandboxLearnRoute
+  '/sandbox/quiz': typeof SandboxQuizRoute
+  '/sandbox': typeof SandboxIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -109,10 +148,15 @@ export interface FileRoutesById {
   '/demo': typeof DemoRoute
   '/plans': typeof PlansRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/sandbox': typeof SandboxRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/courses_/$courseId': typeof CoursesCourseIdRoute
   '/live/$classId': typeof LiveClassIdRoute
+  '/sandbox/certificates': typeof SandboxCertificatesRoute
+  '/sandbox/learn': typeof SandboxLearnRoute
+  '/sandbox/quiz': typeof SandboxQuizRoute
+  '/sandbox/': typeof SandboxIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -123,10 +167,15 @@ export interface FileRouteTypes {
     | '/demo'
     | '/plans'
     | '/reset-password'
+    | '/sandbox'
     | '/dashboard'
     | '/profile'
     | '/courses/$courseId'
     | '/live/$classId'
+    | '/sandbox/certificates'
+    | '/sandbox/learn'
+    | '/sandbox/quiz'
+    | '/sandbox/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -139,6 +188,10 @@ export interface FileRouteTypes {
     | '/profile'
     | '/courses/$courseId'
     | '/live/$classId'
+    | '/sandbox/certificates'
+    | '/sandbox/learn'
+    | '/sandbox/quiz'
+    | '/sandbox'
   id:
     | '__root__'
     | '/'
@@ -148,10 +201,15 @@ export interface FileRouteTypes {
     | '/demo'
     | '/plans'
     | '/reset-password'
+    | '/sandbox'
     | '/_authenticated/dashboard'
     | '/_authenticated/profile'
     | '/courses_/$courseId'
     | '/live/$classId'
+    | '/sandbox/certificates'
+    | '/sandbox/learn'
+    | '/sandbox/quiz'
+    | '/sandbox/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -162,6 +220,7 @@ export interface RootRouteChildren {
   DemoRoute: typeof DemoRoute
   PlansRoute: typeof PlansRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  SandboxRoute: typeof SandboxRouteWithChildren
   CoursesCourseIdRoute: typeof CoursesCourseIdRoute
   LiveClassIdRoute: typeof LiveClassIdRoute
 }
@@ -217,6 +276,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sandbox': {
+      id: '/sandbox'
+      path: '/sandbox'
+      fullPath: '/sandbox'
+      preLoaderRoute: typeof SandboxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -245,6 +311,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LiveClassIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sandbox/': {
+      id: '/sandbox/'
+      path: '/'
+      fullPath: '/sandbox/'
+      preLoaderRoute: typeof SandboxIndexRouteImport
+      parentRoute: typeof SandboxRoute
+    }
+    '/sandbox/certificates': {
+      id: '/sandbox/certificates'
+      path: '/certificates'
+      fullPath: '/sandbox/certificates'
+      preLoaderRoute: typeof SandboxCertificatesRouteImport
+      parentRoute: typeof SandboxRoute
+    }
+    '/sandbox/learn': {
+      id: '/sandbox/learn'
+      path: '/learn'
+      fullPath: '/sandbox/learn'
+      preLoaderRoute: typeof SandboxLearnRouteImport
+      parentRoute: typeof SandboxRoute
+    }
+    '/sandbox/quiz': {
+      id: '/sandbox/quiz'
+      path: '/quiz'
+      fullPath: '/sandbox/quiz'
+      preLoaderRoute: typeof SandboxQuizRouteImport
+      parentRoute: typeof SandboxRoute
+    }
   }
 }
 
@@ -261,6 +355,23 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface SandboxRouteChildren {
+  SandboxCertificatesRoute: typeof SandboxCertificatesRoute
+  SandboxLearnRoute: typeof SandboxLearnRoute
+  SandboxQuizRoute: typeof SandboxQuizRoute
+  SandboxIndexRoute: typeof SandboxIndexRoute
+}
+
+const SandboxRouteChildren: SandboxRouteChildren = {
+  SandboxCertificatesRoute: SandboxCertificatesRoute,
+  SandboxLearnRoute: SandboxLearnRoute,
+  SandboxQuizRoute: SandboxQuizRoute,
+  SandboxIndexRoute: SandboxIndexRoute,
+}
+
+const SandboxRouteWithChildren =
+  SandboxRoute._addFileChildren(SandboxRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
@@ -269,6 +380,7 @@ const rootRouteChildren: RootRouteChildren = {
   DemoRoute: DemoRoute,
   PlansRoute: PlansRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  SandboxRoute: SandboxRouteWithChildren,
   CoursesCourseIdRoute: CoursesCourseIdRoute,
   LiveClassIdRoute: LiveClassIdRoute,
 }
