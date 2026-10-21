@@ -14,3 +14,4 @@
 - Sample course/live-class data lives in `src/lib/courses.ts` until a real backend replaces it; why: one place to swap in real data.
 - Auth: student accounts via Lovable Cloud; signed-in pages live under `src/routes/_authenticated/` (client-only gate redirects to /auth); why: one guard for every portal page.
 - Paid-course enrollment is blocked by database policy until payments are verified server-side; only free courses can be self-enrolled; why: browser can never grant itself paid access.
+- Client-test features live under `/sandbox` with browser-local state isolated from Cloud accounts, enrollments and permissions; why: clients can exercise student and admin mocks without receiving real access or moving money.
