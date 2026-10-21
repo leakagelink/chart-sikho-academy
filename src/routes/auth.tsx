@@ -7,6 +7,9 @@ import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/use-auth";
 import { useLang } from "@/lib/i18n";
 
+// Social buttons stay hidden while the client tests the app; flip to true at go-live.
+const SHOW_SOCIAL_LOGIN = false;
+
 const safePath = (p?: string) => (p && p.startsWith("/") && !p.startsWith("//") ? p : "/dashboard");
 
 export const Route = createFileRoute("/auth")({
@@ -109,7 +112,7 @@ function AuthPage() {
           {mode === "login" && <button onClick={() => setMode("forgot")} className="text-primary">{t("forgot_q")}</button>}
           {mode === "forgot" && <button onClick={() => setMode("login")} className="text-primary">← {t("login")}</button>}
         </div>
-        {mode !== "forgot" && (
+        {SHOW_SOCIAL_LOGIN && mode !== "forgot" && (
           <>
             <div className="my-5 flex items-center gap-3 text-xs text-muted-foreground"><span className="h-px flex-1 bg-border" />{t("or")}<span className="h-px flex-1 bg-border" /></div>
             <div className="space-y-3">
