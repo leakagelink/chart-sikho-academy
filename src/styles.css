@@ -201,3 +201,33 @@
   .splash-logo, .splash-name, .splash-tagline, .splash-candle, .splash-loader span, .app-reveal { animation: none; }
   .brand-splash { transition: none; }
 }
+
+/* One-shot scroll entrances and restrained, tactile interaction effects. */
+.motion-surface [data-motion="revealed"] { animation: content-enter 600ms cubic-bezier(.22,1,.36,1) both; }
+.motion-surface .grid > [data-motion="revealed"]:nth-child(2) { animation-delay: 65ms; }
+.motion-surface .grid > [data-motion="revealed"]:nth-child(3) { animation-delay: 130ms; }
+.motion-surface .grid > [data-motion="revealed"]:nth-child(4) { animation-delay: 195ms; }
+.motion-control { transition: background-color 180ms ease, color 180ms ease, box-shadow 180ms ease, transform 180ms ease; }
+.motion-control:not(:disabled):not([aria-disabled="true"]):active { transform: scale(.97); }
+.motion-control svg { transition: transform 220ms ease; }
+.course-motion { transition: transform 250ms ease, box-shadow 250ms ease, border-color 250ms ease; }
+.mini-chart > span { transform-origin: bottom; animation: chart-grow 700ms cubic-bezier(.22,1,.36,1) both; }
+.mini-chart > span:nth-child(2n) { animation-delay: 80ms; }
+.mini-chart > span:nth-child(3n) { animation-delay: 160ms; }
+.motion-surface input, .motion-surface textarea, .motion-surface select { transition: border-color 180ms ease, box-shadow 180ms ease; }
+.motion-surface input:focus, .motion-surface textarea:focus, .motion-surface select:focus { box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 15%, transparent); }
+.motion-surface progress, .motion-surface .bg-success { transition: width 450ms ease; }
+@media (hover: hover) and (pointer: fine) {
+  .motion-control:not(:disabled):not([aria-disabled="true"]):hover { transform: translateY(-2px); }
+  .motion-control:hover svg { transform: translateX(2px); }
+  .course-motion:hover { border-color: var(--primary); box-shadow: 0 14px 30px -14px color-mix(in oklab, var(--navy) 35%, transparent); }
+  .course-motion:hover .mini-chart > span { animation: chart-hover 500ms ease both; }
+}
+@keyframes content-enter { from { opacity: .35; translate: 0 18px; } to { opacity: 1; translate: 0 0; } }
+@keyframes chart-grow { from { scale: 1 .2; } to { scale: 1 1; } }
+@keyframes chart-hover { 50% { scale: 1 .85; } }
+@media (prefers-reduced-motion: reduce) {
+  .motion-surface [data-motion], .mini-chart > span, .course-motion:hover .mini-chart > span { animation: none; }
+  .motion-control, .motion-control svg, .course-motion, .motion-surface input, .motion-surface textarea, .motion-surface select, .motion-surface progress, .motion-surface .bg-success { transition: none; }
+  .motion-control:not(:disabled):hover, .motion-control:not(:disabled):active, .motion-control:hover svg, .course-motion:hover { transform: none; }
+}
