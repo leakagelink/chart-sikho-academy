@@ -1,12 +1,12 @@
 # Roadmap
 
 ## Open
-- [ ] Improve and verify all-screen responsive layouts and lightweight animations
-- [ ] Full signed-in test of My Learning + Profile (blocked: user must sign up in preview first)
+- [ ] Full signed-in data-change test of My Learning + Profile (signed-in screens verified; progress mutation/profile save verification still pending)
 - [ ] Real course data from user (prices, ratings, class times, stats)
 - [ ] Payment gateway (LIVE) — only after client approves test app; do NOT add now
 
 ## Done
+- All-screen responsive enhancement: 320/393/834/1280 widths checked in Hindi/English; signed-in dashboard/profile render, tablet navigation and phone forms improved; animation observer optimized; existing tests passed
 - Mock test portal: playable sample video, 3 lessons, saved notes, quiz/retry and sample certificate download; verified end-to-end
 - Local-only referrals/wallet: no sign-up commission, test withdrawal and admin approval; no real money or account mutations
 - Mock admin overview, course visibility/add, student status, booking confirmation, sales/payout screens; live discussion and support previews
