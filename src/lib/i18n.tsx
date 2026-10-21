@@ -15,6 +15,8 @@ const dict = {
   certificates: { en: "Certificates", hi: "सर्टिफिकेट" },
   referrals: { en: "Referrals", hi: "रेफरल" },
   wallet: { en: "Wallet", hi: "वॉलेट" },
+  show_wallet: { en: "Show wallet", hi: "वॉलेट दिखाएँ" },
+  hide_wallet: { en: "Hide wallet", hi: "वॉलेट छिपाएँ" },
   reset_demo: { en: "Reset test data", hi: "टेस्ट डेटा रीसेट करें" },
   reset_confirm: { en: "Reset all local test progress?", hi: "सभी लोकल टेस्ट प्रगति रीसेट करें?" },
   test_profile: { en: "Test student", hi: "टेस्ट छात्र" },

@@ -1,5 +1,5 @@
 import { Link, Outlet } from "@tanstack/react-router";
-import { BookOpen, ClipboardCheck, Award, Users, Wallet, Shield, RotateCcw, Video, MessageCircle } from "lucide-react";
+import { BookOpen, ClipboardCheck, Award, Shield, RotateCcw, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLang } from "@/lib/i18n";
 import { MockProvider, useMock } from "@/lib/mock-store";
@@ -13,9 +13,6 @@ function Frame() {
     { to: "/sandbox/quiz", key: "quiz", icon: ClipboardCheck },
     { to: "/sandbox/certificates", key: "certificates", icon: Award },
     { to: "/sandbox/live", key: "live_sample", icon: Video },
-    { to: "/sandbox/referrals", key: "referrals", icon: Users },
-    { to: "/sandbox/wallet", key: "wallet", icon: Wallet },
-    { to: "/sandbox/support", key: "support", icon: MessageCircle },
     { to: "/sandbox/admin", key: "admin_demo", icon: Shield },
   ] as const;
   return <div className="mx-auto max-w-6xl px-4 pt-6">

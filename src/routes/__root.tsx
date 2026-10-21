@@ -18,6 +18,7 @@ import { Footer, Header, MobileNav } from "../components/site/SiteChrome";
 import { Toaster } from "../components/ui/sonner";
 import { SplashScreen } from "../components/site/SplashScreen";
 import { PageMotion } from "../components/site/PageMotion";
+import { FloatingActions } from "../components/site/FloatingActions";
 
 function NotFoundComponent() {
   return (
@@ -131,6 +132,7 @@ function RootComponent() {
         </PageMotion>
         <Footer />
         <MobileNav />
+        <FloatingActions />
         <Toaster />
         </SplashScreen>
       </LangProvider>
