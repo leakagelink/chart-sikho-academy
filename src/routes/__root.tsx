@@ -16,6 +16,7 @@ import { LangProvider } from "../lib/i18n";
 import { AuthProvider } from "../hooks/use-auth";
 import { Footer, Header, MobileNav } from "../components/site/SiteChrome";
 import { Toaster } from "../components/ui/sonner";
+import { SplashScreen } from "../components/site/SplashScreen";
 
 function NotFoundComponent() {
   return (
@@ -122,6 +123,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
       <LangProvider>
+        <SplashScreen>
         <Header />
         <main>
           <Outlet />
@@ -129,6 +131,7 @@ function RootComponent() {
         <Footer />
         <MobileNav />
         <Toaster />
+        </SplashScreen>
       </LangProvider>
       </AuthProvider>
     </QueryClientProvider>
