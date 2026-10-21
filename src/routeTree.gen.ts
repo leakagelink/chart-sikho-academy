@@ -22,9 +22,19 @@ import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticate
 import { Route as CoursesCourseIdRouteImport } from './routes/courses_.$courseId'
 import { Route as LiveClassIdRouteImport } from './routes/live.$classId'
 import { Route as SandboxIndexRouteImport } from './routes/sandbox.index'
+import { Route as SandboxAdminRouteImport } from './routes/sandbox.admin'
 import { Route as SandboxCertificatesRouteImport } from './routes/sandbox.certificates'
 import { Route as SandboxLearnRouteImport } from './routes/sandbox.learn'
+import { Route as SandboxLiveRouteImport } from './routes/sandbox.live'
 import { Route as SandboxQuizRouteImport } from './routes/sandbox.quiz'
+import { Route as SandboxReferralsRouteImport } from './routes/sandbox.referrals'
+import { Route as SandboxSupportRouteImport } from './routes/sandbox.support'
+import { Route as SandboxWalletRouteImport } from './routes/sandbox.wallet'
+import { Route as SandboxAdminIndexRouteImport } from './routes/sandbox.admin.index'
+import { Route as SandboxAdminBookingsRouteImport } from './routes/sandbox.admin.bookings'
+import { Route as SandboxAdminCoursesRouteImport } from './routes/sandbox.admin.courses'
+import { Route as SandboxAdminSalesRouteImport } from './routes/sandbox.admin.sales'
+import { Route as SandboxAdminStudentsRouteImport } from './routes/sandbox.admin.students'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -90,6 +100,11 @@ const SandboxIndexRoute = SandboxIndexRouteImport.update({
   path: '/',
   getParentRoute: () => SandboxRoute,
 } as any)
+const SandboxAdminRoute = SandboxAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => SandboxRoute,
+} as any)
 const SandboxCertificatesRoute = SandboxCertificatesRouteImport.update({
   id: '/certificates',
   path: '/certificates',
@@ -100,10 +115,55 @@ const SandboxLearnRoute = SandboxLearnRouteImport.update({
   path: '/learn',
   getParentRoute: () => SandboxRoute,
 } as any)
+const SandboxLiveRoute = SandboxLiveRouteImport.update({
+  id: '/live',
+  path: '/live',
+  getParentRoute: () => SandboxRoute,
+} as any)
 const SandboxQuizRoute = SandboxQuizRouteImport.update({
   id: '/quiz',
   path: '/quiz',
   getParentRoute: () => SandboxRoute,
+} as any)
+const SandboxReferralsRoute = SandboxReferralsRouteImport.update({
+  id: '/referrals',
+  path: '/referrals',
+  getParentRoute: () => SandboxRoute,
+} as any)
+const SandboxSupportRoute = SandboxSupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => SandboxRoute,
+} as any)
+const SandboxWalletRoute = SandboxWalletRouteImport.update({
+  id: '/wallet',
+  path: '/wallet',
+  getParentRoute: () => SandboxRoute,
+} as any)
+const SandboxAdminIndexRoute = SandboxAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SandboxAdminRoute,
+} as any)
+const SandboxAdminBookingsRoute = SandboxAdminBookingsRouteImport.update({
+  id: '/bookings',
+  path: '/bookings',
+  getParentRoute: () => SandboxAdminRoute,
+} as any)
+const SandboxAdminCoursesRoute = SandboxAdminCoursesRouteImport.update({
+  id: '/courses',
+  path: '/courses',
+  getParentRoute: () => SandboxAdminRoute,
+} as any)
+const SandboxAdminSalesRoute = SandboxAdminSalesRouteImport.update({
+  id: '/sales',
+  path: '/sales',
+  getParentRoute: () => SandboxAdminRoute,
+} as any)
+const SandboxAdminStudentsRoute = SandboxAdminStudentsRouteImport.update({
+  id: '/students',
+  path: '/students',
+  getParentRoute: () => SandboxAdminRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -118,10 +178,20 @@ export interface FileRoutesByFullPath {
   '/profile': typeof AuthenticatedProfileRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
   '/live/$classId': typeof LiveClassIdRoute
+  '/sandbox/admin': typeof SandboxAdminRouteWithChildren
   '/sandbox/certificates': typeof SandboxCertificatesRoute
   '/sandbox/learn': typeof SandboxLearnRoute
+  '/sandbox/live': typeof SandboxLiveRoute
   '/sandbox/quiz': typeof SandboxQuizRoute
+  '/sandbox/referrals': typeof SandboxReferralsRoute
+  '/sandbox/support': typeof SandboxSupportRoute
+  '/sandbox/wallet': typeof SandboxWalletRoute
   '/sandbox/': typeof SandboxIndexRoute
+  '/sandbox/admin/bookings': typeof SandboxAdminBookingsRoute
+  '/sandbox/admin/courses': typeof SandboxAdminCoursesRoute
+  '/sandbox/admin/sales': typeof SandboxAdminSalesRoute
+  '/sandbox/admin/students': typeof SandboxAdminStudentsRoute
+  '/sandbox/admin/': typeof SandboxAdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -136,8 +206,17 @@ export interface FileRoutesByTo {
   '/live/$classId': typeof LiveClassIdRoute
   '/sandbox/certificates': typeof SandboxCertificatesRoute
   '/sandbox/learn': typeof SandboxLearnRoute
+  '/sandbox/live': typeof SandboxLiveRoute
   '/sandbox/quiz': typeof SandboxQuizRoute
+  '/sandbox/referrals': typeof SandboxReferralsRoute
+  '/sandbox/support': typeof SandboxSupportRoute
+  '/sandbox/wallet': typeof SandboxWalletRoute
   '/sandbox': typeof SandboxIndexRoute
+  '/sandbox/admin/bookings': typeof SandboxAdminBookingsRoute
+  '/sandbox/admin/courses': typeof SandboxAdminCoursesRoute
+  '/sandbox/admin/sales': typeof SandboxAdminSalesRoute
+  '/sandbox/admin/students': typeof SandboxAdminStudentsRoute
+  '/sandbox/admin': typeof SandboxAdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -153,10 +232,20 @@ export interface FileRoutesById {
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/courses_/$courseId': typeof CoursesCourseIdRoute
   '/live/$classId': typeof LiveClassIdRoute
+  '/sandbox/admin': typeof SandboxAdminRouteWithChildren
   '/sandbox/certificates': typeof SandboxCertificatesRoute
   '/sandbox/learn': typeof SandboxLearnRoute
+  '/sandbox/live': typeof SandboxLiveRoute
   '/sandbox/quiz': typeof SandboxQuizRoute
+  '/sandbox/referrals': typeof SandboxReferralsRoute
+  '/sandbox/support': typeof SandboxSupportRoute
+  '/sandbox/wallet': typeof SandboxWalletRoute
   '/sandbox/': typeof SandboxIndexRoute
+  '/sandbox/admin/bookings': typeof SandboxAdminBookingsRoute
+  '/sandbox/admin/courses': typeof SandboxAdminCoursesRoute
+  '/sandbox/admin/sales': typeof SandboxAdminSalesRoute
+  '/sandbox/admin/students': typeof SandboxAdminStudentsRoute
+  '/sandbox/admin/': typeof SandboxAdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -172,10 +261,20 @@ export interface FileRouteTypes {
     | '/profile'
     | '/courses/$courseId'
     | '/live/$classId'
+    | '/sandbox/admin'
     | '/sandbox/certificates'
     | '/sandbox/learn'
+    | '/sandbox/live'
     | '/sandbox/quiz'
+    | '/sandbox/referrals'
+    | '/sandbox/support'
+    | '/sandbox/wallet'
     | '/sandbox/'
+    | '/sandbox/admin/bookings'
+    | '/sandbox/admin/courses'
+    | '/sandbox/admin/sales'
+    | '/sandbox/admin/students'
+    | '/sandbox/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -190,8 +289,17 @@ export interface FileRouteTypes {
     | '/live/$classId'
     | '/sandbox/certificates'
     | '/sandbox/learn'
+    | '/sandbox/live'
     | '/sandbox/quiz'
+    | '/sandbox/referrals'
+    | '/sandbox/support'
+    | '/sandbox/wallet'
     | '/sandbox'
+    | '/sandbox/admin/bookings'
+    | '/sandbox/admin/courses'
+    | '/sandbox/admin/sales'
+    | '/sandbox/admin/students'
+    | '/sandbox/admin'
   id:
     | '__root__'
     | '/'
@@ -206,10 +314,20 @@ export interface FileRouteTypes {
     | '/_authenticated/profile'
     | '/courses_/$courseId'
     | '/live/$classId'
+    | '/sandbox/admin'
     | '/sandbox/certificates'
     | '/sandbox/learn'
+    | '/sandbox/live'
     | '/sandbox/quiz'
+    | '/sandbox/referrals'
+    | '/sandbox/support'
+    | '/sandbox/wallet'
     | '/sandbox/'
+    | '/sandbox/admin/bookings'
+    | '/sandbox/admin/courses'
+    | '/sandbox/admin/sales'
+    | '/sandbox/admin/students'
+    | '/sandbox/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -318,6 +436,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SandboxIndexRouteImport
       parentRoute: typeof SandboxRoute
     }
+    '/sandbox/admin': {
+      id: '/sandbox/admin'
+      path: '/admin'
+      fullPath: '/sandbox/admin'
+      preLoaderRoute: typeof SandboxAdminRouteImport
+      parentRoute: typeof SandboxRoute
+    }
     '/sandbox/certificates': {
       id: '/sandbox/certificates'
       path: '/certificates'
@@ -332,12 +457,75 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SandboxLearnRouteImport
       parentRoute: typeof SandboxRoute
     }
+    '/sandbox/live': {
+      id: '/sandbox/live'
+      path: '/live'
+      fullPath: '/sandbox/live'
+      preLoaderRoute: typeof SandboxLiveRouteImport
+      parentRoute: typeof SandboxRoute
+    }
     '/sandbox/quiz': {
       id: '/sandbox/quiz'
       path: '/quiz'
       fullPath: '/sandbox/quiz'
       preLoaderRoute: typeof SandboxQuizRouteImport
       parentRoute: typeof SandboxRoute
+    }
+    '/sandbox/referrals': {
+      id: '/sandbox/referrals'
+      path: '/referrals'
+      fullPath: '/sandbox/referrals'
+      preLoaderRoute: typeof SandboxReferralsRouteImport
+      parentRoute: typeof SandboxRoute
+    }
+    '/sandbox/support': {
+      id: '/sandbox/support'
+      path: '/support'
+      fullPath: '/sandbox/support'
+      preLoaderRoute: typeof SandboxSupportRouteImport
+      parentRoute: typeof SandboxRoute
+    }
+    '/sandbox/wallet': {
+      id: '/sandbox/wallet'
+      path: '/wallet'
+      fullPath: '/sandbox/wallet'
+      preLoaderRoute: typeof SandboxWalletRouteImport
+      parentRoute: typeof SandboxRoute
+    }
+    '/sandbox/admin/': {
+      id: '/sandbox/admin/'
+      path: '/'
+      fullPath: '/sandbox/admin/'
+      preLoaderRoute: typeof SandboxAdminIndexRouteImport
+      parentRoute: typeof SandboxAdminRoute
+    }
+    '/sandbox/admin/bookings': {
+      id: '/sandbox/admin/bookings'
+      path: '/bookings'
+      fullPath: '/sandbox/admin/bookings'
+      preLoaderRoute: typeof SandboxAdminBookingsRouteImport
+      parentRoute: typeof SandboxAdminRoute
+    }
+    '/sandbox/admin/courses': {
+      id: '/sandbox/admin/courses'
+      path: '/courses'
+      fullPath: '/sandbox/admin/courses'
+      preLoaderRoute: typeof SandboxAdminCoursesRouteImport
+      parentRoute: typeof SandboxAdminRoute
+    }
+    '/sandbox/admin/sales': {
+      id: '/sandbox/admin/sales'
+      path: '/sales'
+      fullPath: '/sandbox/admin/sales'
+      preLoaderRoute: typeof SandboxAdminSalesRouteImport
+      parentRoute: typeof SandboxAdminRoute
+    }
+    '/sandbox/admin/students': {
+      id: '/sandbox/admin/students'
+      path: '/students'
+      fullPath: '/sandbox/admin/students'
+      preLoaderRoute: typeof SandboxAdminStudentsRouteImport
+      parentRoute: typeof SandboxAdminRoute
     }
   }
 }
@@ -355,17 +543,47 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface SandboxAdminRouteChildren {
+  SandboxAdminBookingsRoute: typeof SandboxAdminBookingsRoute
+  SandboxAdminCoursesRoute: typeof SandboxAdminCoursesRoute
+  SandboxAdminSalesRoute: typeof SandboxAdminSalesRoute
+  SandboxAdminStudentsRoute: typeof SandboxAdminStudentsRoute
+  SandboxAdminIndexRoute: typeof SandboxAdminIndexRoute
+}
+
+const SandboxAdminRouteChildren: SandboxAdminRouteChildren = {
+  SandboxAdminBookingsRoute: SandboxAdminBookingsRoute,
+  SandboxAdminCoursesRoute: SandboxAdminCoursesRoute,
+  SandboxAdminSalesRoute: SandboxAdminSalesRoute,
+  SandboxAdminStudentsRoute: SandboxAdminStudentsRoute,
+  SandboxAdminIndexRoute: SandboxAdminIndexRoute,
+}
+
+const SandboxAdminRouteWithChildren = SandboxAdminRoute._addFileChildren(
+  SandboxAdminRouteChildren,
+)
+
 interface SandboxRouteChildren {
+  SandboxAdminRoute: typeof SandboxAdminRouteWithChildren
   SandboxCertificatesRoute: typeof SandboxCertificatesRoute
   SandboxLearnRoute: typeof SandboxLearnRoute
+  SandboxLiveRoute: typeof SandboxLiveRoute
   SandboxQuizRoute: typeof SandboxQuizRoute
+  SandboxReferralsRoute: typeof SandboxReferralsRoute
+  SandboxSupportRoute: typeof SandboxSupportRoute
+  SandboxWalletRoute: typeof SandboxWalletRoute
   SandboxIndexRoute: typeof SandboxIndexRoute
 }
 
 const SandboxRouteChildren: SandboxRouteChildren = {
+  SandboxAdminRoute: SandboxAdminRouteWithChildren,
   SandboxCertificatesRoute: SandboxCertificatesRoute,
   SandboxLearnRoute: SandboxLearnRoute,
+  SandboxLiveRoute: SandboxLiveRoute,
   SandboxQuizRoute: SandboxQuizRoute,
+  SandboxReferralsRoute: SandboxReferralsRoute,
+  SandboxSupportRoute: SandboxSupportRoute,
+  SandboxWalletRoute: SandboxWalletRoute,
   SandboxIndexRoute: SandboxIndexRoute,
 }
 
