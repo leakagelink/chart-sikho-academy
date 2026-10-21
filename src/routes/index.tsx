@@ -8,6 +8,8 @@ import { useLang } from "@/lib/i18n";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Chartसीखो — Learn Stock Market in Hindi & English" },
       { name: "description", content: "Live classes, recorded courses and free content to learn chart reading, options and price action — beginner to pro." },
       { property: "og:title", content: "Chartसीखो — Learn Stock Market in Hindi & English" },

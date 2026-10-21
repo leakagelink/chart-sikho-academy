@@ -15,6 +15,8 @@ export const Route = createFileRoute("/courses_/$courseId")({
     const title = c ? `${c.title.en} — Chartसीखो` : "Course — Chartसीखो";
     return {
       meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
         { title },
         { name: "description", content: c ? `${c.title.en}: ${c.lessons} lessons in ${c.language}.` : "Stock-market course on Chartसीखो." },
         { property: "og:title", content: title },

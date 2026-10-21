@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "My Learning — Chartसीखो" },
       { name: "description", content: "Your Chartसीखो student portal: courses, progress and live classes." },
       { property: "og:title", content: "My Learning — Chartसीखो" },
