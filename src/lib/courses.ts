@@ -31,3 +31,15 @@ export const liveClasses = [
 ];
 
 export const inr = (n: number) => "₹" + n.toLocaleString("en-IN");
+
+// Small educational sample separate from the commercial catalog lesson counts.
+export const sampleLessons = [
+  { title: "lesson_chart", body: "body_chart" },
+  { title: "lesson_trend", body: "body_trend" },
+  { title: "lesson_risk", body: "body_risk" },
+] as const;
+export const sampleQuestions = [
+  { question: "question_one", options: ["answer_ohlc", "answer_profit"], correct: 0 },
+  { question: "question_two", options: ["answer_random", "answer_trend"], correct: 1 },
+  { question: "question_three", options: ["answer_risk", "answer_profit"], correct: 0 },
+] as const;
