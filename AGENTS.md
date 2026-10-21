@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Rules
+- Wallet/referral and support entry points live in the shared floating actions, outside page motion; why: they stay fixed across pages without animation transforms, while mock screens retain their isolated data.
 - Shared page motion observes only newly added content for one-shot intersection entrances, excludes video surfaces, and uses CSS interactions with reduced-motion support; why: animations avoid repeated full-page scans and video-control interference.
 - Shared navigation switches to a bottom bar below the desktop breakpoint, with grid-based mobile headers and safe-area spacing; why: bilingual navigation remains accessible without header crowding across screen sizes.
 - The branded splash wraps the shared app shell and dismisses locally on each full app load, with reduced-motion support; why: every entry page gets the same launch experience without replaying on internal navigation or changing account data.

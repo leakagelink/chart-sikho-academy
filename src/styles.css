@@ -234,6 +234,10 @@ html { scroll-padding-top: 80px; }
 .motion-surface :where(input, textarea, select) { max-width: 100%; }
 .motion-surface :where(img, video) { max-width: 100%; }
 .mobile-navigation { padding-bottom: env(safe-area-inset-bottom); }
+.support-float { bottom: calc(5rem + env(safe-area-inset-bottom)); }
+@media (min-width: 1024px) {
+  .support-float { bottom: 1.5rem; }
+}
 .sandbox-navigation { scrollbar-width: thin; scroll-padding-inline: 12px; }
 .motion-surface .overflow-x-auto { max-width: 100%; overscroll-behavior-inline: contain; }
 .motion-surface table { min-width: 440px; }

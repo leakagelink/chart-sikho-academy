@@ -6,6 +6,7 @@
 - [ ] Payment gateway (LIVE) — only after client approves test app; do NOT add now
 
 ## Done
+- Wallet toggle at left-center with wallet/referral links, referrals inside wallet, and floating support above mobile navigation; removed these shortcuts from Test Portal navigation and overview
 - All-screen responsive enhancement: 320/393/834/1280 widths checked in Hindi/English; signed-in dashboard/profile render, tablet navigation and phone forms improved; animation observer optimized; existing tests passed
 - Mock test portal: playable sample video, 3 lessons, saved notes, quiz/retry and sample certificate download; verified end-to-end
 - Local-only referrals/wallet: no sign-up commission, test withdrawal and admin approval; no real money or account mutations
