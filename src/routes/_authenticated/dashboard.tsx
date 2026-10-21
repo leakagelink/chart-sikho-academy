@@ -64,7 +64,7 @@ function Dashboard() {
       <h1 className="font-display text-3xl font-bold text-navy">{name}</h1>
       <Button asChild variant="outline" className="mt-4"><Link to="/sandbox">{t("sandbox")}</Link></Button>
 
-      <div className="mt-6 grid grid-cols-3 gap-3">
+      <div className="mt-6 grid grid-cols-1 gap-3 min-[360px]:grid-cols-3">
         {[
           { icon: BookOpen, v: mine.length, l: t("my_courses") },
           { icon: Trophy, v: `${avg}%`, l: t("avg_progress") },
@@ -99,7 +99,7 @@ function Dashboard() {
         ) : (
           <div className="mt-4 grid gap-4 md:grid-cols-2">
             {mine.map((m) => (
-              <article key={m.course_id} className="flex gap-4 rounded-2xl border border-border bg-card p-4 shadow-card">
+              <article key={m.course_id} className="flex flex-col gap-4 rounded-lg border border-border bg-card p-4 shadow-card sm:flex-row">
                 <div className="flex h-20 w-24 shrink-0 items-end justify-center rounded-xl bg-gradient-to-br from-navy to-primary p-2"><MiniChart /></div>
                 <div className="min-w-0 flex-1">
                   <h3 className="font-semibold">{m.course.title[lang]}</h3>
@@ -126,7 +126,7 @@ function Dashboard() {
             <div key={c.id} className="rounded-2xl border border-border bg-card p-4 shadow-card">
               {c.live && <span className="rounded bg-destructive px-2 py-0.5 text-[11px] font-bold text-destructive-foreground">● LIVE</span>}
               <h3 className="mt-2 font-semibold">{c.title[lang]}</h3>
-              <p className="mt-1 flex items-center gap-3 text-xs text-muted-foreground">
+              <p className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-muted-foreground">
                 <span>{t(c.day)}, {c.time}</span><span className="flex items-center gap-1"><Users className="h-3.5 w-3.5" />{c.joining}</span>
               </p>
             </div>
@@ -135,7 +135,7 @@ function Dashboard() {
       </section>
 
       <section className="mt-10">
-        <div className="flex items-center justify-between">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
           <h2 className="font-display text-2xl font-bold text-navy">{t("explore_more")}</h2>
           <Link to="/courses" className="text-sm font-semibold text-primary">{t("see_all")} →</Link>
         </div>

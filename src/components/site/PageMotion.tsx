@@ -17,19 +17,28 @@ export function PageMotion({ children }: { children: ReactNode }) {
         observer.unobserve(entry.target);
       });
     }, { threshold: 0.08 });
-    function scan() {
-      if (!root) return;
-      root.querySelectorAll("h1, section > h2, article, .grid > div, video").forEach((element) => {
+    function scan(container: Element) {
+      const selector = "h1, section > h2, article, .grid > div";
+      const elements = [...container.querySelectorAll(selector)];
+      if (container.matches(selector)) elements.unshift(container);
+      elements.forEach((element) => {
         if (seen.has(element)) return;
         seen.add(element);
         element.setAttribute("data-motion", "ready");
         observer.observe(element);
       });
     }
-    scan();
-    const mutations = new MutationObserver(scan);
+    scan(root);
+    const mutations = new MutationObserver((records) => {
+      records.forEach((record) => record.addedNodes.forEach((node) => {
+        if (node instanceof Element) scan(node);
+      }));
+    });
     mutations.observe(root, { childList: true, subtree: true });
-    return () => { observer.disconnect(); mutations.disconnect(); };
+    return () => {
+      observer.disconnect(); mutations.disconnect();
+      root.querySelectorAll('[data-motion="ready"]').forEach((element) => element.removeAttribute("data-motion"));
+    };
   }, [pathname]);
 
   return <main ref={ref} className="motion-surface">{children}</main>;

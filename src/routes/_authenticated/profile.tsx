@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState, type FormEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useLang } from "@/lib/i18n";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_authenticated/profile")({
   head: () => ({
@@ -58,20 +59,20 @@ function ProfilePage() {
   return (
     <div className="mx-auto max-w-xl px-4 pt-8">
       <h1 className="font-display text-3xl font-bold text-navy">{t("my_profile")}</h1>
-      <p className="text-sm text-muted-foreground">{user.email}</p>
-      <form onSubmit={save} className="mt-6 space-y-4 rounded-3xl border border-border bg-card p-6 shadow-card">
+      <p className="break-all text-sm text-muted-foreground">{user.email}</p>
+      <form onSubmit={save} className="mt-6 space-y-4 rounded-lg border border-border bg-card p-4 shadow-card sm:p-6">
         {field("full_name", t("full_name"))}
         {field("phone", t("phone"))}
-        <div className="grid grid-cols-2 gap-3">{field("state", t("state"))}{field("city", t("city"))}</div>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">{field("state", t("state"))}{field("city", t("city"))}</div>
         <label className="block text-sm font-medium">{t("pref_lang")}
           <select value={f.preferred_language} onChange={(e) => setF({ ...f, preferred_language: e.target.value })} className={`${input} mt-1`}>
             <option value="en">English</option><option value="hi">हिंदी</option>
           </select>
         </label>
         {saved && <p className="text-sm text-success">{saved}</p>}
-        <button className="w-full rounded-lg bg-primary py-2.5 font-semibold text-primary-foreground">{t("save")}</button>
+        <Button type="submit" className="w-full">{t("save")}</Button>
       </form>
-      <button onClick={signOut} className="mt-4 w-full rounded-lg border border-destructive py-2.5 font-semibold text-destructive">{t("logout")}</button>
+      <Button variant="outline" onClick={signOut} className="mt-4 w-full border-destructive text-destructive">{t("logout")}</Button>
     </div>
   );
 }
