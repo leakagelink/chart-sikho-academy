@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [ ] Improve and verify all-screen responsive layouts and lightweight animations
 - [ ] Full signed-in test of My Learning + Profile (blocked: user must sign up in preview first)
 - [ ] Real course data from user (prices, ratings, class times, stats)
 - [ ] Payment gateway (LIVE) — only after client approves test app; do NOT add now
