@@ -7,6 +7,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { MiniChart } from "@/components/site/CourseCard";
 import { courses, inr } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/courses_/$courseId")({
   head: ({ params }) => {
@@ -88,6 +89,7 @@ function CourseDetail() {
           <p className="mt-8 rounded-2xl bg-muted p-4 text-xs text-muted-foreground">{t("disclaimer")}</p>
         </div>
         <aside className="h-fit rounded-3xl border border-border bg-card p-5 shadow-card">
+          <Button asChild variant="outline" className="mb-4 w-full"><Link to="/sandbox/learn">{t("preview_mock")}</Link></Button>
           <div className="flex items-baseline gap-2">
             <span className="text-2xl font-bold text-navy">{free ? "FREE" : inr(course.price)}</span>
             {course.mrp > 0 && <span className="text-sm text-muted-foreground line-through">{inr(course.mrp)}</span>}

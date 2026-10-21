@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { CourseCard, MiniChart } from "@/components/site/CourseCard";
 import { courses, liveClasses } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
@@ -49,7 +50,7 @@ function Dashboard() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["enrollments", user.id] }),
   });
 
-  const mine = (enrolls.data ?? []).map((e) => ({ ...e, course: courses.find((c) => c.id === e.course_id)! })).filter((e) => e.course);
+  const mine = (enrolls.data ?? []).flatMap((e) => { const course = courses.find((c) => c.id === e.course_id); return course ? [{ ...e, course }] : []; });
   const enrolledIds = new Set(mine.map((m) => m.course_id));
   const name = profile.data?.full_name || user.email?.split("@")[0];
   const avg = mine.length ? Math.round(mine.reduce((s, m) => s + m.progress, 0) / mine.length) : 0;
@@ -59,6 +60,7 @@ function Dashboard() {
     <div className="mx-auto max-w-6xl px-4 pt-8">
       <p className="text-muted-foreground">{t("namaste")} 👋</p>
       <h1 className="font-display text-3xl font-bold text-navy">{name}</h1>
+      <Button asChild variant="outline" className="mt-4"><Link to="/sandbox">{t("sandbox")}</Link></Button>
 
       <div className="mt-6 grid grid-cols-3 gap-3">
         {[
