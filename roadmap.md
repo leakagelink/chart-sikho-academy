@@ -11,3 +11,4 @@
 - Membership plans page (test mode, no payments) ✔
 - Notifications bell panel (sample data) ✔
 - Course detail pages; free course enrolls, paid shows "payments coming soon" ✔
+- Google / Lovable social sign-in hidden on login & sign-up (re-enable at go-live) ✔
