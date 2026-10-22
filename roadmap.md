@@ -1,10 +1,10 @@
 # Roadmap
 
 ## Open
-- [ ] Verify rebuilt Android APK stays in-app on user's device (explicit project-host navigation configured and tests passed; Android project/device and actual redirect destination unavailable here; preview returns 401 without access)
-- [ ] Full signed-in data-change test of My Learning + Profile (signed-in screens verified; progress mutation/profile save verification still pending)
-- [ ] Real course data from user (prices, ratings, class times, stats)
-- [ ] Payment gateway (LIVE) — only after client approves test app; do NOT add now
+- [ ] Replace all app screens with a permanent closure notice and verify direct page entries
+
+## Cancelled
+- Previous development, real-content, login verification and payment work cancelled because the project is permanently closed.
 
 ## Done
 - Wallet toggle at left-center with wallet/referral links, referrals inside wallet, and floating support above mobile navigation; removed these shortcuts from Test Portal navigation and overview
