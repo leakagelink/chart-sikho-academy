@@ -2,16 +2,12 @@ import { describe, expect, it } from 'vitest';
 import config from '../../capacitor.config';
 
 describe('Android app navigation', () => {
-  it('keeps the client test app as the launch URL', () => {
-    expect(config.server?.url).toBe(
-      'https://id-preview--62b93306-bbec-431c-8a80-05c6306a5ecd.lovable.app',
-    );
+  it('launches the public app link, not the private preview that needs a Lovable login', () => {
+    expect(config.server?.url).toBe('https://chart-sikho-course-hub.lovable.app');
+    expect(config.server?.url).not.toContain('id-preview--');
   });
 
-  it('allows only this project’s known app hosts inside the WebView', () => {
-    expect(config.server?.allowNavigation).toEqual([
-      'id-preview--62b93306-bbec-431c-8a80-05c6306a5ecd.lovable.app',
-      'chart-sikho-course-hub.lovable.app',
-    ]);
+  it('allows only this project’s public app host inside the WebView', () => {
+    expect(config.server?.allowNavigation).toEqual(['chart-sikho-course-hub.lovable.app']);
   });
 });
