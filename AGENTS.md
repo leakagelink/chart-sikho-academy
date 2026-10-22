@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Rules
+- Capacitor test builds launch the preview URL and allow in-WebView navigation only to this project's explicitly listed app hosts; why: app-domain redirects stay inside Android without granting native navigation access to unrelated sites or publishing changes.
 - Wallet/referral and support entry points live in the shared floating actions, outside page motion; why: they stay fixed across pages without animation transforms, while mock screens retain their isolated data.
 - Shared page motion observes only newly added content for one-shot intersection entrances, excludes video surfaces, and uses CSS interactions with reduced-motion support; why: animations avoid repeated full-page scans and video-control interference.
 - Shared navigation switches to a bottom bar below the desktop breakpoint, with grid-based mobile headers and safe-area spacing; why: bilingual navigation remains accessible without header crowding across screen sizes.
