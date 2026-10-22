@@ -1,12 +1,13 @@
 # Roadmap
 
 ## Open
-- [ ] Replace all app screens with a permanent closure notice and verify direct page entries
+- None.
 
 ## Cancelled
 - Previous development, real-content, login verification and payment work cancelled because the project is permanently closed.
 
 ## Done
+- Permanent closure notice replaces all app screens, navigation, splash, floating actions and auth UI; direct entries, desktop/mobile display and tests verified. Not published; stored data preserved.
 - Wallet toggle at left-center with wallet/referral links, referrals inside wallet, and floating support above mobile navigation; removed these shortcuts from Test Portal navigation and overview
 - All-screen responsive enhancement: 320/393/834/1280 widths checked in Hindi/English; signed-in dashboard/profile render, tablet navigation and phone forms improved; animation observer optimized; existing tests passed
 - Mock test portal: playable sample video, 3 lessons, saved notes, quiz/retry and sample certificate download; verified end-to-end
