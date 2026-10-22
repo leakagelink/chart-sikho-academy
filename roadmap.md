@@ -1,7 +1,7 @@
 # Roadmap
 
 ## Open
-- [ ] Keep Android app navigation inside its WebView; verify trusted redirect hosts and provide rebuild commands
+- [ ] Verify rebuilt Android APK stays in-app on user's device (explicit project-host navigation configured and tests passed; Android project/device and actual redirect destination unavailable here; preview returns 401 without access)
 - [ ] Full signed-in data-change test of My Learning + Profile (signed-in screens verified; progress mutation/profile save verification still pending)
 - [ ] Real course data from user (prices, ratings, class times, stats)
 - [ ] Payment gateway (LIVE) — only after client approves test app; do NOT add now
