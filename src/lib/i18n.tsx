@@ -3,6 +3,10 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export type Lang = "en" | "hi";
 
 const dict = {
+  closure_notice: { en: "IMPORTANT NOTICE", hi: "महत्वपूर्ण सूचना" },
+  closure_title: { en: "Chartसीखो is permanently closed.", hi: "Chartसीखो हमेशा के लिए बंद किया जा रहा है।" },
+  closure_message: { en: "This app and all its services are no longer available.", hi: "अब यह ऐप और इसकी सभी सेवाएँ उपलब्ध नहीं हैं।" },
+  closure_thanks: { en: "Thank you for your support and trust.", hi: "आपके सहयोग और विश्वास के लिए धन्यवाद।" },
   splash_tagline: { en: "Learn charts. Build understanding.", hi: "चार्ट सीखें। समझ बढ़ाएँ।" },
   splash_loading: { en: "Opening Chartसीखो", hi: "Chartसीखो खुल रहा है" },
   splash_skip: { en: "Open app", hi: "ऐप खोलें" },
@@ -236,6 +240,7 @@ const dict = {
 } satisfies Record<string, Record<Lang, string>>;
 
 export type DictKey = keyof typeof dict;
+export const translate = (key: DictKey, lang: Lang) => dict[key][lang];
 
 const Ctx = createContext<{ lang: Lang; setLang: (l: Lang) => void; t: (k: DictKey) => string }>({
   lang: "en",
