@@ -34,9 +34,9 @@ export const inr = (n: number) => "₹" + n.toLocaleString("en-IN");
 
 // Small educational sample separate from the commercial catalog lesson counts.
 export const sampleLessons = [
-  { title: "lesson_chart", body: "body_chart" },
-  { title: "lesson_trend", body: "body_trend" },
-  { title: "lesson_risk", body: "body_risk" },
+  { title: "lesson_chart", body: "body_chart", dur: "10:30" },
+  { title: "lesson_trend", body: "body_trend", dur: "18:30" },
+  { title: "lesson_risk", body: "body_risk", dur: "16:45" },
 ] as const;
 export const sampleQuestions = [
   { question: "question_one", options: ["answer_ohlc", "answer_profit"], correct: 0 },
