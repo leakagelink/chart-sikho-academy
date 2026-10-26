@@ -19,3 +19,6 @@
 - Notifications bell panel (sample data) ✔
 - Course detail pages; free course enrolls, paid shows "payments coming soon" ✔
 - Google / Lovable social sign-in hidden on login & sign-up (re-enable at go-live) ✔
+
+## Done
+- [x] Dark navy + gold premium UI/UX matching client blueprint image: dark theme tokens (gold primary), 6-tile category grid (My Courses/Live/Webinars/eBooks/Tests/Certificates), course detail Overview/Curriculum/Reviews tabs, gold prices + buttons, dark splash, royal-blue thumbnails; verified desktop/mobile/Hindi, no overflow, tests+build OK
