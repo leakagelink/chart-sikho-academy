@@ -22,9 +22,9 @@ export const Route = createFileRoute("/courses")({
 
 const filters: { key: "all" | "beginner" | "options" | "technical"; label: DictKey }[] = [
   { key: "all", label: "filter_all" },
-  { key: "beginner", label: "filter_beginner" },
-  { key: "options", label: "filter_options" },
+  { key: "beginner", label: "filter_basics" },
   { key: "technical", label: "filter_technical" },
+  { key: "options", label: "filter_options" },
 ];
 
 function CoursesPage() {
