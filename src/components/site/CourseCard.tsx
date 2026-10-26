@@ -9,7 +9,7 @@ const thumb = {
   gold: "from-navy to-gold",
 };
 const tagCls = {
-  Bestseller: "bg-gold text-foreground",
+  Bestseller: "bg-gold text-navy",
   New: "bg-success text-success-foreground",
   Hot: "bg-destructive text-destructive-foreground",
   Free: "bg-primary text-primary-foreground",
@@ -45,7 +45,7 @@ export function CourseCard({ course }: { course: Course }) {
         </div>
         <div className="mt-3 flex items-center justify-between">
           <div className="flex items-baseline gap-2">
-            <span className="text-lg font-bold text-foreground">{course.price ? inr(course.price) : "FREE"}</span>
+            <span className="text-lg font-bold text-gold">{course.price ? inr(course.price) : "FREE"}</span>
             {course.mrp > 0 && <span className="text-xs text-muted-foreground line-through">{inr(course.mrp)}</span>}
             {off > 0 && <span className="text-xs font-semibold text-success">{off}% off</span>}
           </div>

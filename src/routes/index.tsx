@@ -109,7 +109,7 @@ function Index() {
           <h2 className="font-display text-2xl font-bold">{t("membership_t")}</h2>
           <p className="mt-1 opacity-85">{t("membership_s")}</p>
         </div>
-        <Link to="/plans" className="rounded-full bg-gold px-6 py-3 font-semibold text-foreground hover:bg-gold/90">{t("membership_cta")}</Link>
+        <Link to="/plans" className="rounded-full bg-gold px-6 py-3 font-semibold text-navy hover:bg-gold/90">{t("membership_cta")}</Link>
       </section>
     </div>
   );
