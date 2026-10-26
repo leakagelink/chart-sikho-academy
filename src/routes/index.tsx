@@ -77,7 +77,7 @@ function Index() {
         <div className="mt-4 grid gap-4 md:grid-cols-3">
           {liveClasses.map((c) => (
             <article key={c.id} className="rounded-2xl border border-border bg-card p-4 shadow-card">
-              <div className="flex h-24 items-start rounded-xl bg-gradient-to-br from-navy to-primary p-3">
+              <div className="flex h-24 items-start rounded-xl bg-gradient-to-br from-navy to-royal p-3">
                 {c.live && <span className="rounded bg-destructive px-2 py-0.5 text-[11px] font-bold text-destructive-foreground">● LIVE</span>}
               </div>
               <h3 className="mt-3 font-semibold">{c.title[lang]}</h3>
