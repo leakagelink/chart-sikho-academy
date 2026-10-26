@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Award, BookOpen, Calendar, ClipboardCheck, Crown, FileText, PlayCircle, Radio, Users, Video } from "lucide-react";
+import { ArrowRight, Award, Bell, BookOpen, Calendar, ClipboardCheck, Crown, FileText, PlayCircle, Radio, Users, Video } from "lucide-react";
 import hero from "@/assets/hero-bull.jpg";
 import { CourseCard } from "@/components/site/CourseCard";
 import { courses, liveClasses } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
+import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -21,6 +22,11 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const { t, lang } = useLang();
+  const { session } = useAuth();
+  const meta = session?.user?.user_metadata as { full_name?: string } | undefined;
+  const firstName = (meta?.full_name ?? "").trim().split(" ")[0] || t("student_fallback");
+  const hour = new Date().getHours();
+  const greet = hour < 12 ? t("greet_morning") : hour < 17 ? t("greet_afternoon") : t("greet_evening");
   const cats = [
     { icon: BookOpen, label: t("cat_mycourses"), to: "/dashboard" },
     { icon: Radio, label: t("cat_live"), to: "/sandbox/live" },
@@ -31,6 +37,42 @@ function Index() {
   ] as const;
   return (
     <div className="mx-auto max-w-6xl px-4">
+      {/* Greeting — blueprint home dashboard header */}
+      <section className="mt-6 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
+        <div className="flex min-w-0 items-center gap-3">
+          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gold/15 font-display text-lg font-bold text-gold">
+            {firstName.charAt(0).toUpperCase()}
+          </span>
+          <div className="min-w-0">
+            <h1 className="truncate font-display text-xl font-bold text-foreground sm:text-2xl">
+              {t("hello")}, {firstName} 👋
+            </h1>
+            <p className="text-sm text-muted-foreground">{greet}</p>
+          </div>
+        </div>
+        <Link to="/sandbox/support" aria-label={t("notifications")} className="relative grid h-11 w-11 shrink-0 place-items-center rounded-full border border-border bg-card text-foreground shadow-card">
+          <Bell className="h-5 w-5" />
+          <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-destructive" />
+        </Link>
+      </section>
+
+      {/* Continue learning — blueprint progress card */}
+      <section className="mt-5 flex items-center gap-4 rounded-3xl border border-border bg-card p-4 shadow-card sm:p-5">
+        <div className="flex h-20 w-14 shrink-0 items-end justify-center rounded-xl bg-gradient-to-br from-navy to-royal p-2 sm:h-24 sm:w-16">
+          <span className="font-display text-lg font-bold text-gold">68%</span>
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="truncate font-semibold text-foreground">{t("continue_course_t")}</p>
+          <div className="mt-2 h-2 overflow-hidden rounded-full bg-muted">
+            <div className="h-full w-[68%] rounded-full bg-gold" />
+          </div>
+          <p className="mt-1 text-xs text-muted-foreground">68% {t("completed")}</p>
+        </div>
+        <Link to="/sandbox/learn" className="shrink-0 rounded-full bg-gold px-4 py-2.5 text-sm font-bold text-navy hover:bg-gold/90 sm:px-6">
+          {t("start_learning")}
+        </Link>
+      </section>
+
       {/* Hero */}
       <section className="relative mt-6 overflow-hidden rounded-3xl bg-navy text-navy-foreground">
         <img src={hero} alt="" width={1280} height={832} className="absolute inset-0 h-full w-full object-cover opacity-60 md:left-1/3 md:w-2/3 md:opacity-100" />
