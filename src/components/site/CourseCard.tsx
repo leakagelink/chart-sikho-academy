@@ -4,7 +4,7 @@ import { inr, type Course } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
 
 const thumb = {
-  primary: "from-navy to-primary",
+  primary: "from-navy to-royal",
   success: "from-navy to-success",
   gold: "from-navy to-gold",
 };
