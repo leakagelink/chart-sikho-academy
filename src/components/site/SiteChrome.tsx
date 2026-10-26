@@ -73,7 +73,7 @@ export function Header() {
         <Link to="/" className="flex min-w-0 items-center gap-1.5 sm:shrink-0 sm:gap-2">
           <img src={logo.url} alt="" width={40} height={40} className="h-8 w-8 shrink-0 object-contain sm:h-10 sm:w-10" />
           <span className="truncate font-display text-lg font-bold text-foreground sm:text-xl">
-            Chart<span className="text-success">सीखो</span>
+            Chart<span className="text-gold">सीखो</span>
           </span>
         </Link>
         <nav className="ml-2 hidden min-w-0 gap-5 whitespace-nowrap text-sm font-medium lg:flex">
