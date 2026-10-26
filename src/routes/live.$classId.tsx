@@ -47,7 +47,7 @@ function LivePage() {
         <ArrowLeft className="h-4 w-4" /> {t("nav_home")}
       </Link>
       {/* Demo player — real streaming is wired up at launch */}
-      <div className="mt-4 flex aspect-video flex-col items-center justify-center rounded-3xl bg-gradient-to-br from-navy to-primary text-foreground-foreground">
+      <div className="mt-4 flex aspect-video flex-col items-center justify-center rounded-3xl bg-gradient-to-br from-navy to-royal text-navy-foreground">
         {cls.live && <span className="rounded bg-destructive px-2.5 py-1 text-xs font-bold text-destructive-foreground">● LIVE</span>}
         <p className="mt-3 px-6 text-center font-display text-xl font-bold">{cls.title[lang]}</p>
         <p className="mt-2 flex items-center gap-2 text-sm opacity-80"><Info className="h-4 w-4" />{t("live_demo_player")}</p>

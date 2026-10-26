@@ -79,7 +79,7 @@ function Dashboard() {
       </div>
 
       {cont && (
-        <section className="mt-8 flex flex-col gap-4 overflow-hidden rounded-3xl bg-gradient-to-r from-navy to-primary p-6 text-foreground-foreground sm:flex-row sm:items-center">
+        <section className="mt-8 flex flex-col gap-4 overflow-hidden rounded-3xl bg-gradient-to-r from-navy to-royal p-6 text-navy-foreground sm:flex-row sm:items-center">
           <div className="flex-1">
             <p className="text-sm opacity-80">{t("continue_learning")}</p>
             <h2 className="font-display text-2xl font-bold">{cont.course.title[lang]}</h2>
@@ -100,7 +100,7 @@ function Dashboard() {
           <div className="mt-4 grid gap-4 md:grid-cols-2">
             {mine.map((m) => (
               <article key={m.course_id} className="flex flex-col gap-4 rounded-lg border border-border bg-card p-4 shadow-card sm:flex-row">
-                <div className="flex h-20 w-24 shrink-0 items-end justify-center rounded-xl bg-gradient-to-br from-navy to-primary p-2"><MiniChart /></div>
+                <div className="flex h-20 w-24 shrink-0 items-end justify-center rounded-xl bg-gradient-to-br from-navy to-royal p-2"><MiniChart /></div>
                 <div className="min-w-0 flex-1">
                   <h3 className="font-semibold">{m.course.title[lang]}</h3>
                   <p className="text-xs text-muted-foreground">{m.last_lesson} / {m.course.lessons} {t("lessons")} · {m.progress}%</p>

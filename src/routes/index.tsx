@@ -32,7 +32,7 @@ function Index() {
   return (
     <div className="mx-auto max-w-6xl px-4">
       {/* Hero */}
-      <section className="relative mt-6 overflow-hidden rounded-3xl bg-navy text-foreground-foreground">
+      <section className="relative mt-6 overflow-hidden rounded-3xl bg-navy text-navy-foreground">
         <img src={hero} alt="" width={1280} height={832} className="absolute inset-0 h-full w-full object-cover opacity-60 md:left-1/3 md:w-2/3 md:opacity-100" />
         <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-transparent" />
         <div className="relative max-w-xl p-6 sm:p-10 md:py-16">
@@ -77,7 +77,7 @@ function Index() {
         <div className="mt-4 grid gap-4 md:grid-cols-3">
           {liveClasses.map((c) => (
             <article key={c.id} className="rounded-2xl border border-border bg-card p-4 shadow-card">
-              <div className="flex h-24 items-start rounded-xl bg-gradient-to-br from-navy to-primary p-3">
+              <div className="flex h-24 items-start rounded-xl bg-gradient-to-br from-navy to-royal p-3">
                 {c.live && <span className="rounded bg-destructive px-2 py-0.5 text-[11px] font-bold text-destructive-foreground">● LIVE</span>}
               </div>
               <h3 className="mt-3 font-semibold">{c.title[lang]}</h3>

@@ -33,7 +33,7 @@ export const Route = createFileRoute("/courses_/$courseId")({
   ),
 });
 
-const hueBg = { primary: "from-navy to-primary", success: "from-navy to-success", gold: "from-navy to-gold" };
+const hueBg = { primary: "from-navy to-royal", success: "from-navy to-success", gold: "from-navy to-gold" };
 
 function CourseDetail() {
   const { courseId } = Route.useParams();
