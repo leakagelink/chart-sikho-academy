@@ -58,7 +58,7 @@ function ProfilePage() {
   );
   return (
     <div className="mx-auto max-w-xl px-4 pt-8">
-      <h1 className="font-display text-3xl font-bold text-navy">{t("my_profile")}</h1>
+      <h1 className="font-display text-3xl font-bold text-foreground">{t("my_profile")}</h1>
       <p className="break-all text-sm text-muted-foreground">{user.email}</p>
       <form onSubmit={save} className="mt-6 space-y-4 rounded-lg border border-border bg-card p-4 shadow-card sm:p-6">
         {field("full_name", t("full_name"))}

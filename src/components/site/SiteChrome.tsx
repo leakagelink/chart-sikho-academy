@@ -51,7 +51,7 @@ export function NotificationsBell() {
       </Button>
       {open && (
         <div className="fixed inset-x-3 top-16 z-50 max-h-[70dvh] overflow-y-auto rounded-lg border border-border bg-card p-2 shadow-card sm:absolute sm:inset-x-auto sm:right-0 sm:top-12 sm:w-80">
-          <p className="px-3 py-2 font-display text-sm font-bold text-navy">{t("notif_title")}</p>
+          <p className="px-3 py-2 font-display text-sm font-bold text-foreground">{t("notif_title")}</p>
           {sampleNotifs.map((n) => (
             <div key={n.t} className="rounded-xl px-3 py-2 hover:bg-muted">
               <p className="text-sm font-semibold">{t(n.t)}</p>
@@ -72,7 +72,7 @@ export function Header() {
       <div className="mx-auto grid min-h-16 max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-1 px-3 sm:flex sm:gap-3 sm:px-4">
         <Link to="/" className="flex min-w-0 items-center gap-1.5 sm:shrink-0 sm:gap-2">
           <img src={logo.url} alt="" width={40} height={40} className="h-8 w-8 shrink-0 object-contain sm:h-10 sm:w-10" />
-          <span className="truncate font-display text-lg font-bold text-navy sm:text-xl">
+          <span className="truncate font-display text-lg font-bold text-foreground sm:text-xl">
             Chart<span className="text-success">सीखो</span>
           </span>
         </Link>
@@ -123,7 +123,7 @@ export function MobileNav() {
 export function Footer() {
   const { t } = useLang();
   return (
-    <footer className="mt-12 bg-navy pb-28 pt-8 text-navy-foreground lg:pb-10">
+    <footer className="mt-12 bg-navy pb-28 pt-8 text-foreground-foreground lg:pb-10">
       <div className="mx-auto max-w-6xl px-4 text-sm">
         <p className="font-display text-lg font-bold">Chart<span className="text-success">सीखो</span></p>
         <p className="mt-2 max-w-xl opacity-80">{t("disclaimer")}</p>

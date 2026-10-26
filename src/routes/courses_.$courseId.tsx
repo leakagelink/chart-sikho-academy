@@ -76,13 +76,13 @@ function CourseDetail() {
       </div>
       <div className="mt-6 grid gap-8 md:grid-cols-[1fr_300px]">
         <div>
-          <h1 className="font-display text-3xl font-bold text-navy">{course.title[lang]}</h1>
+          <h1 className="font-display text-3xl font-bold text-foreground">{course.title[lang]}</h1>
           <div className="mt-2 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
             <span className="flex items-center gap-1"><Star className="h-4 w-4 fill-gold text-gold" /><b className="text-foreground">{course.rating}</b> ({course.reviews})</span>
             <span className="flex items-center gap-1"><BookOpen className="h-4 w-4" />{course.lessons} {t("lessons")}</span>
             <span className="flex items-center gap-1"><Clock className="h-4 w-4" />{course.language}</span>
           </div>
-          <h2 className="mt-8 font-display text-xl font-bold text-navy">{t("what_learn")}</h2>
+          <h2 className="mt-8 font-display text-xl font-bold text-foreground">{t("what_learn")}</h2>
           <ul className="mt-3 space-y-2 text-sm">
             {(["wl_1", "wl_2", "wl_3", "wl_4"] as const).map((k) => (
               <li key={k} className="flex items-start gap-2"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success" />{t(k)}</li>
@@ -93,7 +93,7 @@ function CourseDetail() {
         <aside className="h-fit rounded-3xl border border-border bg-card p-5 shadow-card">
           <Button asChild variant="outline" className="mb-4 w-full"><Link to="/sandbox/learn">{t("preview_mock")}</Link></Button>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold text-navy">{free ? "FREE" : inr(course.price)}</span>
+            <span className="text-2xl font-bold text-foreground">{free ? "FREE" : inr(course.price)}</span>
             {course.mrp > 0 && <span className="text-sm text-muted-foreground line-through">{inr(course.mrp)}</span>}
             {off > 0 && <span className="text-sm font-semibold text-success">{off}% off</span>}
           </div>

@@ -25,12 +25,12 @@ function Index() {
     { icon: Radio, label: t("cat_live"), cls: "bg-destructive/10 text-destructive" },
     { icon: Video, label: t("cat_recorded"), cls: "bg-primary/10 text-primary" },
     { icon: Gift, label: t("cat_free"), cls: "bg-success/10 text-success" },
-    { icon: Star, label: t("cat_popular"), cls: "bg-gold/20 text-navy" },
+    { icon: Star, label: t("cat_popular"), cls: "bg-gold/20 text-foreground" },
   ];
   return (
     <div className="mx-auto max-w-6xl px-4">
       {/* Hero */}
-      <section className="relative mt-6 overflow-hidden rounded-3xl bg-navy text-navy-foreground">
+      <section className="relative mt-6 overflow-hidden rounded-3xl bg-navy text-foreground-foreground">
         <img src={hero} alt="" width={1280} height={832} className="absolute inset-0 h-full w-full object-cover opacity-60 md:left-1/3 md:w-2/3 md:opacity-100" />
         <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-transparent" />
         <div className="relative max-w-xl p-6 sm:p-10 md:py-16">
@@ -70,7 +70,7 @@ function Index() {
       {/* Upcoming live */}
       <section className="mt-10">
         <div className="flex items-center justify-between">
-          <h2 className="font-display text-2xl font-bold text-navy">{t("upcoming")}</h2>
+          <h2 className="font-display text-2xl font-bold text-foreground">{t("upcoming")}</h2>
         </div>
         <div className="mt-4 grid gap-4 md:grid-cols-3">
           {liveClasses.map((c) => (
@@ -94,7 +94,7 @@ function Index() {
       {/* Popular */}
       <section className="mt-10">
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
-          <h2 className="font-display text-2xl font-bold text-navy">{t("popular")}</h2>
+          <h2 className="font-display text-2xl font-bold text-foreground">{t("popular")}</h2>
           <Link to="/courses" className="text-sm font-semibold text-primary">{t("see_all")} →</Link>
         </div>
         <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -109,7 +109,7 @@ function Index() {
           <h2 className="font-display text-2xl font-bold">{t("membership_t")}</h2>
           <p className="mt-1 opacity-85">{t("membership_s")}</p>
         </div>
-        <Link to="/plans" className="rounded-full bg-gold px-6 py-3 font-semibold text-navy hover:bg-gold/90">{t("membership_cta")}</Link>
+        <Link to="/plans" className="rounded-full bg-gold px-6 py-3 font-semibold text-foreground hover:bg-gold/90">{t("membership_cta")}</Link>
       </section>
     </div>
   );

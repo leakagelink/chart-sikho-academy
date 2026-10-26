@@ -39,7 +39,7 @@ export function SplashScreen({ children }: { children: ReactNode }) {
           {[0, 1, 2, 3, 4, 5, 6].map((i) => <span key={i} className={`splash-candle splash-candle-${i}`} />)}
         </div>
         <img src={logo.url} alt="" width={112} height={112} className="splash-logo" />
-        <h1 className="splash-name font-display text-5xl font-bold text-navy">Chart<span className="text-primary">सीखो</span></h1>
+        <h1 className="splash-name font-display text-5xl font-bold text-foreground">Chart<span className="text-primary">सीखो</span></h1>
         <p className="splash-tagline text-base text-muted-foreground">{t("splash_tagline")}</p>
         <div className="splash-loader" aria-hidden="true"><span /></div>
       </div>
