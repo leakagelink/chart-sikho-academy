@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState, type FormEvent } from "react";
 import "@lovable.dev/cloud-auth-js/styles.css";
-import logo from "@/assets/logo.jpeg.asset.json";
+import logo from "@/assets/logo.png";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/use-auth";
@@ -83,7 +83,7 @@ function AuthPage() {
   return (
     <div className="mx-auto flex max-w-md flex-col px-4 py-10">
       <div className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-8">
-        <img src={logo.url} alt="Chartसीखो" width={64} height={64} className="mx-auto h-16 w-16 rounded-xl object-cover" />
+        <img src={logo} alt="Chartसीखो" width={64} height={64} className="mx-auto h-16 w-16 rounded-xl object-cover" />
         <h1 className="mt-3 text-center font-display text-2xl font-bold text-foreground">
           {mode === "login" ? t("welcome_back") : mode === "signup" ? t("create_account") : t("forgot_title")}
         </h1>

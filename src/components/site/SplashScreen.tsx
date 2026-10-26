@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { ArrowRight } from "lucide-react";
-import logo from "@/assets/logo.jpeg.asset.json";
+import logo from "@/assets/logo.png";
 import { Button } from "@/components/ui/button";
 import { useLang } from "@/lib/i18n";
 
@@ -38,7 +38,7 @@ export function SplashScreen({ children }: { children: ReactNode }) {
         <div className="splash-candles" aria-hidden="true">
           {[0, 1, 2, 3, 4, 5, 6].map((i) => <span key={i} className={`splash-candle splash-candle-${i}`} />)}
         </div>
-        <img src={logo.url} alt="" width={112} height={112} className="splash-logo" />
+        <img src={logo} alt="" width={112} height={112} className="splash-logo" />
         <h1 className="splash-name font-display text-5xl font-bold text-foreground">Chart<span className="text-primary">सीखो</span></h1>
         <p className="splash-tagline text-base text-muted-foreground">{t("splash_tagline")}</p>
         <div className="splash-loader" aria-hidden="true"><span /></div>
