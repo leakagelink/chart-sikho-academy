@@ -30,15 +30,15 @@ function PlansPage() {
     <div className="mx-auto max-w-3xl px-4 pt-8">
       <div className="text-center">
         <Crown className="mx-auto h-10 w-10 text-gold" />
-        <h1 className="mt-2 font-display text-3xl font-bold text-navy">{t("membership_t")}</h1>
+        <h1 className="mt-2 font-display text-3xl font-bold text-foreground">{t("membership_t")}</h1>
         <p className="mt-2 text-muted-foreground">{t("membership_s")}</p>
       </div>
       <div className="mt-8 grid gap-5 sm:grid-cols-2">
         {plans.map((p) => (
           <div key={p.id} className={`relative rounded-3xl border bg-card p-6 shadow-card ${p.popular ? "border-primary" : "border-border"}`}>
             {p.popular && <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-3 py-0.5 text-xs font-bold text-primary-foreground">{t("most_popular")}</span>}
-            <h2 className="font-display text-lg font-bold text-navy">{t(p.name)}</h2>
-            <p className="mt-2"><span className="text-3xl font-bold text-navy">{inr(p.price)}</span> <span className="text-sm text-muted-foreground">/ {t(p.per)}</span></p>
+            <h2 className="font-display text-lg font-bold text-foreground">{t(p.name)}</h2>
+            <p className="mt-2"><span className="text-3xl font-bold text-foreground">{inr(p.price)}</span> <span className="text-sm text-muted-foreground">/ {t(p.per)}</span></p>
             <ul className="mt-4 space-y-2 text-sm">
               {(["pf_1", "pf_2", "pf_3"] as const).map((k) => (
                 <li key={k} className="flex items-start gap-2"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success" />{t(k)}</li>

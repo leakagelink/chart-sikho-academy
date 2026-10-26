@@ -38,7 +38,7 @@ function CoursesPage() {
   );
   return (
     <div className="mx-auto max-w-6xl px-4 pt-8">
-      <h1 className="font-display text-3xl font-bold text-navy">{t("all_courses")}</h1>
+      <h1 className="font-display text-3xl font-bold text-foreground">{t("all_courses")}</h1>
       <p className="mt-1 text-muted-foreground">{t("all_courses_sub")}</p>
       <div className="mt-6 flex flex-col gap-3 lg:flex-row lg:items-center">
         <label className="relative flex-1">

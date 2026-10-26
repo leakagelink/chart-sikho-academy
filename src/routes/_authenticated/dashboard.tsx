@@ -61,7 +61,7 @@ function Dashboard() {
   return (
     <div className="mx-auto max-w-6xl px-4 pt-8">
       <p className="text-muted-foreground">{t("namaste")} 👋</p>
-      <h1 className="font-display text-3xl font-bold text-navy">{name}</h1>
+      <h1 className="font-display text-3xl font-bold text-foreground">{name}</h1>
       <Button asChild variant="outline" className="mt-4"><Link to="/sandbox">{t("sandbox")}</Link></Button>
 
       <div className="mt-6 grid grid-cols-1 gap-3 min-[360px]:grid-cols-3">
@@ -72,14 +72,14 @@ function Dashboard() {
         ].map(({ icon: I, v, l }) => (
           <div key={l} className="rounded-2xl border border-border bg-card p-4 shadow-card">
             <I className="h-5 w-5 text-primary" />
-            <p className="mt-2 text-2xl font-bold text-navy">{v}</p>
+            <p className="mt-2 text-2xl font-bold text-foreground">{v}</p>
             <p className="text-xs text-muted-foreground">{l}</p>
           </div>
         ))}
       </div>
 
       {cont && (
-        <section className="mt-8 flex flex-col gap-4 overflow-hidden rounded-3xl bg-gradient-to-r from-navy to-primary p-6 text-navy-foreground sm:flex-row sm:items-center">
+        <section className="mt-8 flex flex-col gap-4 overflow-hidden rounded-3xl bg-gradient-to-r from-navy to-primary p-6 text-foreground-foreground sm:flex-row sm:items-center">
           <div className="flex-1">
             <p className="text-sm opacity-80">{t("continue_learning")}</p>
             <h2 className="font-display text-2xl font-bold">{cont.course.title[lang]}</h2>
@@ -91,7 +91,7 @@ function Dashboard() {
       )}
 
       <section className="mt-8">
-        <h2 className="font-display text-2xl font-bold text-navy">{t("my_courses")}</h2>
+        <h2 className="font-display text-2xl font-bold text-foreground">{t("my_courses")}</h2>
         {enrolls.isLoading ? (
           <p className="mt-4 text-muted-foreground">…</p>
         ) : mine.length === 0 ? (
@@ -120,7 +120,7 @@ function Dashboard() {
       </section>
 
       <section className="mt-10">
-        <h2 className="font-display text-2xl font-bold text-navy">{t("upcoming")}</h2>
+        <h2 className="font-display text-2xl font-bold text-foreground">{t("upcoming")}</h2>
         <div className="mt-4 grid gap-3 md:grid-cols-3">
           {liveClasses.map((c) => (
             <div key={c.id} className="rounded-2xl border border-border bg-card p-4 shadow-card">
@@ -136,7 +136,7 @@ function Dashboard() {
 
       <section className="mt-10">
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
-          <h2 className="font-display text-2xl font-bold text-navy">{t("explore_more")}</h2>
+          <h2 className="font-display text-2xl font-bold text-foreground">{t("explore_more")}</h2>
           <Link to="/courses" className="text-sm font-semibold text-primary">{t("see_all")} →</Link>
         </div>
         <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">

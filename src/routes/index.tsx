@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Calendar, Crown, Gift, PlayCircle, Radio, Star, Users, Video } from "lucide-react";
+import { ArrowRight, Award, BookOpen, Calendar, ClipboardCheck, Crown, FileText, PlayCircle, Radio, Users, Video } from "lucide-react";
 import hero from "@/assets/hero-bull.jpg";
 import { CourseCard } from "@/components/site/CourseCard";
 import { courses, liveClasses } from "@/lib/courses";
@@ -22,15 +22,17 @@ export const Route = createFileRoute("/")({
 function Index() {
   const { t, lang } = useLang();
   const cats = [
-    { icon: Radio, label: t("cat_live"), cls: "bg-destructive/10 text-destructive" },
-    { icon: Video, label: t("cat_recorded"), cls: "bg-primary/10 text-primary" },
-    { icon: Gift, label: t("cat_free"), cls: "bg-success/10 text-success" },
-    { icon: Star, label: t("cat_popular"), cls: "bg-gold/20 text-navy" },
-  ];
+    { icon: BookOpen, label: t("cat_mycourses"), to: "/dashboard" },
+    { icon: Radio, label: t("cat_live"), to: "/sandbox/live" },
+    { icon: Video, label: t("cat_webinars"), to: "/sandbox/live" },
+    { icon: FileText, label: t("cat_ebooks"), to: "/sandbox/learn" },
+    { icon: ClipboardCheck, label: t("cat_tests"), to: "/sandbox/quiz" },
+    { icon: Award, label: t("cat_certificates"), to: "/sandbox/certificates" },
+  ] as const;
   return (
     <div className="mx-auto max-w-6xl px-4">
       {/* Hero */}
-      <section className="relative mt-6 overflow-hidden rounded-3xl bg-navy text-navy-foreground">
+      <section className="relative mt-6 overflow-hidden rounded-3xl bg-navy text-foreground-foreground">
         <img src={hero} alt="" width={1280} height={832} className="absolute inset-0 h-full w-full object-cover opacity-60 md:left-1/3 md:w-2/3 md:opacity-100" />
         <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-transparent" />
         <div className="relative max-w-xl p-6 sm:p-10 md:py-16">
@@ -42,7 +44,7 @@ function Index() {
           </h1>
           <p className="mt-3 opacity-85">{t("hero_sub")}</p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <Link to="/demo" className="inline-flex items-center gap-2 rounded-full bg-success px-5 py-3 font-semibold text-success-foreground hover:bg-success/90">
+            <Link to="/demo" className="inline-flex items-center gap-2 rounded-full bg-gold px-5 py-3 font-semibold text-navy hover:bg-gold/90">
               <PlayCircle className="h-5 w-5" /> {t("demo_cta")}
             </Link>
             <Link to="/courses" className="inline-flex items-center gap-2 rounded-full border border-navy-foreground/30 px-5 py-3 font-semibold hover:bg-navy-foreground/10">
@@ -58,11 +60,11 @@ function Index() {
       </section>
 
       {/* Categories */}
-      <section className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-        {cats.map(({ icon: Icon, label, cls }) => (
-          <Link key={label} to="/courses" className="flex flex-col items-center gap-2 rounded-2xl border border-border bg-card p-3 text-center shadow-card sm:flex-row sm:p-4 sm:text-left">
-            <span className={`rounded-xl p-2.5 ${cls}`}><Icon className="h-5 w-5" /></span>
-            <span className="text-xs font-semibold sm:text-sm">{label}</span>
+      <section className="mt-6 grid grid-cols-3 gap-3 sm:grid-cols-6">
+        {cats.map(({ icon: Icon, label, to }) => (
+          <Link key={label} to={to} className="flex flex-col items-center gap-2 rounded-2xl border border-border bg-card p-4 text-center shadow-card">
+            <span className="rounded-full bg-gold/15 p-3 text-gold"><Icon className="h-5 w-5" /></span>
+            <span className="text-xs font-semibold">{label}</span>
           </Link>
         ))}
       </section>
@@ -70,7 +72,7 @@ function Index() {
       {/* Upcoming live */}
       <section className="mt-10">
         <div className="flex items-center justify-between">
-          <h2 className="font-display text-2xl font-bold text-navy">{t("upcoming")}</h2>
+          <h2 className="font-display text-2xl font-bold text-foreground">{t("upcoming")}</h2>
         </div>
         <div className="mt-4 grid gap-4 md:grid-cols-3">
           {liveClasses.map((c) => (
@@ -94,7 +96,7 @@ function Index() {
       {/* Popular */}
       <section className="mt-10">
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
-          <h2 className="font-display text-2xl font-bold text-navy">{t("popular")}</h2>
+          <h2 className="font-display text-2xl font-bold text-foreground">{t("popular")}</h2>
           <Link to="/courses" className="text-sm font-semibold text-primary">{t("see_all")} →</Link>
         </div>
         <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">

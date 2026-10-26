@@ -48,7 +48,7 @@ function DemoPage() {
     return (
       <div className="mx-auto max-w-md px-4 pt-16 text-center">
         <CheckCircle2 className="mx-auto h-14 w-14 text-success" />
-        <h1 className="mt-4 font-display text-2xl font-bold text-navy">{t("demo_success_t")}</h1>
+        <h1 className="mt-4 font-display text-2xl font-bold text-foreground">{t("demo_success_t")}</h1>
         <p className="mt-2 text-sm text-muted-foreground">{t("demo_success_s")}</p>
         <Link to="/courses" className="mt-6 inline-block rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
           {t("explore")}
@@ -63,7 +63,7 @@ function DemoPage() {
         <span className="inline-flex items-center gap-2 rounded-full bg-success/10 px-3 py-1 text-xs font-bold text-success">
           <PlayCircle className="h-4 w-4" /> {t("demo_free")}
         </span>
-        <h1 className="mt-3 font-display text-2xl font-bold text-navy">{t("demo_title")}</h1>
+        <h1 className="mt-3 font-display text-2xl font-bold text-foreground">{t("demo_title")}</h1>
         <p className="mt-1 text-sm text-muted-foreground">{t("demo_sub")}</p>
         <form onSubmit={submit} className="mt-5 space-y-4">
           <label className="block text-sm font-medium">{t("full_name")}
