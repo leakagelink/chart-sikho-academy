@@ -26,6 +26,7 @@ import { Route as SandboxAdminRouteImport } from './routes/sandbox.admin'
 import { Route as SandboxCertificatesRouteImport } from './routes/sandbox.certificates'
 import { Route as SandboxLearnRouteImport } from './routes/sandbox.learn'
 import { Route as SandboxLiveRouteImport } from './routes/sandbox.live'
+import { Route as SandboxOrdersRouteImport } from './routes/sandbox.orders'
 import { Route as SandboxQuizRouteImport } from './routes/sandbox.quiz'
 import { Route as SandboxReferralsRouteImport } from './routes/sandbox.referrals'
 import { Route as SandboxSupportRouteImport } from './routes/sandbox.support'
@@ -120,6 +121,11 @@ const SandboxLiveRoute = SandboxLiveRouteImport.update({
   path: '/live',
   getParentRoute: () => SandboxRoute,
 } as any)
+const SandboxOrdersRoute = SandboxOrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
+  getParentRoute: () => SandboxRoute,
+} as any)
 const SandboxQuizRoute = SandboxQuizRouteImport.update({
   id: '/quiz',
   path: '/quiz',
@@ -182,6 +188,7 @@ export interface FileRoutesByFullPath {
   '/sandbox/certificates': typeof SandboxCertificatesRoute
   '/sandbox/learn': typeof SandboxLearnRoute
   '/sandbox/live': typeof SandboxLiveRoute
+  '/sandbox/orders': typeof SandboxOrdersRoute
   '/sandbox/quiz': typeof SandboxQuizRoute
   '/sandbox/referrals': typeof SandboxReferralsRoute
   '/sandbox/support': typeof SandboxSupportRoute
@@ -207,6 +214,7 @@ export interface FileRoutesByTo {
   '/sandbox/certificates': typeof SandboxCertificatesRoute
   '/sandbox/learn': typeof SandboxLearnRoute
   '/sandbox/live': typeof SandboxLiveRoute
+  '/sandbox/orders': typeof SandboxOrdersRoute
   '/sandbox/quiz': typeof SandboxQuizRoute
   '/sandbox/referrals': typeof SandboxReferralsRoute
   '/sandbox/support': typeof SandboxSupportRoute
@@ -236,6 +244,7 @@ export interface FileRoutesById {
   '/sandbox/certificates': typeof SandboxCertificatesRoute
   '/sandbox/learn': typeof SandboxLearnRoute
   '/sandbox/live': typeof SandboxLiveRoute
+  '/sandbox/orders': typeof SandboxOrdersRoute
   '/sandbox/quiz': typeof SandboxQuizRoute
   '/sandbox/referrals': typeof SandboxReferralsRoute
   '/sandbox/support': typeof SandboxSupportRoute
@@ -265,6 +274,7 @@ export interface FileRouteTypes {
     | '/sandbox/certificates'
     | '/sandbox/learn'
     | '/sandbox/live'
+    | '/sandbox/orders'
     | '/sandbox/quiz'
     | '/sandbox/referrals'
     | '/sandbox/support'
@@ -290,6 +300,7 @@ export interface FileRouteTypes {
     | '/sandbox/certificates'
     | '/sandbox/learn'
     | '/sandbox/live'
+    | '/sandbox/orders'
     | '/sandbox/quiz'
     | '/sandbox/referrals'
     | '/sandbox/support'
@@ -318,6 +329,7 @@ export interface FileRouteTypes {
     | '/sandbox/certificates'
     | '/sandbox/learn'
     | '/sandbox/live'
+    | '/sandbox/orders'
     | '/sandbox/quiz'
     | '/sandbox/referrals'
     | '/sandbox/support'
@@ -464,6 +476,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SandboxLiveRouteImport
       parentRoute: typeof SandboxRoute
     }
+    '/sandbox/orders': {
+      id: '/sandbox/orders'
+      path: '/orders'
+      fullPath: '/sandbox/orders'
+      preLoaderRoute: typeof SandboxOrdersRouteImport
+      parentRoute: typeof SandboxRoute
+    }
     '/sandbox/quiz': {
       id: '/sandbox/quiz'
       path: '/quiz'
@@ -568,6 +587,7 @@ interface SandboxRouteChildren {
   SandboxCertificatesRoute: typeof SandboxCertificatesRoute
   SandboxLearnRoute: typeof SandboxLearnRoute
   SandboxLiveRoute: typeof SandboxLiveRoute
+  SandboxOrdersRoute: typeof SandboxOrdersRoute
   SandboxQuizRoute: typeof SandboxQuizRoute
   SandboxReferralsRoute: typeof SandboxReferralsRoute
   SandboxSupportRoute: typeof SandboxSupportRoute
@@ -580,6 +600,7 @@ const SandboxRouteChildren: SandboxRouteChildren = {
   SandboxCertificatesRoute: SandboxCertificatesRoute,
   SandboxLearnRoute: SandboxLearnRoute,
   SandboxLiveRoute: SandboxLiveRoute,
+  SandboxOrdersRoute: SandboxOrdersRoute,
   SandboxQuizRoute: SandboxQuizRoute,
   SandboxReferralsRoute: SandboxReferralsRoute,
   SandboxSupportRoute: SandboxSupportRoute,
