@@ -125,7 +125,7 @@ export function Footer() {
   return (
     <footer className="mt-12 bg-navy pb-28 pt-8 text-foreground-foreground lg:pb-10">
       <div className="mx-auto max-w-6xl px-4 text-sm">
-        <p className="font-display text-lg font-bold">Chart<span className="text-success">सीखो</span></p>
+        <p className="font-display text-lg font-bold">Chart<span className="text-gold">सीखो</span></p>
         <p className="mt-2 max-w-xl opacity-80">{t("disclaimer")}</p>
         <p className="mt-6 opacity-60">© {new Date().getFullYear()} Chartसीखो</p>
       </div>
