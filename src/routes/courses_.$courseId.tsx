@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, BookOpen, CheckCircle2, Clock, Lock, Star } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCircle2, Clock, FileText, Infinity as InfinityIcon, Layers, LineChart, Lock, MessagesSquare, PlayCircle, Star } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -96,6 +96,21 @@ function CourseDetail() {
               <ul className="mt-3 space-y-2 text-sm">
                 {(["wl_1", "wl_2", "wl_3", "wl_4"] as const).map((k) => (
                   <li key={k} className="flex items-start gap-2"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success" />{t(k)}</li>
+                ))}
+              </ul>
+              <ul className="mt-6 space-y-3 rounded-2xl border border-border bg-card p-4 text-sm shadow-card">
+                {([
+                  [Layers, "feat_modules"],
+                  [PlayCircle, "feat_videos"],
+                  [MessagesSquare, "feat_doubt"],
+                  [FileText, "feat_notes"],
+                  [LineChart, "feat_examples"],
+                  [InfinityIcon, "feat_lifetime"],
+                ] as const).map(([Icon, k]) => (
+                  <li key={k} className="flex items-center gap-3">
+                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-gold/15 text-gold"><Icon className="h-4 w-4" /></span>
+                    <span className="font-medium">{t(k)}</span>
+                  </li>
                 ))}
               </ul>
               <p className="mt-8 rounded-2xl bg-muted p-4 text-xs text-muted-foreground">{t("disclaimer")}</p>
