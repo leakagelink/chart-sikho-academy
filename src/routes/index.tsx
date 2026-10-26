@@ -32,7 +32,7 @@ function Index() {
   return (
     <div className="mx-auto max-w-6xl px-4">
       {/* Hero */}
-      <section className="relative mt-6 overflow-hidden rounded-3xl bg-navy text-foreground-foreground">
+      <section className="relative mt-6 overflow-hidden rounded-3xl bg-navy text-navy-foreground">
         <img src={hero} alt="" width={1280} height={832} className="absolute inset-0 h-full w-full object-cover opacity-60 md:left-1/3 md:w-2/3 md:opacity-100" />
         <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-transparent" />
         <div className="relative max-w-xl p-6 sm:p-10 md:py-16">
