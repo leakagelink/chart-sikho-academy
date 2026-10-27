@@ -17,6 +17,7 @@ import { Route as DemoRouteImport } from './routes/demo'
 import { Route as PlansRouteImport } from './routes/plans'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SandboxRouteImport } from './routes/sandbox'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as CoursesCourseIdRouteImport } from './routes/courses_.$courseId'
@@ -31,6 +32,8 @@ import { Route as SandboxQuizRouteImport } from './routes/sandbox.quiz'
 import { Route as SandboxReferralsRouteImport } from './routes/sandbox.referrals'
 import { Route as SandboxSupportRouteImport } from './routes/sandbox.support'
 import { Route as SandboxWalletRouteImport } from './routes/sandbox.wallet'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedAdminSectionRouteImport } from './routes/_authenticated/admin.$section'
 import { Route as SandboxAdminIndexRouteImport } from './routes/sandbox.admin.index'
 import { Route as SandboxAdminBookingsRouteImport } from './routes/sandbox.admin.bookings'
 import { Route as SandboxAdminCoursesRouteImport } from './routes/sandbox.admin.courses'
@@ -75,6 +78,11 @@ const SandboxRoute = SandboxRouteImport.update({
   id: '/sandbox',
   path: '/sandbox',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
@@ -146,6 +154,17 @@ const SandboxWalletRoute = SandboxWalletRouteImport.update({
   path: '/wallet',
   getParentRoute: () => SandboxRoute,
 } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+const AuthenticatedAdminSectionRoute =
+  AuthenticatedAdminSectionRouteImport.update({
+    id: '/$section',
+    path: '/$section',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const SandboxAdminIndexRoute = SandboxAdminIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -180,6 +199,7 @@ export interface FileRoutesByFullPath {
   '/plans': typeof PlansRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sandbox': typeof SandboxRouteWithChildren
+  '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
@@ -194,10 +214,12 @@ export interface FileRoutesByFullPath {
   '/sandbox/support': typeof SandboxSupportRoute
   '/sandbox/wallet': typeof SandboxWalletRoute
   '/sandbox/': typeof SandboxIndexRoute
+  '/admin/$section': typeof AuthenticatedAdminSectionRoute
   '/sandbox/admin/bookings': typeof SandboxAdminBookingsRoute
   '/sandbox/admin/courses': typeof SandboxAdminCoursesRoute
   '/sandbox/admin/sales': typeof SandboxAdminSalesRoute
   '/sandbox/admin/students': typeof SandboxAdminStudentsRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
   '/sandbox/admin/': typeof SandboxAdminIndexRoute
 }
 export interface FileRoutesByTo {
@@ -220,10 +242,12 @@ export interface FileRoutesByTo {
   '/sandbox/support': typeof SandboxSupportRoute
   '/sandbox/wallet': typeof SandboxWalletRoute
   '/sandbox': typeof SandboxIndexRoute
+  '/admin/$section': typeof AuthenticatedAdminSectionRoute
   '/sandbox/admin/bookings': typeof SandboxAdminBookingsRoute
   '/sandbox/admin/courses': typeof SandboxAdminCoursesRoute
   '/sandbox/admin/sales': typeof SandboxAdminSalesRoute
   '/sandbox/admin/students': typeof SandboxAdminStudentsRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
   '/sandbox/admin': typeof SandboxAdminIndexRoute
 }
 export interface FileRoutesById {
@@ -236,6 +260,7 @@ export interface FileRoutesById {
   '/plans': typeof PlansRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sandbox': typeof SandboxRouteWithChildren
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/courses_/$courseId': typeof CoursesCourseIdRoute
@@ -250,10 +275,12 @@ export interface FileRoutesById {
   '/sandbox/support': typeof SandboxSupportRoute
   '/sandbox/wallet': typeof SandboxWalletRoute
   '/sandbox/': typeof SandboxIndexRoute
+  '/_authenticated/admin/$section': typeof AuthenticatedAdminSectionRoute
   '/sandbox/admin/bookings': typeof SandboxAdminBookingsRoute
   '/sandbox/admin/courses': typeof SandboxAdminCoursesRoute
   '/sandbox/admin/sales': typeof SandboxAdminSalesRoute
   '/sandbox/admin/students': typeof SandboxAdminStudentsRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/sandbox/admin/': typeof SandboxAdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -266,6 +293,7 @@ export interface FileRouteTypes {
     | '/plans'
     | '/reset-password'
     | '/sandbox'
+    | '/admin'
     | '/dashboard'
     | '/profile'
     | '/courses/$courseId'
@@ -280,10 +308,12 @@ export interface FileRouteTypes {
     | '/sandbox/support'
     | '/sandbox/wallet'
     | '/sandbox/'
+    | '/admin/$section'
     | '/sandbox/admin/bookings'
     | '/sandbox/admin/courses'
     | '/sandbox/admin/sales'
     | '/sandbox/admin/students'
+    | '/admin/'
     | '/sandbox/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -306,10 +336,12 @@ export interface FileRouteTypes {
     | '/sandbox/support'
     | '/sandbox/wallet'
     | '/sandbox'
+    | '/admin/$section'
     | '/sandbox/admin/bookings'
     | '/sandbox/admin/courses'
     | '/sandbox/admin/sales'
     | '/sandbox/admin/students'
+    | '/admin'
     | '/sandbox/admin'
   id:
     | '__root__'
@@ -321,6 +353,7 @@ export interface FileRouteTypes {
     | '/plans'
     | '/reset-password'
     | '/sandbox'
+    | '/_authenticated/admin'
     | '/_authenticated/dashboard'
     | '/_authenticated/profile'
     | '/courses_/$courseId'
@@ -335,10 +368,12 @@ export interface FileRouteTypes {
     | '/sandbox/support'
     | '/sandbox/wallet'
     | '/sandbox/'
+    | '/_authenticated/admin/$section'
     | '/sandbox/admin/bookings'
     | '/sandbox/admin/courses'
     | '/sandbox/admin/sales'
     | '/sandbox/admin/students'
+    | '/_authenticated/admin/'
     | '/sandbox/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -412,6 +447,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/sandbox'
       preLoaderRoute: typeof SandboxRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
@@ -511,6 +553,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SandboxWalletRouteImport
       parentRoute: typeof SandboxRoute
     }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/$section': {
+      id: '/_authenticated/admin/$section'
+      path: '/$section'
+      fullPath: '/admin/$section'
+      preLoaderRoute: typeof AuthenticatedAdminSectionRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/sandbox/admin/': {
       id: '/sandbox/admin/'
       path: '/'
@@ -549,12 +605,27 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminSectionRoute: typeof AuthenticatedAdminSectionRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+}
+
+const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminSectionRoute: AuthenticatedAdminSectionRoute,
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+}
+
+const AuthenticatedAdminRouteWithChildren =
+  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
+
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
 }
