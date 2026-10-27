@@ -3,6 +3,8 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export type Lang = "en" | "hi";
 
 const dict = {
+  admin_yes: { en: 'Yes', hi: 'हाँ' },
+  admin_no: { en: 'No', hi: 'नहीं' },
   admin_categories_real: { en: 'Course categories', hi: 'कोर्स कैटेगरी' },
   admin_builder_real: { en: 'Course builder', hi: 'कोर्स बिल्डर' },
   admin_videos_real: { en: 'Video library', hi: 'वीडियो लाइब्रेरी' },
