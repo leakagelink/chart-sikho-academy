@@ -127,9 +127,9 @@ export const moveCurriculumItem = createServerFn({ method: 'POST' }).middleware(
   const s = context.supabase; await assertAdmin(s, context.userId);
   const table = data.kind === 'modules' ? 'course_modules' : 'course_lessons';
   const item = await s.from(table).select('*').eq('id', data.id).single(); if (item.error) throw new Error('Not found');
-  let q = s.from(table).select('id,position').eq('course_id', item.data.course_id);
+  let q: any = s.from(table).select('id,position').eq('course_id', item.data.course_id);
   if (data.kind === 'lessons') { const mid = (item.data as { module_id: string | null }).module_id; q = mid ? q.eq('module_id', mid) : q.is('module_id', null); }
-  const siblings = ((await q).data ?? []).sort((a, b) => a.position - b.position || a.id.localeCompare(b.id));
+  const siblings: { id: string; position: number }[] = ((await q).data ?? []).sort((a: { id: string; position: number }, b: { id: string; position: number }) => a.position - b.position || a.id.localeCompare(b.id));
   const idx = siblings.findIndex(x => x.id === data.id); const other = siblings[data.dir === 'up' ? idx - 1 : idx + 1];
   if (!other) return { ok: true };
   siblings.forEach((x, i) => { x.position = i + 1; });
