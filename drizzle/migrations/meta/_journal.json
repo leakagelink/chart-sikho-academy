@@ -15,6 +15,13 @@
       "when": 1792498612552,
       "tag": "0001_create_demo_bookings",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793089677549,
+      "tag": "0002_real_admin_panel",
+      "breakpoints": true
     }
   ]
 }
