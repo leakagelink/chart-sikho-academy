@@ -9,11 +9,12 @@ const config: CapacitorConfig = {
   appName: 'ChartSikho',
   webDir: 'public',
   server: {
-    url: 'https://chart-sikho-course-hub.lovable.app',
+    url: 'https://chartsikho.socilet.one',
     androidScheme: 'https',
-    // Keep navigation on this project's public app host inside Android.
+    // Keep navigation on this project's public app hosts inside Android.
+    // The lovable.app host redirects to the custom domain, so both are listed.
     // Never use '*' or '*.lovable.app': unrelated sites must remain external.
-    allowNavigation: ['chart-sikho-course-hub.lovable.app'],
+    allowNavigation: ['chartsikho.socilet.one', 'chart-sikho-course-hub.lovable.app'],
   },
 };
 
