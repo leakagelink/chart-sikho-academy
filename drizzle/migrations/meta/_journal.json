@@ -50,6 +50,13 @@
       "when": 1793119025361,
       "tag": "0006_course_builder",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1793120658191,
+      "tag": "0007_tests_certificates_reviews",
+      "breakpoints": true
     }
   ]
 }
