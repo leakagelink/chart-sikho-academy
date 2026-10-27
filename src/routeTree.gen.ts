@@ -33,6 +33,7 @@ import { Route as SandboxQuizRouteImport } from './routes/sandbox.quiz'
 import { Route as SandboxReferralsRouteImport } from './routes/sandbox.referrals'
 import { Route as SandboxSupportRouteImport } from './routes/sandbox.support'
 import { Route as SandboxWalletRouteImport } from './routes/sandbox.wallet'
+import { Route as VerifyCertificateNoRouteImport } from './routes/verify.$certificateNo'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminSectionRouteImport } from './routes/_authenticated/admin.$section'
 import { Route as SandboxAdminIndexRouteImport } from './routes/sandbox.admin.index'
@@ -161,6 +162,11 @@ const SandboxWalletRoute = SandboxWalletRouteImport.update({
   path: '/wallet',
   getParentRoute: () => SandboxRoute,
 } as any)
+const VerifyCertificateNoRoute = VerifyCertificateNoRouteImport.update({
+  id: '/verify/$certificateNo',
+  path: '/verify/$certificateNo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -221,6 +227,7 @@ export interface FileRoutesByFullPath {
   '/sandbox/referrals': typeof SandboxReferralsRoute
   '/sandbox/support': typeof SandboxSupportRoute
   '/sandbox/wallet': typeof SandboxWalletRoute
+  '/verify/$certificateNo': typeof VerifyCertificateNoRoute
   '/sandbox/': typeof SandboxIndexRoute
   '/admin/$section': typeof AuthenticatedAdminSectionRoute
   '/sandbox/admin/bookings': typeof SandboxAdminBookingsRoute
@@ -250,6 +257,7 @@ export interface FileRoutesByTo {
   '/sandbox/referrals': typeof SandboxReferralsRoute
   '/sandbox/support': typeof SandboxSupportRoute
   '/sandbox/wallet': typeof SandboxWalletRoute
+  '/verify/$certificateNo': typeof VerifyCertificateNoRoute
   '/sandbox': typeof SandboxIndexRoute
   '/admin/$section': typeof AuthenticatedAdminSectionRoute
   '/sandbox/admin/bookings': typeof SandboxAdminBookingsRoute
@@ -284,6 +292,7 @@ export interface FileRoutesById {
   '/sandbox/referrals': typeof SandboxReferralsRoute
   '/sandbox/support': typeof SandboxSupportRoute
   '/sandbox/wallet': typeof SandboxWalletRoute
+  '/verify/$certificateNo': typeof VerifyCertificateNoRoute
   '/sandbox/': typeof SandboxIndexRoute
   '/_authenticated/admin/$section': typeof AuthenticatedAdminSectionRoute
   '/sandbox/admin/bookings': typeof SandboxAdminBookingsRoute
@@ -318,6 +327,7 @@ export interface FileRouteTypes {
     | '/sandbox/referrals'
     | '/sandbox/support'
     | '/sandbox/wallet'
+    | '/verify/$certificateNo'
     | '/sandbox/'
     | '/admin/$section'
     | '/sandbox/admin/bookings'
@@ -347,6 +357,7 @@ export interface FileRouteTypes {
     | '/sandbox/referrals'
     | '/sandbox/support'
     | '/sandbox/wallet'
+    | '/verify/$certificateNo'
     | '/sandbox'
     | '/admin/$section'
     | '/sandbox/admin/bookings'
@@ -380,6 +391,7 @@ export interface FileRouteTypes {
     | '/sandbox/referrals'
     | '/sandbox/support'
     | '/sandbox/wallet'
+    | '/verify/$certificateNo'
     | '/sandbox/'
     | '/_authenticated/admin/$section'
     | '/sandbox/admin/bookings'
@@ -401,6 +413,7 @@ export interface RootRouteChildren {
   SandboxRoute: typeof SandboxRouteWithChildren
   CoursesCourseIdRoute: typeof CoursesCourseIdRoute
   LiveClassIdRoute: typeof LiveClassIdRoute
+  VerifyCertificateNoRoute: typeof VerifyCertificateNoRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -573,6 +586,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SandboxWalletRouteImport
       parentRoute: typeof SandboxRoute
     }
+    '/verify/$certificateNo': {
+      id: '/verify/$certificateNo'
+      path: '/verify/$certificateNo'
+      fullPath: '/verify/$certificateNo'
+      preLoaderRoute: typeof VerifyCertificateNoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/admin/': {
       id: '/_authenticated/admin/'
       path: '/'
@@ -715,6 +735,7 @@ const rootRouteChildren: RootRouteChildren = {
   SandboxRoute: SandboxRouteWithChildren,
   CoursesCourseIdRoute: CoursesCourseIdRoute,
   LiveClassIdRoute: LiveClassIdRoute,
+  VerifyCertificateNoRoute: VerifyCertificateNoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
