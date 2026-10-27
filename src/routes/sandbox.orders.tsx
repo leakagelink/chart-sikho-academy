@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useLang, type DictKey } from "@/lib/i18n";
 import { inr } from "@/lib/courses";
 import { pageMeta } from "@/lib/route-meta";
+import educator from "@/assets/course-educator.jpg";
 
 export const Route = createFileRoute("/sandbox/orders")({
   head: () => pageMeta("Sample Orders", "Preview order history with fictional purchases."),
@@ -45,7 +46,7 @@ function Screen() {
         {list.map((o) => (
           <article key={o.id} className="order-row flex items-center gap-4 rounded-2xl border border-border bg-card p-4 shadow-card">
             <span className="grid h-14 w-14 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-navy to-royal font-display text-lg font-bold text-gold">
-              {t(o.title).charAt(0)}
+              <img src={educator} alt="" width={68} height={82} loading="lazy" className="h-full w-full rounded object-cover" />
             </span>
             <div className="min-w-0 flex-1">
               <p className="truncate font-semibold">{t(o.title)}</p>

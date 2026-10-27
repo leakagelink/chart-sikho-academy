@@ -7,6 +7,7 @@ import { useLang } from "@/lib/i18n";
 import { inr } from "@/lib/courses";
 import { saleCommission } from "@/lib/mock-rules";
 import { pageMeta } from "@/lib/route-meta";
+import educator from "@/assets/course-educator.jpg";
 
 export const Route = createFileRoute("/sandbox/referrals")({
   head: () => pageMeta("Sample Referrals", "Preview referral sales with fictional commission amounts."),
@@ -60,7 +61,7 @@ function Screen() {
       {/* Team tree */}
       <div className="referral-tree mt-6 rounded-2xl border border-border bg-card p-4 shadow-card sm:p-6">
         <div className="flex flex-col items-center">
-          <span className="grid h-14 w-14 place-items-center rounded-full bg-gold font-display text-lg font-bold text-navy">{t("you").charAt(0)}</span>
+          <img src={educator} alt="" width={56} height={56} className="h-14 w-14 rounded-full border-2 border-gold object-cover object-right" />
           <p className="mt-1 text-sm font-semibold">{t("you")}</p>
         </div>
         {levels.map((l) => (
@@ -70,7 +71,7 @@ function Screen() {
             <div className="mt-2 flex justify-center gap-2">
               {Array.from({ length: l.people }).map((_, i) => (
                 <span key={i} className="grid h-10 w-10 place-items-center rounded-full border border-border bg-muted text-xs font-bold text-muted-foreground">
-                  {String.fromCharCode(65 + i)}
+                  <img src={educator} alt="" width={40} height={40} loading="lazy" className="h-full w-full rounded-full object-cover object-right" />
                 </span>
               ))}
               {l.count > l.people && (
