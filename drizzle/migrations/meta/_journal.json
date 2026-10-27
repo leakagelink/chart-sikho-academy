@@ -22,6 +22,13 @@
       "when": 1793089677549,
       "tag": "0002_real_admin_panel",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1793097348276,
+      "tag": "0003_admin_resources_and_audit",
+      "breakpoints": true
     }
   ]
 }

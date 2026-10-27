@@ -14,6 +14,160 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_audit_log: {
+        Row: {
+          action: string
+          actor_id: string | null
+          created_at: string
+          id: string
+          record_id: string | null
+          resource: string
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          record_id?: string | null
+          resource: string
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          record_id?: string | null
+          resource?: string
+        }
+        Relationships: []
+      }
+      admin_settings: {
+        Row: {
+          commission_percent: number
+          id: string
+          support_email: string
+          support_phone: string
+          updated_at: string
+        }
+        Insert: {
+          commission_percent?: number
+          id?: string
+          support_email?: string
+          support_phone?: string
+          updated_at?: string
+        }
+        Update: {
+          commission_percent?: number
+          id?: string
+          support_email?: string
+          support_phone?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      class_sessions: {
+        Row: {
+          created_at: string
+          id: string
+          jitsi_url: string
+          kind: string
+          starts_at: string
+          status: string
+          title: string
+          youtube_url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          jitsi_url?: string
+          kind?: string
+          starts_at: string
+          status?: string
+          title: string
+          youtube_url?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          jitsi_url?: string
+          kind?: string
+          starts_at?: string
+          status?: string
+          title?: string
+          youtube_url?: string
+        }
+        Relationships: []
+      }
+      commission_entries: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          order_id: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          order_id: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          order_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "commission_entries_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: true
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      course_lessons: {
+        Row: {
+          course_id: string
+          created_at: string
+          id: string
+          position: number
+          resource_path: string
+          title: string
+          video_url: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          id?: string
+          position?: number
+          resource_path?: string
+          title: string
+          video_url?: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          id?: string
+          position?: number
+          resource_path?: string
+          title?: string
+          video_url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_lessons_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       courses: {
         Row: {
           category: string
@@ -71,6 +225,33 @@ export type Database = {
           phone?: string
           preferred_slot?: string
           status?: string
+        }
+        Relationships: []
+      }
+      ebooks: {
+        Row: {
+          created_at: string
+          id: string
+          price: number
+          resource_path: string
+          status: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          price?: number
+          resource_path?: string
+          status?: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          price?: number
+          resource_path?: string
+          status?: string
+          title?: string
         }
         Relationships: []
       }
@@ -137,8 +318,63 @@ export type Database = {
         }
         Relationships: []
       }
+      orders: {
+        Row: {
+          amount: number
+          course_id: string
+          created_at: string
+          id: string
+          provider_reference: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          course_id: string
+          created_at?: string
+          id?: string
+          provider_reference?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          course_id?: string
+          created_at?: string
+          id?: string
+          provider_reference?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      payout_requests: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
+          account_status: string
           city: string | null
           created_at: string
           full_name: string | null
@@ -149,6 +385,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          account_status?: string
           city?: string | null
           created_at?: string
           full_name?: string | null
@@ -159,6 +396,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          account_status?: string
           city?: string | null
           created_at?: string
           full_name?: string | null
@@ -169,6 +407,59 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      referral_relationships: {
+        Row: {
+          created_at: string
+          id: string
+          referred_id: string
+          referrer_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          referred_id: string
+          referrer_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          referred_id?: string
+          referrer_id?: string
+        }
+        Relationships: []
+      }
+      user_notifications: {
+        Row: {
+          campaign_id: string
+          created_at: string
+          id: string
+          read_at: string | null
+          user_id: string
+        }
+        Insert: {
+          campaign_id: string
+          created_at?: string
+          id?: string
+          read_at?: string | null
+          user_id: string
+        }
+        Update: {
+          campaign_id?: string
+          created_at?: string
+          id?: string
+          read_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_notifications_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "notification_campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
