@@ -41,5 +41,5 @@ export function PageMotion({ children }: { children: ReactNode }) {
     };
   }, [pathname]);
 
-  return <main ref={ref} className="motion-surface">{children}</main>;
+  return <main ref={ref} className={`motion-surface ${pathname === "/auth" || pathname === "/reset-password" || pathname.startsWith("/admin") || pathname.startsWith("/sandbox/admin") ? "" : "student-surface"}`}>{children}</main>;
 }

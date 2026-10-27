@@ -30,12 +30,12 @@ function Screen() {
   ] as const;
 
   return (
-    <>
-      <h1 className="font-display text-3xl font-bold">{t("referrals")}</h1>
+    <div className="referral-screen">
+      <h1 className="screen-title font-display font-bold">{t("referrals")}</h1>
       <p className="mt-3 max-w-2xl text-sm text-muted-foreground">{t("commission_rule")}</p>
 
       {/* Referral code card — blueprint My Referral */}
-      <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-gold/30 bg-gold/10 p-4">
+      <div className="referral-code mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-gold/30 bg-gold/10 p-4">
         <p className="font-mono text-xl font-bold tracking-wider text-gold">{CODE}</p>
         <Button variant="outline" onClick={async () => { try { await navigator.clipboard.writeText(CODE); setCopied(true); } catch { setCopied(false); } }}>
           {copied ? <Check /> : <Copy />}{t(copied ? "copied" : "copy")}
@@ -43,7 +43,7 @@ function Screen() {
       </div>
 
       {/* Stats */}
-      <div className="mt-4 grid grid-cols-3 gap-3">
+      <div className="referral-stats mt-4 grid grid-cols-3 gap-3">
         {[
           { icon: UserPlus, value: "125", label: t("total_referrals") },
           { icon: Users, value: "482", label: t("team_members") },
@@ -58,7 +58,7 @@ function Screen() {
       </div>
 
       {/* Team tree */}
-      <div className="mt-6 rounded-2xl border border-border bg-card p-4 shadow-card sm:p-6">
+      <div className="referral-tree mt-6 rounded-2xl border border-border bg-card p-4 shadow-card sm:p-6">
         <div className="flex flex-col items-center">
           <span className="grid h-14 w-14 place-items-center rounded-full bg-gold font-display text-lg font-bold text-navy">{t("you").charAt(0)}</span>
           <p className="mt-1 text-sm font-semibold">{t("you")}</p>
@@ -84,7 +84,7 @@ function Screen() {
       </div>
 
       {/* Commission table */}
-      <div className="mt-6 overflow-x-auto">
+      <div className="referral-ledger mt-6 overflow-x-auto">
         <table className="w-full text-left text-sm">
           <thead className="border-b border-border">
             <tr><th className="p-3">{t("sample_customer")}</th><th className="p-3">{t("status")}</th><th className="p-3 text-right">{t("commission")}</th></tr>
@@ -100,6 +100,6 @@ function Screen() {
           </tbody>
         </table>
       </div>
-    </>
+    </div>
   );
 }

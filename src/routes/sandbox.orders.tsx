@@ -31,8 +31,8 @@ function Screen() {
   const [tab, setTab] = useState<(typeof tabs)[number]["key"]>("all");
   const list = orders.filter((o) => tab === "all" || o.kind === tab);
   return (
-    <>
-      <h1 className="font-display text-3xl font-bold">{t("my_orders")}</h1>
+    <div className="orders-screen">
+      <h1 className="screen-title font-display font-bold">{t("my_orders")}</h1>
       <p className="mt-1 text-sm text-muted-foreground">{t("order_sample_note")}</p>
       <div className="mt-5 flex flex-wrap gap-2">
         {tabs.map((x) => (
@@ -43,7 +43,7 @@ function Screen() {
       </div>
       <div className="mt-5 space-y-3">
         {list.map((o) => (
-          <article key={o.id} className="flex items-center gap-4 rounded-2xl border border-border bg-card p-4 shadow-card">
+          <article key={o.id} className="order-row flex items-center gap-4 rounded-2xl border border-border bg-card p-4 shadow-card">
             <span className="grid h-14 w-14 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-navy to-royal font-display text-lg font-bold text-gold">
               {t(o.title).charAt(0)}
             </span>
@@ -58,6 +58,6 @@ function Screen() {
           </article>
         ))}
       </div>
-    </>
+    </div>
   );
 }

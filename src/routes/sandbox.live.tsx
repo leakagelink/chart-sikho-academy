@@ -23,8 +23,8 @@ function Screen() {
   const [registered, setRegistered] = useState<string[]>([]);
 
   return (
-    <>
-      <h1 className="font-display text-3xl font-bold">{t("live_sample")}</h1>
+    <div className="live-screen">
+      <h1 className="screen-title font-display font-bold">{t("live_sample")}</h1>
 
       {/* Upcoming / Past tabs — blueprint live classes screen */}
       <div className="mt-5 grid w-full max-w-xs grid-cols-2 rounded-full bg-muted p-1 text-sm font-semibold">
@@ -83,6 +83,6 @@ function Screen() {
       )}
 
       <LiveClassCombo />
-    </>
+    </div>
   );
 }

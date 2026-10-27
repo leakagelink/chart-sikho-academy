@@ -24,4 +24,4 @@
 - Client-test features live under `/sandbox` with browser-local state isolated from Cloud accounts, enrollments and permissions; why: clients can exercise student and admin mocks without receiving real access or moving money.
 - Live-class pages share LiveClassCombo with provider configuration in the sample catalog; previews never load third-party scripts, capture devices, or connect to meetings, so testing cannot accidentally create a live session.
 
-- The app uses a dark navy + gold premium theme (gold is `primary`, royal blue is `royal`) per the client blueprint; keep semantic tokens, never reintroduce a light default.
+- Student content surfaces use scoped semantic tokens in PageMotion; branded chrome/auth/splash and admin retain navy/gold tokens. Why: the reference mixes white student content with dark branding without changing admin or authentication behavior.

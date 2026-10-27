@@ -4,6 +4,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
+import educator from "@/assets/course-educator.jpg";
 import { MiniChart } from "@/components/site/CourseCard";
 import { courses, inr, sampleLessons } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
@@ -76,15 +77,15 @@ function CourseDetail() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl px-4 pt-6">
+    <div className="detail-screen mx-auto max-w-4xl px-4 pt-0">
       <Link to="/courses" className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-primary">
         <ArrowLeft className="h-4 w-4" /> {t("nav_courses")}
       </Link>
-      <div className={`mt-4 flex h-44 items-end justify-end rounded-3xl bg-gradient-to-br p-6 ${hueBg[course.hue]}`}>
-        <MiniChart />
+      <div className={`detail-cover mt-4 flex h-44 items-end justify-end rounded-3xl bg-gradient-to-br p-6 ${hueBg[course.hue]}`}>
+        <img src={educator} alt="" width={1280} height={768} />
       </div>
-      <div className="mt-6 grid gap-8 md:grid-cols-[1fr_300px]">
-        <div>
+      <div className="detail-layout mt-6 grid gap-8 md:grid-cols-[1fr_300px]">
+        <div className="detail-copy">
           <h1 className="font-display text-3xl font-bold text-foreground">{course.title[lang]}</h1>
           <div className="mt-2 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
             <span className="flex items-center gap-1"><Star className="h-4 w-4 fill-gold text-gold" /><b className="text-foreground">{course.rating}</b> ({course.reviews})</span>
@@ -106,7 +107,7 @@ function CourseDetail() {
                   <li key={k} className="flex items-start gap-2"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success" />{t(k)}</li>
                 ))}
               </ul>
-              <ul className="mt-6 space-y-3 rounded-2xl border border-border bg-card p-4 text-sm shadow-card">
+              <ul className="feature-list mt-6 space-y-3 rounded-2xl border border-border bg-card p-4 text-sm shadow-card">
                 {([
                   [Layers, "feat_modules"],
                   [PlayCircle, "feat_videos"],

@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Bell, BookOpen, GraduationCap, Home, Search, User } from "lucide-react";
+import { Bell, BookOpen, GraduationCap, Home, Search, User, Video } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { DictKey } from "@/lib/i18n";
 import logo from "@/assets/logo.png";
@@ -74,7 +74,7 @@ export function Header() {
   const { t } = useLang();
   const { session } = useAuth();
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
+    <header className="blueprint-chrome sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
       <div className="mx-auto grid min-h-16 max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-1 px-3 sm:flex sm:gap-3 sm:px-4">
         <Link to="/" className="flex min-w-0 items-center gap-1.5 sm:shrink-0 sm:gap-2">
           <img src={logo} alt="" width={40} height={40} className="h-8 w-8 shrink-0 object-contain sm:h-10 sm:w-10" />
@@ -114,15 +114,8 @@ export function MobileNav() {
     <nav className="mobile-navigation fixed inset-x-0 bottom-0 z-40 flex min-h-16 border-t border-border bg-background lg:hidden">
       <Link to="/" activeOptions={{ exact: true }} activeProps={{ className: "!text-primary" }} className={cls}><Home className="h-5 w-5" />{t("nav_home")}</Link>
       <Link to="/courses" activeProps={{ className: "!text-primary" }} className={cls}><BookOpen className="h-5 w-5" />{t("nav_courses")}</Link>
-      <Link to="/sandbox" activeProps={{ className: "!text-primary" }} className={cls}><GraduationCap className="h-5 w-5" />{t("sandbox")}</Link>
-      {session ? (
-        <>
-          <Link to="/dashboard" activeProps={{ className: "!text-primary" }} className={cls}><GraduationCap className="h-5 w-5" />{t("my_learning")}</Link>
-          <Link to="/profile" activeProps={{ className: "!text-primary" }} className={cls}><User className="h-5 w-5" />{t("profile")}</Link>
-        </>
-      ) : (
-        <Link to="/auth" search={{ redirect: undefined }} className={cls}><User className="h-5 w-5" />{t("login")}</Link>
-      )}
+      <Link to="/sandbox/live" activeProps={{ className: "!text-primary" }} className={cls}><Video className="h-5 w-5" />{t("cat_live")}</Link>
+      <Link to={session ? "/profile" : "/auth"} className={cls}><User className="h-5 w-5" />{t("profile")}</Link>
     </nav>
   );
 }
@@ -130,7 +123,7 @@ export function MobileNav() {
 export function Footer() {
   const { t } = useLang();
   return (
-    <footer className="mt-12 bg-navy pb-28 pt-8 text-navy-foreground lg:pb-10">
+    <footer className="blueprint-footer mt-12 bg-navy pb-28 pt-8 text-navy-foreground lg:pb-10">
       <div className="mx-auto max-w-6xl px-4 text-sm">
         <p className="font-display text-lg font-bold">Chart<span className="text-gold">सीखो</span></p>
         <p className="mt-2 max-w-xl opacity-80">{t("disclaimer")}</p>
