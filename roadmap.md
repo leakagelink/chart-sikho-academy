@@ -1,6 +1,8 @@
 # Roadmap
 
 ## Open
+- [ ] Complete secure Cloud admin: dashboard, users/export/status, courses/lessons/uploads, classes/webinars/eBooks, bookings, orders/payments, referrals/commissions/payouts, campaign drafts/in-app delivery, reports/settings; verify authorized persistence and unauthorized denial
+- [ ] Assign the first admin account — requires confirmed account choice
 - [ ] Activate real YouTube + Jitsi sessions — awaiting client testing approval, actual YouTube stream, and confirmed Jitsi hosting/cost; public meet.jit.si embeds are demo-limited
 - [ ] Verify rebuilt Android APK stays in-app on user's device (explicit project-host navigation configured and tests passed; Android project/device and actual redirect destination unavailable here; preview returns 401 without access)
 - [ ] Full signed-in data-change test of My Learning + Profile (signed-in screens verified; progress mutation/profile save verification still pending)
