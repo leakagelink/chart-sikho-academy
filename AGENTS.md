@@ -10,6 +10,8 @@
 <!-- LOVABLE:END -->
 
 ## Rules
+- Real administration lives under the authenticated /admin subtree and uses role-checked server functions plus database RLS; payment settlement and external messaging remain unavailable until separately approved.
+- Admin resources use validated database operations with an audit trail; finance records are read-only except review/rejection, preventing manual payment verification or paid enrollment grants.
 - Capacitor builds launch the public published URL (never the private preview, which demands a Lovable login) and allow in-WebView navigation only to that host; why: users open the app without Lovable access and nothing redirects to the external browser.
 - Wallet/referral and support entry points live in the shared floating actions, outside page motion; why: they stay fixed across pages without animation transforms, while mock screens retain their isolated data.
 - Shared page motion observes only newly added content for one-shot intersection entrances, excludes video surfaces, and uses CSS interactions with reduced-motion support; why: animations avoid repeated full-page scans and video-control interference.
