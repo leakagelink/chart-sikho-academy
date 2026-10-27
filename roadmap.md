@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [ ] Provision designated Admin and Student login accounts and verify their panel access
 - [ ] Live payments, money transfers, email/WhatsApp/SMS delivery — need separate approval and provider accounts
 - [ ] Activate real YouTube + Jitsi sessions — awaiting client testing approval, actual YouTube stream, and confirmed Jitsi hosting/cost; public meet.jit.si embeds are demo-limited
 - [ ] Verify rebuilt Android APK stays in-app on user's device (explicit project-host navigation configured and tests passed; Android project/device and actual redirect destination unavailable here; preview returns 401 without access)
