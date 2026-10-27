@@ -56,6 +56,7 @@ function ProfilePage() {
 
   const name = f.full_name || user.email?.split("@")[0] || t("student_fallback");
   const menu = [
+    { icon: Settings, label: t('admin_go'), to: '/admin' },
     { icon: ClipboardList, label: t("my_courses"), to: "/dashboard" },
     { icon: Award, label: t("my_certificates"), to: "/sandbox/certificates" },
     { icon: Users, label: t("referral_dashboard"), to: "/sandbox/referrals" },

@@ -8,8 +8,13 @@ import { MiniChart } from "@/components/site/CourseCard";
 import { courses, inr, sampleLessons } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
+import {useSuspenseQuery} from '@tanstack/react-query';
+import {catalogQuery} from '@/lib/catalog-query';
+import {CloudCourseDetail} from '@/components/site/CloudCourseDetail';
 
 export const Route = createFileRoute("/courses_/$courseId")({
+  loader:({context})=>context.queryClient.ensureQueryData(catalogQuery()),
+  errorComponent:()=> <CourseError/>,
   head: ({ params }) => {
     const c = courses.find((x) => x.id === params.courseId);
     const title = c ? `${c.title.en} — Chartसीखो` : "Course — Chartसीखो";
@@ -39,10 +44,13 @@ function CourseDetail() {
   const { courseId } = Route.useParams();
   const { t, lang } = useLang();
   const { session } = useAuth();
+  const {data:cloud}=useSuspenseQuery(catalogQuery());
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
   const [tab, setTab] = useState<"overview" | "curriculum" | "reviews">("overview");
   const course = courses.find((x) => x.id === courseId);
+  const cloudCourse=cloud.find(c=>c.id===courseId);
+  if(cloudCourse)return <CloudCourseDetail course={cloudCourse}/>;
   if (!course) return null;
   const free = course.price === 0;
   const off = course.mrp ? Math.round((1 - course.price / course.mrp) * 100) : 0;
@@ -168,3 +176,4 @@ function CourseDetail() {
     </div>
   );
 }
+function CourseError(){const {t}=useLang();return <p className="p-8">{t('admin_error')}</p>;}

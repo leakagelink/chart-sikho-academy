@@ -1,0 +1,6 @@
+CREATE FUNCTION public.enforce_booking_status() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path=public AS $$ BEGIN IF NOT public.has_role(auth.uid(),'admin') AND NEW.status<>'pending' THEN RAISE EXCEPTION 'Only administrators can confirm bookings'; END IF; RETURN NEW; END $$;
+CREATE TRIGGER enforce_booking_status BEFORE INSERT OR UPDATE ON public.demo_bookings FOR EACH ROW EXECUTE FUNCTION public.enforce_booking_status();
+CREATE FUNCTION public.enforce_active_enrollment() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path=public AS $$ BEGIN IF NOT EXISTS(SELECT 1 FROM public.profiles WHERE id=NEW.user_id AND account_status='active') THEN RAISE EXCEPTION 'Account paused'; END IF; RETURN NEW; END $$;
+CREATE TRIGGER enforce_active_enrollment BEFORE INSERT OR UPDATE ON public.enrollments FOR EACH ROW EXECUTE FUNCTION public.enforce_active_enrollment();
+CREATE FUNCTION public.protect_notification_recipient() RETURNS trigger LANGUAGE plpgsql SET search_path=public AS $$ BEGIN IF NEW.user_id<>OLD.user_id OR NEW.campaign_id<>OLD.campaign_id THEN RAISE EXCEPTION 'Recipient identity cannot be changed'; END IF; RETURN NEW; END $$;
+CREATE TRIGGER protect_notification_recipient BEFORE UPDATE ON public.user_notifications FOR EACH ROW EXECUTE FUNCTION public.protect_notification_recipient();

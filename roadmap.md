@@ -1,8 +1,7 @@
 # Roadmap
 
 ## Open
-- [ ] Complete secure Cloud admin: dashboard, users/export/status, courses/lessons/uploads, classes/webinars/eBooks, bookings, orders/payments, referrals/commissions/payouts, campaign drafts/in-app delivery, reports/settings; verify authorized persistence and unauthorized denial
-- [ ] Assign the first admin account — requires confirmed account choice
+- [ ] Live payments, money transfers, email/WhatsApp/SMS delivery — need separate approval and provider accounts
 - [ ] Activate real YouTube + Jitsi sessions — awaiting client testing approval, actual YouTube stream, and confirmed Jitsi hosting/cost; public meet.jit.si embeds are demo-limited
 - [ ] Verify rebuilt Android APK stays in-app on user's device (explicit project-host navigation configured and tests passed; Android project/device and actual redirect destination unavailable here; preview returns 401 without access)
 - [ ] Full signed-in data-change test of My Learning + Profile (signed-in screens verified; progress mutation/profile save verification still pending)
@@ -10,6 +9,7 @@
 - [ ] Payment gateway (LIVE) — only after client approves test app; do NOT add now
 
 ## Done
+- [x] Secure Cloud admin panel at /admin with 16 sections, CSV export, role-protected saves, uploads, in-app notifications and audit history; course + notification save verified end-to-end
 - [x] YouTube class + Jitsi doubt-session combo previews on public class and Test Portal pages; sample video playback, separate discussions, join/leave, simulated mic/camera/hand controls verified in Hindi/English; 6 rule tests passed; no external connection or device capture
 - Wallet toggle at left-center with wallet/referral links, referrals inside wallet, and floating support above mobile navigation; removed these shortcuts from Test Portal navigation and overview
 - All-screen responsive enhancement: 320/393/834/1280 widths checked in Hindi/English; signed-in dashboard/profile render, tablet navigation and phone forms improved; animation observer optimized; existing tests passed

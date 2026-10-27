@@ -6,6 +6,9 @@ import logo from "@/assets/logo.png";
 import { useLang } from "@/lib/i18n";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
+import { useQuery } from '@tanstack/react-query';
+import { useServerFn } from '@tanstack/react-start';
+import { getStudentNotifications } from '@/lib/admin.functions';
 
 export function LangToggle() {
   const { lang, setLang, t } = useLang();
@@ -33,6 +36,9 @@ const sampleNotifs: { t: DictKey; s: DictKey }[] = [
 
 export function NotificationsBell() {
   const { t } = useLang();
+  const { session } = useAuth();
+  const fetchNotifications = useServerFn(getStudentNotifications);
+  const notifications = useQuery({ queryKey:['student-notifications',session?.user.id], queryFn:()=>fetchNotifications(), enabled:!!session, retry:false });
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -52,7 +58,7 @@ export function NotificationsBell() {
       {open && (
         <div className="fixed inset-x-3 top-16 z-50 max-h-[70dvh] overflow-y-auto rounded-lg border border-border bg-card p-2 shadow-card sm:absolute sm:inset-x-auto sm:right-0 sm:top-12 sm:w-80">
           <p className="px-3 py-2 font-display text-sm font-bold text-foreground">{t("notif_title")}</p>
-          {sampleNotifs.map((n) => (
+          {session ? <><Button asChild variant="link"><Link to="/notifications">{t('see_all')}</Link></Button>{notifications.data?.map(n=><div key={n.id} className="px-3 py-2"><p className="text-sm font-semibold">{n.notification_campaigns?.title}</p><p className="text-xs text-muted-foreground">{n.notification_campaigns?.message}</p></div>)}{!notifications.data?.length&&<p className="px-3 py-2 text-sm text-muted-foreground">{t('admin_empty')}</p>}</> : sampleNotifs.map((n) => (
             <div key={n.t} className="rounded-xl px-3 py-2 hover:bg-muted">
               <p className="text-sm font-semibold">{t(n.t)}</p>
               <p className="text-xs text-muted-foreground">{t(n.s)}</p>
@@ -80,6 +86,7 @@ export function Header() {
           <Link to="/" activeOptions={{ exact: true }} activeProps={{ className: "text-primary" }} className="text-foreground/80 hover:text-primary">{t("nav_home")}</Link>
           <Link to="/courses" activeProps={{ className: "text-primary" }} className="text-foreground/80 hover:text-primary">{t("nav_courses")}</Link>
           <Button asChild variant="link" size="sm" className="h-auto p-0"><Link to="/sandbox">{t("sandbox")}</Link></Button>
+          {session && <Button asChild variant="link" size="sm" className="h-auto p-0"><Link to="/admin">{t('real_admin')}</Link></Button>}
         </nav>
         <div className="ml-auto flex shrink-0 items-center gap-0.5 sm:gap-2">
           <Button asChild variant="ghost" size="icon" className="hidden lg:inline-flex"><Link to="/courses" aria-label={t("search")}><Search className="h-5 w-5" /></Link></Button>
