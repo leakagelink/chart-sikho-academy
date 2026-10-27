@@ -1,6 +1,12 @@
 # Roadmap
 
 ## Open
+- [x] Admin Phase 1: 8-group menu (planned items marked P2–P6) + date-filtered dashboard with separate gross/net/refunds/fees/commission KPIs
+- [ ] Admin Phase 2: Course Builder (categories, modules/chapters, video library, drip, preview)
+- [ ] Admin Phase 3: Quizzes, question bank, certificates, progress, reviews
+- [ ] Admin Phase 4: Pricing, coupons, refunds, invoices/GST, abandoned checkouts (no live payments)
+- [ ] Admin Phase 5: Instructors, roles, verification, bulk import, referral rules/tree/ranks/fraud
+- [ ] Admin Phase 6: Templates, announcements, tickets, marketing, SEO, system settings
 - [ ] Live payments, money transfers, email/WhatsApp/SMS delivery — need separate approval and provider accounts
 - [ ] Activate real YouTube + Jitsi sessions — awaiting client testing approval, actual YouTube stream, and confirmed Jitsi hosting/cost; public meet.jit.si embeds are demo-limited
 - [ ] Verify rebuilt Android APK stays in-app on user's device (explicit project-host navigation configured and tests passed; Android project/device and actual redirect destination unavailable here; preview returns 401 without access)
