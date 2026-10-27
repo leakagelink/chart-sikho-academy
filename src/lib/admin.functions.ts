@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/react-start';
 import { z } from 'zod';
 import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
-import { adminChangeSchema, requireAdminRole, safeHttps } from './admin-rules';
+import { adminChangeSchema, requireAdminRole, safeHttps, coursePublishIssues } from './admin-rules';
 
 export const getAdminData = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth]).handler(async ({ context }) => {
   const s = context.supabase;
@@ -22,10 +22,12 @@ export const getAdminData = createServerFn({ method: 'POST' }).middleware([requi
     s.from('notification_campaigns').select('*').order('created_at', { ascending: false }).limit(1000),
     s.from('admin_settings').select('*').limit(1),
     s.from('admin_audit_log').select('*').order('created_at', { ascending: false }).limit(100),
+    s.from('course_categories').select('*').order('position'),
+    s.from('course_modules').select('*').order('position').limit(1000),
   ]);
   if (results.some(r => r.error)) throw new Error('Unable to load administration records');
-  const [users,courses,lessons,classes,ebooks,bookings,enrollments,orders,affiliates,commissions,payouts,notifications,settings,audit] = results;
-  return { users: users.data ?? [], courses: courses.data ?? [], lessons: lessons.data ?? [], classes: classes.data ?? [], ebooks: ebooks.data ?? [], bookings: bookings.data ?? [], enrollments: enrollments.data ?? [], orders: orders.data ?? [], affiliates: affiliates.data ?? [], commissions: commissions.data ?? [], payouts: payouts.data ?? [], notifications: notifications.data ?? [], settings: settings.data ?? [], audit: audit.data ?? [], capped: results.some(r => (r.data?.length ?? 0) >= 1000) };
+  const [users,courses,lessons,classes,ebooks,bookings,enrollments,orders,affiliates,commissions,payouts,notifications,settings,audit,categories,modules] = results;
+  return { users: users.data ?? [], courses: courses.data ?? [], lessons: lessons.data ?? [], classes: classes.data ?? [], ebooks: ebooks.data ?? [], bookings: bookings.data ?? [], enrollments: enrollments.data ?? [], orders: orders.data ?? [], affiliates: affiliates.data ?? [], commissions: commissions.data ?? [], payouts: payouts.data ?? [], notifications: notifications.data ?? [], settings: settings.data ?? [], audit: audit.data ?? [], categories: categories.data ?? [], modules: modules.data ?? [], capped: results.some(r => (r.data?.length ?? 0) >= 1000) };
 });
 
 const title = z.string().trim().min(2).max(120);
@@ -39,12 +41,28 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
   const v = data.values;
   let result;
   switch (data.resource) {
+    case 'categories': {
+      const row = z.object({ name: title, slug: z.string().trim().regex(/^[a-z0-9-]{2,40}$/), position: z.coerce.number().int().min(1).max(1000) }).parse(v);
+      result = data.id ? await s.from('course_categories').update(row).eq('id',data.id).select('id').single() : await s.from('course_categories').insert(row).select('id').single(); break;
+    }
+    case 'modules': {
+      const row = z.object({ title, course_id: z.string().uuid(), position: z.coerce.number().int().min(1).max(10000), drip_days: z.coerce.number().int().min(0).max(3650) }).parse(v);
+      result = data.id ? await s.from('course_modules').update(row).eq('id',data.id).select('id').single() : await s.from('course_modules').insert(row).select('id').single(); break;
+    }
     case 'courses': {
-      const row = z.object({ title, price, category: z.enum(['basics','technical','options','fundamental']), status: z.enum(['draft','published']) }).parse(v);
+      const row = z.object({ title, price, category: z.string().regex(/^[a-z0-9-]{2,40}$/), status: z.enum(['draft','published']), description: z.string().max(2000).default(''), thumbnail_url: url.default(''), instructor: z.string().max(120).default(''), objectives: z.string().max(2000).default(''), sale_price: z.union([z.literal('').transform(() => null), z.null(), price]).default(null), access_type: z.enum(['lifetime','fixed']).default('lifetime'), access_days: z.coerce.number().int().min(0).max(3650).default(0) }).parse(v);
+      const cat = await s.from('course_categories').select('id').eq('slug',row.category).maybeSingle();
+      if (!cat.data) throw new Error('Unknown category');
+      if (row.status === 'published') {
+        if (!data.id) throw new Error('Save as draft and build the curriculum before publishing');
+        const [m,l] = await Promise.all([s.from('course_modules').select('id').eq('course_id',data.id), s.from('course_lessons').select('module_id,video_url,resource_path').eq('course_id',data.id)]);
+        const issues = coursePublishIssues({ ...row, modules: m.data ?? [], lessons: l.data ?? [] });
+        if (issues.length) throw new Error(`Cannot publish: ${issues.join(', ')}`);
+      }
       result = data.id ? await s.from('courses').update({ ...row, updated_at: new Date().toISOString() }).eq('id',data.id).select('id').single() : await s.from('courses').insert(row).select('id').single(); break;
     }
     case 'lessons': {
-      const row = z.object({ title, course_id: z.string().uuid(), position: z.coerce.number().int().min(1).max(10000), video_url: url, resource_path: path }).parse(v);
+      const row = z.object({ title, course_id: z.string().uuid(), module_id: z.union([z.literal('').transform(() => null), z.null(), z.string().uuid()]).default(null), position: z.coerce.number().int().min(1).max(10000), video_url: url, resource_path: path, duration_minutes: z.coerce.number().int().min(0).max(1000).default(0), is_preview: z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]).default(false), allow_download: z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]).default(false) }).parse(v);
       result = data.id ? await s.from('course_lessons').update(row).eq('id',data.id).select('id').single() : await s.from('course_lessons').insert(row).select('id').single(); break;
     }
     case 'classes': {
@@ -87,4 +105,35 @@ export const getStudentNotifications = createServerFn({ method:'POST' }).middlew
   const r = await context.supabase.from('user_notifications').select('id,read_at,notification_campaigns(title,message)').eq('user_id',context.userId).order('created_at',{ascending:false}).limit(50);
   if (r.error) throw new Error('Unable to load notifications');
   return r.data;
+});
+async function assertAdmin(s: any, userId: string) { const role = await s.rpc('has_role', { _user_id: userId, _role: 'admin' }); requireAdminRole(!role.error && role.data === true); }
+
+/** Copies a course with its modules and lessons as a new draft. */
+export const duplicateCourse = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth]).inputValidator((i: { id: string }) => z.object({ id: z.string().uuid() }).parse(i)).handler(async ({ context, data }) => {
+  const s = context.supabase; await assertAdmin(s, context.userId);
+  const c = await s.from('courses').select('*').eq('id', data.id).single(); if (c.error) throw new Error('Course not found');
+  const { id: _i, created_at: _c, updated_at: _u, ...rest } = c.data;
+  const copy = await s.from('courses').insert({ ...rest, title: `${rest.title} (copy)`.slice(0, 120), status: 'draft' }).select('id').single(); if (copy.error) throw new Error('Unable to duplicate');
+  const [mods, less] = await Promise.all([s.from('course_modules').select('*').eq('course_id', data.id), s.from('course_lessons').select('*').eq('course_id', data.id)]);
+  const map: Record<string, string> = {};
+  for (const m of mods.data ?? []) { const r = await s.from('course_modules').insert({ course_id: copy.data.id, title: m.title, position: m.position, drip_days: m.drip_days }).select('id').single(); if (r.data) map[m.id] = r.data.id; }
+  const lessons = (less.data ?? []).map(({ id: _x, created_at: _y, ...l }) => ({ ...l, course_id: copy.data.id, module_id: l.module_id ? map[l.module_id] ?? null : null }));
+  if (lessons.length) { const r = await s.from('course_lessons').insert(lessons); if (r.error) throw new Error('Unable to duplicate lessons'); }
+  return { id: copy.data.id };
+});
+
+/** Swaps the position of a module or lesson with its neighbour. */
+export const moveCurriculumItem = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth]).inputValidator((i: { kind: 'modules'|'lessons'; id: string; dir: 'up'|'down' }) => z.object({ kind: z.enum(['modules','lessons']), id: z.string().uuid(), dir: z.enum(['up','down']) }).parse(i)).handler(async ({ context, data }) => {
+  const s = context.supabase; await assertAdmin(s, context.userId);
+  const table = data.kind === 'modules' ? 'course_modules' : 'course_lessons';
+  const item = await s.from(table).select('*').eq('id', data.id).single(); if (item.error) throw new Error('Not found');
+  let q = s.from(table).select('id,position').eq('course_id', item.data.course_id);
+  if (data.kind === 'lessons') { const mid = (item.data as { module_id: string | null }).module_id; q = mid ? q.eq('module_id', mid) : q.is('module_id', null); }
+  const siblings = ((await q).data ?? []).sort((a, b) => a.position - b.position || a.id.localeCompare(b.id));
+  const idx = siblings.findIndex(x => x.id === data.id); const other = siblings[data.dir === 'up' ? idx - 1 : idx + 1];
+  if (!other) return { ok: true };
+  siblings.forEach((x, i) => { x.position = i + 1; });
+  const a = siblings[idx]!; const tmp = a.position; a.position = other.position; other.position = tmp;
+  for (const x of siblings) await s.from(table).update({ position: x.position }).eq('id', x.id);
+  return { ok: true };
 });
