@@ -36,6 +36,13 @@
       "when": 1793102311583,
       "tag": "0004_secure_enrollment_identity",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1793102375054,
+      "tag": "0005_admin_status_guards",
+      "breakpoints": true
     }
   ]
 }
