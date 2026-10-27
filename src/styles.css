@@ -291,7 +291,8 @@ html { scroll-padding-top: 80px; }
 .screen-title { display:flex; align-items:center; gap:12px; padding:14px 16px; background:var(--navy); color:var(--navy-foreground); margin:0 -16px 16px; font-size:18px; }
 .home-greeting { margin:0 -16px; padding:18px 16px 32px; background:var(--navy); color:var(--navy-foreground); }
 .home-greeting .text-foreground,.home-greeting .text-muted-foreground { color:var(--navy-foreground); }
-.home-progress { display:grid; grid-template-columns:64px minmax(0,1fr); gap:12px; border-radius:8px; margin-top:-14px; position:relative; padding:16px; }
+.home-progress { display:grid; grid-template-columns:clamp(56px,16vw,80px) minmax(0,1fr); align-items:center; gap:12px; border-radius:8px; margin-top:-14px; position:relative; padding:16px; }
+.home-progress > div:first-child { width:100%; }
 .home-progress > a { grid-column:1/-1; width:100%; text-align:center; border-radius:5px; }
 .home-categories { gap:0; padding:16px 0; }
 .home-categories a { border:0; box-shadow:none; border-radius:0; padding:15px 4px; }

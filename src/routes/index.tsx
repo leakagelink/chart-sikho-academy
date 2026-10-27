@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Award, Bell, BookOpen, Calendar, ClipboardCheck, Crown, FileText, PlayCircle, Radio, Users, Video } from "lucide-react";
-import educator from "@/assets/course-educator.jpg";
+import educator from "@/assets/course-educator-thumb.webp";
 import hero from "@/assets/hero-bull.jpg";
 import { CourseCard } from "@/components/site/CourseCard";
 import { courses, liveClasses } from "@/lib/courses";
@@ -59,8 +59,8 @@ function Index() {
 
       {/* Continue learning — blueprint progress card */}
       <section className="home-progress mt-5 flex items-center gap-4 rounded-3xl border border-border bg-card p-4 shadow-card sm:p-5">
-        <div className="flex h-20 w-14 shrink-0 items-end justify-center rounded-xl bg-gradient-to-br from-navy to-royal p-2 sm:h-24 sm:w-16">
-          <img src={educator} alt="" width={64} height={80} className="h-full w-full object-cover" />
+        <div className="aspect-square w-16 shrink-0 self-center overflow-hidden rounded-xl bg-navy sm:w-20">
+          <img src={educator} alt="" width={160} height={160} loading="eager" decoding="async" className="block h-full w-full object-cover object-center" />
         </div>
         <div className="min-w-0 flex-1">
           <p className="truncate font-semibold text-foreground">{t("continue_course_t")}</p>
