@@ -1,13 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Calendar, Hand, Send, Users } from "lucide-react";
+import { Calendar, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLang } from "@/lib/i18n";
 import { liveClasses } from "@/lib/courses";
 import { pageMeta } from "@/lib/route-meta";
+import { LiveClassCombo } from "@/components/site/LiveClassCombo";
 
 export const Route = createFileRoute("/sandbox/live")({
-  head: () => pageMeta("Sample Live Classroom", "Preview class discussion and a sample clip with no live broadcast."),
+  head: () => pageMeta("YouTube + Jitsi Classroom Preview", "Try sample YouTube classes and Jitsi doubt sessions on Chartसीखो without connecting to a live service."),
   component: Screen,
 });
 
@@ -20,9 +21,6 @@ function Screen() {
   const { t, lang } = useLang();
   const [tab, setTab] = useState<"upcoming" | "past">("upcoming");
   const [registered, setRegistered] = useState<string[]>([]);
-  const [hand, setHand] = useState(false);
-  const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState<string[]>([]);
 
   return (
     <>
@@ -31,10 +29,10 @@ function Screen() {
       {/* Upcoming / Past tabs — blueprint live classes screen */}
       <div className="mt-5 grid w-full max-w-xs grid-cols-2 rounded-full bg-muted p-1 text-sm font-semibold">
         {(["upcoming", "past"] as const).map((k) => (
-          <button key={k} onClick={() => setTab(k)} aria-pressed={tab === k}
-            className={`rounded-full py-2 ${tab === k ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}>
+          <Button key={k} variant={tab === k ? "default" : "ghost"} onClick={() => setTab(k)} aria-pressed={tab === k}
+            className="rounded-full py-2">
             {t(k === "upcoming" ? "upcoming_tab" : "past_tab")}
-          </button>
+          </Button>
         ))}
       </div>
 
@@ -84,28 +82,7 @@ function Screen() {
         </div>
       )}
 
-      {/* Classroom preview */}
-      <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_300px]">
-        <section>
-          <video controls playsInline className="aspect-video w-full rounded-2xl bg-navy" aria-label={t("sample_video")}>
-            <source src="/media/chart-sample.webm" type="video/webm" />
-            <source src="/media/chart-sample.mp4" type="video/mp4" />
-          </video>
-          <p className="my-3 text-sm text-muted-foreground">{t("sample_video")}</p>
-          <Button variant="outline" aria-pressed={hand} onClick={() => setHand(!hand)}><Hand />{t(hand ? "hand_raised" : "raise_hand")}</Button>
-        </section>
-        <section>
-          <h2 className="font-display text-xl font-bold">{t("chat")}</h2>
-          <p className="mt-2 text-xs text-muted-foreground">{t("chat_sample")}</p>
-          <div className="my-4 h-64 space-y-2 overflow-y-auto border-y border-border py-3" aria-live="polite">
-            {messages.map((m, i) => <p key={i} className="break-words rounded-md bg-muted p-3 text-sm">{m}</p>)}
-          </div>
-          <form className="flex gap-2" onSubmit={(e) => { e.preventDefault(); if (!message.trim()) return; setMessages((s) => [...s, message.trim()]); setMessage(""); }}>
-            <input required maxLength={500} value={message} onChange={(e) => setMessage(e.target.value)} aria-label={t("chat")} className="h-9 min-w-0 flex-1 rounded-md border border-input bg-background px-3" />
-            <Button type="submit" size="icon" aria-label={t("send")} title={t("send")}><Send /></Button>
-          </form>
-        </section>
-      </div>
+      <LiveClassCombo />
     </>
   );
 }

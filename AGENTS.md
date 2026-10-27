@@ -20,5 +20,6 @@
 - Auth: student accounts via Lovable Cloud; signed-in pages live under `src/routes/_authenticated/` (client-only gate redirects to /auth); why: one guard for every portal page.
 - Paid-course enrollment is blocked by database policy until payments are verified server-side; only free courses can be self-enrolled; why: browser can never grant itself paid access.
 - Client-test features live under `/sandbox` with browser-local state isolated from Cloud accounts, enrollments and permissions; why: clients can exercise student and admin mocks without receiving real access or moving money.
+- Live-class pages share LiveClassCombo with provider configuration in the sample catalog; previews never load third-party scripts, capture devices, or connect to meetings, so testing cannot accidentally create a live session.
 
 - The app uses a dark navy + gold premium theme (gold is `primary`, royal blue is `royal`) per the client blueprint; keep semantic tokens, never reintroduce a light default.
