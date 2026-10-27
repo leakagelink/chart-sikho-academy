@@ -29,6 +29,13 @@
       "when": 1793097348276,
       "tag": "0003_admin_resources_and_audit",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1793102311583,
+      "tag": "0004_secure_enrollment_identity",
+      "breakpoints": true
     }
   ]
 }
