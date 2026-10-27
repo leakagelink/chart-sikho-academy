@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/react-start';
 import { z } from 'zod';
 import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
-import { adminChangeSchema, requireAdminRole, safeHttps, coursePublishIssues } from './admin-rules';
+import { adminChangeSchema, requireAdminRole, safeHttps, coursePublishIssues, makeCertificateNo } from './admin-rules';
 
 export const getAdminData = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth]).handler(async ({ context }) => {
   const s = context.supabase;
