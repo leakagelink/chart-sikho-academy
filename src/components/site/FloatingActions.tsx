@@ -13,9 +13,9 @@ export function FloatingActions() {
     <div className="wallet-float fixed left-0 top-1/2 z-40 -translate-y-1/2">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button aria-label={t(open ? "hide_wallet" : "show_wallet")} title={t(open ? "hide_wallet" : "show_wallet")} className="h-14 gap-1 rounded-l-none rounded-r-lg px-2 shadow-card">
+          <Button aria-label={t(open ? "hide_wallet" : "show_wallet")} title={t(open ? "hide_wallet" : "show_wallet")} className="h-10 gap-0 rounded-l-none rounded-r-lg px-1 shadow-card">
             <Wallet className="size-5" />
-            {open ? <X className="size-3" /> : <ChevronRight className="size-3" />}
+            {open && <X className="size-3" />}
           </Button>
         </PopoverTrigger>
         <PopoverContent side="right" align="center" sideOffset={8} className="w-56 max-w-[calc(100vw-4.5rem)] p-3 shadow-card motion-reduce:animate-none" aria-label={t("wallet")}>
@@ -30,6 +30,6 @@ export function FloatingActions() {
         </PopoverContent>
       </Popover>
     </div>
-    <Button asChild className="support-float fixed right-4 z-40 h-11 rounded-full px-4 shadow-card"><Link to="/sandbox/support" aria-label={t("support")} title={t("support")}><MessageCircle className="size-5" />{t("support")}</Link></Button>
+    <Button asChild size="icon" className="support-float fixed right-3 z-40 h-10 w-10 rounded-full shadow-card"><Link to="/sandbox/support" aria-label={t("support")} title={t("support")}><MessageCircle className="size-5" /></Link></Button>
   </>;
 }

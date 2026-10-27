@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Award, Bell, BookOpen, Calendar, ClipboardCheck, Crown, FileText, PlayCircle, Radio, Users, Video } from "lucide-react";
+import educator from "@/assets/course-educator.jpg";
 import hero from "@/assets/hero-bull.jpg";
 import { CourseCard } from "@/components/site/CourseCard";
 import { courses, liveClasses } from "@/lib/courses";
@@ -38,7 +39,7 @@ function Index() {
   return (
     <div className="mx-auto max-w-6xl px-4">
       {/* Greeting — blueprint home dashboard header */}
-      <section className="mt-6 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
+      <section className="home-greeting mt-6 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
         <div className="flex min-w-0 items-center gap-3">
           <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gold/15 font-display text-lg font-bold text-gold">
             {firstName.charAt(0).toUpperCase()}
@@ -57,9 +58,9 @@ function Index() {
       </section>
 
       {/* Continue learning — blueprint progress card */}
-      <section className="mt-5 flex items-center gap-4 rounded-3xl border border-border bg-card p-4 shadow-card sm:p-5">
+      <section className="home-progress mt-5 flex items-center gap-4 rounded-3xl border border-border bg-card p-4 shadow-card sm:p-5">
         <div className="flex h-20 w-14 shrink-0 items-end justify-center rounded-xl bg-gradient-to-br from-navy to-royal p-2 sm:h-24 sm:w-16">
-          <span className="font-display text-lg font-bold text-gold">68%</span>
+          <img src={educator} alt="" width={64} height={80} className="h-full w-full object-cover" />
         </div>
         <div className="min-w-0 flex-1">
           <p className="truncate font-semibold text-foreground">{t("continue_course_t")}</p>
@@ -74,7 +75,7 @@ function Index() {
       </section>
 
       {/* Hero */}
-      <section className="relative mt-6 overflow-hidden rounded-3xl bg-navy text-navy-foreground">
+      <section className="home-marketing relative mt-6 overflow-hidden rounded-3xl bg-navy text-navy-foreground">
         <img src={hero} alt="" width={1280} height={832} className="absolute inset-0 h-full w-full object-cover opacity-60 md:left-1/3 md:w-2/3 md:opacity-100" />
         <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-transparent" />
         <div className="relative max-w-xl p-6 sm:p-10 md:py-16">
@@ -102,7 +103,7 @@ function Index() {
       </section>
 
       {/* Categories */}
-      <section className="mt-6 grid grid-cols-3 gap-3 sm:grid-cols-6">
+      <section className="home-categories mt-6 grid grid-cols-3 gap-3 sm:grid-cols-6">
         {cats.map(({ icon: Icon, label, to }) => (
           <Link key={label} to={to} className="flex flex-col items-center gap-2 rounded-2xl border border-border bg-card p-4 text-center shadow-card">
             <span className="rounded-full bg-gold/15 p-3 text-gold"><Icon className="h-5 w-5" /></span>
@@ -147,7 +148,7 @@ function Index() {
       </section>
 
       {/* Membership */}
-      <section className="mt-10 flex flex-col items-start gap-4 rounded-3xl bg-gradient-to-r from-primary to-navy p-6 text-primary-foreground sm:flex-row sm:items-center sm:p-8">
+      <section className="home-marketing mt-10 flex flex-col items-start gap-4 rounded-3xl bg-gradient-to-r from-primary to-navy p-6 text-primary-foreground sm:flex-row sm:items-center sm:p-8">
         <Crown className="h-10 w-10 shrink-0 text-gold" />
         <div className="flex-1">
           <h2 className="font-display text-2xl font-bold">{t("membership_t")}</h2>

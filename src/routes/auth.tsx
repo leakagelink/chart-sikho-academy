@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/use-auth";
 import { useLang } from "@/lib/i18n";
+import { Button } from "@/components/ui/button";
 
 // Social buttons stay hidden while the client tests the app; flip to true at go-live.
 const SHOW_SOCIAL_LOGIN = false;
@@ -81,18 +82,20 @@ function AuthPage() {
 
   const input = "w-full rounded-lg border border-input bg-card px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-ring";
   return (
-    <div className="mx-auto flex max-w-md flex-col px-4 py-10">
+    <div className="auth-screen px-4 py-6">
       <div className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-8">
-        <img src={logo} alt="Chartसीखो" width={64} height={64} className="mx-auto h-16 w-16 rounded-xl object-cover" />
+        <img src={logo} alt="Chartसीखो" width={64} height={64} className="mx-auto h-24 w-24 object-contain" />
+        <p className="mt-2 text-center font-display text-3xl font-bold text-gold">Chartसीखो</p>
+        <p className="text-center text-sm text-gold">{t("splash_tagline")}</p>
         <h1 className="mt-3 text-center font-display text-2xl font-bold text-foreground">
           {mode === "login" ? t("welcome_back") : mode === "signup" ? t("create_account") : t("forgot_title")}
         </h1>
         {mode !== "forgot" && (
           <div className="mt-5 grid grid-cols-2 rounded-full bg-muted p-1 text-sm font-semibold">
             {(["login", "signup"] as const).map((m) => (
-              <button key={m} onClick={() => { setMode(m); setMsg(null); }} className={`rounded-full py-2 ${mode === m ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}>
+              <Button variant="ghost" key={m} onClick={() => { setMode(m); setMsg(null); }} className={`rounded-md py-2 ${mode === m ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}>
                 {m === "login" ? t("login") : t("signup")}
-              </button>
+              </Button>
             ))}
           </div>
         )}
@@ -106,9 +109,9 @@ function AuthPage() {
           <input required type="email" placeholder={t("email")} value={form.email} onChange={set("email")} className={input} />
           {mode !== "forgot" && <input required type="password" minLength={6} placeholder={t("password")} value={form.password} onChange={set("password")} className={input} />}
           {msg && <p className={`text-sm ${msg.ok ? "text-success" : "text-destructive"}`}>{msg.text}</p>}
-          <button disabled={busy} className="w-full rounded-lg bg-primary py-2.5 font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-60">
+          <Button type="submit" disabled={busy} className="w-full rounded-lg bg-primary py-2.5 font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-60">
             {mode === "login" ? t("login") : mode === "signup" ? t("create_account") : t("send_reset")}
-          </button>
+          </Button>
         </form>
         <div className="mt-3 text-center text-sm">
           {mode === "login" && <button onClick={() => setMode("forgot")} className="text-primary">{t("forgot_q")}</button>}

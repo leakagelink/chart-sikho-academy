@@ -6,6 +6,7 @@ import { useLang } from "@/lib/i18n";
 import { sampleLessons } from "@/lib/courses";
 import { useMock } from "@/lib/mock-store";
 import { pageMeta } from "@/lib/route-meta";
+import educator from "@/assets/course-educator.jpg";
 
 export const Route = createFileRoute("/sandbox/learn")({
   head: () => pageMeta("Sample Learning Studio", "Study a sample chart lesson, take notes and complete practice lessons."),
@@ -31,17 +32,17 @@ function Screen() {
   }
 
   return (
-    <>
+    <div className="lesson-screen">
       <h1 className="font-display text-3xl font-bold">{t("mock_learning")}</h1>
-      <div className="mt-5 grid gap-6 lg:grid-cols-[1fr_280px]">
+      <div className="lesson-grid mt-5 grid gap-6 lg:grid-cols-[1fr_280px]">
         <section className="min-w-0">
-          <video key={index} controls playsInline preload="metadata" className="aspect-video w-full rounded-2xl bg-navy" aria-label={t("sample_video")}>
+          <video key={index} poster={educator} controls playsInline preload="none" className="aspect-video w-full rounded-2xl bg-navy" aria-label={t("sample_video")}>
             <source src="/media/chart-sample.webm" type="video/webm" />
             <source src="/media/chart-sample.mp4" type="video/mp4" />
           </video>
           <p className="mt-2 text-xs text-muted-foreground">{t("sample_video")}</p>
-          <h2 className="mt-4 font-display text-2xl font-bold">{index + 1}. {t(lesson.title)}</h2>
-          <div className="mt-5 flex flex-wrap gap-2">
+          <h2 className="lesson-heading mt-4 font-display text-2xl font-bold">{index + 1}. {t(lesson.title)}</h2>
+          <div className="lesson-actions mt-5 flex flex-wrap gap-2">
             <Button onClick={() => update((s) => ({ ...s, completed: [...new Set([...s.completed, index])] }))} disabled={state.completed.includes(index)}>
               <Check />{t(state.completed.includes(index) ? "completed" : "complete_lesson")}
             </Button>
@@ -62,7 +63,7 @@ function Screen() {
             ))}
           </div>
           {tab === "notes" && (
-            <div className="mt-4">
+            <div className="lesson-notes mt-4">
               <p className="leading-7 text-sm text-muted-foreground">{t(lesson.body)}</p>
               <label className="mt-4 block text-sm font-semibold" htmlFor="lesson-note">{t("personal_notes")}</label>
               <textarea id="lesson-note" value={state.notes[index] || ""} rows={4}
@@ -105,6 +106,6 @@ function Screen() {
           <p className="mt-5 text-sm text-muted-foreground">{state.completed.length}/3 {t("completed")}</p>
         </aside>
       </div>
-    </>
+    </div>
   );
 }

@@ -72,9 +72,9 @@ function ProfilePage() {
   );
 
   return (
-    <div className="mx-auto max-w-xl px-4 pt-8">
+    <div className="profile-screen mx-auto max-w-xl px-4 pt-0">
       {/* Header — blueprint My Profile */}
-      <div className="flex items-center gap-4">
+      <div className="profile-banner flex items-center gap-4">
         <span className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-gold font-display text-2xl font-bold text-navy">
           {name.charAt(0).toUpperCase()}
         </span>
@@ -85,7 +85,7 @@ function ProfilePage() {
       </div>
 
       {/* Menu list */}
-      <div className="mt-6 overflow-hidden rounded-2xl border border-border bg-card shadow-card">
+      <div className="profile-menu mt-6 overflow-hidden rounded-2xl border border-border bg-card shadow-card">
         <button onClick={() => setEditing(!editing)} aria-expanded={editing}
           className="flex w-full items-center gap-3 border-b border-border p-4 text-sm font-semibold hover:bg-muted/50">
           <UserRound className="h-5 w-5 shrink-0 text-gold" />

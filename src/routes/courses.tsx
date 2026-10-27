@@ -43,15 +43,15 @@ function CoursesPage() {
       (c.title.en + " " + c.title.hi).toLowerCase().includes(q.toLowerCase()),
   );
   return (
-    <div className="mx-auto max-w-6xl px-4 pt-8">
+    <div className="catalog-screen mx-auto max-w-6xl px-4 pt-8">
       <h1 className="font-display text-3xl font-bold text-foreground">{t("all_courses")}</h1>
       <p className="mt-1 text-muted-foreground">{t("all_courses_sub")}</p>
-      <div className="mt-6 flex flex-col gap-3 lg:flex-row lg:items-center">
+      <div className="catalog-controls mt-6 flex flex-col gap-3 lg:flex-row lg:items-center">
         <label className="relative flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input aria-label={t("search")} value={q} onChange={(e) => setQ(e.target.value)} placeholder={t("search")} className="w-full rounded-full border border-input bg-card py-2.5 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-ring" />
         </label>
-        <div className="flex flex-wrap gap-2">
+        <div className="catalog-tabs flex flex-wrap gap-2">
           {filters.map((x) => (
             <Button variant={f === x.key ? "default" : "secondary"} aria-pressed={f === x.key} key={x.key} onClick={() => setF(x.key)} className="rounded-full">
               {t(x.label)}
@@ -59,7 +59,7 @@ function CoursesPage() {
           ))}
         </div>
       </div>
-      <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="catalog-list mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {cloud.filter(c=>(f==='all'||c.category===f||(f==='beginner'&&c.category==='basics'))&&c.title.toLowerCase().includes(q.toLowerCase())).map(c=><article key={c.id} className="rounded-lg border border-border bg-card p-5"><h2 className="font-display text-xl font-bold">{c.title}</h2><p className="my-4 text-xl font-bold text-primary">₹{c.price}</p><Button asChild><Link to="/courses/$courseId" params={{courseId:c.id}}>{t('enroll')}</Link></Button></article>)}
         {list.map((c) => <CourseCard key={c.id} course={c} />)}
       </div>
