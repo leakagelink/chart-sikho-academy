@@ -33,11 +33,12 @@ function Dashboard() {
   const enrolls = useQuery({
     queryKey: ["enrollments", user.id],
     queryFn: async () => {
-      const { data, error } = await supabase.from("enrollments").select("course_id, progress, last_lesson").order("updated_at", { ascending: false });
+      const { data, error } = await supabase.from("enrollments").select("course_id, progress, last_lesson").eq('user_id',user.id).order("updated_at", { ascending: false });
       if (error) throw error;
       return data;
     },
   });
+  const cloudCourses=useQuery({queryKey:['my-cloud-courses',user.id],queryFn:async()=>{const r=await supabase.from('courses').select('id,title');if(r.error)throw r.error;return r.data;}});
 
   const advance = useMutation({
     mutationFn: async (e: { course_id: string; progress: number; last_lesson: number; total: number }) => {
@@ -92,6 +93,7 @@ function Dashboard() {
 
       <section className="mt-8">
         <h2 className="font-display text-2xl font-bold text-foreground">{t("my_courses")}</h2>
+        {(enrolls.data??[]).filter(e=>cloudCourses.data?.some(c=>c.id===e.course_id)).map(e=><article key={e.course_id} className="mt-4 border-b border-border py-4"><h3 className="font-semibold">{cloudCourses.data?.find(c=>c.id===e.course_id)?.title}</h3><Button asChild className="mt-3"><Link to="/courses/$courseId" params={{courseId:e.course_id}}>{t('open_lesson')}</Link></Button></article>)}
         {enrolls.isLoading ? (
           <p className="mt-4 text-muted-foreground">…</p>
         ) : mine.length === 0 ? (

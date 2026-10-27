@@ -5,8 +5,13 @@ import { CourseCard } from "@/components/site/CourseCard";
 import { courses } from "@/lib/courses";
 import { useLang, type DictKey } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { catalogQuery } from '@/lib/catalog-query';
 
 export const Route = createFileRoute("/courses")({
+  loader:({context})=>context.queryClient.ensureQueryData(catalogQuery()),
+  errorComponent:CatalogError,
+  notFoundComponent:CatalogError,
   head: () => ({
     meta: [
       { property: "og:type", content: "website" },
@@ -29,6 +34,7 @@ const filters: { key: "all" | "beginner" | "options" | "technical"; label: DictK
 
 function CoursesPage() {
   const { t, lang } = useLang();
+  const {data:cloud}=useSuspenseQuery(catalogQuery());
   const [f, setF] = useState<(typeof filters)[number]["key"]>("all");
   const [q, setQ] = useState("");
   const list = courses.filter(
@@ -54,9 +60,11 @@ function CoursesPage() {
         </div>
       </div>
       <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {cloud.filter(c=>(f==='all'||c.category===f||(f==='beginner'&&c.category==='basics'))&&c.title.toLowerCase().includes(q.toLowerCase())).map(c=><article key={c.id} className="rounded-lg border border-border bg-card p-5"><h2 className="font-display text-xl font-bold">{c.title}</h2><p className="my-4 text-xl font-bold text-primary">₹{c.price}</p><Button asChild><Link to="/courses/$courseId" params={{courseId:c.id}}>{t('enroll')}</Link></Button></article>)}
         {list.map((c) => <CourseCard key={c.id} course={c} />)}
       </div>
       {list.length === 0 && <p className="mt-10 text-center text-muted-foreground">{t("no_results")}</p>}
     </div>
   );
 }
+function CatalogError(){const {t}=useLang();return <p className="p-8">{t('admin_error')}</p>;}
