@@ -72,14 +72,14 @@ function Screen() {
             </div>
           )}
           {tab === "downloads" && (
-            <div className="mt-4 rounded-2xl border border-border bg-card p-4">
+            <div className="lesson-tab-content mt-4 rounded-2xl border border-border bg-card p-4">
               <p className="text-sm font-semibold">{t(lesson.title)} — {t("tab_notes")}</p>
               <p className="mt-1 text-xs text-muted-foreground">{t("lesson_notes")} · TXT</p>
               <Button variant="outline" className="mt-3" onClick={download}><Download />{t("download_notes")}</Button>
             </div>
           )}
           {tab === "qa" && (
-            <div className="mt-4 space-y-3">
+            <div className="lesson-tab-content mt-4 space-y-3">
               <article className="rounded-2xl border border-border bg-card p-4">
                 <p className="flex items-start gap-2 text-sm font-semibold"><MessageCircleQuestion className="mt-0.5 h-4 w-4 shrink-0 text-gold" />{t("qa_sample_q")}</p>
                 <p className="mt-2 pl-6 text-sm text-muted-foreground">{t("qa_sample_a")}</p>

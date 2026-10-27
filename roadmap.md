@@ -1,7 +1,6 @@
 # Roadmap
 
 ## Open
-- [ ] Match latest student blueprint: navy/gold branding, white content panels, compact screen layouts and all ten screens; verify phone and desktop
 - [ ] Live payments, money transfers, email/WhatsApp/SMS delivery — need separate approval and provider accounts
 - [ ] Activate real YouTube + Jitsi sessions — awaiting client testing approval, actual YouTube stream, and confirmed Jitsi hosting/cost; public meet.jit.si embeds are demo-limited
 - [ ] Verify rebuilt Android APK stays in-app on user's device (explicit project-host navigation configured and tests passed; Android project/device and actual redirect destination unavailable here; preview returns 401 without access)
@@ -10,6 +9,7 @@
 - [ ] Payment gateway (LIVE) — only after client approves test app; do NOT add now
 
 ## Done
+- [x] Student blueprint visual correction: white content scoped to student screens, navy/gold branding, gold action gradients, compact course/order/live lists, lesson rows, horizontal referral tree and white Profile menu. Phone/desktop screens and signed-in Profile checked; original logo retained, generated sample cover/backdrop used, social login remains hidden by testing constraint. Not a pixel-identical replica of the low-resolution reference.
 - [x] Designated Admin and Student Cloud login accounts provisioned; real password login reaches /admin and /dashboard respectively, and Student is denied Admin access; existing security tests passed
 - [x] Secure Cloud admin panel at /admin with 16 sections, CSV export, role-protected saves, uploads, in-app notifications and audit history; course + notification save verified end-to-end
 - [x] YouTube class + Jitsi doubt-session combo previews on public class and Test Portal pages; sample video playback, separate discussions, join/leave, simulated mic/camera/hand controls verified in Hindi/English; 6 rule tests passed; no external connection or device capture

@@ -379,6 +379,7 @@ html { scroll-padding-top: 80px; }
  .lesson-screen aside { order:3; }
  .lesson-screen aside > h2 { display:none; }
  .lesson-notes { order:4; margin-top:0; }
+ .lesson-tab-content { order:4; margin-top:0; }
  .lesson-actions { order:5; margin-top:0; }
  .detail-screen aside { position:sticky; bottom:64px; background:var(--background); z-index:20; padding:10px 0; }
  .detail-screen aside > a:first-child { display:none; }
