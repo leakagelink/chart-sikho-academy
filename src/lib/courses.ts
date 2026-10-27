@@ -30,6 +30,12 @@ export const liveClasses = [
   { id: "l3", title: { en: "Live Market Analysis", hi: "लाइव मार्केट एनालिसिस" }, day: "tomorrow" as const, time: "9:15 AM", joining: "1,530", live: false },
 ];
 
+// No third-party connections during client testing.
+export const liveClassCombo = {
+  broadcast: { provider: "youtube", mode: "preview" },
+  doubts: { provider: "jitsi", mode: "preview" },
+} as const;
+
 export const inr = (n: number) => "₹" + n.toLocaleString("en-IN");
 
 // Small educational sample separate from the commercial catalog lesson counts.
