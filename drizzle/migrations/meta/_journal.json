@@ -43,6 +43,13 @@
       "when": 1793102375054,
       "tag": "0005_admin_status_guards",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1793119025361,
+      "tag": "0006_course_builder",
+      "breakpoints": true
     }
   ]
 }
