@@ -24,10 +24,14 @@ export const getAdminData = createServerFn({ method: 'POST' }).middleware([requi
     s.from('admin_audit_log').select('*').order('created_at', { ascending: false }).limit(100),
     s.from('course_categories').select('*').order('position'),
     s.from('course_modules').select('*').order('position').limit(1000),
+    s.from('quizzes').select('*').order('created_at', { ascending: false }).limit(1000),
+    s.from('quiz_questions').select('*').order('created_at', { ascending: false }).limit(1000),
+    s.from('certificates').select('*').order('issued_at', { ascending: false }).limit(1000),
+    s.from('course_reviews').select('*').order('created_at', { ascending: false }).limit(1000),
   ]);
   if (results.some(r => r.error)) throw new Error('Unable to load administration records');
-  const [users,courses,lessons,classes,ebooks,bookings,enrollments,orders,affiliates,commissions,payouts,notifications,settings,audit,categories,modules] = results;
-  return { users: users.data ?? [], courses: courses.data ?? [], lessons: lessons.data ?? [], classes: classes.data ?? [], ebooks: ebooks.data ?? [], bookings: bookings.data ?? [], enrollments: enrollments.data ?? [], orders: orders.data ?? [], affiliates: affiliates.data ?? [], commissions: commissions.data ?? [], payouts: payouts.data ?? [], notifications: notifications.data ?? [], settings: settings.data ?? [], audit: audit.data ?? [], categories: categories.data ?? [], modules: modules.data ?? [], capped: results.some(r => (r.data?.length ?? 0) >= 1000) };
+  const [users,courses,lessons,classes,ebooks,bookings,enrollments,orders,affiliates,commissions,payouts,notifications,settings,audit,categories,modules,quizzes,questions,certificates,reviews] = results;
+  return { users: users.data ?? [], courses: courses.data ?? [], lessons: lessons.data ?? [], classes: classes.data ?? [], ebooks: ebooks.data ?? [], bookings: bookings.data ?? [], enrollments: enrollments.data ?? [], orders: orders.data ?? [], affiliates: affiliates.data ?? [], commissions: commissions.data ?? [], payouts: payouts.data ?? [], notifications: notifications.data ?? [], settings: settings.data ?? [], audit: audit.data ?? [], categories: categories.data ?? [], modules: modules.data ?? [], quizzes: quizzes.data ?? [], questions: questions.data ?? [], certificates: certificates.data ?? [], reviews: reviews.data ?? [], capped: results.some(r => (r.data?.length ?? 0) >= 1000) };
 });
 
 const title = z.string().trim().min(2).max(120);
@@ -92,12 +96,40 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
       const row = z.object({ status: z.enum(['reviewed','rejected']) }).parse(v);
       result = await s.from('payout_requests').update(row).eq('id',data.id).eq('status','pending').select('id').single(); break;
     }
+    case 'quizzes': {
+      const row = z.object({ title, course_id: z.union([z.literal('').transform(() => null), z.null(), z.string().uuid()]).default(null), time_limit_minutes: z.coerce.number().int().min(1).max(300), pass_percent: z.coerce.number().int().min(0).max(100), negative_marks: z.coerce.number().min(0).max(10), max_attempts: z.coerce.number().int().min(1).max(50), status: z.enum(['draft','published']) }).parse(v);
+      if (row.status === 'published') {
+        if (!data.id) throw new Error('Save as draft first, then add questions');
+        const q = await s.from('quiz_questions').select('id', { count: 'exact', head: true }).eq('quiz_id', data.id);
+        if (!q.count) throw new Error('Cannot publish: add at least one question');
+      }
+      result = data.id ? await s.from('quizzes').update(row).eq('id',data.id).select('id').single() : await s.from('quizzes').insert(row).select('id').single(); break;
+    }
+    case 'questions': {
+      const opt = z.string().trim().max(500);
+      const row = z.object({ quiz_id: z.union([z.literal('').transform(() => null), z.null(), z.string().uuid()]).default(null), topic: z.string().trim().max(100).default(''), question: z.string().trim().min(3).max(1000), option_a: opt.min(1), option_b: opt.min(1), option_c: opt.default(''), option_d: opt.default(''), correct_option: z.enum(['a','b','c','d']), marks: z.coerce.number().int().min(1).max(100) }).parse(v);
+      if (!row[`option_${row.correct_option}`]) throw new Error('Correct option is empty');
+      result = data.id ? await s.from('quiz_questions').update(row).eq('id',data.id).select('id').single() : await s.from('quiz_questions').insert(row).select('id').single(); break;
+    }
+    case 'certificates': {
+      if (data.id) { const row = z.object({ status: z.enum(['issued','revoked']) }).parse(v); result = await s.from('certificates').update(row).eq('id',data.id).select('id').single(); break; }
+      const row = z.object({ user_id: z.string().uuid(), course_id: z.string().uuid() }).parse(v);
+      const en = await s.from('enrollments').select('id').eq('user_id', row.user_id).eq('course_id', row.course_id).maybeSingle();
+      if (!en.data) throw new Error('Student is not enrolled in this course');
+      const rand = Array.from(crypto.getRandomValues(new Uint8Array(6)), b => 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[b % 32]).join('');
+      result = await s.from('certificates').insert({ ...row, certificate_no: makeCertificateNo(new Date().getFullYear(), rand) }).select('id').single(); break;
+    }
+    case 'reviews': {
+      const row = z.object({ status: z.enum(['pending','approved','hidden']) }).parse(v);
+      if (!data.id) throw new Error('Unable to save record');
+      result = await s.from('course_reviews').update(row).eq('id',data.id).select('id').single(); break;
+    }
     case 'settings': {
       const row = z.object({ support_email: z.union([z.literal(''),z.string().email().max(200)]), support_phone: z.string().max(30), commission_percent: z.coerce.number().int().min(0).max(100) }).parse(v);
       result = data.id ? await s.from('admin_settings').update({ ...row, updated_at: new Date().toISOString() }).eq('id',data.id).select('id').single() : await s.from('admin_settings').insert(row).select('id').single(); break;
     }
   }
-  if (result.error) throw new Error('Unable to save record');
+  if (result.error) throw new Error(result.error.code === '23505' ? 'Certificate already issued' : 'Unable to save record');
   return { id: result.data.id };
 });
 
