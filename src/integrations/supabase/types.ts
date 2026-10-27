@@ -130,29 +130,65 @@ export type Database = {
           },
         ]
       }
-      course_lessons: {
+      course_categories: {
         Row: {
-          course_id: string
           created_at: string
           id: string
+          name: string
+          position: number
+          slug: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          position?: number
+          slug: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          position?: number
+          slug?: string
+        }
+        Relationships: []
+      }
+      course_lessons: {
+        Row: {
+          allow_download: boolean
+          course_id: string
+          created_at: string
+          duration_minutes: number
+          id: string
+          is_preview: boolean
+          module_id: string | null
           position: number
           resource_path: string
           title: string
           video_url: string
         }
         Insert: {
+          allow_download?: boolean
           course_id: string
           created_at?: string
+          duration_minutes?: number
           id?: string
+          is_preview?: boolean
+          module_id?: string | null
           position?: number
           resource_path?: string
           title: string
           video_url?: string
         }
         Update: {
+          allow_download?: boolean
           course_id?: string
           created_at?: string
+          duration_minutes?: number
           id?: string
+          is_preview?: boolean
+          module_id?: string | null
           position?: number
           resource_path?: string
           title?: string
@@ -166,33 +202,96 @@ export type Database = {
             referencedRelation: "courses"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "course_lessons_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      course_modules: {
+        Row: {
+          course_id: string
+          created_at: string
+          drip_days: number
+          id: string
+          position: number
+          title: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          drip_days?: number
+          id?: string
+          position?: number
+          title: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          drip_days?: number
+          id?: string
+          position?: number
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_modules_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
         ]
       }
       courses: {
         Row: {
+          access_days: number
+          access_type: string
           category: string
           created_at: string
+          description: string
           id: string
+          instructor: string
+          objectives: string
           price: number
+          sale_price: number | null
           status: string
+          thumbnail_url: string
           title: string
           updated_at: string
         }
         Insert: {
+          access_days?: number
+          access_type?: string
           category?: string
           created_at?: string
+          description?: string
           id?: string
+          instructor?: string
+          objectives?: string
           price?: number
+          sale_price?: number | null
           status?: string
+          thumbnail_url?: string
           title: string
           updated_at?: string
         }
         Update: {
+          access_days?: number
+          access_type?: string
           category?: string
           created_at?: string
+          description?: string
           id?: string
+          instructor?: string
+          objectives?: string
           price?: number
+          sale_price?: number | null
           status?: string
+          thumbnail_url?: string
           title?: string
           updated_at?: string
         }
