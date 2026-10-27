@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [ ] Add YouTube class + Jitsi doubt-session combo in testing mode and verify both flows
 - [ ] Verify rebuilt Android APK stays in-app on user's device (explicit project-host navigation configured and tests passed; Android project/device and actual redirect destination unavailable here; preview returns 401 without access)
 - [ ] Full signed-in data-change test of My Learning + Profile (signed-in screens verified; progress mutation/profile save verification still pending)
 - [ ] Real course data from user (prices, ratings, class times, stats)
