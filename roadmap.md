@@ -1,13 +1,14 @@
 # Roadmap
 
 ## Open
-- [ ] Add YouTube class + Jitsi doubt-session combo in testing mode and verify both flows
+- [ ] Activate real YouTube + Jitsi sessions — awaiting client testing approval, actual YouTube stream, and confirmed Jitsi hosting/cost; public meet.jit.si embeds are demo-limited
 - [ ] Verify rebuilt Android APK stays in-app on user's device (explicit project-host navigation configured and tests passed; Android project/device and actual redirect destination unavailable here; preview returns 401 without access)
 - [ ] Full signed-in data-change test of My Learning + Profile (signed-in screens verified; progress mutation/profile save verification still pending)
 - [ ] Real course data from user (prices, ratings, class times, stats)
 - [ ] Payment gateway (LIVE) — only after client approves test app; do NOT add now
 
 ## Done
+- [x] YouTube class + Jitsi doubt-session combo previews on public class and Test Portal pages; sample video playback, separate discussions, join/leave, simulated mic/camera/hand controls verified in Hindi/English; 6 rule tests passed; no external connection or device capture
 - Wallet toggle at left-center with wallet/referral links, referrals inside wallet, and floating support above mobile navigation; removed these shortcuts from Test Portal navigation and overview
 - All-screen responsive enhancement: 320/393/834/1280 widths checked in Hindi/English; signed-in dashboard/profile render, tablet navigation and phone forms improved; animation observer optimized; existing tests passed
 - Mock test portal: playable sample video, 3 lessons, saved notes, quiz/retry and sample certificate download; verified end-to-end
