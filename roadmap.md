@@ -9,6 +9,7 @@
 - [ ] Payment gateway (LIVE) — only after client approves test app; do NOT add now
 
 ## Done
+- [x] Designated Admin and Student Cloud login accounts provisioned; real password login reaches /admin and /dashboard respectively, and Student is denied Admin access; existing security tests passed
 - [x] Secure Cloud admin panel at /admin with 16 sections, CSV export, role-protected saves, uploads, in-app notifications and audit history; course + notification save verified end-to-end
 - [x] YouTube class + Jitsi doubt-session combo previews on public class and Test Portal pages; sample video playback, separate discussions, join/leave, simulated mic/camera/hand controls verified in Hindi/English; 6 rule tests passed; no external connection or device capture
 - Wallet toggle at left-center with wallet/referral links, referrals inside wallet, and floating support above mobile navigation; removed these shortcuts from Test Portal navigation and overview
