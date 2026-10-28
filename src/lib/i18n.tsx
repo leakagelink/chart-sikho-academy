@@ -44,6 +44,7 @@ const dict = {
   admin_lost: { en: 'Lost', hi: 'खोया' },
   admin_sent: { en: 'Sent', hi: 'भेजा गया' },
   admin_archived: { en: 'Archived', hi: 'आर्काइव' },
+  admin_security_note: { en: 'Every admin change is recorded here automatically.', hi: 'एडमिन का हर बदलाव यहाँ अपने आप दर्ज होता है।' },
   admin_maint_note: { en: 'When on, students see this message instead of the app.', hi: 'चालू होने पर स्टूडेंट्स को ऐप की जगह यह संदेश दिखेगा।' },
   admin_yes: { en: 'Yes', hi: 'हाँ' },
   admin_no: { en: 'No', hi: 'नहीं' },
