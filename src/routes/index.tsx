@@ -26,8 +26,9 @@ function Index() {
   const { session } = useAuth();
   const meta = session?.user?.user_metadata as { full_name?: string } | undefined;
   const firstName = (meta?.full_name ?? "").trim().split(" ")[0] || t("student_fallback");
-  const hour = new Date().getHours();
-  const greet = hour < 12 ? t("greet_morning") : hour < 17 ? t("greet_afternoon") : t("greet_evening");
+  const [hour, setHour] = useState<number | null>(null);
+  useEffect(() => { setHour(new Date().getHours()); }, []);
+  const greet = hour === null ? t("greet_morning") : hour < 12 ? t("greet_morning") : hour < 17 ? t("greet_afternoon") : t("greet_evening");
   const cats = [
     { icon: BookOpen, label: t("cat_mycourses"), to: "/dashboard" },
     { icon: Radio, label: t("cat_live"), to: "/sandbox/live" },
