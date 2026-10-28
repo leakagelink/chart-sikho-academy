@@ -7,7 +7,7 @@ import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, PieChart, Pi
 import { Button } from '@/components/ui/button';
 import { useLang, type DictKey } from '@/lib/i18n';
 import { supabase } from '@/integrations/supabase/client';
-import { adminSections, coursePublishIssues, type AdminSection } from '@/lib/admin-rules';
+import { adminSections, coursePublishIssues, fraudFlags, type AdminSection } from '@/lib/admin-rules';
 import { changeAdminRecord, getAdminData, duplicateCourse, moveCurriculumItem } from '@/lib/admin.functions';
 import { adminQuery } from '@/lib/admin-query';
 import { adminNav } from '@/lib/admin-nav';
