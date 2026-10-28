@@ -158,3 +158,30 @@ function Builder({data,open,setError}:{data:Awaited<ReturnType<typeof getAdminDa
  </div>;
 }
 function courseValues(c:{title:string;price:number;category:string;description:string;thumbnail_url:string;instructor:string;objectives:string;sale_price:number|null;access_type:string;access_days:number}) { return {title:c.title,price:c.price,category:c.category,description:c.description,thumbnail_url:c.thumbnail_url,instructor:c.instructor,objectives:c.objectives,sale_price:c.sale_price,access_type:c.access_type,access_days:c.access_days}; }
+
+type AdminData = Awaited<ReturnType<typeof getAdminData>>;
+
+function TeamTree({data}:{data:AdminData}) {
+  const {t}=useLang();
+  const name=(id:string)=>data.users.find(u=>u.id===id)?.full_name??id.slice(0,8);
+  const children=new Map<string,string[]>();
+  data.affiliates.forEach(a=>{const l=children.get(a.referrer_id)??[];l.push(a.referred_id);children.set(a.referrer_id,l);});
+  const referred=new Set(data.affiliates.map(a=>a.referred_id));
+  const roots=[...children.keys()].filter(id=>!referred.has(id));
+  const Node=({id,depth}:{id:string;depth:number})=>depth>3?null:<li><span className="font-medium">{name(id)}</span><span className="ml-2 text-xs text-muted-foreground">{t('admin_level')} {depth+1}</span>{children.get(id)?.length?<ul className="ml-5 border-l border-border pl-3">{children.get(id)!.map(c=><Node key={c} id={c} depth={depth+1}/>)}</ul>:null}</li>;
+  if(!roots.length)return <p className="border-y border-border py-10 text-center text-muted-foreground">{t('admin_empty')}</p>;
+  return <ul className="space-y-2 border-y border-border py-5 text-sm">{roots.map(r=><Node key={r} id={r} depth={0}/>)}</ul>;
+}
+
+function FraudPanel({data}:{data:AdminData}) {
+  const {t}=useLang();
+  const flags=fraudFlags(data.affiliates,data.commissions,data.orders);
+  if(!flags.length)return <p className="border-y border-border py-10 text-center text-muted-foreground">{t('admin_no_fraud')}</p>;
+  return <ul className="space-y-2 border-y border-border py-5">{flags.map((f,i)=><li key={i} className="flex items-start gap-2 text-sm"><AlertTriangle size={16} className="mt-0.5 shrink-0 text-destructive"/><span><strong>{t(`admin_fraud_${f.kind}` as DictKey)}</strong><span className="ml-2 font-mono text-xs text-muted-foreground">{f.detail.slice(0,16)}</span></span></li>)}</ul>;
+}
+
+function BulkPanel({data}:{data:AdminData}) {
+  const {t}=useLang();
+  const sets:{label:DictKey;rows:Row[];name:string}[]=[{label:'admin_users_real',rows:data.users as unknown as Row[],name:'users'},{label:'admin_courses_real',rows:data.courses as unknown as Row[],name:'courses'},{label:'admin_orders_real',rows:data.orders as unknown as Row[],name:'orders'},{label:'admin_enrollments',rows:data.enrollments as unknown as Row[],name:'enrollments'}];
+  return <div className="space-y-4 border-y border-border py-6"><p className="text-sm text-muted-foreground">{t('admin_bulk_note')}</p>{sets.map(s=><div key={s.name} className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3"><span className="font-medium">{t(s.label)} <span className="text-muted-foreground">({s.rows.length})</span></span><Button variant="outline" size="sm" onClick={()=>downloadCsv(s.rows,s.name)}><Download size={15}/>{t('admin_export')}</Button></div>)}</div>;
+}
