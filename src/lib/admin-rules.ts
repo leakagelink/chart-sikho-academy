@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-export const adminSections = ['overview','users','categories','builder','courses','lessons','videos','classes','webinars','ebooks','bookings','orders','payments','affiliates','commissions','payouts','notifications','reports','settings','quizzes','questions','certificates','progress','reviews','pricing','coupons','refunds','invoices','abandoned'] as const;
+export const adminSections = ['overview','users','categories','builder','courses','lessons','videos','classes','webinars','ebooks','bookings','orders','payments','affiliates','commissions','payouts','notifications','reports','settings','quizzes','questions','certificates','progress','reviews','pricing','coupons','refunds','invoices','abandoned','instructors','roles','verification','blocked','bulk','refsettings','reflinks','teamtree','commrules','ranks','bonuses','fraud'] as const;
 export type AdminSection = typeof adminSections[number];
 export const adminChangeSchema = z.object({
-  resource: z.enum(['categories','modules','courses','lessons','classes','ebooks','bookings','users','notifications','payouts','settings','quizzes','questions','certificates','reviews','coupons','refunds','invoices','abandoned']),
+  resource: z.enum(['categories','modules','courses','lessons','classes','ebooks','bookings','users','notifications','payouts','settings','quizzes','questions','certificates','reviews','coupons','refunds','invoices','abandoned','instructors','roles','verification','ranks','bonuses']),
   id: z.string().uuid().optional(),
   values: z.record(z.union([z.string().max(2000), z.number().finite(), z.boolean(), z.null()])),
 });
@@ -52,4 +52,23 @@ export function couponDiscount(c: CouponCheck, orderTotal: number, now: Date = n
   if (c.max_uses !== null && c.used_count >= c.max_uses) return 0;
   const raw = c.kind === 'percent' ? Math.floor(orderTotal * Math.min(c.value, 90) / 100) : c.value;
   return Math.min(raw, orderTotal);
+}
+
+export type ReferralPair = { referrer_id: string; referred_id: string };
+export type CommissionRow = { user_id: string; order_id: string; amount: number };
+export type OrderRow = { id: string; amount: number; status: string; provider_reference: string | null };
+export type FraudFlag = { kind: 'self_referral' | 'duplicate_pair' | 'commission_exceeds_sale' | 'unverified_sale_commission'; detail: string };
+/** Flags suspicious referral and commission patterns for admin review. */
+export function fraudFlags(rels: ReferralPair[], commissions: CommissionRow[], orders: OrderRow[]): FraudFlag[] {
+  const flags: FraudFlag[] = [];
+  for (const r of rels) if (r.referrer_id === r.referred_id) flags.push({ kind: 'self_referral', detail: r.referrer_id });
+  const seen = new Set<string>();
+  for (const r of rels) { const k = `${r.referrer_id}:${r.referred_id}`; if (seen.has(k)) flags.push({ kind: 'duplicate_pair', detail: k }); seen.add(k); }
+  const orderMap = new Map(orders.map(o => [o.id, o]));
+  for (const c of commissions) {
+    const o = orderMap.get(c.order_id);
+    if (!o || o.status !== 'paid' || !o.provider_reference) flags.push({ kind: 'unverified_sale_commission', detail: c.order_id });
+    else if (c.amount > o.amount) flags.push({ kind: 'commission_exceeds_sale', detail: c.order_id });
+  }
+  return flags;
 }
