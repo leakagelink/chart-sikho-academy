@@ -5,7 +5,7 @@
 - [x] Admin Phase 2: Course Builder (categories, modules, lessons, video library, drip days, access, sale price, duplicate, reorder, publish checklist, student preview)
 - [x] Admin Phase 3: Quizzes, question bank, certificates, progress, reviews
 - [x] Admin Phase 4: Pricing & offers, coupons (percent/flat, limits, expiry), refund review, GST invoices for verified paid orders, abandoned checkouts (no live payments)
-- [ ] Admin Phase 5: Instructors, roles, verification, bulk import, referral rules/tree/ranks/fraud
+- [x] Admin Phase 5: Instructors, roles & permissions, member verification, blocked users, bulk export, referral settings/links/team tree/commission rules/ranks/bonuses/fraud detection
 - [ ] Admin Phase 6: Templates, announcements, tickets, marketing, SEO, system settings
 - [ ] Live payments, money transfers, email/WhatsApp/SMS delivery — need separate approval and provider accounts
 - [ ] Activate real YouTube + Jitsi sessions — awaiting client testing approval, actual YouTube stream, and confirmed Jitsi hosting/cost; public meet.jit.si embeds are demo-limited

@@ -30,3 +30,18 @@ describe('commerce rules', () => {
     expect(couponDiscount({ ...coupon, kind: 'flat', value: 5000, min_order: 0 }, 1000)).toBe(1000);
   });
 });
+import { fraudFlags } from './admin-rules';
+describe('fraud detection', () => {
+  const orders = [{ id: 'o1', amount: 1000, status: 'paid', provider_reference: 'pay_1' }];
+  it('flags self-referrals and duplicate pairs', () => {
+    const flags = fraudFlags([{ referrer_id: 'a', referred_id: 'a' }, { referrer_id: 'a', referred_id: 'b' }, { referrer_id: 'a', referred_id: 'b' }], [], orders);
+    expect(flags.map(f => f.kind)).toEqual(['self_referral', 'duplicate_pair']);
+  });
+  it('flags commission on unverified sales and commission above the sale amount', () => {
+    const flags = fraudFlags([], [{ user_id: 'a', order_id: 'o2', amount: 100 }, { user_id: 'a', order_id: 'o1', amount: 2000 }], orders);
+    expect(flags.map(f => f.kind)).toEqual(['unverified_sale_commission', 'commission_exceeds_sale']);
+  });
+  it('passes clean referral data', () => {
+    expect(fraudFlags([{ referrer_id: 'a', referred_id: 'b' }], [{ user_id: 'a', order_id: 'o1', amount: 100 }], orders)).toEqual([]);
+  });
+});
