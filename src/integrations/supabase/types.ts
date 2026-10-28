@@ -991,6 +991,47 @@ export type Database = {
           },
         ]
       }
+      quiz_attempts: {
+        Row: {
+          created_at: string
+          id: string
+          passed: boolean
+          percent: number
+          quiz_id: string
+          score: number
+          total: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          passed?: boolean
+          percent?: number
+          quiz_id: string
+          score?: number
+          total?: number
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          passed?: boolean
+          percent?: number
+          quiz_id?: string
+          score?: number
+          total?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_attempts_quiz_id_fkey"
+            columns: ["quiz_id"]
+            isOneToOne: false
+            referencedRelation: "quizzes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       quiz_questions: {
         Row: {
           correct_option: string
