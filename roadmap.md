@@ -4,7 +4,7 @@
 - [x] Admin Phase 1: 8-group menu (planned items marked P2–P6) + date-filtered dashboard with separate gross/net/refunds/fees/commission KPIs
 - [x] Admin Phase 2: Course Builder (categories, modules, lessons, video library, drip days, access, sale price, duplicate, reorder, publish checklist, student preview)
 - [x] Admin Phase 3: Quizzes, question bank, certificates, progress, reviews
-- [ ] Admin Phase 4: Pricing, coupons, refunds, invoices/GST, abandoned checkouts (no live payments)
+- [x] Admin Phase 4: Pricing & offers, coupons (percent/flat, limits, expiry), refund review, GST invoices for verified paid orders, abandoned checkouts (no live payments)
 - [ ] Admin Phase 5: Instructors, roles, verification, bulk import, referral rules/tree/ranks/fraud
 - [ ] Admin Phase 6: Templates, announcements, tickets, marketing, SEO, system settings
 - [ ] Live payments, money transfers, email/WhatsApp/SMS delivery — need separate approval and provider accounts
