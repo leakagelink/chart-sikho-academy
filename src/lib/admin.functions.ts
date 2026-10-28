@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/react-start';
 import { z } from 'zod';
 import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
-import { adminChangeSchema, requireAdminRole, safeHttps, coursePublishIssues, makeCertificateNo } from './admin-rules';
+import { adminChangeSchema, requireAdminRole, safeHttps, coursePublishIssues, makeCertificateNo, makeInvoiceNo, invoiceTotals } from './admin-rules';
 
 export const getAdminData = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth]).handler(async ({ context }) => {
   const s = context.supabase;
@@ -28,10 +28,14 @@ export const getAdminData = createServerFn({ method: 'POST' }).middleware([requi
     s.from('quiz_questions').select('*').order('created_at', { ascending: false }).limit(1000),
     s.from('certificates').select('*').order('issued_at', { ascending: false }).limit(1000),
     s.from('course_reviews').select('*').order('created_at', { ascending: false }).limit(1000),
+    s.from('coupons').select('*').order('created_at', { ascending: false }).limit(1000),
+    s.from('refund_requests').select('*').order('created_at', { ascending: false }).limit(1000),
+    s.from('invoices').select('*').order('issued_at', { ascending: false }).limit(1000),
+    s.from('abandoned_checkouts').select('*').order('created_at', { ascending: false }).limit(1000),
   ]);
   if (results.some(r => r.error)) throw new Error('Unable to load administration records');
-  const [users,courses,lessons,classes,ebooks,bookings,enrollments,orders,affiliates,commissions,payouts,notifications,settings,audit,categories,modules,quizzes,questions,certificates,reviews] = results;
-  return { users: users.data ?? [], courses: courses.data ?? [], lessons: lessons.data ?? [], classes: classes.data ?? [], ebooks: ebooks.data ?? [], bookings: bookings.data ?? [], enrollments: enrollments.data ?? [], orders: orders.data ?? [], affiliates: affiliates.data ?? [], commissions: commissions.data ?? [], payouts: payouts.data ?? [], notifications: notifications.data ?? [], settings: settings.data ?? [], audit: audit.data ?? [], categories: categories.data ?? [], modules: modules.data ?? [], quizzes: quizzes.data ?? [], questions: questions.data ?? [], certificates: certificates.data ?? [], reviews: reviews.data ?? [], capped: results.some(r => (r.data?.length ?? 0) >= 1000) };
+  const [users,courses,lessons,classes,ebooks,bookings,enrollments,orders,affiliates,commissions,payouts,notifications,settings,audit,categories,modules,quizzes,questions,certificates,reviews,coupons,refunds,invoices,abandoned] = results;
+  return { users: users.data ?? [], courses: courses.data ?? [], lessons: lessons.data ?? [], classes: classes.data ?? [], ebooks: ebooks.data ?? [], bookings: bookings.data ?? [], enrollments: enrollments.data ?? [], orders: orders.data ?? [], affiliates: affiliates.data ?? [], commissions: commissions.data ?? [], payouts: payouts.data ?? [], notifications: notifications.data ?? [], settings: settings.data ?? [], audit: audit.data ?? [], categories: categories.data ?? [], modules: modules.data ?? [], quizzes: quizzes.data ?? [], questions: questions.data ?? [], certificates: certificates.data ?? [], reviews: reviews.data ?? [], coupons: coupons.data ?? [], refunds: refunds.data ?? [], invoices: invoices.data ?? [], abandoned: abandoned.data ?? [], capped: results.some(r => (r.data?.length ?? 0) >= 1000) };
 });
 
 const title = z.string().trim().min(2).max(120);
@@ -123,6 +127,33 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
       const row = z.object({ status: z.enum(['pending','approved','hidden']) }).parse(v);
       if (!data.id) throw new Error('Unable to save record');
       result = await s.from('course_reviews').update(row).eq('id',data.id).select('id').single(); break;
+    }
+    case 'coupons': {
+      const row = z.object({ code: z.string().trim().toUpperCase().regex(/^[A-Z0-9-]{3,24}$/), kind: z.enum(['percent','flat']), value: z.coerce.number().int().min(1).max(100000), min_order: z.coerce.number().int().min(0).max(1000000).default(0), max_uses: z.union([z.literal('').transform(() => null), z.null(), z.coerce.number().int().min(1).max(1000000)]).default(null), active: z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]).default(true), expires_at: z.union([z.literal('').transform(() => null), z.null(), z.string().datetime()]).default(null) }).parse(v);
+      if (row.kind === 'percent' && row.value > 90) throw new Error('Percent coupons are capped at 90%');
+      result = data.id ? await s.from('coupons').update(row).eq('id',data.id).select('id').single() : await s.from('coupons').insert(row).select('id').single(); break;
+    }
+    case 'refunds': {
+      if (!data.id) throw new Error('Record required');
+      const row = z.object({ status: z.enum(['approved','rejected']) }).parse(v);
+      result = await s.from('refund_requests').update({ ...row, reviewed_at: new Date().toISOString() }).eq('id',data.id).eq('status','pending').select('id').single(); break;
+    }
+    case 'invoices': {
+      if (data.id) {
+        const row = z.object({ status: z.enum(['issued','cancelled']) }).parse(v);
+        result = await s.from('invoices').update(row).eq('id',data.id).select('id').single(); break;
+      }
+      const row = z.object({ order_id: z.string().uuid(), buyer_name: z.string().trim().min(2).max(120), buyer_gstin: z.string().trim().max(15).default(''), subtotal: z.coerce.number().int().min(0).max(10000000), gst_rate: z.coerce.number().int().min(0).max(28).default(18) }).parse(v);
+      const order = await s.from('orders').select('id,status,provider_reference').eq('id', row.order_id).maybeSingle();
+      if (!order.data || order.data.status !== 'paid' || !order.data.provider_reference) throw new Error('Invoice needs a verified paid order');
+      const { gstAmount, total } = invoiceTotals(row.subtotal, row.gst_rate);
+      const rand = Array.from(crypto.getRandomValues(new Uint8Array(6)), b => 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[b % 32]).join('');
+      result = await s.from('invoices').insert({ ...row, invoice_no: makeInvoiceNo(new Date().getFullYear(), rand), gst_amount: gstAmount, total }).select('id').single(); break;
+    }
+    case 'abandoned': {
+      if (!data.id) throw new Error('Record required');
+      const row = z.object({ status: z.enum(['abandoned','recovered']) }).parse(v);
+      result = await s.from('abandoned_checkouts').update(row).eq('id',data.id).select('id').single(); break;
     }
     case 'settings': {
       const row = z.object({ support_email: z.union([z.literal(''),z.string().email().max(200)]), support_phone: z.string().max(30), commission_percent: z.coerce.number().int().min(0).max(100) }).parse(v);
