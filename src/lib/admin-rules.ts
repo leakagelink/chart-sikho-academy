@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-export const adminSections = ['overview','users','categories','builder','courses','lessons','videos','classes','webinars','ebooks','bookings','orders','payments','affiliates','commissions','payouts','notifications','reports','settings','quizzes','questions','certificates','progress','reviews','pricing','coupons','refunds','invoices','abandoned','instructors','roles','verification','blocked','bulk','refsettings','reflinks','teamtree','commrules','ranks','bonuses','fraud'] as const;
+export const adminSections = ['overview','users','categories','builder','courses','lessons','videos','classes','webinars','ebooks','bookings','orders','payments','affiliates','commissions','payouts','notifications','reports','settings','quizzes','questions','certificates','progress','reviews','pricing','coupons','refunds','invoices','abandoned','instructors','roles','verification','blocked','bulk','refsettings','reflinks','teamtree','commrules','ranks','bonuses','fraud','templates','announcements','tickets','banners','campaigns','leads','seo','promocodes','maintenance','security'] as const;
 export type AdminSection = typeof adminSections[number];
 export const adminChangeSchema = z.object({
-  resource: z.enum(['categories','modules','courses','lessons','classes','ebooks','bookings','users','notifications','payouts','settings','quizzes','questions','certificates','reviews','coupons','refunds','invoices','abandoned','instructors','roles','verification','ranks','bonuses']),
+  resource: z.enum(['categories','modules','courses','lessons','classes','ebooks','bookings','users','notifications','payouts','settings','quizzes','questions','certificates','reviews','coupons','refunds','invoices','abandoned','instructors','roles','verification','ranks','bonuses','templates','announcements','tickets','banners','campaigns','leads','seo','promocodes','maintenance']),
   id: z.string().uuid().optional(),
   values: z.record(z.union([z.string().max(2000), z.number().finite(), z.boolean(), z.null()])),
 });
