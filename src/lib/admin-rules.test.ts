@@ -46,7 +46,7 @@ describe('fraud detection', () => {
   });
 });
 
-import { adminSections, adminChangeSchema } from './admin-rules';
+import { adminSections } from './admin-rules';
 
 describe('phase 6 admin resources', () => {
   it('includes engagement, growth and system sections', () => {
