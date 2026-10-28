@@ -1,4 +1,5 @@
-type NavItem = { section: string } | { planned: string; phase: number };
+import type { AdminSection } from './admin-rules';
+type NavItem = { section: AdminSection } | { planned: string; phase: number };
 export const adminNav: { group: string; items: NavItem[] }[] = [
   {group:'admin_grp_overview',items:[{section:'overview'},{section:'reports'}]},
   {group:'admin_grp_learning',items:[{section:'categories'},{section:'builder'},{section:'courses'},{section:'lessons'},{section:'videos'},{section:'ebooks'},{section:'classes'},{section:'webinars'},{section:'quizzes'},{section:'questions'},{section:'certificates'},{section:'progress'},{section:'reviews'}]},
