@@ -28,7 +28,9 @@ export function PageMotion({ children }: { children: ReactNode }) {
         observer.observe(element);
       });
     }
-    scan(root);
+    // Defer the first scan until React hydration has finished, so the
+    // data-motion attributes never race with hydrating lazy route chunks.
+    const initialScan = window.setTimeout(() => scan(root), 300);
     const mutations = new MutationObserver((records) => {
       records.forEach((record) => record.addedNodes.forEach((node) => {
         if (node instanceof Element) scan(node);
@@ -36,6 +38,7 @@ export function PageMotion({ children }: { children: ReactNode }) {
     });
     mutations.observe(root, { childList: true, subtree: true });
     return () => {
+      window.clearTimeout(initialScan);
       observer.disconnect(); mutations.disconnect();
       root.querySelectorAll('[data-motion="ready"]').forEach((element) => element.removeAttribute("data-motion"));
     };
