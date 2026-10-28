@@ -75,6 +75,8 @@ export type Database = {
         Row: {
           commission_percent: number
           id: string
+          maintenance_message: string
+          maintenance_mode: boolean
           ref_level1_percent: number
           ref_level2_percent: number
           ref_level3_percent: number
@@ -86,6 +88,8 @@ export type Database = {
         Insert: {
           commission_percent?: number
           id?: string
+          maintenance_message?: string
+          maintenance_mode?: boolean
           ref_level1_percent?: number
           ref_level2_percent?: number
           ref_level3_percent?: number
@@ -97,6 +101,8 @@ export type Database = {
         Update: {
           commission_percent?: number
           id?: string
+          maintenance_message?: string
+          maintenance_mode?: boolean
           ref_level1_percent?: number
           ref_level2_percent?: number
           ref_level3_percent?: number
@@ -104,6 +110,72 @@ export type Database = {
           support_email?: string
           support_phone?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      announcements: {
+        Row: {
+          audience: string
+          created_at: string
+          ends_at: string | null
+          id: string
+          message: string
+          starts_at: string | null
+          status: string
+          title: string
+        }
+        Insert: {
+          audience?: string
+          created_at?: string
+          ends_at?: string | null
+          id?: string
+          message: string
+          starts_at?: string | null
+          status?: string
+          title: string
+        }
+        Update: {
+          audience?: string
+          created_at?: string
+          ends_at?: string | null
+          id?: string
+          message?: string
+          starts_at?: string | null
+          status?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      banners: {
+        Row: {
+          active: boolean
+          created_at: string
+          id: string
+          image_url: string
+          link_url: string
+          placement: string
+          position: number
+          title: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          image_url?: string
+          link_url?: string
+          placement?: string
+          position?: number
+          title: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          image_url?: string
+          link_url?: string
+          placement?: string
+          position?: number
+          title?: string
         }
         Relationships: []
       }
@@ -133,6 +205,47 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      campaigns: {
+        Row: {
+          audience: string
+          channel: string
+          created_at: string
+          id: string
+          name: string
+          scheduled_at: string | null
+          status: string
+          template_id: string | null
+        }
+        Insert: {
+          audience?: string
+          channel?: string
+          created_at?: string
+          id?: string
+          name: string
+          scheduled_at?: string | null
+          status?: string
+          template_id?: string | null
+        }
+        Update: {
+          audience?: string
+          channel?: string
+          created_at?: string
+          id?: string
+          name?: string
+          scheduled_at?: string | null
+          status?: string
+          template_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaigns_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "message_templates"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       certificates: {
         Row: {
@@ -648,6 +761,72 @@ export type Database = {
           },
         ]
       }
+      leads: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          name: string
+          note: string
+          phone: string
+          source: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string
+          id?: string
+          name: string
+          note?: string
+          phone?: string
+          source?: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string
+          note?: string
+          phone?: string
+          source?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      message_templates: {
+        Row: {
+          body: string
+          channel: string
+          created_at: string
+          id: string
+          name: string
+          status: string
+          subject: string
+          updated_at: string
+        }
+        Insert: {
+          body?: string
+          channel: string
+          created_at?: string
+          id?: string
+          name: string
+          status?: string
+          subject?: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          channel?: string
+          created_at?: string
+          id?: string
+          name?: string
+          status?: string
+          subject?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       notification_campaigns: {
         Row: {
           audience: string
@@ -776,6 +955,41 @@ export type Database = {
           verification_status?: string
         }
         Relationships: []
+      }
+      promo_codes: {
+        Row: {
+          active: boolean
+          code: string
+          coupon_id: string | null
+          created_at: string
+          description: string
+          id: string
+        }
+        Insert: {
+          active?: boolean
+          code: string
+          coupon_id?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+        }
+        Update: {
+          active?: boolean
+          code?: string
+          coupon_id?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "promo_codes_coupon_id_fkey"
+            columns: ["coupon_id"]
+            isOneToOne: false
+            referencedRelation: "coupons"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       quiz_questions: {
         Row: {
@@ -959,6 +1173,69 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      seo_pages: {
+        Row: {
+          id: string
+          keywords: string
+          meta_description: string
+          meta_title: string
+          path: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          keywords?: string
+          meta_description?: string
+          meta_title?: string
+          path: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          keywords?: string
+          meta_description?: string
+          meta_title?: string
+          path?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      support_tickets: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          priority: string
+          reply: string
+          status: string
+          subject: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          priority?: string
+          reply?: string
+          status?: string
+          subject: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          priority?: string
+          reply?: string
+          status?: string
+          subject?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
       }
       user_notifications: {
         Row: {
