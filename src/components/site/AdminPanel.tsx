@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { Link, useNavigate, useRouter } from '@tanstack/react-router';
 import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { useServerFn } from '@tanstack/react-start';
-import { Download, Plus, Pencil, RefreshCw, ShieldCheck, Upload, X, Check, Search, LayoutDashboard, Users, BookOpen, Video, Bell, Settings, Receipt, FileText, Network, Tags, Blocks, Film, ArrowUp, ArrowDown, Copy, Eye, CircleCheck, CircleX, ClipboardList, HelpCircle, Award, TrendingUp, Star, BadgeIndianRupee, TicketPercent, RotateCcw, FileSpreadsheet, ShoppingCart, GraduationCap, KeyRound, BadgeCheck, Ban, FileUp, SlidersHorizontal, Link2, GitBranch, Percent, Trophy, Gift, AlertTriangle } from 'lucide-react';
+import { Download, Plus, Pencil, RefreshCw, ShieldCheck, Upload, X, Check, Search, LayoutDashboard, Users, BookOpen, Video, Bell, Settings, Receipt, FileText, Network, Tags, Blocks, Film, ArrowUp, ArrowDown, Copy, Eye, CircleCheck, CircleX, ClipboardList, HelpCircle, Award, TrendingUp, Star, BadgeIndianRupee, TicketPercent, RotateCcw, FileSpreadsheet, ShoppingCart, GraduationCap, KeyRound, BadgeCheck, Ban, FileUp, SlidersHorizontal, Link2, GitBranch, Percent, Trophy, Gift, AlertTriangle, Mail, Megaphone, LifeBuoy, Image, Send, UserPlus, Globe, BadgePercent, Wrench } from 'lucide-react';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, PieChart, Pie, Cell } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { useLang, type DictKey } from '@/lib/i18n';
@@ -16,7 +16,7 @@ import { rangeBounds, summarize, type RangeKey } from '@/lib/admin-dashboard';
 type Row = Record<string, string | number | boolean | null>;
 type Field = { key:string; label:DictKey; type?:string; options?:string[] };
 const labels = Object.fromEntries(adminSections.map(s => [s, `admin_${s}_real`])) as Record<AdminSection, DictKey>;
-const icons = [LayoutDashboard,Users,Tags,Blocks,BookOpen,FileText,Film,Video,Video,BookOpen,Receipt,Receipt,Receipt,Network,Network,Receipt,Bell,FileText,Settings,ClipboardList,HelpCircle,Award,TrendingUp,Star,BadgeIndianRupee,TicketPercent,RotateCcw,FileSpreadsheet,ShoppingCart,GraduationCap,KeyRound,BadgeCheck,Ban,FileUp,SlidersHorizontal,Link2,GitBranch,Percent,Trophy,Gift,AlertTriangle];
+const icons = [LayoutDashboard,Users,Tags,Blocks,BookOpen,FileText,Film,Video,Video,BookOpen,Receipt,Receipt,Receipt,Network,Network,Receipt,Bell,FileText,Settings,ClipboardList,HelpCircle,Award,TrendingUp,Star,BadgeIndianRupee,TicketPercent,RotateCcw,FileSpreadsheet,ShoppingCart,GraduationCap,KeyRound,BadgeCheck,Ban,FileUp,SlidersHorizontal,Link2,GitBranch,Percent,Trophy,Gift,AlertTriangle,Mail,Megaphone,LifeBuoy,Image,Send,UserPlus,Globe,BadgePercent,Wrench,ShieldCheck];
 const inputCls = 'w-full min-w-0 rounded-md border border-input bg-background px-3 py-2 text-sm';
 type EditKind = AdminSection | 'modules';
 const fields: Partial<Record<EditKind,Field[]>> = {
