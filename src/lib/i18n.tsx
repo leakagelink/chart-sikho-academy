@@ -22,7 +22,7 @@ const dict = {
   admin_link: { en: 'Link', hi: 'लिंक' },
   admin_placement: { en: 'Placement', hi: 'प्लेसमेंट' },
   admin_template: { en: 'Template', hi: 'टेम्पलेट' },
-  admin_scheduled: { en: 'Scheduled at', hi: 'शेड्यूल समय' },
+  admin_scheduled_at: { en: 'Scheduled at', hi: 'शेड्यूल समय' },
   admin_note: { en: 'Note', hi: 'नोट' },
   admin_path: { en: 'Page path (e.g. /courses)', hi: 'पेज पाथ (जैसे /courses)' },
   admin_meta_title: { en: 'Meta title', hi: 'मेटा टाइटल' },
