@@ -64,6 +64,13 @@
       "when": 1793159604932,
       "tag": "0008_commerce_phase4",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1793160161256,
+      "tag": "0009_phase5_users_referral",
+      "breakpoints": true
     }
   ]
 }

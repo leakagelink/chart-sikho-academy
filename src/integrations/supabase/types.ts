@@ -75,6 +75,10 @@ export type Database = {
         Row: {
           commission_percent: number
           id: string
+          ref_level1_percent: number
+          ref_level2_percent: number
+          ref_level3_percent: number
+          referral_enabled: boolean
           support_email: string
           support_phone: string
           updated_at: string
@@ -82,6 +86,10 @@ export type Database = {
         Insert: {
           commission_percent?: number
           id?: string
+          ref_level1_percent?: number
+          ref_level2_percent?: number
+          ref_level3_percent?: number
+          referral_enabled?: boolean
           support_email?: string
           support_phone?: string
           updated_at?: string
@@ -89,9 +97,40 @@ export type Database = {
         Update: {
           commission_percent?: number
           id?: string
+          ref_level1_percent?: number
+          ref_level2_percent?: number
+          ref_level3_percent?: number
+          referral_enabled?: boolean
           support_email?: string
           support_phone?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      bonus_entries: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          reason: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          reason?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          reason?: string
+          status?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -529,6 +568,36 @@ export type Database = {
         }
         Relationships: []
       }
+      instructors: {
+        Row: {
+          bio: string
+          created_at: string
+          expertise: string
+          id: string
+          name: string
+          photo_url: string
+          status: string
+        }
+        Insert: {
+          bio?: string
+          created_at?: string
+          expertise?: string
+          id?: string
+          name: string
+          photo_url?: string
+          status?: string
+        }
+        Update: {
+          bio?: string
+          created_at?: string
+          expertise?: string
+          id?: string
+          name?: string
+          photo_url?: string
+          status?: string
+        }
+        Relationships: []
+      }
       invoices: {
         Row: {
           buyer_gstin: string
@@ -675,8 +744,10 @@ export type Database = {
           id: string
           phone: string | null
           preferred_language: string
+          referral_code: string | null
           state: string | null
           updated_at: string
+          verification_status: string
         }
         Insert: {
           account_status?: string
@@ -686,8 +757,10 @@ export type Database = {
           id: string
           phone?: string | null
           preferred_language?: string
+          referral_code?: string | null
           state?: string | null
           updated_at?: string
+          verification_status?: string
         }
         Update: {
           account_status?: string
@@ -697,8 +770,10 @@ export type Database = {
           id?: string
           phone?: string | null
           preferred_language?: string
+          referral_code?: string | null
           state?: string | null
           updated_at?: string
+          verification_status?: string
         }
         Relationships: []
       }
@@ -795,6 +870,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      ranks: {
+        Row: {
+          bonus_amount: number
+          created_at: string
+          id: string
+          min_sales: number
+          name: string
+          position: number
+        }
+        Insert: {
+          bonus_amount?: number
+          created_at?: string
+          id?: string
+          min_sales?: number
+          name: string
+          position?: number
+        }
+        Update: {
+          bonus_amount?: number
+          created_at?: string
+          id?: string
+          min_sales?: number
+          name?: string
+          position?: number
+        }
+        Relationships: []
       }
       referral_relationships: {
         Row: {
@@ -935,7 +1037,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "admin" | "user"
+      app_role: "admin" | "user" | "instructor"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1063,7 +1165,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "user"],
+      app_role: ["admin", "user", "instructor"],
     },
   },
 } as const
