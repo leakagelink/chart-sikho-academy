@@ -203,6 +203,49 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
       const row = z.object({ support_email: z.union([z.literal(''),z.string().email().max(200)]), support_phone: z.string().max(30), commission_percent: z.coerce.number().int().min(0).max(100), referral_enabled: z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]).default(true), ref_level1_percent: z.coerce.number().int().min(0).max(100).default(10), ref_level2_percent: z.coerce.number().int().min(0).max(100).default(5), ref_level3_percent: z.coerce.number().int().min(0).max(100).default(2) }).parse(v);
       result = data.id ? await s.from('admin_settings').update({ ...row, updated_at: new Date().toISOString() }).eq('id',data.id).select('id').single() : await s.from('admin_settings').insert(row).select('id').single(); break;
     }
+    case 'maintenance': {
+      if (!data.id) throw new Error('Record required');
+      const row = z.object({ maintenance_mode: z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]).default(false), maintenance_message: z.string().max(500).default('') }).parse(v);
+      result = await s.from('admin_settings').update({ ...row, updated_at: new Date().toISOString() }).eq('id',data.id).select('id').single(); break;
+    }
+    case 'templates': {
+      const row = z.object({ channel: z.enum(['email','whatsapp','sms','push']), name: z.string().trim().min(2).max(120), subject: z.string().max(200).default(''), body: z.string().max(4000).default(''), status: z.enum(['draft','active','archived']).default('draft') }).parse(v);
+      result = data.id ? await s.from('message_templates').update({ ...row, updated_at: new Date().toISOString() }).eq('id',data.id).select('id').single() : await s.from('message_templates').insert(row).select('id').single(); break;
+    }
+    case 'announcements': {
+      const row = z.object({ title, message: z.string().trim().min(2).max(1000), audience: z.string().min(1).max(200).refine(v => v === 'all' || /^(city|state|user|course):.+$/.test(v)), starts_at: z.union([z.literal('').transform(() => null), z.null(), z.string().datetime()]).default(null), ends_at: z.union([z.literal('').transform(() => null), z.null(), z.string().datetime()]).default(null), status: z.enum(['draft','published','archived']) }).parse(v);
+      if (row.starts_at && row.ends_at && new Date(row.ends_at).getTime() <= new Date(row.starts_at).getTime()) throw new Error('End must be after start');
+      result = data.id ? await s.from('announcements').update(row).eq('id',data.id).select('id').single() : await s.from('announcements').insert(row).select('id').single(); break;
+    }
+    case 'tickets': {
+      if (data.id) {
+        const row = z.object({ status: z.enum(['open','in_progress','resolved','closed']), reply: z.string().max(2000).default('') }).parse(v);
+        result = await s.from('support_tickets').update({ ...row, updated_at: new Date().toISOString() }).eq('id',data.id).select('id').single(); break;
+      }
+      const row = z.object({ user_id: z.string().uuid(), subject: z.string().trim().min(2).max(200), message: z.string().trim().min(2).max(2000), priority: z.enum(['low','normal','high']).default('normal') }).parse(v);
+      result = await s.from('support_tickets').insert(row).select('id').single(); break;
+    }
+    case 'banners': {
+      const row = z.object({ title, image_url: url.default(''), link_url: url.default(''), placement: z.enum(['home','courses','dashboard']).default('home'), position: z.coerce.number().int().min(1).max(1000), active: z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]).default(true) }).parse(v);
+      result = data.id ? await s.from('banners').update(row).eq('id',data.id).select('id').single() : await s.from('banners').insert(row).select('id').single(); break;
+    }
+    case 'campaigns': {
+      const row = z.object({ name: z.string().trim().min(2).max(120), channel: z.enum(['email','whatsapp','sms','push']).default('push'), audience: z.string().min(1).max(200).refine(v => v === 'all' || /^(city|state|user|course):.+$/.test(v)), template_id: z.union([z.literal('').transform(() => null), z.null(), z.string().uuid()]).default(null), status: z.enum(['draft','scheduled','sent','cancelled']).default('draft'), scheduled_at: z.union([z.literal('').transform(() => null), z.null(), z.string().datetime()]).default(null) }).parse(v);
+      if (row.status === 'scheduled' && !row.scheduled_at) throw new Error('Scheduled campaigns need a date');
+      result = data.id ? await s.from('campaigns').update(row).eq('id',data.id).select('id').single() : await s.from('campaigns').insert(row).select('id').single(); break;
+    }
+    case 'leads': {
+      const row = z.object({ name: z.string().trim().min(2).max(120), phone: z.string().max(30).default(''), email: z.union([z.literal(''), z.string().email().max(200)]).default(''), source: z.string().trim().max(60).default('website'), status: z.enum(['new','contacted','converted','lost']).default('new'), note: z.string().max(1000).default('') }).parse(v);
+      result = data.id ? await s.from('leads').update(row).eq('id',data.id).select('id').single() : await s.from('leads').insert(row).select('id').single(); break;
+    }
+    case 'seo': {
+      const row = z.object({ path: z.string().trim().regex(/^\/[a-z0-9\-\/]{0,100}$/), meta_title: z.string().max(200).default(''), meta_description: z.string().max(500).default(''), keywords: z.string().max(500).default('') }).parse(v);
+      result = data.id ? await s.from('seo_pages').update({ ...row, updated_at: new Date().toISOString() }).eq('id',data.id).select('id').single() : await s.from('seo_pages').insert(row).select('id').single(); break;
+    }
+    case 'promocodes': {
+      const row = z.object({ code: z.string().trim().toUpperCase().regex(/^[A-Z0-9-]{3,24}$/), description: z.string().max(500).default(''), coupon_id: z.union([z.literal('').transform(() => null), z.null(), z.string().uuid()]).default(null), active: z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]).default(true) }).parse(v);
+      result = data.id ? await s.from('promo_codes').update(row).eq('id',data.id).select('id').single() : await s.from('promo_codes').insert(row).select('id').single(); break;
+    }
   }
   if (result.error) throw new Error(result.error.code === '23505' ? 'Certificate already issued' : 'Unable to save record');
   return { id: result.data.id };
