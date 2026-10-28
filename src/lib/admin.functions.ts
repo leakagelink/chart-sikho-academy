@@ -32,10 +32,14 @@ export const getAdminData = createServerFn({ method: 'POST' }).middleware([requi
     s.from('refund_requests').select('*').order('created_at', { ascending: false }).limit(1000),
     s.from('invoices').select('*').order('issued_at', { ascending: false }).limit(1000),
     s.from('abandoned_checkouts').select('*').order('created_at', { ascending: false }).limit(1000),
+    s.from('instructors').select('*').order('created_at', { ascending: false }).limit(1000),
+    s.from('ranks').select('*').order('position').limit(1000),
+    s.from('bonus_entries').select('*').order('created_at', { ascending: false }).limit(1000),
+    s.from('user_roles').select('*').limit(1000),
   ]);
   if (results.some(r => r.error)) throw new Error('Unable to load administration records');
-  const [users,courses,lessons,classes,ebooks,bookings,enrollments,orders,affiliates,commissions,payouts,notifications,settings,audit,categories,modules,quizzes,questions,certificates,reviews,coupons,refunds,invoices,abandoned] = results;
-  return { users: users.data ?? [], courses: courses.data ?? [], lessons: lessons.data ?? [], classes: classes.data ?? [], ebooks: ebooks.data ?? [], bookings: bookings.data ?? [], enrollments: enrollments.data ?? [], orders: orders.data ?? [], affiliates: affiliates.data ?? [], commissions: commissions.data ?? [], payouts: payouts.data ?? [], notifications: notifications.data ?? [], settings: settings.data ?? [], audit: audit.data ?? [], categories: categories.data ?? [], modules: modules.data ?? [], quizzes: quizzes.data ?? [], questions: questions.data ?? [], certificates: certificates.data ?? [], reviews: reviews.data ?? [], coupons: coupons.data ?? [], refunds: refunds.data ?? [], invoices: invoices.data ?? [], abandoned: abandoned.data ?? [], capped: results.some(r => (r.data?.length ?? 0) >= 1000) };
+  const [users,courses,lessons,classes,ebooks,bookings,enrollments,orders,affiliates,commissions,payouts,notifications,settings,audit,categories,modules,quizzes,questions,certificates,reviews,coupons,refunds,invoices,abandoned,instructors,ranks,bonuses,userRoles] = results;
+  return { users: users.data ?? [], courses: courses.data ?? [], lessons: lessons.data ?? [], classes: classes.data ?? [], ebooks: ebooks.data ?? [], bookings: bookings.data ?? [], enrollments: enrollments.data ?? [], orders: orders.data ?? [], affiliates: affiliates.data ?? [], commissions: commissions.data ?? [], payouts: payouts.data ?? [], notifications: notifications.data ?? [], settings: settings.data ?? [], audit: audit.data ?? [], categories: categories.data ?? [], modules: modules.data ?? [], quizzes: quizzes.data ?? [], questions: questions.data ?? [], certificates: certificates.data ?? [], reviews: reviews.data ?? [], coupons: coupons.data ?? [], refunds: refunds.data ?? [], invoices: invoices.data ?? [], abandoned: abandoned.data ?? [], instructors: instructors.data ?? [], ranks: ranks.data ?? [], bonuses: bonuses.data ?? [], userRoles: userRoles.data ?? [], capped: results.some(r => (r.data?.length ?? 0) >= 1000) };
 });
 
 const title = z.string().trim().min(2).max(120);
@@ -88,8 +92,40 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
     }
     case 'users': {
       if (!data.id || data.id === context.userId) throw new Error('Cannot change your own access');
-      const row = z.object({ account_status: z.enum(['active','paused']) }).parse(v);
+      const row = z.object({ account_status: z.enum(['active','paused','blocked']) }).parse(v);
       result = await s.from('profiles').update(row).eq('id',data.id).select('id').single(); break;
+    }
+    case 'verification': {
+      if (!data.id) throw new Error('Record required');
+      const row = z.object({ verification_status: z.enum(['unverified','pending','verified','rejected']) }).parse(v);
+      result = await s.from('profiles').update(row).eq('id',data.id).select('id').single(); break;
+    }
+    case 'roles': {
+      if (data.id) {
+        const target = await s.from('user_roles').select('user_id,role').eq('id', data.id).maybeSingle();
+        if (!target.data) throw new Error('Unable to save record');
+        if (target.data.user_id === context.userId) throw new Error('Cannot change your own access');
+        result = await s.from('user_roles').delete().eq('id', data.id).select('id').single(); break;
+      }
+      const row = z.object({ user_id: z.string().uuid(), role: z.enum(['admin','instructor','user']) }).parse(v);
+      if (row.user_id === context.userId) throw new Error('Cannot change your own access');
+      result = await s.from('user_roles').insert(row).select('id').single(); break;
+    }
+    case 'instructors': {
+      const row = z.object({ name: title, expertise: z.string().max(200).default(''), bio: z.string().max(2000).default(''), photo_url: url.default(''), status: z.enum(['active','inactive']).default('active') }).parse(v);
+      result = data.id ? await s.from('instructors').update(row).eq('id',data.id).select('id').single() : await s.from('instructors').insert(row).select('id').single(); break;
+    }
+    case 'ranks': {
+      const row = z.object({ name: z.string().trim().min(2).max(60), min_sales: z.coerce.number().int().min(0).max(1000000), bonus_amount: z.coerce.number().int().min(0).max(1000000), position: z.coerce.number().int().min(1).max(1000) }).parse(v);
+      result = data.id ? await s.from('ranks').update(row).eq('id',data.id).select('id').single() : await s.from('ranks').insert(row).select('id').single(); break;
+    }
+    case 'bonuses': {
+      if (data.id) {
+        const row = z.object({ status: z.enum(['approved','rejected']) }).parse(v);
+        result = await s.from('bonus_entries').update(row).eq('id',data.id).eq('status','pending').select('id').single(); break;
+      }
+      const row = z.object({ user_id: z.string().uuid(), amount: z.coerce.number().int().min(1).max(1000000), reason: z.string().trim().max(500).default('') }).parse(v);
+      result = await s.from('bonus_entries').insert(row).select('id').single(); break;
     }
     case 'notifications': {
       const row = z.object({ title, message: z.string().trim().min(2).max(1000), audience: z.string().min(1).max(200).refine(v => v === 'all' || /^(city|state|user|course):.+$/.test(v)), status: z.enum(['draft','published']) }).parse(v);
@@ -156,7 +192,7 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
       result = await s.from('abandoned_checkouts').update(row).eq('id',data.id).select('id').single(); break;
     }
     case 'settings': {
-      const row = z.object({ support_email: z.union([z.literal(''),z.string().email().max(200)]), support_phone: z.string().max(30), commission_percent: z.coerce.number().int().min(0).max(100) }).parse(v);
+      const row = z.object({ support_email: z.union([z.literal(''),z.string().email().max(200)]), support_phone: z.string().max(30), commission_percent: z.coerce.number().int().min(0).max(100), referral_enabled: z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]).default(true), ref_level1_percent: z.coerce.number().int().min(0).max(100).default(10), ref_level2_percent: z.coerce.number().int().min(0).max(100).default(5), ref_level3_percent: z.coerce.number().int().min(0).max(100).default(2) }).parse(v);
       result = data.id ? await s.from('admin_settings').update({ ...row, updated_at: new Date().toISOString() }).eq('id',data.id).select('id').single() : await s.from('admin_settings').insert(row).select('id').single(); break;
     }
   }
