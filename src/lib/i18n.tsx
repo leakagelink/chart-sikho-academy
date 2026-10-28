@@ -116,7 +116,6 @@ const dict = {
   admin_blocked: { en: 'Blocked', hi: 'ब्लॉक किया' },
   admin_unverified: { en: 'Unverified', hi: 'असत्यापित' },
   admin_verified: { en: 'Verified', hi: 'सत्यापित' },
-  admin_inactive: { en: 'Inactive', hi: 'निष्क्रिय' },
   admin_verify: { en: 'Verify', hi: 'सत्यापित करें' },
   admin_block: { en: 'Block', hi: 'ब्लॉक करें' },
   admin_revoke_role: { en: 'Revoke role', hi: 'रोल हटाएँ' },
