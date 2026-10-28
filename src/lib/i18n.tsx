@@ -66,6 +66,7 @@ const dict = {
   admin_abandoned_real: { en: 'Abandoned Checkouts', hi: 'अधूरे चेकआउट' },
   admin_code: { en: 'Code', hi: 'कोड' },
   admin_order: { en: 'Order', hi: 'ऑर्डर' },
+  admin_enabled: { en: 'Active', hi: 'सक्रिय' },
   admin_kind: { en: 'Discount type', hi: 'छूट का प्रकार' },
   admin_value: { en: 'Value', hi: 'मूल्य' },
   admin_min_order: { en: 'Minimum order (₹)', hi: 'न्यूनतम ऑर्डर (₹)' },
