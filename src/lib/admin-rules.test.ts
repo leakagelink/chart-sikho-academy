@@ -45,3 +45,21 @@ describe('fraud detection', () => {
     expect(fraudFlags([{ referrer_id: 'a', referred_id: 'b' }], [{ user_id: 'a', order_id: 'o1', amount: 100 }], orders)).toEqual([]);
   });
 });
+
+import { adminSections } from './admin-rules';
+
+describe('phase 6 admin resources', () => {
+  it('includes engagement, growth and system sections', () => {
+    for (const sec of ['templates','announcements','tickets','banners','campaigns','leads','seo','promocodes','maintenance','security']) {
+      expect(adminSections).toContain(sec);
+    }
+  });
+  it('accepts new resources in the change schema', () => {
+    for (const res of ['templates','announcements','tickets','banners','campaigns','leads','seo','promocodes','maintenance']) {
+      expect(adminChangeSchema.safeParse({ resource: res, values: {} }).success).toBe(true);
+    }
+  });
+  it('rejects unknown resources', () => {
+    expect(adminChangeSchema.safeParse({ resource: 'hacking', values: {} }).success).toBe(false);
+  });
+});
