@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-export const adminSections = ['overview','users','categories','builder','courses','lessons','videos','classes','webinars','ebooks','bookings','orders','payments','affiliates','commissions','payouts','notifications','reports','settings','quizzes','questions','certificates','progress','reviews'] as const;
+export const adminSections = ['overview','users','categories','builder','courses','lessons','videos','classes','webinars','ebooks','bookings','orders','payments','affiliates','commissions','payouts','notifications','reports','settings','quizzes','questions','certificates','progress','reviews','pricing','coupons','refunds','invoices','abandoned'] as const;
 export type AdminSection = typeof adminSections[number];
 export const adminChangeSchema = z.object({
-  resource: z.enum(['categories','modules','courses','lessons','classes','ebooks','bookings','users','notifications','payouts','settings','quizzes','questions','certificates','reviews']),
+  resource: z.enum(['categories','modules','courses','lessons','classes','ebooks','bookings','users','notifications','payouts','settings','quizzes','questions','certificates','reviews','coupons','refunds','invoices','abandoned']),
   id: z.string().uuid().optional(),
   values: z.record(z.union([z.string().max(2000), z.number().finite(), z.boolean(), z.null()])),
 });
@@ -35,3 +35,21 @@ export function quizScore(answers: QuizAnswer[], negative: number, passPercent: 
 }
 /** Certificate IDs look like CS-2026-AB12CD. */
 export function makeCertificateNo(year: number, rand: string) { return `CS-${year}-${rand.replace(/[^A-Z0-9]/gi, '').toUpperCase().slice(0, 6).padEnd(6, '0')}`; }
+
+/** GST invoice totals: tax is rounded to whole rupees and added to the subtotal. */
+export function invoiceTotals(subtotal: number, gstRate: number) {
+  const gst = Math.round(subtotal * gstRate / 100);
+  return { gstAmount: gst, total: subtotal + gst };
+}
+/** Invoice numbers look like INV-2026-AB12CD. */
+export function makeInvoiceNo(year: number, rand: string) { return `INV-${year}-${rand.replace(/[^A-Z0-9]/gi, '').toUpperCase().slice(0, 6).padEnd(6, '0')}`; }
+
+export type CouponCheck = { kind: 'percent' | 'flat'; value: number; min_order: number; max_uses: number | null; used_count: number; active: boolean; expires_at: string | null };
+/** Returns the rupee discount for an order total, or 0 when the coupon cannot be used. Percent coupons cap at 90%. */
+export function couponDiscount(c: CouponCheck, orderTotal: number, now: Date = new Date()) {
+  if (!c.active || orderTotal < c.min_order) return 0;
+  if (c.expires_at && new Date(c.expires_at).getTime() < now.getTime()) return 0;
+  if (c.max_uses !== null && c.used_count >= c.max_uses) return 0;
+  const raw = c.kind === 'percent' ? Math.floor(orderTotal * Math.min(c.value, 90) / 100) : c.value;
+  return Math.min(raw, orderTotal);
+}

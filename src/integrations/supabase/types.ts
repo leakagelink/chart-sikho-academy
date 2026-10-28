@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      abandoned_checkouts: {
+        Row: {
+          course_id: string
+          created_at: string
+          email: string
+          id: string
+          price: number
+          status: string
+          user_id: string | null
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          email?: string
+          id?: string
+          price: number
+          status?: string
+          user_id?: string | null
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          email?: string
+          id?: string
+          price?: number
+          status?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       admin_audit_log: {
         Row: {
           action: string
@@ -167,6 +197,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      coupons: {
+        Row: {
+          active: boolean
+          code: string
+          created_at: string
+          expires_at: string | null
+          id: string
+          kind: string
+          max_uses: number | null
+          min_order: number
+          used_count: number
+          value: number
+        }
+        Insert: {
+          active?: boolean
+          code: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          kind: string
+          max_uses?: number | null
+          min_order?: number
+          used_count?: number
+          value: number
+        }
+        Update: {
+          active?: boolean
+          code?: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          kind?: string
+          max_uses?: number | null
+          min_order?: number
+          used_count?: number
+          value?: number
+        }
+        Relationships: []
       }
       course_categories: {
         Row: {
@@ -460,6 +529,56 @@ export type Database = {
         }
         Relationships: []
       }
+      invoices: {
+        Row: {
+          buyer_gstin: string
+          buyer_name: string
+          gst_amount: number
+          gst_rate: number
+          id: string
+          invoice_no: string
+          issued_at: string
+          order_id: string
+          status: string
+          subtotal: number
+          total: number
+        }
+        Insert: {
+          buyer_gstin?: string
+          buyer_name: string
+          gst_amount: number
+          gst_rate?: number
+          id?: string
+          invoice_no: string
+          issued_at?: string
+          order_id: string
+          status?: string
+          subtotal: number
+          total: number
+        }
+        Update: {
+          buyer_gstin?: string
+          buyer_name?: string
+          gst_amount?: number
+          gst_rate?: number
+          id?: string
+          invoice_no?: string
+          issued_at?: string
+          order_id?: string
+          status?: string
+          subtotal?: number
+          total?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoices_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: true
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notification_campaigns: {
         Row: {
           audience: string
@@ -697,6 +816,47 @@ export type Database = {
           referrer_id?: string
         }
         Relationships: []
+      }
+      refund_requests: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          order_id: string
+          reason: string
+          reviewed_at: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          order_id: string
+          reason?: string
+          reviewed_at?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          order_id?: string
+          reason?: string
+          reviewed_at?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "refund_requests_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_notifications: {
         Row: {
