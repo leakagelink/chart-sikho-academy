@@ -6,6 +6,7 @@ import { CourseCard, MiniChart } from "@/components/site/CourseCard";
 import { courses, liveClasses } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
+import { StudentCharts } from "@/components/site/StudentCharts";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
@@ -90,6 +91,8 @@ function Dashboard() {
           <MiniChart />
         </section>
       )}
+
+      <StudentCharts userId={user.id} progress={[...mine.map((m) => ({ name: m.course.title[lang].slice(0, 22), progress: m.progress })), ...(enrolls.data ?? []).flatMap((e) => { const c = cloudCourses.data?.find((x) => x.id === e.course_id); return c ? [{ name: c.title.slice(0, 22), progress: e.progress }] : []; })]} />
 
       <section className="mt-8">
         <h2 className="font-display text-2xl font-bold text-foreground">{t("my_courses")}</h2>

@@ -7,6 +7,12 @@ type Data = {
   payouts: { amount: number; status: string }[]; bookings: { status: string }[];
 };
 const DAY = 86_400_000;
+/** Sums values per calendar day (YYYY-MM-DD), sorted ascending. */
+export function dailyCounts(items: { at: string; v: number }[]) {
+  const m: Record<string, number> = {};
+  items.forEach(i => { const k = i.at.slice(0, 10); m[k] = (m[k] ?? 0) + i.v; });
+  return Object.entries(m).sort().map(([label, value]) => ({ label, value }));
+}
 export function rangeBounds(range: RangeKey, now: Date, from = '', to = '') {
   const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const end = new Date(now.getTime() + 1);
@@ -54,5 +60,9 @@ export function summarize(d: Data, start: Date, end: Date) {
     referralSales: paid.filter(o => refOrderIds.has(o.id ?? '')).reduce((n, o) => n + o.amount, 0),
     conversion: enrolledUsers.size ? Math.round(new Set(paid.map(o => o.user_id)).size / enrolledUsers.size * 100) : 0,
     trend: Object.entries(byDay).sort().map(([label, amount]) => ({ label, amount })),
+    signupTrend: dailyCounts(d.users.filter(u => inRange(u.created_at)).map(u => ({ at: u.created_at, v: 1 }))),
+    commissionTrend: dailyCounts(comms.map(c => ({ at: c.created_at, v: c.amount }))),
+    enrollmentsByCourse: Object.entries(d.enrollments.reduce<Record<string, number>>((m, e) => { m[e.course_id] = (m[e.course_id] ?? 0) + 1; return m; }, {}))
+      .map(([id, count]) => ({ id, count })).sort((a, b) => b.count - a.count).slice(0, 8),
   };
 }
