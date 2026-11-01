@@ -73,6 +73,8 @@ const dict = {
   admin_final_quiz: { en: 'Final quiz', hi: 'फाइनल क्विज़' },
   admin_linked_courses: { en: 'Linked courses', hi: 'जुड़े कोर्स' },
   admin_no_quiz: { en: 'No quiz', hi: 'कोई क्विज़ नहीं' },
+  admin_add_question: { en: 'Add question', hi: 'प्रश्न जोड़ें' },
+  admin_question_count: { en: 'Questions', hi: 'प्रश्न' },
   review_placeholder: { en: 'Write your review (optional)', hi: 'अपनी राय लिखें (वैकल्पिक)' },
   review_submit: { en: 'Submit review', hi: 'रिव्यू जमा करें' },
   review_pending_note: { en: 'Thanks! Your review will show after approval.', hi: 'धन्यवाद! आपका रिव्यू मंज़ूरी के बाद दिखेगा।' },
