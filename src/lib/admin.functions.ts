@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/react-start';
 import { z } from 'zod';
 import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
-import { adminChangeSchema, adminDeleteSchema, videoRemovalValues, requireAdminRole, safeHttps, coursePublishIssues, makeCertificateNo, makeInvoiceNo, invoiceTotals } from './admin-rules';
+import { adminChangeSchema, adminDeleteSchema, videoRemovalValues, liveClassSchema, requireAdminRole, safeHttps, coursePublishIssues, makeCertificateNo, makeInvoiceNo, invoiceTotals } from './admin-rules';
 
 export const deleteAdminRecord = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth]).inputValidator(input => adminDeleteSchema.parse(input)).handler(async ({ context, data }) => {
   const s = context.supabase;
@@ -105,7 +105,18 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
       result = data.id ? await s.from('course_lessons').update(row).eq('id',data.id).select('id').single() : await s.from('course_lessons').insert(row).select('id').single(); break;
     }
     case 'classes': {
-      const row = z.object({ title, kind: z.enum(['class','webinar']), starts_at: z.string().datetime(), youtube_url: url.refine(v => !v || ['youtube.com','www.youtube.com','youtu.be'].includes(new URL(v).hostname)), jitsi_url: url, status: z.enum(['draft','scheduled','cancelled']) }).parse(v);
+      const parsed = liveClassSchema.safeParse(v);
+      if (!parsed.success) throw new Error('Invalid class recording');
+      const row = parsed.data;
+      if (row.course_id) {
+        const course = await s.from('courses').select('category,status').eq('id', row.course_id).single();
+        if (course.error || course.data.category !== row.category_slug) throw new Error('Course category mismatch');
+        if (row.completion_state === 'completed' && course.data.status !== 'published') throw new Error('Recording requires published course');
+      }
+      if (row.module_id) {
+        const module = await s.from('course_modules').select('course_id').eq('id', row.module_id).single();
+        if (module.error || module.data.course_id !== row.course_id) throw new Error('Module course mismatch');
+      }
       result = data.id ? await s.from('class_sessions').update(row).eq('id',data.id).select('id').single() : await s.from('class_sessions').insert(row).select('id').single(); break;
     }
     case 'ebooks': {

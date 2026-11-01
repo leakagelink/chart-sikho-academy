@@ -290,36 +290,66 @@ export type Database = {
       }
       class_sessions: {
         Row: {
+          category_slug: string
+          completion_state: string
+          course_id: string | null
           created_at: string
           id: string
           jitsi_url: string
           kind: string
+          module_id: string | null
+          recording_url: string
           starts_at: string
           status: string
           title: string
           youtube_url: string
         }
         Insert: {
+          category_slug?: string
+          completion_state?: string
+          course_id?: string | null
           created_at?: string
           id?: string
           jitsi_url?: string
           kind?: string
+          module_id?: string | null
+          recording_url?: string
           starts_at: string
           status?: string
           title: string
           youtube_url?: string
         }
         Update: {
+          category_slug?: string
+          completion_state?: string
+          course_id?: string | null
           created_at?: string
           id?: string
           jitsi_url?: string
           kind?: string
+          module_id?: string | null
+          recording_url?: string
           starts_at?: string
           status?: string
           title?: string
           youtube_url?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "class_sessions_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "class_sessions_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_modules"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       commission_entries: {
         Row: {
@@ -430,6 +460,7 @@ export type Database = {
           module_id: string | null
           position: number
           resource_path: string
+          source_class_id: string | null
           title: string
           video_url: string
         }
@@ -443,6 +474,7 @@ export type Database = {
           module_id?: string | null
           position?: number
           resource_path?: string
+          source_class_id?: string | null
           title: string
           video_url?: string
         }
@@ -456,6 +488,7 @@ export type Database = {
           module_id?: string | null
           position?: number
           resource_path?: string
+          source_class_id?: string | null
           title?: string
           video_url?: string
         }
@@ -472,6 +505,13 @@ export type Database = {
             columns: ["module_id"]
             isOneToOne: false
             referencedRelation: "course_modules"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "course_lessons_source_class_id_fkey"
+            columns: ["source_class_id"]
+            isOneToOne: true
+            referencedRelation: "class_sessions"
             referencedColumns: ["id"]
           },
         ]

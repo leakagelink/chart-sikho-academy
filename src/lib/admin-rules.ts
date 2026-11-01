@@ -20,6 +20,20 @@ export const adminChangeSchema = z.object({
 });
 export function requireAdminRole(isAdmin: boolean) { if (!isAdmin) throw new Error('Forbidden'); }
 export function safeHttps(value: string) { if (!value) return ''; const url = new URL(value); if (url.protocol !== 'https:' || url.username || url.password) throw new Error('HTTPS required'); return url.toString(); }
+export const liveClassSchema = z.object({
+  title: z.string().trim().min(2).max(120), kind: z.enum(['class','webinar']), starts_at: z.string().datetime(),
+  youtube_url: z.string().max(2000).transform(safeHttps).refine(v => !v || ['youtube.com','www.youtube.com','youtu.be'].includes(new URL(v).hostname)),
+  jitsi_url: z.string().max(2000).transform(safeHttps), status: z.enum(['draft','scheduled','cancelled']),
+  category_slug: z.string().max(40).default(''),
+  course_id: z.union([z.literal('').transform(() => null), z.null(), z.string().uuid()]).default(null),
+  module_id: z.union([z.literal('').transform(() => null), z.null(), z.string().uuid()]).default(null),
+  completion_state: z.enum(['pending','completed']).default('pending'),
+  recording_url: z.string().max(2000).transform(safeHttps).default(''),
+}).superRefine((v, ctx) => {
+  if (v.completion_state === 'completed' && (!v.course_id || !v.module_id || !v.recording_url || v.status !== 'scheduled')) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Completed class requires course module and recording' });
+  }
+});
 export function financeActionAllowed(action: string) { return action === 'reviewed' || action === 'rejected'; }
 export type PublishCheck = { title: string; description: string; price: number; sale_price: number | null; modules: { id: string }[]; lessons: { module_id: string | null; video_url: string; resource_path: string }[] };
 /** Returns the failed checks; a course may be published only when this is empty. */

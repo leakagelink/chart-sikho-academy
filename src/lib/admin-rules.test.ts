@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { adminDeleteSchema, videoRemovalValues } from './admin-rules';
+import { adminDeleteSchema, videoRemovalValues, liveClassSchema } from './admin-rules';
 describe('admin deletion scope', () => {
   const id = '11111111-1111-4111-8111-111111111111';
   it('allows deleting courses', () => { expect(adminDeleteSchema.safeParse({ resource: 'courses', id }).success).toBe(true); });
@@ -11,6 +11,15 @@ describe('admin deletion scope', () => {
 describe('video removal', () => {
   it('preserves optional PDF notes', () => { expect(videoRemovalValues('lesson/notes.pdf')).toEqual({ video_url: '', resource_path: 'lesson/notes.pdf' }); });
   it('clears uploaded video sources', () => { for (const path of ['lesson/movie.mp4', 'lesson/movie.WEBM']) expect(videoRemovalValues(path)).toEqual({ video_url: '', resource_path: '' }); });
+});
+describe('live class recordings', () => {
+  const row = { title:'Market class', kind:'class', starts_at:'2026-11-01T18:00:00Z', youtube_url:'', jitsi_url:'', status:'scheduled', category_slug:'basics', course_id:'11111111-1111-4111-8111-111111111111', module_id:'22222222-2222-4222-8222-222222222222', completion_state:'completed', recording_url:'https://youtu.be/recording' };
+  it('accepts completed recording linked to course and module', () => { expect(liveClassSchema.safeParse(row).success).toBe(true); });
+  it('requires a course for completed recordings', () => { expect(liveClassSchema.safeParse({ ...row, course_id:'' }).success).toBe(false); });
+  it('requires a module for completed recordings', () => { expect(liveClassSchema.safeParse({ ...row, module_id:'' }).success).toBe(false); });
+  it('requires recording before completion', () => { expect(liveClassSchema.safeParse({ ...row, recording_url:'' }).success).toBe(false); });
+  it('cannot publish a cancelled class', () => { expect(liveClassSchema.safeParse({ ...row, status:'cancelled' }).success).toBe(false); });
+  it('allows scheduling before a recording exists', () => { expect(liveClassSchema.safeParse({ ...row, completion_state:'pending', recording_url:'' }).success).toBe(true); });
 });
 import { adminChangeSchema, requireAdminRole, safeHttps, financeActionAllowed } from './admin-rules';
 describe('real admin boundaries', () => {
