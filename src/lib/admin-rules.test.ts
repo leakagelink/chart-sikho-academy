@@ -1,4 +1,12 @@
 import { describe, expect, it } from 'vitest';
+import { adminDeleteSchema } from './admin-rules';
+describe('admin deletion scope', () => {
+  const id = '11111111-1111-4111-8111-111111111111';
+  it('allows deleting courses', () => { expect(adminDeleteSchema.safeParse({ resource: 'courses', id }).success).toBe(true); });
+  it('allows deleting lessons', () => { expect(adminDeleteSchema.safeParse({ resource: 'lessons', id }).success).toBe(true); });
+  it('rejects finance deletion', () => { expect(adminDeleteSchema.safeParse({ resource: 'orders', id }).success).toBe(false); });
+  it('requires a specific valid record', () => { expect(adminDeleteSchema.safeParse({ resource: 'courses', id: '' }).success).toBe(false); });
+});
 import { adminChangeSchema, requireAdminRole, safeHttps, financeActionAllowed } from './admin-rules';
 describe('real admin boundaries', () => {
   it('denies students access to admin operations', () => { expect(() => requireAdminRole(false)).toThrow('Forbidden'); expect(() => requireAdminRole(true)).not.toThrow(); });
