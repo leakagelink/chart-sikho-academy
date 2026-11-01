@@ -58,6 +58,9 @@ export function quizScore(answers: QuizAnswer[], negative: number, passPercent: 
   const percent = total ? Math.round((score / total) * 10000) / 100 : 0;
   return { score, total, percent, passed: percent >= passPercent };
 }
+/** Certificates are issued automatically at 80% or more (8 of 10) on the course's final quiz; the database function submit_course_quiz enforces it. */
+export const CERTIFICATE_MIN_PERCENT = 80;
+export function earnsCertificate(percent: number) { return percent >= CERTIFICATE_MIN_PERCENT; }
 /** Certificate IDs look like CS-2026-AB12CD. */
 export function makeCertificateNo(year: number, rand: string) { return `CS-${year}-${rand.replace(/[^A-Z0-9]/gi, '').toUpperCase().slice(0, 6).padEnd(6, '0')}`; }
 
