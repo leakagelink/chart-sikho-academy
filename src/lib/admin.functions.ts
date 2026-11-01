@@ -62,7 +62,7 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
   let result;
   switch (data.resource) {
     case 'categories': {
-      const row = z.object({ name: title, slug: z.string().trim().regex(/^[a-z0-9-]{2,40}$/), position: z.coerce.number().int().min(1).max(1000) }).parse(v);
+      const row = z.object({ name: title, slug: z.string().trim().regex(/^[a-z0-9-]{2,40}$/), position: z.coerce.number().int().min(1).max(1000), icon_url: z.union([z.literal(''), z.string().max(400000).regex(/^data:image\/(png|jpeg|webp|svg\+xml);base64,/), z.string().url().max(500).startsWith('https://')]).default('') }).parse(v);
       result = data.id ? await s.from('course_categories').update(row).eq('id',data.id).select('id').single() : await s.from('course_categories').insert(row).select('id').single(); break;
     }
     case 'modules': {
