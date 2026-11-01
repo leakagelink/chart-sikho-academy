@@ -35,7 +35,7 @@ const dict = {
   admin_logo_change: { en: 'Change logo', hi: 'लोगो बदलें' },
   admin_logo_reset: { en: 'Use default logo', hi: 'डिफ़ॉल्ट लोगो लगाएं' },
   admin_cat_icon: { en: 'Icon / image', hi: 'आइकन / इमेज' },
-  admin_icon_limit: { en: 'PNG, JPG, WebP or SVG · maximum 250 KB', hi: 'PNG, JPG, WebP या SVG · अधिकतम 250 KB' },
+  admin_icon_limit: { en: 'PNG, JPG, WebP or SVG · maximum 500 KB', hi: 'PNG, JPG, WebP या SVG · अधिकतम 500 KB' },
   admin_icon_remove: { en: 'Remove', hi: 'हटाएं' },
   admin_logo_limit: { en: 'PNG, JPG or WebP · maximum 500 KB', hi: 'PNG, JPG या WebP · अधिकतम 500 KB' },
   admin_uploading: { en: 'Uploading…', hi: 'अपलोड हो रहा है…' },
