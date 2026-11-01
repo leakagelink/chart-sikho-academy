@@ -690,6 +690,7 @@ const dict = {
   settings: { en: "Settings", hi: "सेटिंग्स" },
   upcoming_tab: { en: "Upcoming", hi: "आने वाली" },
   past_tab: { en: "Past", hi: "बीती हुई" },
+  admin_when_filter: { en: "Filter by time", hi: "समय के अनुसार फ़िल्टर" },
   register: { en: "Register", hi: "रजिस्टर करें" },
   registered: { en: "Registered", hi: "रजिस्टर हो गया" },
   filter_basics: { en: "Basics", hi: "बेसिक्स" },
