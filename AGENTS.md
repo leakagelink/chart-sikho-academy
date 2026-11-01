@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Rules
+- Video Library deletion clears lesson video sources through the role-checked admin operation, retaining lesson/PDF records and stored files; why: removing a video must not erase accompanying notes or shared media.
 - Course deletion uses an atomic role-checked database function and preserves linked student/commerce records; why: removing curriculum must not partially delete a course or erase purchase history.
 - Optional lesson PDFs reuse the private course-resources object path and enrollment-scoped access; why: video-plus-PDF and video-only lessons need no duplicate attachment schema.
 - Real administration lives under the authenticated /admin subtree and uses role-checked server functions plus database RLS; payment settlement and external messaging remain unavailable until separately approved.

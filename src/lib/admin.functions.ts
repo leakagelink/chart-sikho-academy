@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/react-start';
 import { z } from 'zod';
 import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
-import { adminChangeSchema, adminDeleteSchema, requireAdminRole, safeHttps, coursePublishIssues, makeCertificateNo, makeInvoiceNo, invoiceTotals } from './admin-rules';
+import { adminChangeSchema, adminDeleteSchema, videoRemovalValues, requireAdminRole, safeHttps, coursePublishIssues, makeCertificateNo, makeInvoiceNo, invoiceTotals } from './admin-rules';
 
 export const deleteAdminRecord = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth]).inputValidator(input => adminDeleteSchema.parse(input)).handler(async ({ context, data }) => {
   const s = context.supabase;
@@ -10,6 +10,11 @@ export const deleteAdminRecord = createServerFn({ method: 'POST' }).middleware([
   if (data.resource === 'courses') {
     const result = await s.rpc('delete_admin_course', { _course_id: data.id });
     if (result.error) throw new Error(result.error.message.includes('Course has linked records') ? 'Course has linked records' : 'Unable to delete record');
+  } else if (data.resource === 'videos') {
+    const lesson = await s.from('course_lessons').select('resource_path').eq('id', data.id).single();
+    if (lesson.error || !lesson.data) throw new Error('Unable to delete record');
+    const result = await s.from('course_lessons').update(videoRemovalValues(lesson.data.resource_path)).eq('id', data.id).select('id').single();
+    if (result.error) throw new Error('Unable to delete record');
   } else {
     const result = await s.from('course_lessons').delete().eq('id', data.id).select('id').single();
     if (result.error) throw new Error('Unable to delete record');
