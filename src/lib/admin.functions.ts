@@ -62,7 +62,7 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
   let result;
   switch (data.resource) {
     case 'categories': {
-      const row = z.object({ name: title, slug: z.string().trim().regex(/^[a-z0-9-]{2,40}$/), position: z.coerce.number().int().min(1).max(1000), icon_url: z.union([z.literal(''), z.string().max(400000).regex(/^data:image\/(png|jpeg|webp|svg\+xml);base64,/), z.string().url().max(500).startsWith('https://')]).default('') }).parse(v);
+      const row = z.object({ name: title, slug: z.string().trim().regex(/^[a-z0-9-]{2,40}$/), position: z.coerce.number().int().min(1).max(1000), icon_url: z.union([z.literal(''), z.string().max(700000).regex(/^data:image\/(png|jpeg|webp|svg\+xml);base64,/), z.string().url().max(500).startsWith('https://')]).default('') }).parse(v);
       result = data.id ? await s.from('course_categories').update(row).eq('id',data.id).select('id').single() : await s.from('course_categories').insert(row).select('id').single(); break;
     }
     case 'modules': {
@@ -70,7 +70,7 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
       result = data.id ? await s.from('course_modules').update(row).eq('id',data.id).select('id').single() : await s.from('course_modules').insert(row).select('id').single(); break;
     }
     case 'courses': {
-      const row = z.object({ title, price, category: z.string().regex(/^[a-z0-9-]{2,40}$/), status: z.enum(['draft','published']), description: z.string().max(2000).default(''), thumbnail_url: url.default(''), instructor: z.string().max(120).default(''), objectives: z.string().max(2000).default(''), sale_price: z.union([z.literal('').transform(() => null), z.null(), price]).default(null), access_type: z.enum(['lifetime','fixed']).default('lifetime'), access_days: z.coerce.number().int().min(0).max(3650).default(0) }).parse(v);
+      const row = z.object({ title, price, category: z.string().regex(/^[a-z0-9-]{2,40}$/), status: z.enum(['draft','published']), description: z.string().max(2000).default(''), thumbnail_url: z.union([z.literal(''), z.string().max(700000).regex(/^data:image\/(png|jpeg|webp|svg\+xml);base64,/), z.string().url().max(500).startsWith('https://')]).default(''), instructor: z.string().max(120).default(''), objectives: z.string().max(2000).default(''), sale_price: z.union([z.literal('').transform(() => null), z.null(), price]).default(null), access_type: z.enum(['lifetime','fixed']).default('lifetime'), access_days: z.coerce.number().int().min(0).max(3650).default(0) }).parse(v);
       const cat = await s.from('course_categories').select('id').eq('slug',row.category).maybeSingle();
       if (!cat.data) throw new Error('Unknown category');
       if (row.status === 'published') {
