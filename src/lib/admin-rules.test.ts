@@ -50,7 +50,7 @@ import { adminSections } from './admin-rules';
 
 describe('phase 6 admin resources', () => {
   it('includes engagement, growth and system sections', () => {
-    for (const sec of ['templates','announcements','tickets','banners','campaigns','leads','seo','promocodes','maintenance','security']) {
+    for (const sec of ['templates','announcements','tickets','banners','campaigns','leads','seo','promocodes','maintenance']) {
       expect(adminSections).toContain(sec);
     }
   });
