@@ -48,7 +48,7 @@ function Screen() {
     <header><p className="text-sm text-muted-foreground">{t('up_title')}</p><h1 className="font-heading text-2xl font-bold">{p.full_name || d.email || p.id}</h1></header>
     <dl className="grid gap-3 rounded-lg border border-border bg-card p-4 sm:grid-cols-2 lg:grid-cols-3">{info.map(([k, v]) => <div key={k}><dt className="text-xs text-muted-foreground">{t(k)}</dt><dd className="font-semibold break-words">{v}</dd></div>)}</dl>
     <Section title={`${t('up_courses')} (${d.enrollments.length})`} empty={!d.enrollments.length}>
-      <Table head={[t('admin_users_real') && 'Course', t('up_enrolled_on'), t('up_progress'), 'Updated']} rows={d.enrollments.map(e => [course(e.course_id), fmt(e.created_at), `${e.progress}%`, fmt(e.updated_at)])} />
+      <Table head={['Course', t('up_enrolled_on'), t('up_progress'), 'Updated']} rows={d.enrollments.map(e => [course(e.course_id), fmt(e.created_at), `${e.progress}%`, fmt(e.updated_at)])} />
     </Section>
     <Section title={`${t('up_orders')} (${d.orders.length})`} empty={!d.orders.length}>
       <Table head={['Order', 'Course', 'Amount', 'Status', 'Reference', 'Date']} rows={d.orders.map(o => [o.id.slice(0, 8), course(o.course_id), inr(o.amount), o.status, o.provider_reference || '—', fmt(o.created_at)])} />
