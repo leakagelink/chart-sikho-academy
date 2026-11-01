@@ -92,7 +92,7 @@ function Dashboard() {
         </section>
       )}
 
-      <StudentCharts userId={user.id} progress={[...mine.map((m) => ({ name: m.course.title[lang].slice(0, 14), progress: m.progress })), ...(enrolls.data ?? []).flatMap((e) => { const c = cloudCourses.data?.find((x) => x.id === e.course_id); return c ? [{ name: c.title.slice(0, 14), progress: e.progress }] : []; })]} />
+      <StudentCharts userId={user.id} progress={[...mine.map((m) => ({ name: m.course.title[lang].slice(0, 22), progress: m.progress })), ...(enrolls.data ?? []).flatMap((e) => { const c = cloudCourses.data?.find((x) => x.id === e.course_id); return c ? [{ name: c.title.slice(0, 22), progress: e.progress }] : []; })]} />
 
       <section className="mt-8">
         <h2 className="font-display text-2xl font-bold text-foreground">{t("my_courses")}</h2>
