@@ -9,9 +9,15 @@ describe('real admin boundaries', () => {
 describe('course publish validation', () => {
   const ok = { title: 'Stock basics', description: 'A complete beginner course on markets.', price: 1999, sale_price: 999, modules: [{ id: 'm' }], lessons: [{ module_id: 'm', video_url: 'https://youtu.be/x', resource_path: '' }] };
   it('allows a complete course', () => { expect(coursePublishIssues(ok)).toEqual([]); });
+  it('allows video lessons without an optional PDF', () => { expect(coursePublishIssues({ ...ok, lessons: [{ module_id: 'm', video_url: 'https://youtu.be/x', resource_path: '' }] })).toEqual([]); });
+  it('allows a PDF alongside a video lesson', () => { expect(coursePublishIssues({ ...ok, lessons: [{ module_id: 'm', video_url: 'https://youtu.be/x', resource_path: 'lesson/notes.pdf' }] })).toEqual([]); });
   it('blocks a course without modules or lessons', () => { expect(coursePublishIssues({ ...ok, modules: [], lessons: [] })).toEqual(expect.arrayContaining(['modules','lessons'])); });
   it('blocks an empty module and a lesson without content', () => { expect(coursePublishIssues({ ...ok, modules: [{ id: 'm' }, { id: 'n' }], lessons: [{ module_id: 'm', video_url: '', resource_path: '' }] })).toEqual(expect.arrayContaining(['empty_module','lesson_content'])); });
   it('blocks a sale price not lower than price', () => { expect(coursePublishIssues({ ...ok, sale_price: 1999 })).toContain('sale_price'); });
+});
+describe('admin image upload envelope', () => {
+  it('accepts uploaded thumbnails larger than the text limit', () => { expect(adminChangeSchema.safeParse({ resource: 'courses', values: { thumbnail_url: 'data:image/png;base64,' + 'A'.repeat(3000) } }).success).toBe(true); });
+  it('keeps ordinary text bounded', () => { expect(adminChangeSchema.safeParse({ resource: 'courses', values: { description: 'A'.repeat(2001) } }).success).toBe(false); });
 });
 import { invoiceTotals, couponDiscount, makeInvoiceNo } from './admin-rules';
 describe('commerce rules', () => {
