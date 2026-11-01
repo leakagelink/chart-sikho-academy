@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Rules
+- Optional lesson PDFs reuse the private course-resources object path and enrollment-scoped access; why: video-plus-PDF and video-only lessons need no duplicate attachment schema.
 - Real administration lives under the authenticated /admin subtree and uses role-checked server functions plus database RLS; payment settlement and external messaging remain unavailable until separately approved.
 - Admin resources use validated database operations with an audit trail; finance records are read-only except review/rejection, preventing manual payment verification or paid enrollment grants.
 - Capacitor builds launch the primary public domain and allow in-WebView navigation to it plus the lovable.app host that redirects to it (never the private preview); why: a redirect to an unlisted host opens the external browser.

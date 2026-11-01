@@ -5,7 +5,13 @@ export type AdminSection = typeof adminSections[number];
 export const adminChangeSchema = z.object({
   resource: z.enum(['categories','modules','courses','lessons','classes','ebooks','bookings','users','notifications','payouts','settings','quizzes','questions','certificates','reviews','coupons','refunds','invoices','abandoned','instructors','roles','verification','ranks','bonuses','templates','announcements','tickets','banners','campaigns','leads','seo','promocodes','maintenance']),
   id: z.string().uuid().optional(),
-  values: z.record(z.union([z.string().max(2000), z.number().finite(), z.boolean(), z.null()])),
+  values: z.record(z.union([z.string().max(700000), z.number().finite(), z.boolean(), z.null()])).superRefine((values, ctx) => {
+    for (const [key, value] of Object.entries(values)) {
+      if (typeof value === 'string' && value.length > 2000 && !['thumbnail_url', 'icon_url', 'logo_url'].includes(key)) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, path: [key], message: 'Text exceeds 2000 characters' });
+      }
+    }
+  }),
 });
 export function requireAdminRole(isAdmin: boolean) { if (!isAdmin) throw new Error('Forbidden'); }
 export function safeHttps(value: string) { if (!value) return ''; const url = new URL(value); if (url.protocol !== 'https:' || url.username || url.password) throw new Error('HTTPS required'); return url.toString(); }
