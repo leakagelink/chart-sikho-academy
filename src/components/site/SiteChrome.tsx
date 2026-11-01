@@ -3,6 +3,7 @@ import { Bell, BookOpen, GraduationCap, Home, Search, User, Video } from "lucide
 import { useEffect, useRef, useState } from "react";
 import type { DictKey } from "@/lib/i18n";
 import logo from "@/assets/logo.png";
+import { useBranding } from "@/lib/branding";
 import { useLang } from "@/lib/i18n";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
