@@ -1,7 +1,7 @@
 # Roadmap
 
 ## Open
-- [ ] Live Classes: category/course selection, completed recording into selected curriculum without duplicates, signed-in verification.
+- [x] Live Classes: category/course/module selection, completed recording into selected published course without duplicates; admin save/re-save and enrolled student visibility verified. External automatic recording remains disabled.
 - [x] Admin course thumbnails: repaired image save validation; upload, list display and reset verified signed-in.
 - [x] Optional PDF beside lesson videos: upload, saved path read-back, removal and video-only save verified signed-in; existing enrolled download access retained.
 - [x] Admin Phase 1: 8-group menu (planned items marked P2–P6) + date-filtered dashboard with separate gross/net/refunds/fees/commission KPIs
