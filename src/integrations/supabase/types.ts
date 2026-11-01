@@ -395,6 +395,7 @@ export type Database = {
       course_categories: {
         Row: {
           created_at: string
+          icon_url: string
           id: string
           name: string
           position: number
@@ -402,6 +403,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          icon_url?: string
           id?: string
           name: string
           position?: number
@@ -409,6 +411,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          icon_url?: string
           id?: string
           name?: string
           position?: number

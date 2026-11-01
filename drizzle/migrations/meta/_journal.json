@@ -92,6 +92,13 @@
       "when": 1793539925455,
       "tag": "0012_branding_logo",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1793541269547,
+      "tag": "0013_category_icon",
+      "breakpoints": true
     }
   ]
 }

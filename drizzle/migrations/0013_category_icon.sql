@@ -1,0 +1,1 @@
+ALTER TABLE public.course_categories ADD COLUMN icon_url text NOT NULL DEFAULT '';
