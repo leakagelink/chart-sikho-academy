@@ -15,3 +15,10 @@ describe('admin dashboard money', () => {
     expect(rangeBounds('month', new Date(2026, 9, 27)).start.getDate()).toBe(1);
   });
 });
+
+import { dailyCounts as dc } from './admin-dashboard';
+import { test as t2, expect as e2 } from 'vitest';
+t2('dailyCounts sums per day in date order', () => {
+  e2(dc([{ at: '2026-01-02T10:00:00Z', v: 5 }, { at: '2026-01-01T09:00:00Z', v: 1 }, { at: '2026-01-02T23:00:00Z', v: 2 }]))
+    .toEqual([{ label: '2026-01-01', value: 1 }, { label: '2026-01-02', value: 7 }]);
+});
