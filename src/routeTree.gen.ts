@@ -41,6 +41,7 @@ import { Route as SandboxAdminBookingsRouteImport } from './routes/sandbox.admin
 import { Route as SandboxAdminCoursesRouteImport } from './routes/sandbox.admin.courses'
 import { Route as SandboxAdminSalesRouteImport } from './routes/sandbox.admin.sales'
 import { Route as SandboxAdminStudentsRouteImport } from './routes/sandbox.admin.students'
+import { Route as AuthenticatedAdminUserUserIdRouteImport } from './routes/_authenticated/admin.user.$userId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -203,6 +204,12 @@ const SandboxAdminStudentsRoute = SandboxAdminStudentsRouteImport.update({
   path: '/students',
   getParentRoute: () => SandboxAdminRoute,
 } as any)
+const AuthenticatedAdminUserUserIdRoute =
+  AuthenticatedAdminUserUserIdRouteImport.update({
+    id: '/user/$userId',
+    path: '/user/$userId',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -236,6 +243,7 @@ export interface FileRoutesByFullPath {
   '/sandbox/admin/students': typeof SandboxAdminStudentsRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/sandbox/admin/': typeof SandboxAdminIndexRoute
+  '/admin/user/$userId': typeof AuthenticatedAdminUserUserIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -266,6 +274,7 @@ export interface FileRoutesByTo {
   '/sandbox/admin/students': typeof SandboxAdminStudentsRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/sandbox/admin': typeof SandboxAdminIndexRoute
+  '/admin/user/$userId': typeof AuthenticatedAdminUserUserIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -301,6 +310,7 @@ export interface FileRoutesById {
   '/sandbox/admin/students': typeof SandboxAdminStudentsRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/sandbox/admin/': typeof SandboxAdminIndexRoute
+  '/_authenticated/admin/user/$userId': typeof AuthenticatedAdminUserUserIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -336,6 +346,7 @@ export interface FileRouteTypes {
     | '/sandbox/admin/students'
     | '/admin/'
     | '/sandbox/admin/'
+    | '/admin/user/$userId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -366,6 +377,7 @@ export interface FileRouteTypes {
     | '/sandbox/admin/students'
     | '/admin'
     | '/sandbox/admin'
+    | '/admin/user/$userId'
   id:
     | '__root__'
     | '/'
@@ -400,6 +412,7 @@ export interface FileRouteTypes {
     | '/sandbox/admin/students'
     | '/_authenticated/admin/'
     | '/sandbox/admin/'
+    | '/_authenticated/admin/user/$userId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -642,17 +655,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SandboxAdminStudentsRouteImport
       parentRoute: typeof SandboxAdminRoute
     }
+    '/_authenticated/admin/user/$userId': {
+      id: '/_authenticated/admin/user/$userId'
+      path: '/user/$userId'
+      fullPath: '/admin/user/$userId'
+      preLoaderRoute: typeof AuthenticatedAdminUserUserIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
   }
 }
 
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminSectionRoute: typeof AuthenticatedAdminSectionRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+  AuthenticatedAdminUserUserIdRoute: typeof AuthenticatedAdminUserUserIdRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminSectionRoute: AuthenticatedAdminSectionRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+  AuthenticatedAdminUserUserIdRoute: AuthenticatedAdminUserUserIdRoute,
 }
 
 const AuthenticatedAdminRouteWithChildren =
