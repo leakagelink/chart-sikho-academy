@@ -55,7 +55,7 @@ export function CourseQuiz({ courseId }: { courseId: string }) {
           {d.unlocked && !cert && <span>{t('quiz_attempts_left')}: {d.attemptsLeft}</span>}
         </p>
       )}
-      {cert ? null : !d.unlocked ? (
+      {cert ? (result && <p className="mt-5 flex items-center gap-2 text-lg font-bold text-success"><Trophy className="h-5 w-5" />{result.score}/{result.total} ({result.percent}%)</p>) : !d.unlocked ? (
         <div className="mt-5 rounded-xl border border-dashed border-border p-4">
           <p className="flex items-center gap-2 font-semibold"><Lock className="h-4 w-4 text-muted-foreground" />{t('quiz_locked')}</p>
           <p className="mt-1 text-sm text-muted-foreground">{t('lessons_done').replace('{d}', String(d.completedLessons)).replace('{t}', String(d.totalLessons))}</p>
