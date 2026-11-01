@@ -1,11 +1,16 @@
 import { describe, expect, it } from 'vitest';
-import { adminDeleteSchema } from './admin-rules';
+import { adminDeleteSchema, videoRemovalValues } from './admin-rules';
 describe('admin deletion scope', () => {
   const id = '11111111-1111-4111-8111-111111111111';
   it('allows deleting courses', () => { expect(adminDeleteSchema.safeParse({ resource: 'courses', id }).success).toBe(true); });
   it('allows deleting lessons', () => { expect(adminDeleteSchema.safeParse({ resource: 'lessons', id }).success).toBe(true); });
+  it('allows removing Video Library videos', () => { expect(adminDeleteSchema.safeParse({ resource: 'videos', id }).success).toBe(true); });
   it('rejects finance deletion', () => { expect(adminDeleteSchema.safeParse({ resource: 'orders', id }).success).toBe(false); });
   it('requires a specific valid record', () => { expect(adminDeleteSchema.safeParse({ resource: 'courses', id: '' }).success).toBe(false); });
+});
+describe('video removal', () => {
+  it('preserves optional PDF notes', () => { expect(videoRemovalValues('lesson/notes.pdf')).toEqual({ video_url: '', resource_path: 'lesson/notes.pdf' }); });
+  it('clears uploaded video sources', () => { for (const path of ['lesson/movie.mp4', 'lesson/movie.WEBM']) expect(videoRemovalValues(path)).toEqual({ video_url: '', resource_path: '' }); });
 });
 import { adminChangeSchema, requireAdminRole, safeHttps, financeActionAllowed } from './admin-rules';
 describe('real admin boundaries', () => {

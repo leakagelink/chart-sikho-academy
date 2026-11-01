@@ -333,6 +333,7 @@ const dict = {
   admin_delete_confirm: { en: 'Delete this item?', hi: 'इसे हटाना है?' },
   admin_delete_course_note: { en: 'The course and its modules and lessons will be permanently deleted. Courses with enrollments, orders, quizzes, reviews or certificates cannot be deleted.', hi: 'कोर्स और उसके मॉड्यूल व लेसन हमेशा के लिए हट जाएंगे। नामांकन, ऑर्डर, क्विज़, समीक्षा या प्रमाणपत्र वाले कोर्स नहीं हटाए जा सकते।' },
   admin_delete_lesson_note: { en: 'This lesson will be permanently removed from the course. This cannot be undone.', hi: 'यह लेसन कोर्स से हमेशा के लिए हट जाएगा। इसे वापस नहीं लाया जा सकेगा।' },
+  admin_delete_video_note: { en: 'The video will be removed from this lesson and the Video Library. The lesson and any PDF notes will remain. The original external video or uploaded file will not be deleted.', hi: 'वीडियो इस लेसन और वीडियो लाइब्रेरी से हट जाएगा। लेसन और PDF नोट्स सुरक्षित रहेंगे। मूल बाहरी वीडियो या अपलोड की गई फ़ाइल नहीं मिटेगी।' },
   admin_delete_linked: { en: 'This course has linked student records, orders, quizzes, reviews or certificates. It cannot be deleted.', hi: 'इस कोर्स से छात्र रिकॉर्ड, ऑर्डर, क्विज़, समीक्षा या प्रमाणपत्र जुड़े हैं। इसे नहीं हटाया जा सकता।' },
   admin_cancel: { en: 'Cancel', hi: 'रद्द करें' },
   admin_title: { en: 'Title', hi: 'शीर्षक' },
