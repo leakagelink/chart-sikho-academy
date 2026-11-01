@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState, type FormEvent } from "react";
 import "@lovable.dev/cloud-auth-js/styles.css";
 import logo from "@/assets/logo.png";
+import { useBranding } from "@/lib/branding";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/use-auth";
@@ -31,6 +32,7 @@ export const Route = createFileRoute("/auth")({
 function AuthPage() {
   const { t } = useLang();
   const { session } = useAuth();
+  const brandLogo = useBranding();
   const { redirect } = Route.useSearch();
   const navigate = useNavigate();
   const [mode, setMode] = useState<"login" | "signup" | "forgot">("login");
@@ -84,7 +86,7 @@ function AuthPage() {
   return (
     <div className="auth-screen px-4 py-6">
       <div className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-8">
-        <img src={logo} alt="Chartसीखो" width={64} height={64} className="mx-auto h-24 w-24 object-contain" />
+        <img src={brandLogo || logo} alt="Chartसीखो" width={64} height={64} className="mx-auto h-24 w-24 object-contain" />
         <p className="mt-2 text-center font-display text-3xl font-bold text-gold">Chartसीखो</p>
         <p className="text-center text-sm text-gold">{t("splash_tagline")}</p>
         <h1 className="mt-3 text-center font-display text-2xl font-bold text-foreground">

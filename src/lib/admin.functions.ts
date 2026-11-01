@@ -200,8 +200,10 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
       result = await s.from('abandoned_checkouts').update(row).eq('id',data.id).select('id').single(); break;
     }
     case 'settings': {
-      const row = z.object({ support_email: z.union([z.literal(''),z.string().email().max(200)]), support_phone: z.string().max(30), commission_percent: z.coerce.number().int().min(0).max(100), referral_enabled: z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]).default(true), ref_level1_percent: z.coerce.number().int().min(0).max(100).default(10), ref_level2_percent: z.coerce.number().int().min(0).max(100).default(5), ref_level3_percent: z.coerce.number().int().min(0).max(100).default(2) }).parse(v);
-      result = data.id ? await s.from('admin_settings').update({ ...row, updated_at: new Date().toISOString() }).eq('id',data.id).select('id').single() : await s.from('admin_settings').insert(row).select('id').single(); break;
+      const row = z.object({ support_email: z.union([z.literal(''),z.string().email().max(200)]), support_phone: z.string().max(30), commission_percent: z.coerce.number().int().min(0).max(100), referral_enabled: z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]).default(true), ref_level1_percent: z.coerce.number().int().min(0).max(100).default(10), ref_level2_percent: z.coerce.number().int().min(0).max(100).default(5), ref_level3_percent: z.coerce.number().int().min(0).max(100).default(2), logo_url: z.union([z.literal(''), z.string().regex(/^data:image\/(png|jpeg|webp);base64,/).max(700000), z.string().url().max(2000).refine(u => u.startsWith('https://'), 'HTTPS required')]).optional() }).parse(v);
+      const { logo_url, ...rest } = row;
+      const payload = logo_url === undefined ? rest : { ...rest, logo_url };
+      result = data.id ? await s.from('admin_settings').update({ ...payload, updated_at: new Date().toISOString() }).eq('id',data.id).select('id').single() : await s.from('admin_settings').insert(payload).select('id').single(); break;
     }
     case 'maintenance': {
       if (!data.id) throw new Error('Record required');

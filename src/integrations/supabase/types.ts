@@ -75,6 +75,7 @@ export type Database = {
         Row: {
           commission_percent: number
           id: string
+          logo_url: string
           maintenance_message: string
           maintenance_mode: boolean
           ref_level1_percent: number
@@ -88,6 +89,7 @@ export type Database = {
         Insert: {
           commission_percent?: number
           id?: string
+          logo_url?: string
           maintenance_message?: string
           maintenance_mode?: boolean
           ref_level1_percent?: number
@@ -101,6 +103,7 @@ export type Database = {
         Update: {
           commission_percent?: number
           id?: string
+          logo_url?: string
           maintenance_message?: string
           maintenance_mode?: boolean
           ref_level1_percent?: number
@@ -1336,6 +1339,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      app_branding: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
