@@ -58,6 +58,21 @@ function downloadCsv(rows:Row[],name:string) {
   const blob = new Blob(['\uFEFF'+[keys.map(escape).join(','),...rows.map(r=>keys.map(k=>escape(r[k])).join(','))].join('\r\n')],{type:'text/csv;charset=utf-8'});
   const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`chartsikho-${name}.csv`;a.click();URL.revokeObjectURL(url);
 }
+function LogoSettings({ logoUrl, busy, onPick, onReset }: { logoUrl:string; busy:boolean; onPick:(f:File|undefined)=>void; onReset:()=>void }) {
+  const { t } = useLang();
+  return <div className="mb-5 rounded-xl border border-border bg-card p-4">
+    <p className="text-sm font-semibold">{t('admin_logo')}</p>
+    <p className="mt-1 text-xs text-muted-foreground">{t('admin_logo_hint')}</p>
+    <div className="mt-3 flex flex-wrap items-center gap-4">
+      <span className="grid h-16 w-16 place-items-center overflow-hidden rounded-xl border border-border bg-muted">{logoUrl?<img src={logoUrl} alt="" className="h-full w-full object-contain"/>:<Image className="text-muted-foreground" size={22}/>}</span>
+      <label className={`inline-flex cursor-pointer items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground ${busy?'opacity-60':''}`}>
+        <Upload size={16}/>{busy?t('admin_uploading'):t('admin_logo_change')}
+        <input type="file" accept="image/png,image/jpeg,image/webp" className="hidden" disabled={busy} onChange={e=>{onPick(e.target.files?.[0]);e.target.value='';}}/>
+      </label>
+      {logoUrl&&<Button variant="outline" size="sm" disabled={busy} onClick={onReset}>{t('admin_logo_reset')}</Button>}
+    </div>
+  </div>;
+}
 export function AdminError() { const {t}=useLang();const router=useRouter();return <section className="mx-auto max-w-xl px-4 py-16"><ShieldCheck className="mb-4 text-primary" size={40}/><h1 className="font-display text-2xl font-bold">{t('admin_denied')}</h1><p className="mt-3 text-muted-foreground">{t('admin_error')}</p><Button className="mt-6" onClick={()=>router.invalidate()}>{t('admin_retry')}</Button></section>; }
 export function AdminPanel({ section, query, status }: {section:AdminSection;query:string;status:string}) {
   const {t,lang}=useLang();const navigate=useNavigate();const qc=useQueryClient();
