@@ -596,6 +596,7 @@ export type Database = {
           category: string
           created_at: string
           description: string
+          final_quiz_id: string | null
           id: string
           instructor: string
           objectives: string
@@ -612,6 +613,7 @@ export type Database = {
           category?: string
           created_at?: string
           description?: string
+          final_quiz_id?: string | null
           id?: string
           instructor?: string
           objectives?: string
@@ -628,6 +630,7 @@ export type Database = {
           category?: string
           created_at?: string
           description?: string
+          final_quiz_id?: string | null
           id?: string
           instructor?: string
           objectives?: string
@@ -638,7 +641,15 @@ export type Database = {
           title?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "courses_final_quiz_id_fkey"
+            columns: ["final_quiz_id"]
+            isOneToOne: false
+            referencedRelation: "quizzes"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       demo_bookings: {
         Row: {
@@ -840,6 +851,45 @@ export type Database = {
         }
         Relationships: []
       }
+      lesson_completions: {
+        Row: {
+          course_id: string
+          created_at: string
+          id: string
+          lesson_id: string
+          user_id: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          id?: string
+          lesson_id: string
+          user_id: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          id?: string
+          lesson_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lesson_completions_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lesson_completions_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "course_lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       message_templates: {
         Row: {
           body: string
@@ -1039,6 +1089,7 @@ export type Database = {
       }
       quiz_attempts: {
         Row: {
+          course_id: string | null
           created_at: string
           id: string
           passed: boolean
@@ -1049,6 +1100,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          course_id?: string | null
           created_at?: string
           id?: string
           passed?: boolean
@@ -1059,6 +1111,7 @@ export type Database = {
           user_id?: string
         }
         Update: {
+          course_id?: string | null
           created_at?: string
           id?: string
           passed?: boolean
@@ -1069,6 +1122,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "quiz_attempts_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "quiz_attempts_quiz_id_fkey"
             columns: ["quiz_id"]
@@ -1384,12 +1444,17 @@ export type Database = {
     Functions: {
       app_branding: { Args: never; Returns: string }
       delete_admin_course: { Args: { _course_id: string }; Returns: undefined }
+      get_course_quiz: { Args: { _course_id: string }; Returns: Json }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      submit_course_quiz: {
+        Args: { _answers: Json; _course_id: string }
+        Returns: Json
       }
       verify_certificate: {
         Args: { _no: string }
