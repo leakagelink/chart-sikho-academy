@@ -1,7 +1,21 @@
 import { createServerFn } from '@tanstack/react-start';
 import { z } from 'zod';
 import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
-import { adminChangeSchema, requireAdminRole, safeHttps, coursePublishIssues, makeCertificateNo, makeInvoiceNo, invoiceTotals } from './admin-rules';
+import { adminChangeSchema, adminDeleteSchema, requireAdminRole, safeHttps, coursePublishIssues, makeCertificateNo, makeInvoiceNo, invoiceTotals } from './admin-rules';
+
+export const deleteAdminRecord = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth]).inputValidator(input => adminDeleteSchema.parse(input)).handler(async ({ context, data }) => {
+  const s = context.supabase;
+  const role = await s.rpc('has_role', { _user_id: context.userId, _role: 'admin' });
+  requireAdminRole(!role.error && role.data === true);
+  if (data.resource === 'courses') {
+    const result = await s.rpc('delete_admin_course', { _course_id: data.id });
+    if (result.error) throw new Error(result.error.message.includes('Course has linked records') ? 'Course has linked records' : 'Unable to delete record');
+  } else {
+    const result = await s.from('course_lessons').delete().eq('id', data.id).select('id').single();
+    if (result.error) throw new Error('Unable to delete record');
+  }
+  return { ok: true };
+});
 
 export const getAdminData = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth]).handler(async ({ context }) => {
   const s = context.supabase;
