@@ -1343,6 +1343,7 @@ export type Database = {
     }
     Functions: {
       app_branding: { Args: never; Returns: string }
+      delete_admin_course: { Args: { _course_id: string }; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
