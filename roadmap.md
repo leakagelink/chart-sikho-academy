@@ -1,8 +1,8 @@
 # Roadmap
 
 ## Open
-- [ ] Admin course thumbnails: verify display and repair image save validation.
-- [ ] Optional PDF upload beside lesson videos; keep video-only lessons valid and verify saved download.
+- [x] Admin course thumbnails: repaired image save validation; upload, list display and reset verified signed-in.
+- [x] Optional PDF beside lesson videos: upload, saved path read-back, removal and video-only save verified signed-in; existing enrolled download access retained.
 - [x] Admin Phase 1: 8-group menu (planned items marked P2–P6) + date-filtered dashboard with separate gross/net/refunds/fees/commission KPIs
 - [x] Admin Phase 2: Course Builder (categories, modules, lessons, video library, drip days, access, sale price, duplicate, reorder, publish checklist, student preview)
 - [x] Admin Phase 3: Quizzes, question bank, certificates, progress, reviews
