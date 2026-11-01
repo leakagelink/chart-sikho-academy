@@ -2,42 +2,36 @@ import { createServerFn } from '@tanstack/react-start';
 import { z } from 'zod';
 import { createClient } from '@supabase/supabase-js';
 import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
-import { quizScore } from './admin-rules';
 import type { Database } from '@/integrations/supabase/types';
 
-/** Published quiz for an enrolled student: questions without answer keys, plus attempts left. */
+type QuizQuestion = { id: string; topic: string; question: string; option_a: string; option_b: string; option_c: string; option_d: string; marks: number };
+type CertificateRef = { certificate_no: string; status: string } | null;
+export type CourseQuizState = {
+  enrolled: boolean; totalLessons: number; completedLessons: number; unlocked: boolean; certificate: CertificateRef; bestPercent: number | null;
+  attemptsUsed: number; attemptsLeft: number; questions: QuizQuestion[];
+  quiz: { id: string; title: string; time_limit_minutes: number; pass_percent: number; max_attempts: number } | null;
+};
+
+/** Final quiz linked to the course: unlocked after every lesson is complete; questions never include answer keys. */
 export const getCourseQuiz = createServerFn({ method: 'POST' })
   .middleware([requireSupabaseAuth])
   .inputValidator((i: { courseId: string }) => z.object({ courseId: z.string().uuid() }).parse(i))
   .handler(async ({ context, data }) => {
-    const s = context.supabase;
-    const en = await s.from('enrollments').select('id').eq('user_id', context.userId).eq('course_id', data.courseId).maybeSingle();
-    if (!en.data) return { quiz: null, questions: [], attemptsUsed: 0, attemptsLeft: 0 };
-    const qz = await s.from('quizzes').select('id,title,time_limit_minutes,pass_percent,max_attempts').eq('course_id', data.courseId).eq('status', 'published').limit(1).maybeSingle();
-    if (!qz.data) return { quiz: null, questions: [], attemptsUsed: 0, attemptsLeft: 0 };
-    const [qs, at] = await Promise.all([
-      s.from('quiz_questions').select('id,topic,question,option_a,option_b,option_c,option_d,marks').eq('quiz_id', qz.data.id).order('created_at'),
-      s.from('quiz_attempts').select('id', { count: 'exact', head: true }).eq('quiz_id', qz.data.id).eq('user_id', context.userId),
-    ]);
-    const used = at.count ?? 0;
-    return { quiz: qz.data, questions: qs.data ?? [], attemptsUsed: used, attemptsLeft: Math.max(0, qz.data.max_attempts - used) };
+    const r = await context.supabase.rpc('get_course_quiz', { _course_id: data.courseId });
+    if (r.error) throw new Error('Unable to load quiz');
+    const v = r.data as Partial<CourseQuizState>;
+    return { enrolled: !!v.enrolled, totalLessons: v.totalLessons ?? 0, completedLessons: v.completedLessons ?? 0, unlocked: !!v.unlocked, certificate: v.certificate ?? null, bestPercent: v.bestPercent ?? null, attemptsUsed: v.attemptsUsed ?? 0, attemptsLeft: v.attemptsLeft ?? 0, questions: v.questions ?? [], quiz: v.quiz ?? null } satisfies CourseQuizState;
   });
 
-/** Scores an attempt server-side and stores it; the database enforces the attempt limit. */
+const quizErrors = ['No attempts left', 'Complete the course first', 'Quiz not available', 'Not enrolled', 'Account paused'];
+/** Scored in the database; issues the certificate automatically at 80% or more. */
 export const submitQuizAttempt = createServerFn({ method: 'POST' })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: { quizId: string; answers: Record<string, string> }) => z.object({ quizId: z.string().uuid(), answers: z.record(z.enum(['a', 'b', 'c', 'd'])) }).parse(i))
+  .inputValidator((i: { courseId: string; answers: Record<string, string> }) => z.object({ courseId: z.string().uuid(), answers: z.record(z.string().uuid(), z.enum(['a', 'b', 'c', 'd'])) }).parse(i))
   .handler(async ({ context, data }) => {
-    const s = context.supabase;
-    const qz = await s.from('quizzes').select('id,pass_percent,negative_marks,max_attempts').eq('id', data.quizId).eq('status', 'published').maybeSingle();
-    if (!qz.data) throw new Error('Quiz not available');
-    const qs = await s.from('quiz_questions').select('id,correct_option,marks').eq('quiz_id', data.quizId);
-    if (!qs.data?.length) throw new Error('Quiz not available');
-    const answers = qs.data.map(q => ({ correct: q.correct_option, chosen: data.answers[q.id] ?? null, marks: q.marks }));
-    const result = quizScore(answers, Number(qz.data.negative_marks), qz.data.pass_percent);
-    const ins = await s.from('quiz_attempts').insert({ quiz_id: data.quizId, user_id: context.userId, score: result.score, total: result.total, percent: result.percent, passed: result.passed }).select('id').single();
-    if (ins.error) throw new Error(ins.error.code === '42501' ? 'No attempts left' : 'Unable to save attempt');
-    return { ...result, correct: Object.fromEntries(qs.data.map(q => [q.id, q.correct_option])) };
+    const r = await context.supabase.rpc('submit_course_quiz', { _course_id: data.courseId, _answers: data.answers });
+    if (r.error) throw new Error(quizErrors.find(m => r.error.message.includes(m)) ?? 'Unable to save attempt');
+    return r.data as { score: number; total: number; percent: number; passed: boolean; correct: Record<string, string>; certificate: CertificateRef };
   });
 
 /** Enrolled student writes one review per course; it shows after admin approval. */

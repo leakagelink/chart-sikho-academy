@@ -89,7 +89,8 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
       result = data.id ? await s.from('course_modules').update(row).eq('id',data.id).select('id').single() : await s.from('course_modules').insert(row).select('id').single(); break;
     }
     case 'courses': {
-      const row = z.object({ title, price, category: z.string().regex(/^[a-z0-9-]{2,40}$/), status: z.enum(['draft','published']), description: z.string().max(2000).default(''), thumbnail_url: z.union([z.literal(''), z.string().max(700000).regex(/^data:image\/(png|jpeg|webp|svg\+xml);base64,/), z.string().url().max(500).startsWith('https://')]).default(''), instructor: z.string().max(120).default(''), objectives: z.string().max(2000).default(''), sale_price: z.union([z.literal('').transform(() => null), z.null(), price]).default(null), access_type: z.enum(['lifetime','fixed']).default('lifetime'), access_days: z.coerce.number().int().min(0).max(3650).default(0) }).parse(v);
+      const row = z.object({ title, price, category: z.string().regex(/^[a-z0-9-]{2,40}$/), status: z.enum(['draft','published']), description: z.string().max(2000).default(''), thumbnail_url: z.union([z.literal(''), z.string().max(700000).regex(/^data:image\/(png|jpeg|webp|svg\+xml);base64,/), z.string().url().max(500).startsWith('https://')]).default(''), instructor: z.string().max(120).default(''), objectives: z.string().max(2000).default(''), sale_price: z.union([z.literal('').transform(() => null), z.null(), price]).default(null), access_type: z.enum(['lifetime','fixed']).default('lifetime'), access_days: z.coerce.number().int().min(0).max(3650).default(0), final_quiz_id: z.union([z.literal('').transform(() => null), z.null(), z.string().uuid()]).default(null) }).parse(v);
+      if (row.final_quiz_id) { const fq = await s.from('quizzes').select('id').eq('id', row.final_quiz_id).maybeSingle(); if (!fq.data) throw new Error('Unknown quiz'); }
       const cat = await s.from('course_categories').select('id').eq('slug',row.category).maybeSingle();
       if (!cat.data) throw new Error('Unknown category');
       if (row.status === 'published') {
@@ -175,7 +176,7 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
       result = await s.from('payout_requests').update(row).eq('id',data.id).eq('status','pending').select('id').single(); break;
     }
     case 'quizzes': {
-      const row = z.object({ title, course_id: z.union([z.literal('').transform(() => null), z.null(), z.string().uuid()]).default(null), time_limit_minutes: z.coerce.number().int().min(1).max(300), pass_percent: z.coerce.number().int().min(0).max(100), negative_marks: z.coerce.number().min(0).max(10), max_attempts: z.coerce.number().int().min(1).max(50), status: z.enum(['draft','published']) }).parse(v);
+      const row = z.object({ title, time_limit_minutes: z.coerce.number().int().min(1).max(300), pass_percent: z.coerce.number().int().min(0).max(100), negative_marks: z.coerce.number().min(0).max(10), max_attempts: z.coerce.number().int().min(1).max(50), status: z.enum(['draft','published']) }).parse(v);
       if (row.status === 'published') {
         if (!data.id) throw new Error('Save as draft first, then add questions');
         const q = await s.from('quiz_questions').select('id', { count: 'exact', head: true }).eq('quiz_id', data.id);

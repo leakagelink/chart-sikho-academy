@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { quizScore, makeCertificateNo, adminChangeSchema } from './admin-rules';
+import { quizScore, makeCertificateNo, adminChangeSchema, earnsCertificate, CERTIFICATE_MIN_PERCENT } from './admin-rules';
 
 describe('quiz scoring', () => {
   it('adds marks for correct, subtracts negative marks for wrong, 0 for skipped', () => {
@@ -18,4 +18,16 @@ describe('certificates', () => {
   it('admin may change quizzes, questions, certificates and reviews', () => {
     for (const r of ['quizzes', 'questions', 'certificates', 'reviews']) expect(adminChangeSchema.safeParse({ resource: r, values: {} }).success).toBe(true);
   });
+});
+
+describe('course certificate rule', () => {
+  it('issues a certificate at 8 out of 10 (80%)', () => {
+    const answers = Array.from({ length: 10 }, (_, i) => ({ correct: 'a', chosen: i < 8 ? 'a' : 'b', marks: 1 }));
+    expect(earnsCertificate(quizScore(answers, 0, 40).percent)).toBe(true);
+  });
+  it('does not issue a certificate at 7 out of 10 (70%)', () => {
+    const answers = Array.from({ length: 10 }, (_, i) => ({ correct: 'a', chosen: i < 7 ? 'a' : 'b', marks: 1 }));
+    expect(earnsCertificate(quizScore(answers, 0, 40).percent)).toBe(false);
+  });
+  it('threshold is 80%', () => { expect(CERTIFICATE_MIN_PERCENT).toBe(80); expect(earnsCertificate(79.99)).toBe(false); });
 });
