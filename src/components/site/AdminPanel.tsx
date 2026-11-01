@@ -75,7 +75,7 @@ function LogoSettings({ logoUrl, busy, onPick, onReset }: { logoUrl:string; busy
   </div>;
 }
 export function AdminError() { const {t}=useLang();const router=useRouter();return <section className="mx-auto max-w-xl px-4 py-16"><ShieldCheck className="mb-4 text-primary" size={40}/><h1 className="font-display text-2xl font-bold">{t('admin_denied')}</h1><p className="mt-3 text-muted-foreground">{t('admin_error')}</p><Button className="mt-6" onClick={()=>router.invalidate()}>{t('admin_retry')}</Button></section>; }
-export function AdminPanel({ section, query, status, cat }: {section:AdminSection;query:string;status:string;cat:string}) {
+export function AdminPanel({ section, query, status, cat, when }: {section:AdminSection;query:string;status:string;cat:string;when:string}) {
   const {t,lang}=useLang();const navigate=useNavigate();const qc=useQueryClient();
   const {data}=useSuspenseQuery(adminQuery());
   const mutate=useServerFn(changeAdminRecord);
