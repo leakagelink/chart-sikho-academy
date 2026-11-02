@@ -6,4 +6,4 @@ import { adminQuery } from '@/lib/admin-query';
 import { adminSections } from '@/lib/admin-rules';
 import { canAccess } from '@/lib/admin-permissions';
 export const Route = createFileRoute('/_authenticated/admin/')({head:()=>pageMeta('Administration dashboard','Manage Chartसीखो courses, students and records securely.'),component:Screen});
-function Screen(){const {data}=useSuspenseQuery(adminQuery());const section=adminSections.find(s=>canAccess(data.access,s))??'overview';return <AdminPanel section={section} query="" status="all" cat="all" when="all"/>;}
+function Screen(){const {data}=useSuspenseQuery(adminQuery());const section=adminSections.find(s=>canAccess(data.access,s))??'overview';return <AdminPanel section={section} query="" status="all" cat="all" when="all" rank="all"/>;}
