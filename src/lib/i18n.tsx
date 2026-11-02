@@ -3,6 +3,15 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export type Lang = "en" | "hi";
 
 const dict = {
+  panel_permissions: { en: 'User permissions', hi: 'यूज़र की अनुमतियाँ' },
+  panel_choose_user: { en: 'Choose user for permissions', hi: 'अनुमति देने के लिए यूज़र चुनें' },
+  panel_section: { en: 'Section', hi: 'सेक्शन' },
+  panel_view: { en: 'View', hi: 'देखें' },
+  panel_create: { en: 'Add', hi: 'जोड़ें' },
+  panel_edit: { en: 'Edit', hi: 'बदलें' },
+  panel_delete: { en: 'Delete', hi: 'हटाएँ' },
+  panel_clear: { en: 'Clear all', hi: 'सभी हटाएँ' },
+  panel_full_admin: { en: 'Administrators already have full access. Change their role to apply limited permissions.', hi: 'एडमिन के पास पूरा एक्सेस है। सीमित अनुमति के लिए पहले उनका रोल बदलें।' },
   admin_templates_real: { en: 'Message templates', hi: 'मैसेज टेम्पलेट' },
   admin_announcements_real: { en: 'Announcements', hi: 'घोषणाएँ' },
   admin_tickets_real: { en: 'Support tickets', hi: 'सपोर्ट टिकट' },
