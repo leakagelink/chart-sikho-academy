@@ -122,3 +122,11 @@ describe('affiliate rank filter rules', () => {
     expect(rankFor('u2', ranks, affiliates, orders)).toBeNull();
   });
 });
+
+import { teamStats } from './admin-rules';
+describe('teamStats', () => {
+  const aff = [{referrer_id:'a',referred_id:'b'},{referrer_id:'a',referred_id:'c'},{referrer_id:'b',referred_id:'d'},{referrer_id:'d',referred_id:'e'}];
+  it('counts direct referrals only at level 1', () => { expect(teamStats('a', aff).direct).toBe(2); });
+  it('counts every level in the total team', () => { expect(teamStats('a', aff).total).toBe(4); expect(teamStats('b', aff).total).toBe(2); });
+  it('does not loop on circular referrals', () => { expect(teamStats('a', [...aff,{referrer_id:'e',referred_id:'a'}]).total).toBe(4); });
+});
