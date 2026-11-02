@@ -13,7 +13,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CoursesRouteImport } from './routes/courses'
-import { Route as DemoRouteImport } from './routes/demo'
 import { Route as PlansRouteImport } from './routes/plans'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SandboxRouteImport } from './routes/sandbox'
@@ -37,7 +36,6 @@ import { Route as VerifyCertificateNoRouteImport } from './routes/verify.$certif
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminSectionRouteImport } from './routes/_authenticated/admin.$section'
 import { Route as SandboxAdminIndexRouteImport } from './routes/sandbox.admin.index'
-import { Route as SandboxAdminBookingsRouteImport } from './routes/sandbox.admin.bookings'
 import { Route as SandboxAdminCoursesRouteImport } from './routes/sandbox.admin.courses'
 import { Route as SandboxAdminSalesRouteImport } from './routes/sandbox.admin.sales'
 import { Route as SandboxAdminStudentsRouteImport } from './routes/sandbox.admin.students'
@@ -60,11 +58,6 @@ const AuthRoute = AuthRouteImport.update({
 const CoursesRoute = CoursesRouteImport.update({
   id: '/courses',
   path: '/courses',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoRoute = DemoRouteImport.update({
-  id: '/demo',
-  path: '/demo',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlansRoute = PlansRouteImport.update({
@@ -184,11 +177,6 @@ const SandboxAdminIndexRoute = SandboxAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => SandboxAdminRoute,
 } as any)
-const SandboxAdminBookingsRoute = SandboxAdminBookingsRouteImport.update({
-  id: '/bookings',
-  path: '/bookings',
-  getParentRoute: () => SandboxAdminRoute,
-} as any)
 const SandboxAdminCoursesRoute = SandboxAdminCoursesRouteImport.update({
   id: '/courses',
   path: '/courses',
@@ -215,7 +203,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/courses': typeof CoursesRoute
-  '/demo': typeof DemoRoute
   '/plans': typeof PlansRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sandbox': typeof SandboxRouteWithChildren
@@ -237,7 +224,6 @@ export interface FileRoutesByFullPath {
   '/verify/$certificateNo': typeof VerifyCertificateNoRoute
   '/sandbox/': typeof SandboxIndexRoute
   '/admin/$section': typeof AuthenticatedAdminSectionRoute
-  '/sandbox/admin/bookings': typeof SandboxAdminBookingsRoute
   '/sandbox/admin/courses': typeof SandboxAdminCoursesRoute
   '/sandbox/admin/sales': typeof SandboxAdminSalesRoute
   '/sandbox/admin/students': typeof SandboxAdminStudentsRoute
@@ -249,7 +235,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/courses': typeof CoursesRoute
-  '/demo': typeof DemoRoute
   '/plans': typeof PlansRoute
   '/reset-password': typeof ResetPasswordRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -268,7 +253,6 @@ export interface FileRoutesByTo {
   '/verify/$certificateNo': typeof VerifyCertificateNoRoute
   '/sandbox': typeof SandboxIndexRoute
   '/admin/$section': typeof AuthenticatedAdminSectionRoute
-  '/sandbox/admin/bookings': typeof SandboxAdminBookingsRoute
   '/sandbox/admin/courses': typeof SandboxAdminCoursesRoute
   '/sandbox/admin/sales': typeof SandboxAdminSalesRoute
   '/sandbox/admin/students': typeof SandboxAdminStudentsRoute
@@ -282,7 +266,6 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/courses': typeof CoursesRoute
-  '/demo': typeof DemoRoute
   '/plans': typeof PlansRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sandbox': typeof SandboxRouteWithChildren
@@ -304,7 +287,6 @@ export interface FileRoutesById {
   '/verify/$certificateNo': typeof VerifyCertificateNoRoute
   '/sandbox/': typeof SandboxIndexRoute
   '/_authenticated/admin/$section': typeof AuthenticatedAdminSectionRoute
-  '/sandbox/admin/bookings': typeof SandboxAdminBookingsRoute
   '/sandbox/admin/courses': typeof SandboxAdminCoursesRoute
   '/sandbox/admin/sales': typeof SandboxAdminSalesRoute
   '/sandbox/admin/students': typeof SandboxAdminStudentsRoute
@@ -318,7 +300,6 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/courses'
-    | '/demo'
     | '/plans'
     | '/reset-password'
     | '/sandbox'
@@ -340,7 +321,6 @@ export interface FileRouteTypes {
     | '/verify/$certificateNo'
     | '/sandbox/'
     | '/admin/$section'
-    | '/sandbox/admin/bookings'
     | '/sandbox/admin/courses'
     | '/sandbox/admin/sales'
     | '/sandbox/admin/students'
@@ -352,7 +332,6 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/courses'
-    | '/demo'
     | '/plans'
     | '/reset-password'
     | '/dashboard'
@@ -371,7 +350,6 @@ export interface FileRouteTypes {
     | '/verify/$certificateNo'
     | '/sandbox'
     | '/admin/$section'
-    | '/sandbox/admin/bookings'
     | '/sandbox/admin/courses'
     | '/sandbox/admin/sales'
     | '/sandbox/admin/students'
@@ -384,7 +362,6 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/courses'
-    | '/demo'
     | '/plans'
     | '/reset-password'
     | '/sandbox'
@@ -406,7 +383,6 @@ export interface FileRouteTypes {
     | '/verify/$certificateNo'
     | '/sandbox/'
     | '/_authenticated/admin/$section'
-    | '/sandbox/admin/bookings'
     | '/sandbox/admin/courses'
     | '/sandbox/admin/sales'
     | '/sandbox/admin/students'
@@ -420,7 +396,6 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   CoursesRoute: typeof CoursesRoute
-  DemoRoute: typeof DemoRoute
   PlansRoute: typeof PlansRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SandboxRoute: typeof SandboxRouteWithChildren
@@ -457,13 +432,6 @@ declare module '@tanstack/react-router' {
       path: '/courses'
       fullPath: '/courses'
       preLoaderRoute: typeof CoursesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo': {
-      id: '/demo'
-      path: '/demo'
-      fullPath: '/demo'
-      preLoaderRoute: typeof DemoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/plans': {
@@ -627,13 +595,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SandboxAdminIndexRouteImport
       parentRoute: typeof SandboxAdminRoute
     }
-    '/sandbox/admin/bookings': {
-      id: '/sandbox/admin/bookings'
-      path: '/bookings'
-      fullPath: '/sandbox/admin/bookings'
-      preLoaderRoute: typeof SandboxAdminBookingsRouteImport
-      parentRoute: typeof SandboxAdminRoute
-    }
     '/sandbox/admin/courses': {
       id: '/sandbox/admin/courses'
       path: '/courses'
@@ -698,7 +659,6 @@ const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 interface SandboxAdminRouteChildren {
-  SandboxAdminBookingsRoute: typeof SandboxAdminBookingsRoute
   SandboxAdminCoursesRoute: typeof SandboxAdminCoursesRoute
   SandboxAdminSalesRoute: typeof SandboxAdminSalesRoute
   SandboxAdminStudentsRoute: typeof SandboxAdminStudentsRoute
@@ -706,7 +666,6 @@ interface SandboxAdminRouteChildren {
 }
 
 const SandboxAdminRouteChildren: SandboxAdminRouteChildren = {
-  SandboxAdminBookingsRoute: SandboxAdminBookingsRoute,
   SandboxAdminCoursesRoute: SandboxAdminCoursesRoute,
   SandboxAdminSalesRoute: SandboxAdminSalesRoute,
   SandboxAdminStudentsRoute: SandboxAdminStudentsRoute,
@@ -751,7 +710,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   CoursesRoute: CoursesRoute,
-  DemoRoute: DemoRoute,
   PlansRoute: PlansRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SandboxRoute: SandboxRouteWithChildren,
