@@ -191,6 +191,8 @@ const dict = {
   admin_photo: { en: 'Photo link', hi: 'फोटो लिंक' },
   admin_role: { en: 'Role', hi: 'रोल' },
   admin_min_sales: { en: 'Minimum sales (₹)', hi: 'न्यूनतम बिक्री (₹)' },
+  admin_rank: { en: 'Rank', hi: 'रैंक' },
+  admin_no_rank: { en: 'No rank', hi: 'कोई रैंक नहीं' },
   admin_bonus_amount: { en: 'Bonus amount (₹)', hi: 'बोनस राशि (₹)' },
   admin_ref_enabled: { en: 'Referral enabled', hi: 'रेफरल चालू' },
   admin_ref_levels: { en: 'Referral levels (%)', hi: 'रेफ़रल स्तर (%)' },

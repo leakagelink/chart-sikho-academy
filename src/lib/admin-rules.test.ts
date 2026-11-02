@@ -91,3 +91,34 @@ describe('phase 6 admin resources', () => {
     expect(adminChangeSchema.safeParse({ resource: 'hacking', values: {} }).success).toBe(false);
   });
 });
+
+import { rankFor, referralSalesTotal } from './admin-rules';
+
+describe('affiliate rank filter rules', () => {
+  const ranks = [
+    { name: 'Silver', min_sales: 5000, position: 1 },
+    { name: 'Gold', min_sales: 20000, position: 2 },
+  ];
+  const affiliates = [
+    { referrer_id: 'u1', referred_id: 'u2' },
+    { referrer_id: 'u1', referred_id: 'u3' },
+    { referrer_id: 'u9', referred_id: 'u4' },
+  ];
+  const orders = [
+    { user_id: 'u2', status: 'paid', amount: 12000 },
+    { user_id: 'u3', status: 'paid', amount: 9000 },
+    { user_id: 'u3', status: 'failed', amount: 5000 },
+    { user_id: 'u4', status: 'paid', amount: 1000 },
+  ];
+  it('sums only paid orders from directly referred users', () => {
+    expect(referralSalesTotal('u1', affiliates, orders)).toBe(21000);
+    expect(referralSalesTotal('u9', affiliates, orders)).toBe(1000);
+  });
+  it('assigns the highest rank whose minimum sales are reached', () => {
+    expect(rankFor('u1', ranks, affiliates, orders)?.name).toBe('Gold');
+    expect(rankFor('u9', ranks, affiliates, orders)).toBeNull();
+  });
+  it('returns null when no rank qualifies', () => {
+    expect(rankFor('u2', ranks, affiliates, orders)).toBeNull();
+  });
+});
