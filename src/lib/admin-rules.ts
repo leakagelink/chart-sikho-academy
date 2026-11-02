@@ -121,3 +121,8 @@ export function teamStats(userId: string, affiliates: { referrer_id: string; ref
   while (stack.length) { const id = stack.pop()!; if (seen.has(id)) continue; seen.add(id); stack.push(...(kids.get(id) ?? [])); }
   return { direct, total: seen.size - 1 };
 }
+/** Ledger totals by commission status; TDS counts only on approved/paid entries. */
+export function commissionSummary(rows: { amount: number; status: string; tds_amount?: number }[]) {
+  const by = (s: string) => rows.filter(r => r.status === s).reduce((a, r) => a + Number(r.amount || 0), 0);
+  return { pending: by('pending'), approved: by('approved'), paid: by('paid'), reversed: by('reversed'), rejected: by('rejected'), tds: rows.filter(r => r.status === 'approved' || r.status === 'paid').reduce((a, r) => a + Number(r.tds_amount || 0), 0) };
+}

@@ -62,8 +62,8 @@ function ProfilePage() {
     { icon: ClipboardList, label: t("my_courses"), to: "/dashboard" },
     { icon: Award, label: t("my_certificates"), to: "/sandbox/certificates" },
     { icon: Users, label: t("referral_dashboard"), to: "/sandbox/referrals" },
-    { icon: IndianRupee, label: t("my_earnings"), to: "/sandbox/wallet" },
-    { icon: Wallet, label: t("payout_requests"), to: "/sandbox/wallet" },
+    { icon: IndianRupee, label: t("my_earnings"), to: "/earnings" },
+    { icon: Wallet, label: t("payout_requests"), to: "/earnings" },
     { icon: Bell, label: t("notifications"), to: "/sandbox/support" },
     { icon: LifeBuoy, label: t("support"), to: "/sandbox/support" },
   ] as const;

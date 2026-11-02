@@ -254,7 +254,7 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
       result = await s.from('commission_entries').update(row).eq('id',data.id).eq('status','pending').select('id').single(); break;
     }
     case 'influencers': {
-      const row = z.object({ user_id: z.string().uuid(), on: bool }).parse(v);
+      const row = z.object({ user_id: z.string().uuid(), on: z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]) }).parse(v);
       if (row.on) { const r = await s.from('referral_influencers').upsert({ user_id: row.user_id }).select('user_id').single(); if (r.error) throw new Error('Unable to save record'); return { id: r.data.user_id }; }
       const r = await s.from('referral_influencers').delete().eq('user_id', row.user_id); if (r.error) throw new Error('Unable to save record'); return { id: row.user_id };
     }
