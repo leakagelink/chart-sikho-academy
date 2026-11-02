@@ -224,15 +224,23 @@ export type AdminData = Awaited<ReturnType<typeof getAdminData>>;
 function TeamTree({data,rootId}:{data:AdminData;rootId?:string}) {
   const {t}=useLang();
   const [rank,setRank]=useState('all');
-  const name=(id:string)=>data.users.find(u=>u.id===id)?.full_name??id.slice(0,8);
+  const [query,setQuery]=useState('');
+  const userOf=(id:string)=>data.users.find(u=>u.id===id);
+  const name=(id:string)=>userOf(id)?.full_name??id.slice(0,8);
   const rankOf=(id:string)=>rankFor(id,data.ranks,data.affiliates,data.orders);
-  const matches=(id:string)=>rank==='all'||(rank==='none'?!rankOf(id):rankOf(id)?.name===rank);
+  const matches=(id:string)=>{
+    if(!(rank==='all'||(rank==='none'?!rankOf(id):rankOf(id)?.name===rank)))return false;
+    const q=query.trim().toLowerCase();
+    if(!q)return true;
+    const u=userOf(id) as Record<string,unknown>|undefined;
+    return id.toLowerCase().includes(q)||[u?.['full_name'],u?.['phone'],u?.['email']].some(v=>String(v??'').toLowerCase().includes(q));
+  };
   const children=new Map<string,string[]>();
   data.affiliates.forEach(a=>{const l=children.get(a.referrer_id)??[];l.push(a.referred_id);children.set(a.referrer_id,l);});
   const referred=new Set(data.affiliates.map(a=>a.referred_id));
   const roots=rootId?[rootId]:[...children.keys()].filter(id=>!referred.has(id));
   const Node=({id,depth,path}:{id:string;depth:number;path:string[]})=>{if(path.includes(id))return null;const kids=[...new Set(children.get(id)??[])].map(c=><Node key={c} id={c} depth={depth+1} path={[...path,id]}/>).filter(Boolean);if(!matches(id)&&!kids.length)return null;const rk=rankOf(id);return <li><span className="font-medium">{name(id)}</span>{rk&&<span className="ml-2 rounded bg-primary/15 px-1.5 py-0.5 text-xs font-bold text-primary">{rk.name}</span>}<span className="ml-2 text-xs text-muted-foreground">{depth===0?t('admin_team_root'):`${t('admin_level')} ${depth}`}</span>{(()=>{const st=teamStats(id,data.affiliates);return st.total?<span className="ml-2 text-xs text-muted-foreground">· {t('admin_direct_members')} {st.direct} · {t('admin_total_members')} {st.total}</span>:null;})()}{kids.length?<ul className="ml-5 border-l border-border pl-3">{kids}</ul>:null}</li>;};
-  const filter=<div className="mb-4 flex flex-wrap gap-3"><select aria-label={t('admin_rank')} value={rank} onChange={e=>setRank(e.target.value)} className={`${inputCls} w-auto`}><option value="all">{t('filter_all')}</option><option value="none">{t('admin_no_rank')}</option>{data.ranks.map(rk=><option key={rk.name} value={rk.name}>{rk.name}</option>)}</select></div>;
+  const filter=<div className="mb-4 flex flex-wrap gap-3"><label className="relative min-w-0 flex-1"><Search className="absolute left-3 top-2.5 text-muted-foreground" size={18}/><input aria-label={t('admin_search')} placeholder={t('admin_search')} value={query} onChange={e=>setQuery(e.target.value)} className={`${inputCls} pl-10`}/></label><select aria-label={t('admin_rank')} value={rank} onChange={e=>setRank(e.target.value)} className={`${inputCls} w-auto`}><option value="all">{t('filter_all')}</option><option value="none">{t('admin_no_rank')}</option>{data.ranks.map(rk=><option key={rk.name} value={rk.name}>{rk.name}</option>)}</select></div>;
   const tree=roots.map(r=><Node key={r} id={r} depth={0} path={[]}/>).filter(Boolean);
   return <>{!rootId&&filter}{tree.length?<ul className="space-y-2 border-y border-border py-5 text-sm">{tree}</ul>:<p className="border-y border-border py-10 text-center text-muted-foreground">{t('admin_empty')}</p>}</>;
 }
