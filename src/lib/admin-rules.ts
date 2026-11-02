@@ -111,3 +111,13 @@ export function fraudFlags(rels: ReferralPair[], commissions: CommissionRow[], o
   }
   return flags;
 }
+/** Direct referrals and whole downline size (all levels) for a referrer; cycle-safe. */
+export function teamStats(userId: string, affiliates: { referrer_id: string; referred_id: string }[]) {
+  const kids = new Map<string, string[]>();
+  affiliates.forEach(a => { const l = kids.get(a.referrer_id) ?? []; l.push(a.referred_id); kids.set(a.referrer_id, l); });
+  const direct = new Set(kids.get(userId) ?? []).size;
+  const seen = new Set<string>([userId]);
+  const stack = [...(kids.get(userId) ?? [])];
+  while (stack.length) { const id = stack.pop()!; if (seen.has(id)) continue; seen.add(id); stack.push(...(kids.get(id) ?? [])); }
+  return { direct, total: seen.size - 1 };
+}
