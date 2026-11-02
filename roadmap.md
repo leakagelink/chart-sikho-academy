@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [ ] User-specific admin permissions: per-section view/create/edit/delete access, restricted menus and server-enforced actions; signed-in grant/revoke checks.
 - [x] Practice Tests & Quizzes: "Add question" button on each quiz (quiz pre-selected) + question count column; signed-in save verified
 - [x] Final course quiz: any quiz linkable to any course (admin course form), unlocks after all lessons are marked complete, certificate auto-issued at 80%+ (8/10); admin link, 7/10 no-cert, 8/10 cert and verify page checked signed-in.
 - [x] Live Classes: category/course/module selection, completed recording into selected published course without duplicates; admin save/re-save and enrolled student visibility verified. External automatic recording remains disabled.
