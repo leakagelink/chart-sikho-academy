@@ -28,7 +28,7 @@ function Screen() {
   const { t } = useLang();
   const fetchUser = useServerFn(getAdminUserDetail);
   const q = useQuery({ queryKey: ['admin-user', userId], queryFn: () => fetchUser({ data: { userId } }) });
-  const back = <Link to="/admin/$section" params={{ section: 'users' }} search={{ q: '', status: 'all', cat: 'all', when: 'all' }} className="inline-flex items-center gap-1 text-sm text-primary"><ArrowLeft size={16} />{t('up_back')}</Link>;
+  const back = <Link to="/admin/$section" params={{ section: 'users' }} search={{ q: '', status: 'all', cat: 'all', when: 'all', rank: 'all' }} className="inline-flex items-center gap-1 text-sm text-primary"><ArrowLeft size={16} />{t('up_back')}</Link>;
   if (q.isLoading) return <main className="mx-auto max-w-6xl p-4">{back}<p className="mt-6 text-muted-foreground">…</p></main>;
   if (q.error || !q.data) return <main className="mx-auto max-w-6xl p-4">{back}<p className="mt-6">{t('up_not_found')}</p></main>;
   const d = q.data; const p = d.profile;
