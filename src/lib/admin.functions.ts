@@ -32,7 +32,6 @@ export const getAdminData = createServerFn({ method: 'POST' }).middleware([requi
     s.from('course_lessons').select('*').order('position').limit(1000),
     s.from('class_sessions').select('*').order('starts_at', { ascending: false }).limit(1000),
     s.from('ebooks').select('*').order('created_at', { ascending: false }).limit(1000),
-    s.from('demo_bookings').select('*').order('created_at', { ascending: false }).limit(1000),
     s.from('enrollments').select('*').limit(1000),
     s.from('orders').select('*').order('created_at', { ascending: false }).limit(1000),
     s.from('referral_relationships').select('*').limit(1000),
@@ -123,11 +122,6 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
     case 'ebooks': {
       const row = z.object({ title, price, resource_path: path, status: z.enum(['draft','published']) }).parse(v);
       result = data.id ? await s.from('ebooks').update(row).eq('id',data.id).select('id').single() : await s.from('ebooks').insert(row).select('id').single(); break;
-    }
-    case 'bookings': {
-      if (!data.id) throw new Error('Record required');
-      const row = z.object({ status: z.enum(['pending','confirmed','cancelled']) }).parse(v);
-      result = await s.from('demo_bookings').update(row).eq('id',data.id).select('id').single(); break;
     }
     case 'users': {
       if (!data.id || data.id === context.userId) throw new Error('Cannot change your own access');
