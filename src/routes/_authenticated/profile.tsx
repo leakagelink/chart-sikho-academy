@@ -5,6 +5,7 @@ import { Award, Bell, ChevronRight, ClipboardList, IndianRupee, LifeBuoy, LogOut
 import { supabase } from "@/integrations/supabase/client";
 import { useLang } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
+import { usePanelAccess } from '@/hooks/use-panel-access';
 
 export const Route = createFileRoute("/_authenticated/profile")({
   head: () => ({
@@ -22,6 +23,7 @@ export const Route = createFileRoute("/_authenticated/profile")({
 
 function ProfilePage() {
   const { t, setLang } = useLang();
+  const panelAccess = usePanelAccess();
   const { user } = Route.useRouteContext();
   const qc = useQueryClient();
   const navigate = useNavigate();
@@ -92,7 +94,7 @@ function ProfilePage() {
           <span className="flex-1 text-left">{t("edit_profile")}</span>
           <ChevronRight className={`h-4 w-4 text-muted-foreground transition-transform ${editing ? "rotate-90" : ""}`} />
         </button>
-        {menu.map(({ icon: Icon, label, to }) => (
+        {menu.filter(item=>item.to!=='/admin'||panelAccess).map(({ icon: Icon, label, to }) => (
           <Link key={label} to={to} className="flex items-center gap-3 border-b border-border p-4 text-sm font-semibold hover:bg-muted/50">
             <Icon className="h-5 w-5 shrink-0 text-gold" />
             <span className="flex-1">{label}</span>

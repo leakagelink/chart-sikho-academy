@@ -1416,6 +1416,35 @@ export type Database = {
           },
         ]
       }
+      user_panel_permissions: {
+        Row: {
+          action: string
+          id: string
+          section: string
+          user_id: string
+        }
+        Insert: {
+          action: string
+          id?: string
+          section: string
+          user_id: string
+        }
+        Update: {
+          action?: string
+          id?: string
+          section?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_panel_permissions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -1445,12 +1474,20 @@ export type Database = {
       app_branding: { Args: never; Returns: string }
       delete_admin_course: { Args: { _course_id: string }; Returns: undefined }
       get_course_quiz: { Args: { _course_id: string }; Returns: Json }
+      has_panel_permission: {
+        Args: { _action: string; _section: string }
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      set_panel_permissions: {
+        Args: { _permissions: Json; _user_id: string }
+        Returns: undefined
       }
       submit_course_quiz: {
         Args: { _answers: Json; _course_id: string }

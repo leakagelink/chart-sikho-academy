@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from '@tanstack/react-query';
 import { useServerFn } from '@tanstack/react-start';
 import { getStudentNotifications } from '@/lib/admin.functions';
+import { usePanelAccess } from '@/hooks/use-panel-access';
 
 export function LangToggle() {
   const { lang, setLang, t } = useLang();
@@ -74,6 +75,7 @@ export function NotificationsBell() {
 export function Header() {
   const { t } = useLang();
   const { session } = useAuth();
+  const panelAccess = usePanelAccess();
   const brandLogo = useBranding();
   return (
     <header className="blueprint-chrome sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
@@ -88,7 +90,7 @@ export function Header() {
           <Link to="/" activeOptions={{ exact: true }} activeProps={{ className: "text-primary" }} className="text-foreground/80 hover:text-primary">{t("nav_home")}</Link>
           <Link to="/courses" activeProps={{ className: "text-primary" }} className="text-foreground/80 hover:text-primary">{t("nav_courses")}</Link>
           <Button asChild variant="link" size="sm" className="h-auto p-0"><Link to="/sandbox">{t("sandbox")}</Link></Button>
-          {session && <Button asChild variant="link" size="sm" className="h-auto p-0"><Link to="/admin">{t('real_admin')}</Link></Button>}
+          {panelAccess && <Button asChild variant="link" size="sm" className="h-auto p-0"><Link to="/admin">{t('real_admin')}</Link></Button>}
         </nav>
         <div className="ml-auto flex shrink-0 items-center gap-0.5 sm:gap-2">
           <Button asChild variant="ghost" size="icon" className="hidden lg:inline-flex"><Link to="/courses" aria-label={t("search")}><Search className="h-5 w-5" /></Link></Button>

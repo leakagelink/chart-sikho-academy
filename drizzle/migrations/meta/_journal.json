@@ -120,6 +120,13 @@
       "when": 1793552531891,
       "tag": "0016_course_final_quiz_certificates",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1793605458304,
+      "tag": "0017_individual_panel_permissions",
+      "breakpoints": true
     }
   ]
 }

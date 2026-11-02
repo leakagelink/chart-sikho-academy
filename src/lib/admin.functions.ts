@@ -1,3 +1,5 @@
+import { assertPanelAction, resolvePanelAccess } from './admin-access.server';
+import { canAccess, canReadDataset } from './admin-permissions';
 import { createServerFn } from '@tanstack/react-start';
 import { z } from 'zod';
 import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
@@ -5,8 +7,7 @@ import { adminChangeSchema, adminDeleteSchema, videoRemovalValues, liveClassSche
 
 export const deleteAdminRecord = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth]).inputValidator(input => adminDeleteSchema.parse(input)).handler(async ({ context, data }) => {
   const s = context.supabase;
-  const role = await s.rpc('has_role', { _user_id: context.userId, _role: 'admin' });
-  requireAdminRole(!role.error && role.data === true);
+  await assertPanelAction(s,context.userId,data.resource,'delete');
   if (data.resource === 'courses') {
     const result = await s.rpc('delete_admin_course', { _course_id: data.id });
     if (result.error) throw new Error(result.error.message.includes('Course has linked records') ? 'Course has linked records' : 'Unable to delete record');
@@ -24,58 +25,61 @@ export const deleteAdminRecord = createServerFn({ method: 'POST' }).middleware([
 
 export const getAdminData = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth]).handler(async ({ context }) => {
   const s = context.supabase;
-  const role = await s.rpc('has_role', { _user_id: context.userId, _role: 'admin' });
-  requireAdminRole(!role.error && role.data === true);
+  const access = await resolvePanelAccess(s,context.userId);
+  if (!access.isAdmin && !access.permissions.some(p=>p.action==='view')) throw new Error('Forbidden');
+  async function read<T extends {data:unknown;error:unknown}>(key:string, fetcher:()=>PromiseLike<T>):Promise<T> {
+    return canReadDataset(access,key) ? await fetcher() : {data:[],error:null} as T;
+  }
   const results = await Promise.all([
-    s.from('profiles').select('*').order('created_at', { ascending: false }).limit(1000),
-    s.from('courses').select('*').order('created_at', { ascending: false }).limit(1000),
-    s.from('course_lessons').select('*').order('position').limit(1000),
-    s.from('class_sessions').select('*').order('starts_at', { ascending: false }).limit(1000),
-    s.from('ebooks').select('*').order('created_at', { ascending: false }).limit(1000),
-    s.from('enrollments').select('*').limit(1000),
-    s.from('orders').select('*').order('created_at', { ascending: false }).limit(1000),
-    s.from('referral_relationships').select('*').limit(1000),
-    s.from('commission_entries').select('*').order('created_at', { ascending: false }).limit(1000),
-    s.from('payout_requests').select('*').order('created_at', { ascending: false }).limit(1000),
-    s.from('notification_campaigns').select('*').order('created_at', { ascending: false }).limit(1000),
-    s.from('admin_settings').select('*').limit(1),
-    s.from('admin_audit_log').select('*').order('created_at', { ascending: false }).limit(100),
-    s.from('course_categories').select('*').order('position'),
-    s.from('course_modules').select('*').order('position').limit(1000),
-    s.from('quizzes').select('*').order('created_at', { ascending: false }).limit(1000),
-    s.from('quiz_questions').select('*').order('created_at', { ascending: false }).limit(1000),
-    s.from('certificates').select('*').order('issued_at', { ascending: false }).limit(1000),
-    s.from('course_reviews').select('*').order('created_at', { ascending: false }).limit(1000),
-    s.from('coupons').select('*').order('created_at', { ascending: false }).limit(1000),
-    s.from('refund_requests').select('*').order('created_at', { ascending: false }).limit(1000),
-    s.from('invoices').select('*').order('issued_at', { ascending: false }).limit(1000),
-    s.from('abandoned_checkouts').select('*').order('created_at', { ascending: false }).limit(1000),
-    s.from('instructors').select('*').order('created_at', { ascending: false }).limit(1000),
-    s.from('ranks').select('*').order('position').limit(1000),
-    s.from('bonus_entries').select('*').order('created_at', { ascending: false }).limit(1000),
-    s.from('user_roles').select('*').limit(1000),
-    s.from('message_templates').select('*').order('created_at', { ascending: false }).limit(1000),
-    s.from('announcements').select('*').order('created_at', { ascending: false }).limit(1000),
-    s.from('support_tickets').select('*').order('created_at', { ascending: false }).limit(1000),
-    s.from('banners').select('*').order('position').limit(1000),
-    s.from('campaigns').select('*').order('created_at', { ascending: false }).limit(1000),
-    s.from('leads').select('*').order('created_at', { ascending: false }).limit(1000),
-    s.from('seo_pages').select('*').order('path').limit(1000),
-    s.from('promo_codes').select('*').order('created_at', { ascending: false }).limit(1000),
+    read('users',()=>s.from('profiles').select('*').order('created_at', { ascending: false }).limit(1000)),
+    read('courses',()=>s.from('courses').select('*').order('created_at', { ascending: false }).limit(1000)),
+    read('lessons',()=>s.from('course_lessons').select('*').order('position').limit(1000)),
+    read('classes',()=>s.from('class_sessions').select('*').order('starts_at', { ascending: false }).limit(1000)),
+    read('ebooks',()=>s.from('ebooks').select('*').order('created_at', { ascending: false }).limit(1000)),
+    read('enrollments',()=>s.from('enrollments').select('*').limit(1000)),
+    read('orders',()=>s.from('orders').select('*').order('created_at', { ascending: false }).limit(1000)),
+    read('affiliates',()=>s.from('referral_relationships').select('*').limit(1000)),
+    read('commissions',()=>s.from('commission_entries').select('*').order('created_at', { ascending: false }).limit(1000)),
+    read('payouts',()=>s.from('payout_requests').select('*').order('created_at', { ascending: false }).limit(1000)),
+    read('notifications',()=>s.from('notification_campaigns').select('*').order('created_at', { ascending: false }).limit(1000)),
+    read('settings',()=>s.from('admin_settings').select('*').limit(1)),
+    read('audit',()=>s.from('admin_audit_log').select('*').order('created_at', { ascending: false }).limit(100)),
+    read('categories',()=>s.from('course_categories').select('*').order('position')),
+    read('modules',()=>s.from('course_modules').select('*').order('position').limit(1000)),
+    read('quizzes',()=>s.from('quizzes').select('*').order('created_at', { ascending: false }).limit(1000)),
+    read('questions',()=>s.from('quiz_questions').select('*').order('created_at', { ascending: false }).limit(1000)),
+    read('certificates',()=>s.from('certificates').select('*').order('issued_at', { ascending: false }).limit(1000)),
+    read('reviews',()=>s.from('course_reviews').select('*').order('created_at', { ascending: false }).limit(1000)),
+    read('coupons',()=>s.from('coupons').select('*').order('created_at', { ascending: false }).limit(1000)),
+    read('refunds',()=>s.from('refund_requests').select('*').order('created_at', { ascending: false }).limit(1000)),
+    read('invoices',()=>s.from('invoices').select('*').order('issued_at', { ascending: false }).limit(1000)),
+    read('abandoned',()=>s.from('abandoned_checkouts').select('*').order('created_at', { ascending: false }).limit(1000)),
+    read('instructors',()=>s.from('instructors').select('*').order('created_at', { ascending: false }).limit(1000)),
+    read('ranks',()=>s.from('ranks').select('*').order('position').limit(1000)),
+    read('bonuses',()=>s.from('bonus_entries').select('*').order('created_at', { ascending: false }).limit(1000)),
+    read('userRoles',()=>s.from('user_roles').select('*').limit(1000)),
+    read('templates',()=>s.from('message_templates').select('*').order('created_at', { ascending: false }).limit(1000)),
+    read('announcements',()=>s.from('announcements').select('*').order('created_at', { ascending: false }).limit(1000)),
+    read('tickets',()=>s.from('support_tickets').select('*').order('created_at', { ascending: false }).limit(1000)),
+    read('banners',()=>s.from('banners').select('*').order('position').limit(1000)),
+    read('campaigns',()=>s.from('campaigns').select('*').order('created_at', { ascending: false }).limit(1000)),
+    read('leads',()=>s.from('leads').select('*').order('created_at', { ascending: false }).limit(1000)),
+    read('seo',()=>s.from('seo_pages').select('*').order('path').limit(1000)),
+    read('promocodes',()=>s.from('promo_codes').select('*').order('created_at', { ascending: false }).limit(1000)),
   ]);
   if (results.some(r => r.error)) throw new Error('Unable to load administration records');
   const [users,courses,lessons,classes,ebooks,enrollments,orders,affiliates,commissions,payouts,notifications,settings,audit,categories,modules,quizzes,questions,certificates,reviews,coupons,refunds,invoices,abandoned,instructors,ranks,bonuses,userRoles,templates,announcements,tickets,banners,campaigns,leads,seo,promocodes] = results;
-  return { users: users.data ?? [], courses: courses.data ?? [], lessons: lessons.data ?? [], classes: classes.data ?? [], ebooks: ebooks.data ?? [], enrollments: enrollments.data ?? [], orders: orders.data ?? [], affiliates: affiliates.data ?? [], commissions: commissions.data ?? [], payouts: payouts.data ?? [], notifications: notifications.data ?? [], settings: settings.data ?? [], audit: audit.data ?? [], categories: categories.data ?? [], modules: modules.data ?? [], quizzes: quizzes.data ?? [], questions: questions.data ?? [], certificates: certificates.data ?? [], reviews: reviews.data ?? [], coupons: coupons.data ?? [], refunds: refunds.data ?? [], invoices: invoices.data ?? [], abandoned: abandoned.data ?? [], instructors: instructors.data ?? [], ranks: ranks.data ?? [], bonuses: bonuses.data ?? [], userRoles: userRoles.data ?? [], templates: templates.data ?? [], announcements: announcements.data ?? [], tickets: tickets.data ?? [], banners: banners.data ?? [], campaigns: campaigns.data ?? [], leads: leads.data ?? [], seo: seo.data ?? [], promocodes: promocodes.data ?? [], capped: results.some(r => (r.data?.length ?? 0) >= 1000) };
+  const grants = access.isAdmin ? await s.from('user_panel_permissions').select('user_id,section,action') : {data:[]};
+  return { access, panelPermissions:(grants.data ?? []) as ({user_id:string}&import('./admin-permissions').PanelPermission)[], users: users.data ?? [], courses: courses.data ?? [], lessons: lessons.data ?? [], classes: (classes.data ?? []).filter(c=>access.isAdmin||canAccess(access,'overview')||canAccess(access,c.kind==='webinar'?'webinars':'classes')), ebooks: ebooks.data ?? [], enrollments: enrollments.data ?? [], orders: orders.data ?? [], affiliates: affiliates.data ?? [], commissions: commissions.data ?? [], payouts: payouts.data ?? [], notifications: notifications.data ?? [], settings: settings.data ?? [], audit: audit.data ?? [], categories: categories.data ?? [], modules: modules.data ?? [], quizzes: quizzes.data ?? [], questions: questions.data ?? [], certificates: certificates.data ?? [], reviews: reviews.data ?? [], coupons: coupons.data ?? [], refunds: refunds.data ?? [], invoices: invoices.data ?? [], abandoned: abandoned.data ?? [], instructors: instructors.data ?? [], ranks: ranks.data ?? [], bonuses: bonuses.data ?? [], userRoles: userRoles.data ?? [], templates: templates.data ?? [], announcements: announcements.data ?? [], tickets: tickets.data ?? [], banners: banners.data ?? [], campaigns: campaigns.data ?? [], leads: leads.data ?? [], seo: seo.data ?? [], promocodes: promocodes.data ?? [], capped: results.some(r => (r.data?.length ?? 0) >= 1000) };
 });
-
 const title = z.string().trim().min(2).max(120);
 const price = z.coerce.number().int().min(0).max(1000000);
 const url = z.string().max(2000).transform(safeHttps);
 const path = z.string().max(300).refine(v => !v.includes('..') && !v.startsWith('/'));
 export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth]).inputValidator(input => adminChangeSchema.parse(input)).handler(async ({ context, data }) => {
   const s = context.supabase;
-  const role = await s.rpc('has_role', { _user_id: context.userId, _role: 'admin' });
-  requireAdminRole(!role.error && role.data === true);
+  await assertPanelAction(s,context.userId,data.resource,data.id?'edit':'create');
+  if(data.resource==='classes'){const previous=data.id?await s.from('class_sessions').select('kind').eq('id',data.id).single():null;const section=data.values['kind']==='webinar'?'webinars':'classes';const access=await resolvePanelAccess(s,context.userId);if(!canAccess(access,section,data.id?'edit':'create')||(previous?.data&&!canAccess(access,previous.data.kind==='webinar'?'webinars':'classes','edit')))throw new Error('Forbidden');}
   const v = data.values;
   let result;
   switch (data.resource) {
@@ -287,7 +291,9 @@ async function assertAdmin(s: any, userId: string) { const role = await s.rpc('h
 
 /** Copies a course with its modules and lessons as a new draft. */
 export const duplicateCourse = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth]).inputValidator((i: { id: string }) => z.object({ id: z.string().uuid() }).parse(i)).handler(async ({ context, data }) => {
-  const s = context.supabase; await assertAdmin(s, context.userId);
+  const s = context.supabase; await assertPanelAction(s, context.userId, 'courses','create');
+  await assertPanelAction(s,context.userId,'modules','create');
+  await assertPanelAction(s,context.userId,'lessons','create');
   const c = await s.from('courses').select('*').eq('id', data.id).single(); if (c.error) throw new Error('Course not found');
   const { id: _i, created_at: _c, updated_at: _u, ...rest } = c.data;
   const copy = await s.from('courses').insert({ ...rest, title: `${rest.title} (copy)`.slice(0, 120), status: 'draft' }).select('id').single(); if (copy.error) throw new Error('Unable to duplicate');
@@ -301,7 +307,7 @@ export const duplicateCourse = createServerFn({ method: 'POST' }).middleware([re
 
 /** Swaps the position of a module or lesson with its neighbour. */
 export const moveCurriculumItem = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth]).inputValidator((i: { kind: 'modules'|'lessons'; id: string; dir: 'up'|'down' }) => z.object({ kind: z.enum(['modules','lessons']), id: z.string().uuid(), dir: z.enum(['up','down']) }).parse(i)).handler(async ({ context, data }) => {
-  const s = context.supabase; await assertAdmin(s, context.userId);
+  const s = context.supabase; await assertPanelAction(s, context.userId, data.kind,'edit');
   const table = data.kind === 'modules' ? 'course_modules' : 'course_lessons';
   const item = await s.from(table).select('*').eq('id', data.id).single(); if (item.error) throw new Error('Not found');
   let q: any = s.from(table).select('id,position').eq('course_id', item.data.course_id);
@@ -310,7 +316,7 @@ export const moveCurriculumItem = createServerFn({ method: 'POST' }).middleware(
   const idx = siblings.findIndex(x => x.id === data.id); const other = siblings[data.dir === 'up' ? idx - 1 : idx + 1];
   if (!other) return { ok: true };
   siblings.forEach((x, i) => { x.position = i + 1; });
-  const a = siblings[idx]!; const tmp = a.position; a.position = other.position; other.position = tmp;
+  const a = siblings[idx]; if(!a)return {ok:true}; const tmp = a.position; a.position = other.position; other.position = tmp;
   for (const x of siblings) await s.from(table).update({ position: x.position }).eq('id', x.id);
   return { ok: true };
 });
