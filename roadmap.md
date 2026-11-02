@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [x] Referral Settings: unlimited referral levels — admin can add/remove as many commission levels as needed (each 0–100%); add-to-5-levels save, Commission Rules display and restore-to-3 verified signed-in; 64 tests pass
 - [x] User-specific admin permissions: independent view/add/edit/delete for supported actions, restricted navigation and server/RLS checks; admin grant/read-back/revoke and limited student quiz-only screen verified, unrelated section denied, temporary grants removed and original student status restored; 64 tests pass.
 - [x] Practice Tests & Quizzes: "Add question" button on each quiz (quiz pre-selected) + question count column; signed-in save verified
 - [x] Final course quiz: any quiz linkable to any course (admin course form), unlocks after all lessons are marked complete, certificate auto-issued at 80%+ (8/10); admin link, 7/10 no-cert, 8/10 cert and verify page checked signed-in.
