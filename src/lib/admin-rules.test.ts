@@ -130,3 +130,10 @@ describe('teamStats', () => {
   it('counts every level in the total team', () => { expect(teamStats('a', aff).total).toBe(4); expect(teamStats('b', aff).total).toBe(2); });
   it('does not loop on circular referrals', () => { expect(teamStats('a', [...aff,{referrer_id:'e',referred_id:'a'}]).total).toBe(4); });
 });
+
+import { commissionSummary } from './admin-rules';
+describe('commissionSummary', () => {
+  const rows = [{amount:100,status:'pending',tds_amount:5},{amount:200,status:'approved',tds_amount:10},{amount:50,status:'reversed',tds_amount:3},{amount:70,status:'paid',tds_amount:4}];
+  it('separates pending, approved, paid and reversed', () => { expect(commissionSummary(rows)).toMatchObject({pending:100,approved:200,paid:70,reversed:50}); });
+  it('counts TDS only on approved and paid commissions', () => { expect(commissionSummary(rows).tds).toBe(14); });
+});
