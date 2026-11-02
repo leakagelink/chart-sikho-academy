@@ -89,11 +89,8 @@ function Index() {
           </h1>
           <p className="mt-3 opacity-85">{t("hero_sub")}</p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <Link to="/demo" className="inline-flex items-center gap-2 rounded-full bg-gold px-5 py-3 font-semibold text-navy hover:bg-gold/90">
-              <PlayCircle className="h-5 w-5" /> {t("demo_cta")}
-            </Link>
-            <Link to="/courses" className="inline-flex items-center gap-2 rounded-full border border-navy-foreground/30 px-5 py-3 font-semibold hover:bg-navy-foreground/10">
-              {t("explore")} <ArrowRight className="h-4 w-4" />
+            <Link to="/courses" className="inline-flex items-center gap-2 rounded-full bg-gold px-5 py-3 font-semibold text-navy hover:bg-gold/90">
+              <PlayCircle className="h-5 w-5" /> {t("explore")}
             </Link>
           </div>
           <div className="mt-8 grid grid-cols-3 gap-3 text-sm sm:gap-8">

@@ -4,7 +4,7 @@ type Data = {
   orders: Order[]; users: { id: string; created_at: string; account_status: string }[];
   courses: { status: string }[]; enrollments: { user_id: string; progress: number; course_id: string }[];
   commissions: { user_id: string; order_id: string; amount: number; created_at: string }[];
-  payouts: { amount: number; status: string }[]; bookings: { status: string }[];
+  payouts: { amount: number; status: string }[];
 };
 const DAY = 86_400_000;
 /** Sums values per calendar day (YYYY-MM-DD), sorted ascending. */
@@ -48,7 +48,6 @@ export function summarize(d: Data, start: Date, end: Date) {
     pendingPayouts: d.payouts.filter(p => p.status === 'pending').reduce((n, p) => n + p.amount, 0),
     reviewedPayouts: d.payouts.filter(p => p.status === 'reviewed').reduce((n, p) => n + p.amount, 0),
     pendingPayoutCount: d.payouts.filter(p => p.status === 'pending').length,
-    pendingBookings: d.bookings.filter(b => b.status === 'pending').length,
     newMembers: d.users.filter(u => inRange(u.created_at)).length,
     activeStudents: [...enrolledUsers].filter(id => activeIds.has(id)).length,
     inactive: d.users.filter(u => u.account_status !== 'active').length,

@@ -5,13 +5,13 @@ type TestCourse = { id: string; title: string; price: number; visible: boolean }
 type TestState = {
   completed: number[]; passed: boolean; notes: string[];
   withdrawal: "none" | "pending" | "approved";
-  catalog: TestCourse[]; studentActive: boolean; bookingConfirmed: boolean;
+  catalog: TestCourse[]; studentActive: boolean;
   questions: string[];
 };
 function initial(): TestState {
   return { completed: [], passed: false, notes: ["", "", ""], withdrawal: "none",
     catalog: courses.map((c) => ({ id: c.id, title: c.title.en, price: c.price, visible: true })),
-    studentActive: true, bookingConfirmed: false, questions: [] };
+    studentActive: true, questions: [] };
 }
 const Context = createContext<{ state: TestState; update: (fn: (s: TestState) => TestState) => void; reset: () => void; ready: boolean } | null>(null);
 const STORAGE = "cs-sandbox-v1";

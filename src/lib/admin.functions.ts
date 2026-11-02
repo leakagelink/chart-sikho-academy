@@ -32,7 +32,6 @@ export const getAdminData = createServerFn({ method: 'POST' }).middleware([requi
     s.from('course_lessons').select('*').order('position').limit(1000),
     s.from('class_sessions').select('*').order('starts_at', { ascending: false }).limit(1000),
     s.from('ebooks').select('*').order('created_at', { ascending: false }).limit(1000),
-    s.from('demo_bookings').select('*').order('created_at', { ascending: false }).limit(1000),
     s.from('enrollments').select('*').limit(1000),
     s.from('orders').select('*').order('created_at', { ascending: false }).limit(1000),
     s.from('referral_relationships').select('*').limit(1000),
@@ -65,8 +64,8 @@ export const getAdminData = createServerFn({ method: 'POST' }).middleware([requi
     s.from('promo_codes').select('*').order('created_at', { ascending: false }).limit(1000),
   ]);
   if (results.some(r => r.error)) throw new Error('Unable to load administration records');
-  const [users,courses,lessons,classes,ebooks,bookings,enrollments,orders,affiliates,commissions,payouts,notifications,settings,audit,categories,modules,quizzes,questions,certificates,reviews,coupons,refunds,invoices,abandoned,instructors,ranks,bonuses,userRoles,templates,announcements,tickets,banners,campaigns,leads,seo,promocodes] = results;
-  return { users: users.data ?? [], courses: courses.data ?? [], lessons: lessons.data ?? [], classes: classes.data ?? [], ebooks: ebooks.data ?? [], bookings: bookings.data ?? [], enrollments: enrollments.data ?? [], orders: orders.data ?? [], affiliates: affiliates.data ?? [], commissions: commissions.data ?? [], payouts: payouts.data ?? [], notifications: notifications.data ?? [], settings: settings.data ?? [], audit: audit.data ?? [], categories: categories.data ?? [], modules: modules.data ?? [], quizzes: quizzes.data ?? [], questions: questions.data ?? [], certificates: certificates.data ?? [], reviews: reviews.data ?? [], coupons: coupons.data ?? [], refunds: refunds.data ?? [], invoices: invoices.data ?? [], abandoned: abandoned.data ?? [], instructors: instructors.data ?? [], ranks: ranks.data ?? [], bonuses: bonuses.data ?? [], userRoles: userRoles.data ?? [], templates: templates.data ?? [], announcements: announcements.data ?? [], tickets: tickets.data ?? [], banners: banners.data ?? [], campaigns: campaigns.data ?? [], leads: leads.data ?? [], seo: seo.data ?? [], promocodes: promocodes.data ?? [], capped: results.some(r => (r.data?.length ?? 0) >= 1000) };
+  const [users,courses,lessons,classes,ebooks,enrollments,orders,affiliates,commissions,payouts,notifications,settings,audit,categories,modules,quizzes,questions,certificates,reviews,coupons,refunds,invoices,abandoned,instructors,ranks,bonuses,userRoles,templates,announcements,tickets,banners,campaigns,leads,seo,promocodes] = results;
+  return { users: users.data ?? [], courses: courses.data ?? [], lessons: lessons.data ?? [], classes: classes.data ?? [], ebooks: ebooks.data ?? [], enrollments: enrollments.data ?? [], orders: orders.data ?? [], affiliates: affiliates.data ?? [], commissions: commissions.data ?? [], payouts: payouts.data ?? [], notifications: notifications.data ?? [], settings: settings.data ?? [], audit: audit.data ?? [], categories: categories.data ?? [], modules: modules.data ?? [], quizzes: quizzes.data ?? [], questions: questions.data ?? [], certificates: certificates.data ?? [], reviews: reviews.data ?? [], coupons: coupons.data ?? [], refunds: refunds.data ?? [], invoices: invoices.data ?? [], abandoned: abandoned.data ?? [], instructors: instructors.data ?? [], ranks: ranks.data ?? [], bonuses: bonuses.data ?? [], userRoles: userRoles.data ?? [], templates: templates.data ?? [], announcements: announcements.data ?? [], tickets: tickets.data ?? [], banners: banners.data ?? [], campaigns: campaigns.data ?? [], leads: leads.data ?? [], seo: seo.data ?? [], promocodes: promocodes.data ?? [], capped: results.some(r => (r.data?.length ?? 0) >= 1000) };
 });
 
 const title = z.string().trim().min(2).max(120);
@@ -123,11 +122,6 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
     case 'ebooks': {
       const row = z.object({ title, price, resource_path: path, status: z.enum(['draft','published']) }).parse(v);
       result = data.id ? await s.from('ebooks').update(row).eq('id',data.id).select('id').single() : await s.from('ebooks').insert(row).select('id').single(); break;
-    }
-    case 'bookings': {
-      if (!data.id) throw new Error('Record required');
-      const row = z.object({ status: z.enum(['pending','confirmed','cancelled']) }).parse(v);
-      result = await s.from('demo_bookings').update(row).eq('id',data.id).select('id').single(); break;
     }
     case 'users': {
       if (!data.id || data.id === context.userId) throw new Error('Cannot change your own access');

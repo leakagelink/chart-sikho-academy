@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { summarize, rangeBounds } from './admin-dashboard';
-const base = { users: [], courses: [], enrollments: [], payouts: [], bookings: [], commissions: [] };
+const base = { users: [], courses: [], enrollments: [], payouts: [], commissions: [] };
 describe('admin dashboard money', () => {
   it('keeps gross, refunds, commission and net separate; unverified paid orders are not sales', () => {
     const d = { ...base, orders: [
