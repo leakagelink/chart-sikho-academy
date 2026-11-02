@@ -81,6 +81,7 @@ export type Database = {
           ref_level1_percent: number
           ref_level2_percent: number
           ref_level3_percent: number
+          ref_levels: Json | null
           referral_enabled: boolean
           support_email: string
           support_phone: string
@@ -95,6 +96,7 @@ export type Database = {
           ref_level1_percent?: number
           ref_level2_percent?: number
           ref_level3_percent?: number
+          ref_levels?: Json | null
           referral_enabled?: boolean
           support_email?: string
           support_phone?: string
@@ -109,6 +111,7 @@ export type Database = {
           ref_level1_percent?: number
           ref_level2_percent?: number
           ref_level3_percent?: number
+          ref_levels?: Json | null
           referral_enabled?: boolean
           support_email?: string
           support_phone?: string
@@ -1493,6 +1496,7 @@ export type Database = {
         Args: { _answers: Json; _course_id: string }
         Returns: Json
       }
+      valid_ref_levels: { Args: { _levels: Json }; Returns: boolean }
       verify_certificate: {
         Args: { _no: string }
         Returns: {

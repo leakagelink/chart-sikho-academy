@@ -141,6 +141,13 @@
       "when": 1793606239116,
       "tag": "0019_scope_delegated_live_class_reads",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1793606395727,
+      "tag": "0020_referral_dynamic_levels",
+      "breakpoints": true
     }
   ]
 }
