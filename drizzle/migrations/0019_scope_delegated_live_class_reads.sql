@@ -1,0 +1,1 @@
+ALTER POLICY "Delegated panel read" ON public.class_sessions USING (public.has_panel_permission('overview','view') OR public.has_panel_permission(CASE kind WHEN 'webinar' THEN 'webinars' ELSE 'classes' END,'view'));
