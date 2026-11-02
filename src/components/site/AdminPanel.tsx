@@ -224,9 +224,17 @@ export type AdminData = Awaited<ReturnType<typeof getAdminData>>;
 function TeamTree({data,rootId}:{data:AdminData;rootId?:string}) {
   const {t}=useLang();
   const [rank,setRank]=useState('all');
-  const name=(id:string)=>data.users.find(u=>u.id===id)?.full_name??id.slice(0,8);
+  const [query,setQuery]=useState('');
+  const userOf=(id:string)=>data.users.find(u=>u.id===id);
+  const name=(id:string)=>userOf(id)?.full_name??id.slice(0,8);
   const rankOf=(id:string)=>rankFor(id,data.ranks,data.affiliates,data.orders);
-  const matches=(id:string)=>rank==='all'||(rank==='none'?!rankOf(id):rankOf(id)?.name===rank);
+  const matches=(id:string)=>{
+    if(!(rank==='all'||(rank==='none'?!rankOf(id):rankOf(id)?.name===rank)))return false;
+    const q=query.trim().toLowerCase();
+    if(!q)return true;
+    const u=userOf(id) as Record<string,unknown>|undefined;
+    return id.toLowerCase().includes(q)||[u?.['full_name'],u?.['phone'],u?.['email']].some(v=>String(v??'').toLowerCase().includes(q));
+  };
   const children=new Map<string,string[]>();
   data.affiliates.forEach(a=>{const l=children.get(a.referrer_id)??[];l.push(a.referred_id);children.set(a.referrer_id,l);});
   const referred=new Set(data.affiliates.map(a=>a.referred_id));
