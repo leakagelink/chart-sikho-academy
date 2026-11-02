@@ -127,6 +127,13 @@
       "when": 1793605458304,
       "tag": "0017_individual_panel_permissions",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1793605875408,
+      "tag": "0018_enforce_delegated_action_boundaries",
+      "breakpoints": true
     }
   ]
 }
