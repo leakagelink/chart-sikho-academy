@@ -30,3 +30,4 @@
 
 - Student content surfaces use scoped semantic tokens in PageMotion; branded chrome/auth/splash and admin retain navy/gold tokens. Why: the reference mixes white student content with dark branding without changing admin or authentication behavior.
 - Course final quizzes link through the course record (one quiz may serve many courses); students get questions, scoring, attempt limits and automatic certificates only through security-definer database functions gated on full lesson completion; why: answer keys stay hidden and the browser cannot forge scores or certificates.
+- Referral commissions are generated, reversed and released only by database triggers/security-definer functions from verified paid orders and admin settings; the browser can only request payouts through a checked function. Why: amounts, limits, KYC and holding rules cannot be bypassed.

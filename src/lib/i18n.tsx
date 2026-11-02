@@ -288,7 +288,7 @@ const dict = {
   admin_revoke_role: { en: 'Revoke role', hi: 'रोल हटाएँ' },
   admin_level: { en: 'Level', hi: 'लेवल' },
   admin_no_fraud: { en: 'No suspicious activity found.', hi: 'कोई संदिग्ध गतिविधि नहीं मिली।' },
-  admin_comm_rules_note: { en: 'Commission is paid only on genuine verified sales — never on sign-ups. Edit these in Referral Settings.', hi: 'कमीशन केवल असली सत्यापित बिक्री पर मिलता है — साइन-अप पर कभी नहीं। इन्हें रेफरल सेटिंग्स में बदलें।' },
+  admin_comm_rules_note: { en: 'Commission is paid only on genuine verified sales — never on sign-ups. Admins can edit every rule below.', hi: 'कमीशन सिर्फ असली वेरिफाइड सेल पर मिलता है — साइन-अप पर कभी नहीं। एडमिन नीचे हर नियम बदल सकते हैं।' },
   admin_bulk_note: { en: 'Download any record set as a CSV file. Bulk student import will arrive with live accounts.', hi: 'कोई भी रिकॉर्ड सेट CSV फ़ाइल में डाउनलोड करें। बल्क स्टूडेंट इम्पोर्ट लाइव अकाउंट के साथ आएगा।' },
   admin_fraud_self_referral: { en: 'Self-referral detected', hi: 'सेल्फ-रेफरल मिला' },
   admin_fraud_duplicate_pair: { en: 'Duplicate referral pair', hi: 'डुप्लीकेट रेफरल जोड़ी' },
