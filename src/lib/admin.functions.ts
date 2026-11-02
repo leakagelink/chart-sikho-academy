@@ -66,11 +66,12 @@ export const getAdminData = createServerFn({ method: 'POST' }).middleware([requi
     read('leads',()=>s.from('leads').select('*').order('created_at', { ascending: false }).limit(1000)),
     read('seo',()=>s.from('seo_pages').select('*').order('path').limit(1000)),
     read('promocodes',()=>s.from('promo_codes').select('*').order('created_at', { ascending: false }).limit(1000)),
+    read('influencers',()=>s.from('referral_influencers').select('*').limit(1000)),
   ]);
   if (results.some(r => r.error)) throw new Error('Unable to load administration records');
-  const [users,courses,lessons,classes,ebooks,enrollments,orders,affiliates,commissions,payouts,notifications,settings,audit,categories,modules,quizzes,questions,certificates,reviews,coupons,refunds,invoices,abandoned,instructors,ranks,bonuses,userRoles,templates,announcements,tickets,banners,campaigns,leads,seo,promocodes] = results;
+  const [users,courses,lessons,classes,ebooks,enrollments,orders,affiliates,commissions,payouts,notifications,settings,audit,categories,modules,quizzes,questions,certificates,reviews,coupons,refunds,invoices,abandoned,instructors,ranks,bonuses,userRoles,templates,announcements,tickets,banners,campaigns,leads,seo,promocodes,influencers] = results;
   const grants = access.isAdmin ? await s.from('user_panel_permissions').select('user_id,section,action') : {data:[]};
-  return { access, panelPermissions:(grants.data ?? []) as ({user_id:string}&import('./admin-permissions').PanelPermission)[], users: users.data ?? [], courses: courses.data ?? [], lessons: lessons.data ?? [], classes: (classes.data ?? []).filter(c=>access.isAdmin||canAccess(access,'overview')||canAccess(access,c.kind==='webinar'?'webinars':'classes')), ebooks: ebooks.data ?? [], enrollments: enrollments.data ?? [], orders: orders.data ?? [], affiliates: affiliates.data ?? [], commissions: commissions.data ?? [], payouts: payouts.data ?? [], notifications: notifications.data ?? [], settings: settings.data ?? [], audit: audit.data ?? [], categories: categories.data ?? [], modules: modules.data ?? [], quizzes: quizzes.data ?? [], questions: questions.data ?? [], certificates: certificates.data ?? [], reviews: reviews.data ?? [], coupons: coupons.data ?? [], refunds: refunds.data ?? [], invoices: invoices.data ?? [], abandoned: abandoned.data ?? [], instructors: instructors.data ?? [], ranks: ranks.data ?? [], bonuses: bonuses.data ?? [], userRoles: userRoles.data ?? [], templates: templates.data ?? [], announcements: announcements.data ?? [], tickets: tickets.data ?? [], banners: banners.data ?? [], campaigns: campaigns.data ?? [], leads: leads.data ?? [], seo: seo.data ?? [], promocodes: promocodes.data ?? [], capped: results.some(r => (r.data?.length ?? 0) >= 1000) };
+  return { influencers: (influencers.data ?? []) as {user_id:string}[], access, panelPermissions:(grants.data ?? []) as ({user_id:string}&import('./admin-permissions').PanelPermission)[], users: users.data ?? [], courses: courses.data ?? [], lessons: lessons.data ?? [], classes: (classes.data ?? []).filter(c=>access.isAdmin||canAccess(access,'overview')||canAccess(access,c.kind==='webinar'?'webinars':'classes')), ebooks: ebooks.data ?? [], enrollments: enrollments.data ?? [], orders: orders.data ?? [], affiliates: affiliates.data ?? [], commissions: commissions.data ?? [], payouts: payouts.data ?? [], notifications: notifications.data ?? [], settings: settings.data ?? [], audit: audit.data ?? [], categories: categories.data ?? [], modules: modules.data ?? [], quizzes: quizzes.data ?? [], questions: questions.data ?? [], certificates: certificates.data ?? [], reviews: reviews.data ?? [], coupons: coupons.data ?? [], refunds: refunds.data ?? [], invoices: invoices.data ?? [], abandoned: abandoned.data ?? [], instructors: instructors.data ?? [], ranks: ranks.data ?? [], bonuses: bonuses.data ?? [], userRoles: userRoles.data ?? [], templates: templates.data ?? [], announcements: announcements.data ?? [], tickets: tickets.data ?? [], banners: banners.data ?? [], campaigns: campaigns.data ?? [], leads: leads.data ?? [], seo: seo.data ?? [], promocodes: promocodes.data ?? [], capped: results.some(r => (r.data?.length ?? 0) >= 1000) };
 });
 const title = z.string().trim().min(2).max(120);
 const price = z.coerce.number().int().min(0).max(1000000);
@@ -235,6 +236,28 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
       const payload = { ...rest, ...(referral_enabled !== undefined ? { referral_enabled } : {}), ...(levels ? { ref_levels: levels, ref_level1_percent: levels[0], ref_level2_percent: levels[1] ?? 0, ref_level3_percent: levels[2] ?? 0 } : {}), ...(logo_url !== undefined ? { logo_url } : {}) };
       result = data.id ? await s.from('admin_settings').update({ ...payload, updated_at: new Date().toISOString() }).eq('id',data.id).select('id').single() : await s.from('admin_settings').insert(payload).select('id').single(); break;
     }
+    case 'commrules': {
+      if (!data.id) throw new Error('Record required');
+      const bool = z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]);
+      const levels = z.string().trim().regex(/^\d+(\.\d+)?(,\d+(\.\d+)?)*$/).refine(x => x.split(',').length <= 50, 'Maximum 50 levels');
+      const row = z.object({ min_withdrawal: z.coerce.number().int().min(0).max(10000000), max_withdrawal: z.coerce.number().int().min(1).max(10000000), max_withdrawals_per_month: z.coerce.number().int().min(1).max(31), repurchase_enabled: bool, commission_type: z.enum(['percent','fixed']), ref_levels: levels, ref_fixed_levels: levels, commission_base: z.enum(['net','after_tax']), commission_currency: z.enum(['INR','USD']), self_purchase_block: bool, influencer_enabled: bool, influencer_type: z.enum(['percent','fixed']), influencer_value: z.coerce.number().min(0).max(1000000), approval_mode: z.enum(['auto','manual']), holding_days: z.coerce.number().int().min(0).max(365), payout_cycle: z.enum(['weekly','monthly']), tds_percent: z.coerce.number().min(0).max(50), kyc_required: bool, hold_suspended: bool }).parse(v);
+      if (row.max_withdrawal < row.min_withdrawal) throw new Error('Maximum withdrawal must be at least the minimum');
+      if (row.commission_type === 'percent' && row.influencer_type === 'percent' && row.influencer_value > 100) throw new Error('Influencer percent cannot exceed 100');
+      const pct = row.ref_levels.split(',').map(Number);
+      if (pct.some(x => x > 100)) throw new Error('Level percent cannot exceed 100');
+      const fixed = row.ref_fixed_levels.split(',').map(Number);
+      result = await s.from('admin_settings').update({ ...row, ref_levels: pct, ref_level1_percent: Math.round(pct[0] ?? 0), ref_level2_percent: Math.round(pct[1] ?? 0), ref_level3_percent: Math.round(pct[2] ?? 0), ref_fixed_levels: fixed, updated_at: new Date().toISOString() }).eq('id',data.id).select('id').single(); break;
+    }
+    case 'commissions': {
+      if (!data.id) throw new Error('Record required');
+      const row = z.object({ status: z.enum(['approved','rejected']) }).parse(v);
+      result = await s.from('commission_entries').update(row).eq('id',data.id).eq('status','pending').select('id').single(); break;
+    }
+    case 'influencers': {
+      const row = z.object({ user_id: z.string().uuid(), on: bool }).parse(v);
+      if (row.on) { const r = await s.from('referral_influencers').upsert({ user_id: row.user_id }).select('user_id').single(); if (r.error) throw new Error('Unable to save record'); return { id: r.data.user_id }; }
+      const r = await s.from('referral_influencers').delete().eq('user_id', row.user_id); if (r.error) throw new Error('Unable to save record'); return { id: row.user_id };
+    }
     case 'maintenance': {
       if (!data.id) throw new Error('Record required');
       const row = z.object({ maintenance_mode: z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]).default(false), maintenance_message: z.string().max(500).default('') }).parse(v);
@@ -320,4 +343,11 @@ export const moveCurriculumItem = createServerFn({ method: 'POST' }).middleware(
   const a = siblings[idx]; if(!a)return {ok:true}; const tmp = a.position; a.position = other.position; other.position = tmp;
   for (const x of siblings) await s.from(table).update({ position: x.position }).eq('id', x.id);
   return { ok: true };
+});
+
+/** Moves due pending commissions (holding period over, no open refund) to approved in automatic mode. */
+export const releaseDueCommissions = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth]).handler(async ({ context }) => {
+  const r = await context.supabase.rpc('release_due_commissions');
+  if (r.error) throw new Error(r.error.message.includes('Forbidden') ? 'Forbidden' : 'Unable to release commissions');
+  return { released: r.data ?? 0 };
 });

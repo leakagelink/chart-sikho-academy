@@ -73,48 +73,102 @@ export type Database = {
       }
       admin_settings: {
         Row: {
+          approval_mode: string
+          commission_base: string
+          commission_currency: string
           commission_percent: number
+          commission_type: string
+          hold_suspended: boolean
+          holding_days: number
           id: string
+          influencer_enabled: boolean
+          influencer_type: string
+          influencer_value: number
+          kyc_required: boolean
           logo_url: string
           maintenance_message: string
           maintenance_mode: boolean
+          max_withdrawal: number
+          max_withdrawals_per_month: number
+          min_withdrawal: number
+          payout_cycle: string
+          ref_fixed_levels: Json
           ref_level1_percent: number
           ref_level2_percent: number
           ref_level3_percent: number
           ref_levels: Json | null
           referral_enabled: boolean
+          repurchase_enabled: boolean
+          self_purchase_block: boolean
           support_email: string
           support_phone: string
+          tds_percent: number
           updated_at: string
         }
         Insert: {
+          approval_mode?: string
+          commission_base?: string
+          commission_currency?: string
           commission_percent?: number
+          commission_type?: string
+          hold_suspended?: boolean
+          holding_days?: number
           id?: string
+          influencer_enabled?: boolean
+          influencer_type?: string
+          influencer_value?: number
+          kyc_required?: boolean
           logo_url?: string
           maintenance_message?: string
           maintenance_mode?: boolean
+          max_withdrawal?: number
+          max_withdrawals_per_month?: number
+          min_withdrawal?: number
+          payout_cycle?: string
+          ref_fixed_levels?: Json
           ref_level1_percent?: number
           ref_level2_percent?: number
           ref_level3_percent?: number
           ref_levels?: Json | null
           referral_enabled?: boolean
+          repurchase_enabled?: boolean
+          self_purchase_block?: boolean
           support_email?: string
           support_phone?: string
+          tds_percent?: number
           updated_at?: string
         }
         Update: {
+          approval_mode?: string
+          commission_base?: string
+          commission_currency?: string
           commission_percent?: number
+          commission_type?: string
+          hold_suspended?: boolean
+          holding_days?: number
           id?: string
+          influencer_enabled?: boolean
+          influencer_type?: string
+          influencer_value?: number
+          kyc_required?: boolean
           logo_url?: string
           maintenance_message?: string
           maintenance_mode?: boolean
+          max_withdrawal?: number
+          max_withdrawals_per_month?: number
+          min_withdrawal?: number
+          payout_cycle?: string
+          ref_fixed_levels?: Json
           ref_level1_percent?: number
           ref_level2_percent?: number
           ref_level3_percent?: number
           ref_levels?: Json | null
           referral_enabled?: boolean
+          repurchase_enabled?: boolean
+          self_purchase_block?: boolean
           support_email?: string
           support_phone?: string
+          tds_percent?: number
           updated_at?: string
         }
         Relationships: []
@@ -358,29 +412,47 @@ export type Database = {
         Row: {
           amount: number
           created_at: string
+          currency: string
           id: string
+          level: number
+          on_hold: boolean
           order_id: string
+          release_at: string
+          status: string
+          tds_amount: number
           user_id: string
         }
         Insert: {
           amount: number
           created_at?: string
+          currency?: string
           id?: string
+          level?: number
+          on_hold?: boolean
           order_id: string
+          release_at?: string
+          status?: string
+          tds_amount?: number
           user_id: string
         }
         Update: {
           amount?: number
           created_at?: string
+          currency?: string
           id?: string
+          level?: number
+          on_hold?: boolean
           order_id?: string
+          release_at?: string
+          status?: string
+          tds_amount?: number
           user_id?: string
         }
         Relationships: [
           {
             foreignKeyName: "commission_entries_order_id_fkey"
             columns: ["order_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "orders"
             referencedColumns: ["id"]
           },
@@ -1262,6 +1334,21 @@ export type Database = {
         }
         Relationships: []
       }
+      referral_influencers: {
+        Row: {
+          created_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       referral_relationships: {
         Row: {
           created_at: string
@@ -1488,6 +1575,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      my_wallet: { Args: never; Returns: Json }
+      release_commissions_for: { Args: { _user: string }; Returns: number }
+      release_due_commissions: { Args: never; Returns: number }
+      request_payout: { Args: { _amount: number }; Returns: string }
       set_panel_permissions: {
         Args: { _permissions: Json; _user_id: string }
         Returns: undefined
