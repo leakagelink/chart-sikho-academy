@@ -35,6 +35,17 @@ export const liveClassSchema = z.object({
   }
 });
 export function financeActionAllowed(action: string) { return action === 'reviewed' || action === 'rejected'; }
+export type RankRow = { name: string; min_sales: number; position: number };
+/** Total paid order amount (₹) placed by users this user directly referred. */
+export function referralSalesTotal(userId: string, affiliates: { referrer_id: string; referred_id: string }[], orders: { user_id: string; status: string; amount: number }[]) {
+  const referred = new Set(affiliates.filter(a => a.referrer_id === userId).map(a => a.referred_id));
+  return orders.filter(o => o.status === 'paid' && referred.has(o.user_id)).reduce((sum, o) => sum + Number(o.amount || 0), 0);
+}
+/** Highest-threshold rank the user's referral sales reach; null when none qualifies. */
+export function rankFor(userId: string, ranks: RankRow[], affiliates: { referrer_id: string; referred_id: string }[], orders: { user_id: string; status: string; amount: number }[]) {
+  const sales = referralSalesTotal(userId, affiliates, orders);
+  return [...ranks].sort((a, b) => b.min_sales - a.min_sales).find(r => sales >= r.min_sales) ?? null;
+}
 export type PublishCheck = { title: string; description: string; price: number; sale_price: number | null; modules: { id: string }[]; lessons: { module_id: string | null; video_url: string; resource_path: string }[] };
 /** Returns the failed checks; a course may be published only when this is empty. */
 export function coursePublishIssues(c: PublishCheck) {
