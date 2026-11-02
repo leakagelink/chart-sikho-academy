@@ -116,7 +116,7 @@ describe('affiliate rank filter rules', () => {
   });
   it('assigns the highest rank whose minimum sales are reached', () => {
     expect(rankFor('u1', ranks, affiliates, orders)?.name).toBe('Gold');
-    expect(rankFor('u9', ranks, affiliates, orders)?.name).toBeNull();
+    expect(rankFor('u9', ranks, affiliates, orders)).toBeNull();
   });
   it('returns null when no rank qualifies', () => {
     expect(rankFor('u2', ranks, affiliates, orders)).toBeNull();
