@@ -509,6 +509,7 @@ const dict = {
   admin_percent: { en: 'Commission %', hi: 'कमीशन %' },
   admin_real_commission: { en: 'Only verified genuine sales qualify; sign-ups never earn commissions.', hi: 'कमीशन केवल सत्यापित असली बिक्री पर; साइन-अप पर कभी नहीं।' },
   admin_course_id: { en: 'Course', hi: 'कोर्स' },
+  admin_uid_filter: { en: 'Filter by User ID', hi: 'यूज़र ID से फ़िल्टर' },
   admin_user_id: { en: 'User', hi: 'यूज़र' },
   admin_action: { en: 'Action', hi: 'कार्य' },
   admin_resource: { en: 'Resource', hi: 'संसाधन' },
