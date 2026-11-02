@@ -16,7 +16,7 @@ import { adminQuery } from '@/lib/admin-query';
 import { adminNav } from '@/lib/admin-nav';
 import { rangeBounds, summarize, type RangeKey } from '@/lib/admin-dashboard';
 
-type Row = Record<string, string | number | boolean | null>;
+type Row = Record<string, string | number | boolean | null | (string | number | boolean | null)[]>;
 type Field = { key:string; label:DictKey; type?:string; options?:string[] };
 const labels = Object.fromEntries(adminSections.map(s => [s, `admin_${s}_real`])) as Record<AdminSection, DictKey>;
 const icons = [LayoutDashboard,Users,Tags,Blocks,BookOpen,FileText,Film,Video,Video,BookOpen,Receipt,Receipt,Receipt,Network,Network,Receipt,Bell,FileText,Settings,ClipboardList,HelpCircle,Award,TrendingUp,Star,BadgeIndianRupee,TicketPercent,RotateCcw,FileSpreadsheet,ShoppingCart,GraduationCap,KeyRound,BadgeCheck,Ban,FileUp,SlidersHorizontal,Link2,GitBranch,Percent,Trophy,Gift,AlertTriangle,Mail,Megaphone,LifeBuoy,Image,Send,UserPlus,Globe,BadgePercent,Wrench,ShieldCheck];
