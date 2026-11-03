@@ -69,7 +69,6 @@ export const getAdminData = createServerFn({ method: 'POST' }).middleware([requi
       return {data,error:refunds.error??profiles.error};
     }),
     read('invoices',()=>s.from('invoices').select('*').order('issued_at', { ascending: false }).limit(1000)),
-    read('abandoned',()=>s.from('abandoned_checkouts').select('*').order('created_at', { ascending: false }).limit(1000)),
     read('instructors',()=>s.from('instructors').select('*').order('created_at', { ascending: false }).limit(1000)),
     read('ranks',()=>s.from('ranks').select('*').order('position').limit(1000)),
     read('bonuses',()=>s.from('bonus_entries').select('*').order('created_at', { ascending: false }).limit(1000)),
