@@ -63,7 +63,15 @@ export const getAdminData = createServerFn({ method: 'POST' }).middleware([requi
     }),
     read('affiliates',()=>s.from('referral_relationships').select('*').limit(1000)),
     read('commissions',()=>s.from('commission_entries').select('*').order('created_at', { ascending: false }).limit(1000)),
-    read('payouts',()=>s.from('payout_requests').select('*').order('created_at', { ascending: false }).limit(1000)),
+    read('payouts',async()=>{
+      const [payouts,profiles]=await Promise.all([
+        s.from('payout_requests').select('*').order('created_at', { ascending: false }).limit(1000),
+        s.from('profiles').select('id,phone').limit(2000)
+      ]);
+      const byId=new Map((profiles.data??[]).map(p=>[p.id,p.phone as string|null]));
+      const data=(payouts.data??[]).map(r=>({...r,phone:byId.get(r.user_id)??null}));
+      return {data,error:payouts.error??profiles.error};
+    }),
     read('notifications',()=>s.from('notification_campaigns').select('*').order('created_at', { ascending: false }).limit(1000)),
     read('settings',()=>s.from('admin_settings').select('*').limit(1)),
     read('audit',()=>s.from('admin_audit_log').select('*').order('created_at', { ascending: false }).limit(100)),
