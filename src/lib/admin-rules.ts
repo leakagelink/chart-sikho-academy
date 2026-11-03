@@ -8,7 +8,7 @@ export function videoRemovalValues(resourcePath: string) {
   return { video_url: '', resource_path: /\.(mp4|webm)$/i.test(resourcePath) ? '' : resourcePath };
 }
 export const adminChangeSchema = z.object({
-  resource: z.enum(['categories','modules','courses','lessons','classes','ebooks','users','notifications','payouts','settings','quizzes','questions','certificates','reviews','coupons','refunds','invoices','abandoned','instructors','roles','verification','ranks','bonuses','templates','announcements','tickets','banners','campaigns','leads','seo','promocodes','maintenance','commrules','commissions','influencers']),
+  resource: z.enum(['categories','modules','courses','lessons','classes','ebooks','users','notifications','payouts','settings','quizzes','questions','certificates','reviews','coupons','refunds','invoices','instructors','roles','verification','ranks','bonuses','templates','announcements','tickets','banners','campaigns','leads','seo','promocodes','maintenance','commrules','commissions','influencers']),
   id: z.string().uuid().optional(),
   values: z.record(z.union([z.string().max(700000), z.number().finite(), z.boolean(), z.null()])).superRefine((values, ctx) => {
     for (const [key, value] of Object.entries(values)) {
