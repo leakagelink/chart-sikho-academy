@@ -37,7 +37,15 @@ export const getAdminData = createServerFn({ method: 'POST' }).middleware([requi
     read('classes',()=>s.from('class_sessions').select('*').order('starts_at', { ascending: false }).limit(1000)),
     read('ebooks',()=>s.from('ebooks').select('*').order('created_at', { ascending: false }).limit(1000)),
     read('enrollments',()=>s.from('enrollments').select('*').limit(1000)),
-    read('orders',()=>s.from('orders').select('*').order('created_at', { ascending: false }).limit(1000)),
+    read('orders',async()=>{
+      const [orders,profiles]=await Promise.all([
+        s.from('orders').select('*').order('created_at', { ascending: false }).limit(1000),
+        s.from('profiles').select('id,phone').limit(2000)
+      ]);
+      const byId=new Map((profiles.data??[]).map(p=>[p.id,p.phone as string|null]));
+      const data=(orders.data??[]).map(o=>({...o,phone:byId.get(o.user_id)??null}));
+      return {data,error:orders.error??profiles.error};
+    }),
     read('affiliates',()=>s.from('referral_relationships').select('*').limit(1000)),
     read('commissions',()=>s.from('commission_entries').select('*').order('created_at', { ascending: false }).limit(1000)),
     read('payouts',()=>s.from('payout_requests').select('*').order('created_at', { ascending: false }).limit(1000)),
