@@ -44,7 +44,7 @@ export const getAdminData = createServerFn({ method: 'POST' }).middleware([requi
           }
         } catch { /* emails optional */ }
       }
-      const data = (profiles.data ?? []).map((p:Record<string,unknown>) => ({...p, email: emails.get(p.id) ?? ''}));
+      const data = (profiles.data ?? []).map(p => ({...p, email: emails.get(String(p.id)) ?? ''}));
       return {data,error:profiles.error};
     }),
     read('courses',()=>s.from('courses').select('*').order('created_at', { ascending: false }).limit(1000)),
