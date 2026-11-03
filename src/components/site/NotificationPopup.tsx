@@ -25,6 +25,7 @@ export function NotificationPopup() {
     <Dialog open onOpenChange={o => { if (!o) void close(); }}>
       <DialogContent className="max-w-md">
         <div className="flex items-center gap-2 text-primary"><Bell className="h-5 w-5" /></div>
+        {item.notification_campaigns?.image_url&&<img src={item.notification_campaigns.image_url} alt="" className="max-h-56 w-full rounded-md object-contain"/>}
         <DialogTitle className="font-display text-xl">{item.notification_campaigns?.title}</DialogTitle>
         <DialogDescription className="whitespace-pre-wrap">{item.notification_campaigns?.message}</DialogDescription>
         <div className="mt-2 flex justify-end gap-2">

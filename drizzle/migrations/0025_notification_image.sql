@@ -1,0 +1,1 @@
+ALTER TABLE public.notification_campaigns ADD COLUMN IF NOT EXISTS image_url text NOT NULL DEFAULT '';
