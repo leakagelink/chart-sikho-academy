@@ -19,6 +19,7 @@ import { Toaster } from "../components/ui/sonner";
 import { SplashScreen } from "../components/site/SplashScreen";
 import { PageMotion } from "../components/site/PageMotion";
 import { FloatingActions } from "../components/site/FloatingActions";
+import { NotificationPopup } from "../components/site/NotificationPopup";
 
 function NotFoundComponent() {
   return (
@@ -133,6 +134,7 @@ function RootComponent() {
         <Footer />
         <MobileNav />
         <FloatingActions />
+        <NotificationPopup />
         <Toaster />
         </SplashScreen>
       </LangProvider>
