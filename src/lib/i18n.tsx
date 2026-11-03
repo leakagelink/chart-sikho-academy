@@ -457,6 +457,7 @@ const dict = {
   admin_error: { en: 'Could not complete this action. Please try again.', hi: 'यह काम पूरा नहीं हुआ। फिर प्रयास करें।' },
   admin_retry: { en: 'Try again', hi: 'फिर प्रयास करें' },
   admin_search: { en: 'Search records', hi: 'रिकॉर्ड खोजें' },
+  admin_search_user: { en: 'Search by name, mobile or ID', hi: 'नाम, मोबाइल या ID से खोजें' },
   admin_export: { en: 'Export CSV', hi: 'CSV डाउनलोड' },
   admin_add: { en: 'Add new', hi: 'नया जोड़ें' },
   admin_edit: { en: 'Edit', hi: 'बदलें' },
