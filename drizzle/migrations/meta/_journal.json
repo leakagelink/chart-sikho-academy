@@ -176,6 +176,13 @@
       "when": 1793718116981,
       "tag": "0024_notification_popups",
       "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1793719465106,
+      "tag": "0025_notification_image",
+      "breakpoints": true
     }
   ]
 }
