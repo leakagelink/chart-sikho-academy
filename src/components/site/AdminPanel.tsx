@@ -262,7 +262,7 @@ type AudUser={id:string;full_name?:string|null;phone?:string|null;city?:string|n
 /** Audience chooser: everyone, a state, a city (narrowed by state), a course or one user. */
 function AudiencePicker({value,onChange,users,courses}:{value:string;onChange:(v:string)=>void;users:AudUser[];courses:{id:string;title:string}[]}){
   const {t}=useLang();
-  const kind=value==='all'?'all':value.split(':')[0];const val=value==='all'?'':value.slice(kind.length+1);
+  const kind=value==='all'?'all':(value.split(':')[0]??'all');const val=value==='all'?'':value.slice(kind.length+1);
   const [st,setSt]=useState(kind==='city'?(users.find(u=>u.city===val)?.state??''):'');
   const states=[...new Set(users.map(u=>(u.state??'').trim()).filter(Boolean))].sort();
   const cities=[...new Set(users.filter(u=>!st||u.state===st).map(u=>(u.city??'').trim()).filter(Boolean))].sort();
