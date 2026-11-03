@@ -273,7 +273,9 @@ export type Database = {
           created_at: string
           id: string
           name: string
+          notification_id: string | null
           scheduled_at: string | null
+          show_popup: boolean
           status: string
           template_id: string | null
         }
@@ -283,7 +285,9 @@ export type Database = {
           created_at?: string
           id?: string
           name: string
+          notification_id?: string | null
           scheduled_at?: string | null
+          show_popup?: boolean
           status?: string
           template_id?: string | null
         }
@@ -293,7 +297,9 @@ export type Database = {
           created_at?: string
           id?: string
           name?: string
+          notification_id?: string | null
           scheduled_at?: string | null
+          show_popup?: boolean
           status?: string
           template_id?: string | null
         }
@@ -1006,6 +1012,7 @@ export type Database = {
           created_by: string
           id: string
           message: string
+          show_popup: boolean
           status: string
           title: string
         }
@@ -1016,6 +1023,7 @@ export type Database = {
           created_by?: string
           id?: string
           message: string
+          show_popup?: boolean
           status?: string
           title: string
         }
@@ -1026,6 +1034,7 @@ export type Database = {
           created_by?: string
           id?: string
           message?: string
+          show_popup?: boolean
           status?: string
           title?: string
         }
@@ -1479,6 +1488,7 @@ export type Database = {
           campaign_id: string
           created_at: string
           id: string
+          popup_seen_at: string | null
           read_at: string | null
           user_id: string
         }
@@ -1486,6 +1496,7 @@ export type Database = {
           campaign_id: string
           created_at?: string
           id?: string
+          popup_seen_at?: string | null
           read_at?: string | null
           user_id: string
         }
@@ -1493,6 +1504,7 @@ export type Database = {
           campaign_id?: string
           created_at?: string
           id?: string
+          popup_seen_at?: string | null
           read_at?: string | null
           user_id?: string
         }
