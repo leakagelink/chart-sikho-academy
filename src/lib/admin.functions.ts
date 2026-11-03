@@ -59,7 +59,15 @@ export const getAdminData = createServerFn({ method: 'POST' }).middleware([requi
     read('certificates',()=>s.from('certificates').select('*').order('issued_at', { ascending: false }).limit(1000)),
     read('reviews',()=>s.from('course_reviews').select('*').order('created_at', { ascending: false }).limit(1000)),
     read('coupons',()=>s.from('coupons').select('*').order('created_at', { ascending: false }).limit(1000)),
-    read('refunds',()=>s.from('refund_requests').select('*').order('created_at', { ascending: false }).limit(1000)),
+    read('refunds',async()=>{
+      const [refunds,profiles]=await Promise.all([
+        s.from('refund_requests').select('*').order('created_at', { ascending: false }).limit(1000),
+        s.from('profiles').select('id,phone').limit(2000)
+      ]);
+      const byId=new Map((profiles.data??[]).map(p=>[p.id,p.phone as string|null]));
+      const data=(refunds.data??[]).map(r=>({...r,phone:byId.get(r.user_id)??null}));
+      return {data,error:refunds.error??profiles.error};
+    }),
     read('invoices',()=>s.from('invoices').select('*').order('issued_at', { ascending: false }).limit(1000)),
     read('abandoned',()=>s.from('abandoned_checkouts').select('*').order('created_at', { ascending: false }).limit(1000)),
     read('instructors',()=>s.from('instructors').select('*').order('created_at', { ascending: false }).limit(1000)),
