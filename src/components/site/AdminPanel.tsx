@@ -269,12 +269,12 @@ function AudiencePicker({value,onChange,users,courses}:{value:string;onChange:(v
   const count=value==='all'?users.length:kind==='state'?users.filter(u=>u.state===val).length:kind==='city'?users.filter(u=>u.city===val).length:kind==='user'?1:null;
   return <span className="block space-y-2">
     <select aria-label={t('admin_audience_type')} className={inputCls} value={kind} onChange={e=>{const k=e.target.value;onChange(k==='all'?'all':k==='state'?`state:${states[0]??''}`:k==='city'?`city:${cities[0]??''}`:k==='course'?`course:${courses[0]?.id??''}`:`user:${users[0]?.id??''}`);}}>
-      <option value="all">{t('filter_all')}</option><option value="state">{t('state')}</option><option value="city">{t('city')}</option><option value="course">{t('admin_course')}</option><option value="user">{t('admin_user')}</option>
+      <option value="all">{t('filter_all')}</option><option value="state">{t('state')}</option><option value="city">{t('city')}</option><option value="course">{t('admin_aud_course')}</option><option value="user">{t('admin_user_id')}</option>
     </select>
     {kind==='state'&&<select aria-label={t('state')} className={inputCls} value={val} onChange={e=>onChange(`state:${e.target.value}`)}>{states.map(v=><option key={v} value={v}>{v}</option>)}</select>}
     {kind==='city'&&<><select aria-label={t('state')} className={inputCls} value={st} onChange={e=>{setSt(e.target.value);const c=users.find(u=>!e.target.value||u.state===e.target.value)?.city;onChange(`city:${c??''}`);}}><option value="">{t('filter_all')}</option>{states.map(v=><option key={v} value={v}>{v}</option>)}</select><select aria-label={t('city')} className={inputCls} value={val} onChange={e=>onChange(`city:${e.target.value}`)}>{cities.map(v=><option key={v} value={v}>{v}</option>)}</select></>}
-    {kind==='course'&&<select aria-label={t('admin_course')} className={inputCls} value={val} onChange={e=>onChange(`course:${e.target.value}`)}>{courses.map(c=><option key={c.id} value={c.id}>{c.title}</option>)}</select>}
-    {kind==='user'&&<select aria-label={t('admin_user')} className={inputCls} value={val} onChange={e=>onChange(`user:${e.target.value}`)}>{users.map(u=><option key={u.id} value={u.id}>{u.full_name??u.id.slice(0,8)}{u.phone?` · ${u.phone}`:''}</option>)}</select>}
+    {kind==='course'&&<select aria-label={t('admin_aud_course')} className={inputCls} value={val} onChange={e=>onChange(`course:${e.target.value}`)}>{courses.map(c=><option key={c.id} value={c.id}>{c.title}</option>)}</select>}
+    {kind==='user'&&<select aria-label={t('admin_user_id')} className={inputCls} value={val} onChange={e=>onChange(`user:${e.target.value}`)}>{users.map(u=><option key={u.id} value={u.id}>{u.full_name??u.id.slice(0,8)}{u.phone?` · ${u.phone}`:''}</option>)}</select>}
     {(kind==='state'||kind==='city')&&!val&&<span className="block text-xs text-muted-foreground">{t('admin_audience_none')}</span>}
     {count!==null&&<span className="block text-xs text-muted-foreground">{t('admin_audience_count')}: {count}</span>}
   </span>;
