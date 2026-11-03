@@ -169,6 +169,13 @@
       "when": 1793613455788,
       "tag": "0023_allow_commission_status_changes",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1793718116981,
+      "tag": "0024_notification_popups",
+      "breakpoints": true
     }
   ]
 }
