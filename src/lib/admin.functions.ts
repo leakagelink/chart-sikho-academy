@@ -31,7 +31,22 @@ export const getAdminData = createServerFn({ method: 'POST' }).middleware([requi
     return canReadDataset(access,key) ? await fetcher() : {data:[],error:null} as T;
   }
   const results = await Promise.all([
-    read('users',()=>s.from('profiles').select('*').order('created_at', { ascending: false }).limit(1000)),
+    read('users',async()=>{
+      const profiles = await s.from('profiles').select('*').order('created_at', { ascending: false }).limit(1000);
+      const emails = new Map<string,string>();
+      if (access.isAdmin && profiles.data?.length) {
+        try {
+          const { supabaseAdmin } = await import('@/integrations/supabase/client.server');
+          for (let page = 1; page <= 4; page++) {
+            const { data } = await supabaseAdmin.auth.admin.listUsers({ page, perPage: 500 });
+            for (const u of data?.users ?? []) emails.set(u.id, u.email ?? '');
+            if ((data?.users?.length ?? 0) < 500) break;
+          }
+        } catch { /* emails optional */ }
+      }
+      const data = (profiles.data ?? []).map(p => ({...p, email: emails.get(String(p.id)) ?? ''}));
+      return {data,error:profiles.error};
+    }),
     read('courses',()=>s.from('courses').select('*').order('created_at', { ascending: false }).limit(1000)),
     read('lessons',()=>s.from('course_lessons').select('*').order('position').limit(1000)),
     read('classes',()=>s.from('class_sessions').select('*').order('starts_at', { ascending: false }).limit(1000)),
