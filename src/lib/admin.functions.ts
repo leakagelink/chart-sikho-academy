@@ -204,7 +204,7 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
       result = await s.from('bonus_entries').insert(row).select('id').single(); break;
     }
     case 'notifications': {
-      const row = z.object({ title, message: z.string().trim().min(2).max(1000), audience: z.string().min(1).max(200).refine(v => v === 'all' || /^(city|state|user|course):.+$/.test(v)), status: z.enum(['draft','published']) }).parse(v);
+      const row = z.object({ title, message: z.string().trim().min(2).max(1000), audience: z.string().min(1).max(200).refine(v => v === 'all' || /^(city|state|user|course):.+$/.test(v)), status: z.enum(['draft','published']), show_popup: z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]).default(false) }).parse(v);
       result = data.id ? await s.from('notification_campaigns').update(row).eq('id',data.id).eq('status','draft').select('id').single() : await s.from('notification_campaigns').insert({ ...row, created_by: context.userId }).select('id').single(); break;
     }
     case 'payouts': {
@@ -318,7 +318,7 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
       result = data.id ? await s.from('banners').update(row).eq('id',data.id).select('id').single() : await s.from('banners').insert(row).select('id').single(); break;
     }
     case 'campaigns': {
-      const row = z.object({ name: z.string().trim().min(2).max(120), channel: z.enum(['email','whatsapp','sms','push']).default('push'), audience: z.string().min(1).max(200).refine(v => v === 'all' || /^(city|state|user|course):.+$/.test(v)), template_id: z.union([z.literal('').transform(() => null), z.null(), z.string().uuid()]).default(null), status: z.enum(['draft','scheduled','sent','cancelled']).default('draft'), scheduled_at: z.union([z.literal('').transform(() => null), z.null(), z.string().datetime()]).default(null) }).parse(v);
+      const row = z.object({ name: z.string().trim().min(2).max(120), channel: z.enum(['email','whatsapp','sms','push']).default('push'), audience: z.string().min(1).max(200).refine(v => v === 'all' || /^(city|state|user|course):.+$/.test(v)), template_id: z.union([z.literal('').transform(() => null), z.null(), z.string().uuid()]).default(null), status: z.enum(['draft','scheduled','sent','cancelled']).default('draft'), scheduled_at: z.union([z.literal('').transform(() => null), z.null(), z.string().datetime()]).default(null), show_popup: z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]).default(false) }).parse(v);
       if (row.status === 'scheduled' && !row.scheduled_at) throw new Error('Scheduled campaigns need a date');
       result = data.id ? await s.from('campaigns').update(row).eq('id',data.id).select('id').single() : await s.from('campaigns').insert(row).select('id').single(); break;
     }
@@ -340,9 +340,14 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
 });
 
 export const getStudentNotifications = createServerFn({ method:'POST' }).middleware([requireSupabaseAuth]).handler(async ({ context }) => {
-  const r = await context.supabase.from('user_notifications').select('id,read_at,notification_campaigns(title,message)').eq('user_id',context.userId).order('created_at',{ascending:false}).limit(50);
+  const r = await context.supabase.from('user_notifications').select('id,read_at,popup_seen_at,created_at,notification_campaigns(title,message,show_popup)').eq('user_id',context.userId).order('created_at',{ascending:false}).limit(50);
   if (r.error) throw new Error('Unable to load notifications');
   return r.data;
+});
+export const markNotificationPopupSeen = createServerFn({ method:'POST' }).middleware([requireSupabaseAuth]).inputValidator((i:{id:string})=>z.object({id:z.string().uuid()}).parse(i)).handler(async ({ context, data }) => {
+  const r = await context.supabase.from('user_notifications').update({ popup_seen_at: new Date().toISOString(), read_at: new Date().toISOString() }).eq('id',data.id).eq('user_id',context.userId);
+  if (r.error) throw new Error('Unable to update');
+  return { ok: true };
 });
 async function assertAdmin(s: any, userId: string) { const role = await s.rpc('has_role', { _user_id: userId, _role: 'admin' }); requireAdminRole(!role.error && role.data === true); }
 
