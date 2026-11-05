@@ -39,7 +39,7 @@ function Index() {
     { icon: Award, label: t("cat_certificates"), to: "/sandbox/certificates" },
   ] as const;
   return (
-    <div className="mx-auto max-w-6xl px-4">
+    <div className="w-full px-4">
       {/* Greeting — blueprint home dashboard header */}
       <section className="home-greeting mt-6 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
         <div className="flex min-w-0 items-center gap-3">

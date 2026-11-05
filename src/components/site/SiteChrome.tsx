@@ -79,7 +79,7 @@ export function Header() {
   const brandLogo = useBranding();
   return (
     <header className="blueprint-chrome sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
-      <div className="mx-auto grid min-h-16 max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-1 px-3 sm:flex sm:gap-3 sm:px-4">
+      <div className="grid min-h-16 grid-cols-[minmax(0,1fr)_auto] items-center gap-1 px-3 sm:flex sm:gap-3 sm:px-4">
         <Link to="/" className="flex min-w-0 items-center gap-1.5 sm:shrink-0 sm:gap-2">
           <img src={brandLogo || logo} alt="" width={40} height={40} className="h-8 w-8 shrink-0 object-contain sm:h-10 sm:w-10" />
           <span className="truncate font-display text-lg font-bold text-foreground sm:text-xl">
@@ -128,7 +128,7 @@ export function Footer() {
   const { t } = useLang();
   return (
     <footer className="blueprint-footer mt-12 bg-navy pb-28 pt-8 text-navy-foreground lg:pb-10">
-      <div className="mx-auto max-w-6xl px-4 text-sm">
+      <div className="w-full px-4 text-sm">
         <p className="font-display text-lg font-bold">Chart<span className="text-gold">सीखो</span></p>
         <p className="mt-2 max-w-xl opacity-80">{t("disclaimer")}</p>
         <p className="mt-6 opacity-60">© {new Date().getFullYear()} Chartसीखो</p>

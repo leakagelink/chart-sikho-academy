@@ -74,7 +74,7 @@ function ProfilePage() {
   );
 
   return (
-    <div className="profile-screen mx-auto max-w-xl px-4 pt-0">
+    <div className="profile-screen w-full px-4 pt-0">
       {/* Header — blueprint My Profile */}
       <div className="profile-banner flex items-center gap-4">
         <span className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-gold font-display text-2xl font-bold text-navy">

@@ -27,7 +27,7 @@ const plans = [
 function PlansPage() {
   const { t } = useLang();
   return (
-    <div className="mx-auto max-w-3xl px-4 pt-8">
+    <div className="w-full px-4 pt-8">
       <div className="text-center">
         <Crown className="mx-auto h-10 w-10 text-gold" />
         <h1 className="mt-2 font-display text-3xl font-bold text-foreground">{t("membership_t")}</h1>

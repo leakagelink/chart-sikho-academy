@@ -43,7 +43,7 @@ function EarningsPage() {
   function submit(e: FormEvent) { e.preventDefault(); const n = parseInt(amount, 10); if (n > 0) req.mutate(n); }
   const status = (s: string) => t(`admin_${s}` as never) || s;
   return (
-    <main className="mx-auto max-w-4xl px-4 py-8">
+    <main className="w-full px-4 py-8">
       <h1 className="font-display text-3xl font-bold">{t("wallet_title")}</h1>
       <p className="mt-1 text-sm text-muted-foreground">{t("wallet_desc")}</p>
       {wallet.error && <p className="mt-4 text-sm text-destructive">{wallet.error.message}</p>}

@@ -61,7 +61,7 @@ function Dashboard() {
   const cont = mine[0];
 
   return (
-    <div className="mx-auto max-w-6xl px-4 pt-8">
+    <div className="w-full px-4 pt-8">
       <p className="text-muted-foreground">{t("namaste")} 👋</p>
       <h1 className="font-display text-3xl font-bold text-foreground">{name}</h1>
       <Button asChild variant="outline" className="mt-4"><Link to="/sandbox">{t("sandbox")}</Link></Button>
