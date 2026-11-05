@@ -15,6 +15,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { LangProvider } from "../lib/i18n";
 import { AuthProvider } from "../hooks/use-auth";
 import { Footer, Header, MobileNav } from "../components/site/SiteChrome";
+import { StudentShell } from "../components/site/StudentShell";
 import { Toaster } from "../components/ui/sonner";
 import { SplashScreen } from "../components/site/SplashScreen";
 import { PageMotion } from "../components/site/PageMotion";
@@ -129,7 +130,7 @@ function RootComponent() {
         <SplashScreen>
         <Header />
         <PageMotion>
-          <Outlet />
+          <StudentShell><Outlet /></StudentShell>
         </PageMotion>
         <Footer />
         <MobileNav />
