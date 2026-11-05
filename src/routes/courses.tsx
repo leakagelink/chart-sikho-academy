@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Search } from "lucide-react";
 import { useState } from "react";
 import { CourseCard } from "@/components/site/CourseCard";
+import { CloudCourseCard } from "@/components/site/CloudCourseCard";
 import { courses } from "@/lib/courses";
 import { useLang, type DictKey } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
@@ -59,8 +60,8 @@ function CoursesPage() {
           ))}
         </div>
       </div>
-      <div className="catalog-list mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {cloud.filter(c=>(f==='all'||c.category===f||(f==='beginner'&&c.category==='basics'))&&c.title.toLowerCase().includes(q.toLowerCase())).map(c=><article key={c.id} className="rounded-lg border border-border bg-card p-5"><h2 className="font-display text-xl font-bold">{c.title}</h2><p className="my-4 text-xl font-bold text-primary">₹{c.price}</p><Button asChild><Link to="/courses/$courseId" params={{courseId:c.id}}>{t('enroll')}</Link></Button></article>)}
+      <div className="catalog-list mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+        {cloud.filter(c=>(f==='all'||c.category===f||(f==='beginner'&&c.category==='basics'))&&c.title.toLowerCase().includes(q.toLowerCase())).map(c=><CloudCourseCard key={c.id} course={c}/>)}
         {list.map((c) => <CourseCard key={c.id} course={c} />)}
       </div>
       {list.length === 0 && <p className="mt-10 text-center text-muted-foreground">{t("no_results")}</p>}
