@@ -16,7 +16,7 @@ function Frame() {
     { to: "/sandbox/orders", key: "my_orders", icon: ShoppingBag },
     { to: "/sandbox/admin", key: "admin_demo", icon: Shield },
   ] as const;
-  return <div className="sandbox-frame mx-auto max-w-6xl px-4 pt-6">
+  return <div className="sandbox-frame w-full px-4 pt-6">
     <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border pb-4 sm:flex sm:justify-between">
       <div className="min-w-0"><p className="text-xs font-semibold text-success">{t("test_mode")}</p><p className="font-display text-xl font-bold sm:text-2xl">Chartसीखो · {t("sandbox")}</p></div>
       <Button variant="outline" size="sm" className="shrink-0" title={t("reset_demo")} aria-label={t("reset_demo")} onClick={() => { if (window.confirm(t("reset_confirm"))) reset(); }}><RotateCcw /><span className="hidden sm:inline">{t("reset_demo")}</span></Button>

@@ -77,7 +77,7 @@ function CourseDetail() {
   }
 
   return (
-    <div className="detail-screen mx-auto max-w-4xl px-4 pt-0">
+    <div className="detail-screen w-full px-4 pt-0">
       <Link to="/courses" className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-primary">
         <ArrowLeft className="h-4 w-4" /> {t("nav_courses")}
       </Link>

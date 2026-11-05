@@ -29,8 +29,8 @@ function Screen() {
   const fetchUser = useServerFn(getAdminUserDetail);
   const q = useQuery({ queryKey: ['admin-user', userId], queryFn: () => fetchUser({ data: { userId } }) });
   const back = <Link to="/admin/$section" params={{ section: 'users' }} search={{ q: '', status: 'all', cat: 'all', when: 'all', rank: 'all', state: 'all', city: 'all' }} className="inline-flex items-center gap-1 text-sm text-primary"><ArrowLeft size={16} />{t('up_back')}</Link>;
-  if (q.isLoading) return <main className="mx-auto max-w-6xl p-4">{back}<p className="mt-6 text-muted-foreground">…</p></main>;
-  if (q.error || !q.data) return <main className="mx-auto max-w-6xl p-4">{back}<p className="mt-6">{t('up_not_found')}</p></main>;
+  if (q.isLoading) return <main className="w-full p-4">{back}<p className="mt-6 text-muted-foreground">…</p></main>;
+  if (q.error || !q.data) return <main className="w-full p-4">{back}<p className="mt-6">{t('up_not_found')}</p></main>;
   const d = q.data; const p = d.profile;
   const course = (id: string) => d.courses.find(c => c.id === id)?.title ?? id;
   const name = (id: string) => d.names.find(n => n.id === id)?.full_name || id.slice(0, 8);
@@ -43,7 +43,7 @@ function Screen() {
     ['up_referred_by', d.referredBy ? <Link to="/admin/user/$userId" params={{ userId: d.referredBy.id }} className="text-primary underline">{name(d.referredBy.id)} · {fmt(d.referredBy.at)}</Link> : t('up_direct')],
     ['up_total_paid', inr(paid)],
   ];
-  return <main className="mx-auto max-w-6xl space-y-4 p-4">
+  return <main className="w-full space-y-4 p-4">
     {back}
     <header><p className="text-sm text-muted-foreground">{t('up_title')}</p><h1 className="font-heading text-2xl font-bold">{p.full_name || d.email || p.id}</h1></header>
     <dl className="grid gap-3 rounded-lg border border-border bg-card p-4 sm:grid-cols-2 lg:grid-cols-3">{info.map(([k, v]) => <div key={k}><dt className="text-xs text-muted-foreground">{t(k)}</dt><dd className="font-semibold break-words">{v}</dd></div>)}</dl>

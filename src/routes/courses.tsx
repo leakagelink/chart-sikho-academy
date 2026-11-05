@@ -43,7 +43,7 @@ function CoursesPage() {
       (c.title.en + " " + c.title.hi).toLowerCase().includes(q.toLowerCase()),
   );
   return (
-    <div className="catalog-screen mx-auto max-w-6xl px-4 pt-8">
+    <div className="catalog-screen w-full px-4 pt-8">
       <h1 className="font-display text-3xl font-bold text-foreground">{t("all_courses")}</h1>
       <p className="mt-1 text-muted-foreground">{t("all_courses_sub")}</p>
       <div className="catalog-controls mt-6 flex flex-col gap-3 lg:flex-row lg:items-center">
