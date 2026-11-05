@@ -21,7 +21,9 @@ export function CloudCourseCard({ course: c }: { course: C }) {
           : off > 0 && <span className="absolute left-3 top-3 rounded-full bg-gold px-2.5 py-0.5 text-[11px] font-bold text-navy">{off}% off</span>}
       </div>
       <div className="course-body flex flex-1 flex-col p-4">
-        <h3 className="line-clamp-2 font-display text-lg font-semibold leading-tight text-card-foreground">{c.title}</h3>
+        <h3 className="line-clamp-2 font-display text-lg font-semibold leading-tight text-card-foreground">
+          <Link to="/courses/$courseId" params={{ courseId: c.id }} className="transition-colors hover:text-primary hover:underline">{c.title}</Link>
+        </h3>
         {c.description && <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{c.description}</p>}
         {c.instructor && <p className="mt-2 flex items-center gap-1 text-xs text-muted-foreground"><User className="h-3.5 w-3.5" />{c.instructor}</p>}
         <div className="course-price mt-auto flex items-baseline gap-2 pt-3">

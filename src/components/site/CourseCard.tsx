@@ -37,7 +37,9 @@ export function CourseCard({ course }: { course: Course }) {
         <Link to="/courses/$courseId" params={{courseId:course.id}} aria-label={course.title[lang]} className="absolute inset-0"><img src={educator} alt="" width={1280} height={768} loading="lazy" /></Link>
       </div>
       <div className="course-body p-4">
-        <h3 className="font-display text-lg font-semibold leading-tight text-card-foreground">{course.title[lang]}</h3>
+        <h3 className="font-display text-lg font-semibold leading-tight text-card-foreground">
+          <Link to="/courses/$courseId" params={{ courseId: course.id }} className="transition-colors hover:text-primary hover:underline">{course.title[lang]}</Link>
+        </h3>
         <p className="mt-1 text-xs text-muted-foreground">{course.lessons} {t("lessons")} · {course.language}</p>
         <div className="mt-2 flex items-center gap-1 text-xs">
           <Star className="h-3.5 w-3.5 fill-gold text-gold" />
