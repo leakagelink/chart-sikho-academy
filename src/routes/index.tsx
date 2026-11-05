@@ -34,7 +34,7 @@ function Index() {
     { icon: BookOpen, label: t("cat_mycourses"), to: "/dashboard" },
     { icon: Radio, label: t("cat_live"), to: "/sandbox/live" },
     { icon: Video, label: t("cat_webinars"), to: "/sandbox/live" },
-    { icon: FileText, label: t("cat_ebooks"), to: "/sandbox/learn" },
+    { icon: FileText, label: t("cat_ebooks"), to: "/ebooks" },
     { icon: ClipboardCheck, label: t("cat_tests"), to: "/sandbox/quiz" },
     { icon: Award, label: t("cat_certificates"), to: "/sandbox/certificates" },
   ] as const;
