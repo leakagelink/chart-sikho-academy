@@ -424,10 +424,11 @@ html { scroll-padding-top: 80px; }
   .home-categories a:hover { transform:translateY(-3px); border-color:var(--gold); }
   .home-categories a > span:first-child { padding:12px; }
   .home-categories a > span:last-child { font-size:.875rem; }
-  .home-marketing h1 { font-size:3.5rem; }
+
 }
 @media (min-width: 1280px) {
   main > .w-full.px-4, main > div > .w-full.px-4 { padding-left:32px; padding-right:32px; }
+  .home-greeting { margin:0 -32px; padding-left:32px; padding-right:32px; }
 }
 @media (hover:hover) and (min-width:1024px) {
   article.rounded-2xl { transition:transform .2s, box-shadow .2s; }
