@@ -106,6 +106,7 @@ const dict = {
   admin_course_settings: { en: 'Course details & pricing', hi: 'कोर्स विवरण और कीमत' },
   admin_description: { en: 'Description', hi: 'विवरण' },
   admin_thumbnail: { en: 'Thumbnail', hi: 'थंबनेल' },
+  nav_ebooks: { en: 'eBooks', hi: 'ईबुक्स' },
   admin_cover: { en: 'Cover page', hi: 'कवर पेज' },
   ebooks_t: { en: 'eBook Marketplace', hi: 'ईबुक मार्केटप्लेस' },
   ebooks_s: { en: 'Stock-market eBooks to read anytime.', hi: 'शेयर बाज़ार की ईबुक्स, कभी भी पढ़ें।' },
