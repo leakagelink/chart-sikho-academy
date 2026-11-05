@@ -413,3 +413,24 @@ html { scroll-padding-top: 80px; }
  .referral-screen > p { font-size:11px; margin-top:8px; }
  .referral-screen .referral-ledger { margin-top:20px; }
 }
+
+/* Desktop UX refinements */
+@media (min-width: 1024px) {
+  .home-greeting { padding:24px 32px 40px; margin:0 -16px; }
+  .home-progress { grid-template-columns:80px minmax(0,1fr) auto; padding:20px 28px; gap:24px; border-radius:16px; }
+  .home-progress > a { grid-column:auto; width:auto; padding:12px 36px; border-radius:999px; }
+  .home-categories { gap:16px; padding:20px 0; }
+  .home-categories a { border:1px solid var(--border); border-radius:16px; padding:22px 8px; transition:transform .2s, border-color .2s; }
+  .home-categories a:hover { transform:translateY(-3px); border-color:var(--gold); }
+  .home-categories a > span:first-child { padding:12px; }
+  .home-categories a > span:last-child { font-size:.875rem; }
+
+}
+@media (min-width: 1280px) {
+  main > .w-full.px-4, main > div > .w-full.px-4 { padding-left:32px; padding-right:32px; }
+  .home-greeting { margin:0 -32px; padding-left:32px; padding-right:32px; }
+}
+@media (hover:hover) and (min-width:1024px) {
+  article.rounded-2xl { transition:transform .2s, box-shadow .2s; }
+  article.rounded-2xl:hover { transform:translateY(-3px); }
+}
