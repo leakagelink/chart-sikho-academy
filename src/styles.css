@@ -332,9 +332,9 @@ html { scroll-padding-top: 80px; }
 .lesson-screen .lesson-heading { background:var(--navy); color:var(--navy-foreground); margin-top:0; padding:12px; font-size:18px; }
 .lesson-screen aside button { border:0; border-bottom:1px solid var(--border); border-radius:0; }
 .lesson-screen aside button > span:first-child { border-radius:4px; background:var(--navy); color:var(--navy-foreground); }
+.detail-cover img { width:100%; height:100%; object-fit:cover; }
 @media (max-width: 767px) {
 .detail-screen .detail-cover { position:relative; height:210px; border-radius:0; margin:0 -16px; padding:0; overflow:hidden; }
-.detail-cover img { width:100%; height:100%; object-fit:cover; }
 .detail-screen .detail-layout { margin-top:0; gap:16px; }
 .detail-screen .detail-copy > h1 { font-size:22px; margin-top:16px; }
 .detail-screen .detail-copy > div:nth-child(2) { font-size:11px; }
