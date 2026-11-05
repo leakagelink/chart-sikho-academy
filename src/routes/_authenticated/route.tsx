@@ -1,6 +1,5 @@
 import { createFileRoute, Outlet, redirect, useRouterState } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
-import { StudentShell } from "@/components/site/StudentShell";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
@@ -14,6 +13,6 @@ export const Route = createFileRoute("/_authenticated")({
 
 function PortalLayout() {
   const path = useRouterState({ select: (s) => s.location.pathname });
-  if (path.startsWith("/admin")) return <Outlet />;
-  return <StudentShell><Outlet /></StudentShell>;
+  void path;
+  return <Outlet />;
 }
