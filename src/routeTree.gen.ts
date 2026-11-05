@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CoursesRouteImport } from './routes/courses'
+import { Route as EbooksRouteImport } from './routes/ebooks'
 import { Route as PlansRouteImport } from './routes/plans'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SandboxRouteImport } from './routes/sandbox'
@@ -59,6 +60,11 @@ const AuthRoute = AuthRouteImport.update({
 const CoursesRoute = CoursesRouteImport.update({
   id: '/courses',
   path: '/courses',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EbooksRoute = EbooksRouteImport.update({
+  id: '/ebooks',
+  path: '/ebooks',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlansRoute = PlansRouteImport.update({
@@ -209,6 +215,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/courses': typeof CoursesRoute
+  '/ebooks': typeof EbooksRoute
   '/plans': typeof PlansRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sandbox': typeof SandboxRouteWithChildren
@@ -242,6 +249,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/courses': typeof CoursesRoute
+  '/ebooks': typeof EbooksRoute
   '/plans': typeof PlansRoute
   '/reset-password': typeof ResetPasswordRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -274,6 +282,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/courses': typeof CoursesRoute
+  '/ebooks': typeof EbooksRoute
   '/plans': typeof PlansRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sandbox': typeof SandboxRouteWithChildren
@@ -309,6 +318,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/courses'
+    | '/ebooks'
     | '/plans'
     | '/reset-password'
     | '/sandbox'
@@ -342,6 +352,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/courses'
+    | '/ebooks'
     | '/plans'
     | '/reset-password'
     | '/dashboard'
@@ -373,6 +384,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/courses'
+    | '/ebooks'
     | '/plans'
     | '/reset-password'
     | '/sandbox'
@@ -408,6 +420,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   CoursesRoute: typeof CoursesRoute
+  EbooksRoute: typeof EbooksRoute
   PlansRoute: typeof PlansRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SandboxRoute: typeof SandboxRouteWithChildren
@@ -444,6 +457,13 @@ declare module '@tanstack/react-router' {
       path: '/courses'
       fullPath: '/courses'
       preLoaderRoute: typeof CoursesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ebooks': {
+      id: '/ebooks'
+      path: '/ebooks'
+      fullPath: '/ebooks'
+      preLoaderRoute: typeof EbooksRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/plans': {
@@ -731,6 +751,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   CoursesRoute: CoursesRoute,
+  EbooksRoute: EbooksRoute,
   PlansRoute: PlansRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SandboxRoute: SandboxRouteWithChildren,

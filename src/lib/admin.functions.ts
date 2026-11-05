@@ -163,7 +163,7 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
       result = data.id ? await s.from('class_sessions').update(row).eq('id',data.id).select('id').single() : await s.from('class_sessions').insert(row).select('id').single(); break;
     }
     case 'ebooks': {
-      const row = z.object({ title, price, resource_path: path, status: z.enum(['draft','published']) }).parse(v);
+      const row = z.object({ title, price, resource_path: path, description: z.string().max(4000).default(''), cover_url: z.union([z.literal(''), z.string().max(700000).regex(/^data:image\/(png|jpe?g|webp);base64,/), z.string().url().max(500).startsWith('https://')]).default(''), status: z.enum(['draft','published']) }).parse(v);
       result = data.id ? await s.from('ebooks').update(row).eq('id',data.id).select('id').single() : await s.from('ebooks').insert(row).select('id').single(); break;
     }
     case 'users': {

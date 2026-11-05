@@ -89,6 +89,7 @@ export function Header() {
         <nav className="ml-2 hidden min-w-0 gap-5 whitespace-nowrap text-sm font-medium lg:flex">
           <Link to="/" activeOptions={{ exact: true }} activeProps={{ className: "text-primary" }} className="text-foreground/80 hover:text-primary">{t("nav_home")}</Link>
           <Link to="/courses" activeProps={{ className: "text-primary" }} className="text-foreground/80 hover:text-primary">{t("nav_courses")}</Link>
+          <Link to="/ebooks" activeProps={{ className: "text-primary" }} className="text-foreground/80 hover:text-primary">{t("nav_ebooks")}</Link>
           <Button asChild variant="link" size="sm" className="h-auto p-0"><Link to="/sandbox">{t("sandbox")}</Link></Button>
           {panelAccess && <Button asChild variant="link" size="sm" className="h-auto p-0"><Link to="/admin">{t('real_admin')}</Link></Button>}
         </nav>
@@ -119,6 +120,7 @@ export function MobileNav() {
       <Link to="/" activeOptions={{ exact: true }} activeProps={{ className: "!text-primary" }} className={cls}><Home className="h-5 w-5" />{t("nav_home")}</Link>
       <Link to="/courses" activeProps={{ className: "!text-primary" }} className={cls}><BookOpen className="h-5 w-5" />{t("nav_courses")}</Link>
       <Link to="/sandbox/live" activeProps={{ className: "!text-primary" }} className={cls}><Video className="h-5 w-5" />{t("cat_live")}</Link>
+      <Link to="/ebooks" activeProps={{ className: "!text-primary" }} className={cls}><FileText className="h-5 w-5" />{t("nav_ebooks")}</Link>
       <Link to={session ? "/profile" : "/auth"} className={cls}><User className="h-5 w-5" />{t("profile")}</Link>
     </nav>
   );
