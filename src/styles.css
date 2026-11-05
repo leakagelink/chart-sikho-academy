@@ -332,8 +332,9 @@ html { scroll-padding-top: 80px; }
 .lesson-screen .lesson-heading { background:var(--navy); color:var(--navy-foreground); margin-top:0; padding:12px; font-size:18px; }
 .lesson-screen aside button { border:0; border-bottom:1px solid var(--border); border-radius:0; }
 .lesson-screen aside button > span:first-child { border-radius:4px; background:var(--navy); color:var(--navy-foreground); }
-.detail-screen .detail-cover { position:relative; height:210px; border-radius:0; margin:0 -16px; padding:0; overflow:hidden; }
 .detail-cover img { width:100%; height:100%; object-fit:cover; }
+@media (max-width: 767px) {
+.detail-screen .detail-cover { position:relative; height:210px; border-radius:0; margin:0 -16px; padding:0; overflow:hidden; }
 .detail-screen .detail-layout { margin-top:0; gap:16px; }
 .detail-screen .detail-copy > h1 { font-size:22px; margin-top:16px; }
 .detail-screen .detail-copy > div:nth-child(2) { font-size:11px; }
@@ -342,6 +343,16 @@ html { scroll-padding-top: 80px; }
 .detail-screen .feature-list { border:0; box-shadow:none; padding:0; margin-top:16px; }
 .detail-screen .feature-list li { gap:8px; font-size:13px; }
 .detail-screen .feature-list span:first-child { width:24px; height:24px; }
+}
+@media (min-width: 768px) {
+.detail-screen { padding-top:16px; }
+.detail-screen .detail-cover { display:block; height:auto; width:100%; aspect-ratio:16/5; max-height:none; padding:0; overflow:hidden; border:1px solid var(--border); }
+.detail-screen .detail-cover img { object-position:center 25%; }
+.detail-screen .detail-layout { grid-template-columns:minmax(0,1fr) 340px; }
+.detail-screen .detail-layout > aside { position:sticky; top:84px; }
+.detail-screen .feature-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.detail-screen .feature-list li + li { margin-top:0; }
+}
 .detail-screen aside { border:0; border-radius:0; box-shadow:none; padding:16px 0; }
 .detail-screen aside > div > span:first-child { color:var(--destructive); }
 .live-screen article { border:0; border-bottom:1px solid var(--border); border-radius:0; box-shadow:none; }
