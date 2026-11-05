@@ -12,7 +12,7 @@ export const adminChangeSchema = z.object({
   id: z.string().uuid().optional(),
   values: z.record(z.union([z.string().max(700000), z.number().finite(), z.boolean(), z.null()])).superRefine((values, ctx) => {
     for (const [key, value] of Object.entries(values)) {
-      if (typeof value === 'string' && value.length > 2000 && !['thumbnail_url', 'icon_url', 'logo_url'].includes(key)) {
+      if (typeof value === 'string' && value.length > 2000 && !['thumbnail_url', 'icon_url', 'logo_url', 'cover_url'].includes(key)) {
         ctx.addIssue({ code: z.ZodIssueCode.custom, path: [key], message: 'Text exceeds 2000 characters' });
       }
     }
