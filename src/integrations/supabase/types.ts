@@ -764,7 +764,9 @@ export type Database = {
       }
       ebooks: {
         Row: {
+          cover_url: string
           created_at: string
+          description: string
           id: string
           price: number
           resource_path: string
@@ -772,7 +774,9 @@ export type Database = {
           title: string
         }
         Insert: {
+          cover_url?: string
           created_at?: string
+          description?: string
           id?: string
           price?: number
           resource_path?: string
@@ -780,7 +784,9 @@ export type Database = {
           title: string
         }
         Update: {
+          cover_url?: string
           created_at?: string
+          description?: string
           id?: string
           price?: number
           resource_path?: string
