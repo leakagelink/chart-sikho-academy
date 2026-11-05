@@ -346,7 +346,7 @@ html { scroll-padding-top: 80px; }
 }
 @media (min-width: 768px) {
 .detail-screen { padding-top:16px; }
-.detail-screen .detail-cover { height:auto; aspect-ratio:16/6; max-height:380px; padding:0; overflow:hidden; border:1px solid var(--border); }
+.detail-screen .detail-cover { height:auto; width:100%; aspect-ratio:16/5; max-height:none; padding:0; overflow:hidden; border:1px solid var(--border); }
 .detail-screen .detail-cover img { object-position:center 25%; }
 .detail-screen .detail-layout { grid-template-columns:minmax(0,1fr) 340px; }
 .detail-screen .detail-layout > aside { position:sticky; top:84px; }
