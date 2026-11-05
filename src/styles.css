@@ -268,11 +268,11 @@ html { scroll-padding-top: 80px; }
 /* Reference student surfaces: white content, navy chrome, metallic gold actions. */
 :root { --blueprint-paper: oklch(0.995 0 0); --blueprint-ink: oklch(0.23 0.025 258); --blueprint-muted: oklch(0.54 0.018 258); --blueprint-line: oklch(0.9 0.01 258); --gold-light: oklch(0.92 0.12 90); --gold-deep: oklch(0.7 0.13 80); }
 @theme inline { --color-paper: var(--blueprint-paper); --color-ink: var(--blueprint-ink); }
-.student-surface { --background: var(--blueprint-paper); --foreground: var(--blueprint-ink); --card: var(--blueprint-paper); --card-foreground: var(--blueprint-ink); --popover: var(--blueprint-paper); --popover-foreground: var(--blueprint-ink); --muted: oklch(0.96 0.008 258); --muted-foreground: var(--blueprint-muted); --secondary: oklch(0.96 0.008 258); --secondary-foreground: var(--blueprint-ink); --accent: oklch(0.95 0.025 90); --accent-foreground: var(--blueprint-ink); --border: var(--blueprint-line); --input: var(--blueprint-line); --primary-foreground: var(--blueprint-ink); --shadow-card: 0 2px 8px oklch(0.2 0.02 258 / 7%); background: var(--background); color: var(--foreground); min-height: calc(100dvh - 64px); }
+.student-surface { background: var(--background); color: var(--foreground); min-height: calc(100dvh - 64px); }
 .blueprint-chrome { background: var(--navy); color: var(--navy-foreground); }
 .blueprint-chrome .text-foreground { color: var(--navy-foreground); }
 .blueprint-chrome .text-muted-foreground { color: var(--navy-foreground); opacity: .8; }
-.blueprint-gold, .student-surface .bg-primary, .auth-screen form > button { background: linear-gradient(180deg,var(--gold-light),var(--gold),var(--gold-deep)); color: var(--blueprint-ink); border: 1px solid var(--gold-deep); }
+.blueprint-gold, .auth-screen form > button { background: linear-gradient(180deg,var(--gold-light),var(--gold),var(--gold-deep)); color: var(--blueprint-ink); border: 1px solid var(--gold-deep); }
 .auth-screen { min-height: calc(100dvh - 64px); background: url('./assets/blueprint-backdrop.jpg') center / cover; display:flex; justify-content:center; align-items:flex-start; }
 .auth-screen > div { background:transparent; border:0; box-shadow:none; width:100%; max-width:390px; padding-top:28px; }
 .auth-screen input { background:var(--blueprint-paper); color:var(--blueprint-ink); border-color:var(--blueprint-line); border-radius:5px; }
