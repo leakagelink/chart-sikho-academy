@@ -104,6 +104,8 @@ export type Database = {
           support_phone: string
           tds_percent: number
           updated_at: string
+          upi_id: string
+          upi_payee_name: string
         }
         Insert: {
           approval_mode?: string
@@ -137,6 +139,8 @@ export type Database = {
           support_phone?: string
           tds_percent?: number
           updated_at?: string
+          upi_id?: string
+          upi_payee_name?: string
         }
         Update: {
           approval_mode?: string
@@ -170,6 +174,8 @@ export type Database = {
           support_phone?: string
           tds_percent?: number
           updated_at?: string
+          upi_id?: string
+          upi_payee_name?: string
         }
         Relationships: []
       }
@@ -977,6 +983,66 @@ export type Database = {
           },
         ]
       }
+      manual_payments: {
+        Row: {
+          admin_note: string
+          amount: number
+          course_id: string
+          created_at: string
+          id: string
+          order_id: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          screenshot_path: string
+          status: string
+          user_id: string
+          utr: string
+        }
+        Insert: {
+          admin_note?: string
+          amount: number
+          course_id: string
+          created_at?: string
+          id?: string
+          order_id?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          screenshot_path: string
+          status?: string
+          user_id: string
+          utr: string
+        }
+        Update: {
+          admin_note?: string
+          amount?: number
+          course_id?: string
+          created_at?: string
+          id?: string
+          order_id?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          screenshot_path?: string
+          status?: string
+          user_id?: string
+          utr?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "manual_payments_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "manual_payments_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       message_templates: {
         Row: {
           body: string
@@ -1597,16 +1663,29 @@ export type Database = {
         Returns: boolean
       }
       my_wallet: { Args: never; Returns: Json }
+      payment_upi: { Args: never; Returns: Json }
       release_commissions_for: { Args: { _user: string }; Returns: number }
       release_due_commissions: { Args: never; Returns: number }
       request_payout: { Args: { _amount: number }; Returns: string }
+      review_manual_payment: {
+        Args: { _approve: boolean; _id: string; _note?: string }
+        Returns: undefined
+      }
       set_panel_permissions: {
         Args: { _permissions: Json; _user_id: string }
+        Returns: undefined
+      }
+      set_upi_settings: {
+        Args: { _payee: string; _upi_id: string }
         Returns: undefined
       }
       submit_course_quiz: {
         Args: { _answers: Json; _course_id: string }
         Returns: Json
+      }
+      submit_manual_payment: {
+        Args: { _course_id: string; _screenshot_path: string; _utr: string }
+        Returns: string
       }
       valid_ref_levels: { Args: { _levels: Json }; Returns: boolean }
       verify_certificate: {
