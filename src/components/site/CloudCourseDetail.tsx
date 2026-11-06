@@ -5,7 +5,6 @@ import { useAuth } from '@/hooks/use-auth';
 import { useLang } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
-import { toast } from 'sonner';
 import { CheckCircle2, Circle } from 'lucide-react';
 import { CourseQuiz } from './CourseQuiz';
 import { CourseReviews } from './CourseReviews';
