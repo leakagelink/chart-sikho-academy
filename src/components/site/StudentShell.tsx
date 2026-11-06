@@ -35,7 +35,7 @@ export function StudentShell({ children }: { children: ReactNode }) {
   const active = (to: string) => (to === "/" ? path === "/" : path === to || path.startsWith(to + "/"));
   return (
     <div className="w-full lg:grid lg:grid-cols-[220px_minmax(0,1fr)] xl:grid-cols-[250px_minmax(0,1fr)] lg:gap-0">
-      <aside className="hidden lg:block lg:border-r lg:border-border lg:px-4 lg:pt-6">
+      <aside className="hidden lg:block lg:min-h-[calc(100dvh-4rem)] lg:border-r lg:border-border lg:px-4 lg:pt-6">
         <div className="sticky top-20">
           <div className="mb-4 flex items-center gap-2 font-display text-xl font-bold"><GraduationCap className="text-primary" />{t("my_learning")}</div>
           <nav className="max-h-[calc(100dvh-8rem)] overflow-y-auto pr-1">
