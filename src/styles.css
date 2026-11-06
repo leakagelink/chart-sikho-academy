@@ -434,3 +434,10 @@ html { scroll-padding-top: 80px; }
   article.rounded-2xl { transition:transform .2s, box-shadow .2s; }
   article.rounded-2xl:hover { transform:translateY(-3px); }
 }
+
+/* Desktop polish for student pages inside the sidebar shell */
+@media (min-width: 1024px) {
+  .student-main img { max-width: 100%; height: auto; }
+  .student-main table { width: 100%; }
+  .student-main :where(section) { scroll-margin-top: 5rem; }
+}
