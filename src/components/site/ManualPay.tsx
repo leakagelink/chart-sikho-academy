@@ -48,7 +48,7 @@ export function ManualPay({ course, userId }: { course: { id: string; title: str
           <a href={link} className="block text-center text-sm text-primary underline sm:hidden">{t('pay_open_app')}</a>
           <label className="block text-sm">{t('pay_utr')}<input required value={utr} onChange={e => setUtr(e.target.value)} maxLength={30} className={inputCls} placeholder="e.g. 412345678901" /></label>
           <label className="block text-sm">{t('pay_shot')}<input required type="file" accept="image/png,image/jpeg,image/webp" onChange={e => setFile(e.target.files?.[0] ?? null)} className={inputCls} /></label>
-          <div className="flex gap-2"><Button type="submit" disabled={submit.isPending}>{t('pay_submit')}</Button><Button type="button" variant="outline" onClick={() => setOpen(false)}>{t('cancel')}</Button></div>
+          <div className="flex gap-2"><Button type="submit" disabled={submit.isPending}>{t('pay_submit')}</Button><Button type="button" variant="outline" onClick={() => setOpen(false)}>{t('pay_cancel')}</Button></div>
         </>}
       </form>}
   </div>;
@@ -66,8 +66,8 @@ export function ManualPayments({ canEdit, users, courses }: { canEdit: boolean; 
   const upi = useQuery({ queryKey: ['payment-upi'], queryFn: async () => { const r = await supabase.rpc('payment_upi'); if (r.error) throw r.error; return r.data as { upi_id: string; payee: string } | null; } });
   useEffect(() => { if (upi.data) { setUpiId(upi.data.upi_id); setPayee(upi.data.payee); } }, [upi.data]);
   const list = useQuery({ queryKey: ['manual-payments-admin'], queryFn: async () => { const r = await supabase.from('manual_payments').select('*').order('created_at', { ascending: false }).limit(500); if (r.error) throw r.error; return r.data as Row[]; } });
-  const saveUpi = useMutation({ mutationFn: async () => { const r = await supabase.rpc('set_upi_settings', { _upi_id: upiId.trim(), _payee: payee }); if (r.error) throw r.error; }, onSuccess: () => { toast.success(t('admin_saved')); qc.invalidateQueries({ queryKey: ['payment-upi'] }); }, onError: () => toast.error(t('pay_bad_upi')) });
-  const review = useMutation({ mutationFn: async (v: { id: string; approve: boolean; note: string }) => { const r = await supabase.rpc('review_manual_payment', { _id: v.id, _approve: v.approve, _note: v.note }); if (r.error) throw r.error; }, onSuccess: () => { toast.success(t('admin_saved')); qc.invalidateQueries(); }, onError: () => toast.error(t('admin_error')) });
+  const saveUpi = useMutation({ mutationFn: async () => { const r = await supabase.rpc('set_upi_settings', { _upi_id: upiId.trim(), _payee: payee }); if (r.error) throw r.error; }, onSuccess: () => { toast.success(t('pay_saved')); qc.invalidateQueries({ queryKey: ['payment-upi'] }); }, onError: () => toast.error(t('pay_bad_upi')) });
+  const review = useMutation({ mutationFn: async (v: { id: string; approve: boolean; note: string }) => { const r = await supabase.rpc('review_manual_payment', { _id: v.id, _approve: v.approve, _note: v.note }); if (r.error) throw r.error; }, onSuccess: () => { toast.success(t('pay_saved')); qc.invalidateQueries(); }, onError: () => toast.error(t('admin_error')) });
   async function viewShot(path: string) { const r = await supabase.storage.from('payment-proofs').createSignedUrl(path, 300); if (r.data) window.open(r.data.signedUrl, '_blank', 'noopener'); }
   const rows = (list.data ?? []).filter(r => filter === 'all' || r.status === filter);
   const u = (id: string) => users.find(x => x.id === id);
@@ -75,12 +75,12 @@ export function ManualPayments({ canEdit, users, courses }: { canEdit: boolean; 
     {canEdit && <form onSubmit={e => { e.preventDefault(); saveUpi.mutate(); }} className="flex flex-wrap items-end gap-3 border-y border-border py-4">
       <label className="text-sm">{t('pay_admin_upi')}<input value={upiId} onChange={e => setUpiId(e.target.value)} placeholder="name@bank" className={inputCls} /></label>
       <label className="text-sm">{t('pay_admin_payee')}<input value={payee} onChange={e => setPayee(e.target.value)} className={inputCls} /></label>
-      <Button type="submit" disabled={saveUpi.isPending}>{t('admin_save')}</Button>
+      <Button type="submit" disabled={saveUpi.isPending}>{t('pay_save')}</Button>
     </form>}
     <select aria-label={t('status')} value={filter} onChange={e => setFilter(e.target.value)} className={`${inputCls} w-auto`}>
       {['pending', 'approved', 'rejected', 'all'].map(s => <option key={s} value={s}>{t(s === 'all' ? 'filter_all' : `pay_st_${s}` as 'pay_st_pending')}</option>)}
     </select>
-    <div className="overflow-x-auto border-y border-border"><table className="w-full text-left text-sm"><thead className="bg-muted/40"><tr>{['pay_col_user', 'phone', 'pay_col_course', 'pay_col_amount', 'pay_utr', 'status', 'pay_col_date', 'admin_action'].map(k => <th key={k} className="whitespace-nowrap px-3 py-3 text-muted-foreground">{t(k as 'status')}</th>)}</tr></thead>
+    <div className="overflow-x-auto border-y border-border"><table className="w-full text-left text-sm"><thead className="bg-muted/40"><tr>{['pay_col_user', 'pay_col_phone', 'pay_col_course', 'pay_col_amount', 'pay_utr', 'status', 'pay_col_date', 'admin_action'].map(k => <th key={k} className="whitespace-nowrap px-3 py-3 text-muted-foreground">{t(k as 'status')}</th>)}</tr></thead>
       <tbody>{rows.map(r => <tr key={r.id} className="border-t border-border">
         <td className="px-3 py-3">{u(r.user_id)?.full_name ?? r.user_id.slice(0, 8)}</td><td className="px-3 py-3">{u(r.user_id)?.phone ?? '—'}</td>
         <td className="px-3 py-3">{courses.find(c => c.id === r.course_id)?.title ?? '—'}</td><td className="px-3 py-3">₹{r.amount}</td>
