@@ -1,16 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Search } from "lucide-react";
-import { useState } from "react";
+import { Search, BookOpen, Video, Calendar } from "lucide-react";
 import { CourseCard } from "@/components/site/CourseCard";
 import { CloudCourseCard } from "@/components/site/CloudCourseCard";
-import { courses } from "@/lib/courses";
+import { courses, liveClasses, inr } from "@/lib/courses";
 import { useLang, type DictKey } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { catalogQuery } from '@/lib/catalog-query';
+import { productQuery } from '@/lib/product-query';
+import { filterProducts, type ProductFilter, type ProductType } from '@/lib/product-filters';
 
 export const Route = createFileRoute("/courses")({
-  loader:({context})=>context.queryClient.ensureQueryData(catalogQuery()),
+  validateSearch: (s: Record<string, unknown>): { type?: ProductFilter; q?: string } => ({ ...(typeof s['type'] === 'string' && ['all','courses','ebooks','classes','webinars'].includes(s['type']) ? { type: s['type'] as ProductFilter } : {}), ...(typeof s['q'] === 'string' ? { q: s['q'] } : {}) }),
+  loader:({context})=>Promise.all([context.queryClient.ensureQueryData(catalogQuery()),context.queryClient.ensureQueryData(productQuery())]),
   errorComponent:CatalogError,
   notFoundComponent:CatalogError,
   head: () => ({
@@ -26,23 +28,28 @@ export const Route = createFileRoute("/courses")({
   component: CoursesPage,
 });
 
-const filters: { key: "all" | "beginner" | "options" | "technical"; label: DictKey }[] = [
+const filters: { key: ProductFilter; label: DictKey }[] = [
   { key: "all", label: "filter_all" },
-  { key: "beginner", label: "filter_basics" },
-  { key: "technical", label: "filter_technical" },
-  { key: "options", label: "filter_options" },
+  { key: "ebooks", label: "nav_ebooks" },
+  { key: "courses", label: "nav_courses" },
+  { key: "classes", label: "cat_live" },
+  { key: "webinars", label: "cat_webinars" },
 ];
 
 function CoursesPage() {
   const { t, lang } = useLang();
   const {data:cloud}=useSuspenseQuery(catalogQuery());
-  const [f, setF] = useState<(typeof filters)[number]["key"]>("all");
-  const [q, setQ] = useState("");
-  const list = courses.filter(
-    (c) =>
-      (f === "all" || c.category === f) &&
-      (c.title.en + " " + c.title.hi).toLowerCase().includes(q.toLowerCase()),
-  );
+  const {data:products}=useSuspenseQuery(productQuery());
+  const search = Route.useSearch();
+  const navigate = Route.useNavigate();
+  const f = search.type ?? 'all';
+  const q = search.q ?? '';
+  const list = filterProducts(courses.map(c=>({...c,type:'courses' as const,title:c.title.en+' '+c.title.hi,course:c})),f,q);
+  const realCourses = filterProducts(cloud.map(c=>({...c,type:'courses' as const})),f,q);
+  const ebooks = filterProducts(products.ebooks.map(b=>({...b,type:'ebooks' as const})),f,q);
+  const sessions = filterProducts(products.sessions.map(s=>({...s,type:(s.kind==='webinar'?'webinars':'classes') as ProductType})),f,q);
+  const sampleClasses = filterProducts(liveClasses.map(c=>({...c,type:'classes' as const,title:c.title.en+' '+c.title.hi,session:c})),f,q);
+  const total = list.length + realCourses.length + ebooks.length + sessions.length + sampleClasses.length;
   return (
     <div className="catalog-screen w-full px-4 pt-8">
       <h1 className="font-display text-3xl font-bold text-foreground">{t("all_courses")}</h1>
@@ -50,21 +57,24 @@ function CoursesPage() {
       <div className="catalog-controls mt-6 flex flex-col gap-3 lg:flex-row lg:items-center">
         <label className="relative flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <input aria-label={t("search")} value={q} onChange={(e) => setQ(e.target.value)} placeholder={t("search")} className="w-full rounded-full border border-input bg-card py-2.5 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-ring" />
+          <input aria-label={t("search")} value={q} onChange={(e) => navigate({search:prev=>({...prev,q:e.target.value}),replace:true})} placeholder={t("search")} className="w-full rounded-full border border-input bg-card py-2.5 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-ring" />
         </label>
         <div className="catalog-tabs flex flex-wrap gap-2">
           {filters.map((x) => (
-            <Button variant={f === x.key ? "default" : "secondary"} aria-pressed={f === x.key} key={x.key} onClick={() => setF(x.key)} className="rounded-full">
+            <Button variant={f === x.key ? "default" : "secondary"} aria-pressed={f === x.key} key={x.key} onClick={() => navigate({search:prev=>({...prev,type:x.key})})} className="rounded-full">
               {t(x.label)}
             </Button>
           ))}
         </div>
       </div>
       <div className="catalog-list mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-        {cloud.filter(c=>(f==='all'||c.category===f||(f==='beginner'&&c.category==='basics'))&&c.title.toLowerCase().includes(q.toLowerCase())).map(c=><CloudCourseCard key={c.id} course={c}/>)}
-        {list.map((c) => <CourseCard key={c.id} course={c} />)}
+        {realCourses.map(c=><CloudCourseCard key={c.id} course={c}/>)}
+        {list.map((c) => <CourseCard key={c.id} course={c.course} />)}
+        {ebooks.map(b=><article key={b.id} className="overflow-hidden rounded-lg border border-border bg-card"><div className="grid aspect-video place-items-center bg-muted">{b.cover_url?<img src={b.cover_url} alt={b.title} className="h-full w-full object-contain"/>:<BookOpen className="h-12 w-12 text-primary"/>}</div><div className="space-y-3 p-4"><p className="text-xs text-muted-foreground">{t('nav_ebooks')}</p><h2 className="font-semibold">{b.title}</h2><p className="line-clamp-2 text-sm text-muted-foreground">{b.description}</p><p className="font-bold text-primary">{inr(b.price)}</p><Button asChild variant="outline"><Link to="/ebooks">{t('nav_ebooks')}</Link></Button></div></article>)}
+        {sessions.map(s=><article key={s.id} className="rounded-lg border border-border bg-card p-4"><Video className="mb-4 h-10 w-10 text-primary"/><p className="text-xs text-muted-foreground">{t(s.type==='webinars'?'cat_webinars':'cat_live')}</p><h2 className="mt-2 font-semibold">{s.title}</h2><p className="mt-3 flex gap-2 text-sm text-muted-foreground"><Calendar size={16}/>{new Intl.DateTimeFormat(lang==='hi'?'hi-IN':'en-IN',{dateStyle:'medium',timeStyle:'short',timeZone:'Asia/Kolkata'}).format(new Date(s.starts_at))}</p></article>)}
+        {sampleClasses.map(c=><article key={c.id} className="rounded-lg border border-border bg-card p-4"><Video className="mb-4 h-10 w-10 text-primary"/><p className="text-xs text-muted-foreground">{t('cat_live')}</p><h2 className="mt-2 font-semibold">{c.session.title[lang]}</h2><p className="my-3 text-sm text-muted-foreground">{t(c.day)} · {c.time}</p><Button asChild variant="outline"><Link to="/live/$classId" params={{classId:c.id}}>{t('cat_live')}</Link></Button></article>)}
       </div>
-      {list.length === 0 && <p className="mt-10 text-center text-muted-foreground">{t("no_results")}</p>}
+      {total === 0 && <p className="mt-10 text-center text-muted-foreground">{t("no_results")}</p>}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [ ] Replace topic filters with product-type filters and show courses, published eBooks, live classes and webinars together under All.
 - [x] My Product & Services directly below Home with Courses/eBooks/Live Classes/Certificates/Webinars; affiliate/profile navigation preserved. Signed-in menu and webinar navigation verified; Live Classes, Certificates and Webinars reuse existing sample/test screens, no live-service changes.
 - [x] Manual Payments / UPI menu and Settings shortcut visible; saved QR preview shares destination builder with student checkout. Admin form/shortcut and mobile no-overflow verified; 10 tests pass, build OK. Real UPI is currently unset, so configured QR/save-to-student flow awaits the owner's real payment details; no dummy destination saved.
 - [x] Student Affiliate: own dashboard, direct team, all own commission levels, wallet shortcuts and search/date/status/level/sort/reset filters; signed-in navigation and empty-account filters verified at 1024/1280/1600/393, 9 tests pass. Populated real team/commission display remains unverified because the test student has no records; deeper member access unchanged.
