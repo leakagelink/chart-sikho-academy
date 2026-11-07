@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { useLang } from '@/lib/i18n';
 import { toast } from 'sonner';
+import { paymentUpiLink } from '@/lib/payment-upi';
 
 const inputCls = 'w-full rounded-md border border-input bg-background px-3 py-2 text-sm';
 
@@ -18,7 +19,7 @@ export function ManualPay({ course, userId }: { course: { id: string; title: str
   const [qr, setQr] = useState('');
   const upi = useQuery({ queryKey: ['payment-upi'], queryFn: async () => { const r = await supabase.rpc('payment_upi'); if (r.error) throw r.error; return r.data as { upi_id: string; payee: string } | null; } });
   const mine = useQuery({ queryKey: ['manual-pay', userId, course.id], queryFn: async () => { const r = await supabase.from('manual_payments').select('status,utr,admin_note,created_at').eq('user_id', userId).eq('course_id', course.id).order('created_at', { ascending: false }).limit(1).maybeSingle(); if (r.error) throw r.error; return r.data; } });
-  const link = upi.data?.upi_id ? `upi://pay?pa=${encodeURIComponent(upi.data.upi_id)}&pn=${encodeURIComponent(upi.data.payee)}&am=${course.price}&cu=INR&tn=${encodeURIComponent(course.title.slice(0, 40))}` : '';
+  const link = paymentUpiLink(upi.data, course);
   useEffect(() => { if (link) QRCode.toDataURL(link, { width: 240, margin: 1 }).then(setQr); }, [link]);
   const submit = useMutation({
     mutationFn: async () => {
@@ -43,7 +44,7 @@ export function ManualPay({ course, userId }: { course: { id: string; title: str
         <h3 className="font-display text-lg font-bold">{t('pay_upi_title')}</h3>
         {!upi.data?.upi_id ? <p className="text-sm text-muted-foreground">{t('pay_no_upi')}</p> : <>
           <p className="text-sm">{t('pay_step1')} <b className="text-primary">₹{course.price}</b></p>
-          {qr && <img src={qr} alt="UPI QR" className="mx-auto h-56 w-56 rounded bg-white p-2" />}
+          {qr && <img src={qr} alt={t('pay_qr_preview')} className="mx-auto h-56 w-56 rounded bg-background p-2" />}
           <p className="text-center text-sm">UPI ID: <b className="select-all">{upi.data.upi_id}</b></p>
           <a href={link} className="block text-center text-sm text-primary underline sm:hidden">{t('pay_open_app')}</a>
           <label className="block text-sm">{t('pay_utr')}<input required value={utr} onChange={e => setUtr(e.target.value)} maxLength={30} className={inputCls} placeholder="e.g. 412345678901" /></label>
@@ -63,8 +64,16 @@ export function ManualPayments({ canEdit, users, courses }: { canEdit: boolean; 
   const [filter, setFilter] = useState('pending');
   const [upiId, setUpiId] = useState('');
   const [payee, setPayee] = useState('');
+  const [qr, setQr] = useState('');
   const upi = useQuery({ queryKey: ['payment-upi'], queryFn: async () => { const r = await supabase.rpc('payment_upi'); if (r.error) throw r.error; return r.data as { upi_id: string; payee: string } | null; } });
   useEffect(() => { if (upi.data) { setUpiId(upi.data.upi_id); setPayee(upi.data.payee); } }, [upi.data]);
+  const savedLink = paymentUpiLink(upi.data);
+  useEffect(() => {
+    let active = true;
+    setQr('');
+    if (savedLink) QRCode.toDataURL(savedLink, { width: 240, margin: 1 }).then(url => { if (active) setQr(url); }).catch(() => { if (active) setQr(''); });
+    return () => { active = false; };
+  }, [savedLink]);
   const list = useQuery({ queryKey: ['manual-payments-admin'], queryFn: async () => { const r = await supabase.from('manual_payments').select('*').order('created_at', { ascending: false }).limit(500); if (r.error) throw r.error; return r.data as Row[]; } });
   const saveUpi = useMutation({ mutationFn: async () => { const r = await supabase.rpc('set_upi_settings', { _upi_id: upiId.trim(), _payee: payee }); if (r.error) throw r.error; }, onSuccess: () => { toast.success(t('pay_saved')); qc.invalidateQueries({ queryKey: ['payment-upi'] }); }, onError: () => toast.error(t('pay_bad_upi')) });
   const review = useMutation({ mutationFn: async (v: { id: string; approve: boolean; note: string }) => { const r = await supabase.rpc('review_manual_payment', { _id: v.id, _approve: v.approve, _note: v.note }); if (r.error) throw r.error; }, onSuccess: () => { toast.success(t('pay_saved')); qc.invalidateQueries(); }, onError: () => toast.error(t('admin_error')) });
@@ -72,11 +81,22 @@ export function ManualPayments({ canEdit, users, courses }: { canEdit: boolean; 
   const rows = (list.data ?? []).filter(r => filter === 'all' || r.status === filter);
   const u = (id: string) => users.find(x => x.id === id);
   return <div className="space-y-6">
-    {canEdit && <form onSubmit={e => { e.preventDefault(); saveUpi.mutate(); }} className="flex flex-wrap items-end gap-3 border-y border-border py-4">
-      <label className="text-sm">{t('pay_admin_upi')}<input value={upiId} onChange={e => setUpiId(e.target.value)} placeholder="name@bank" className={inputCls} /></label>
-      <label className="text-sm">{t('pay_admin_payee')}<input value={payee} onChange={e => setPayee(e.target.value)} className={inputCls} /></label>
-      <Button type="submit" disabled={saveUpi.isPending}>{t('pay_save')}</Button>
-    </form>}
+    <section className="border-y border-border py-5">
+      <h2 className="mb-4 font-display text-xl font-bold">{t('pay_settings_title')}</h2>
+      {upi.isError && <p role="alert" className="mb-3 text-destructive">{t('admin_error')}</p>}
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_240px]">
+        {canEdit ? <form onSubmit={e => { e.preventDefault(); saveUpi.mutate(); }} className="max-w-lg space-y-4">
+          <label className="block text-sm">{t('pay_admin_upi')}<input required maxLength={129} value={upiId} onChange={e => setUpiId(e.target.value)} placeholder="name@bank" className={inputCls} /></label>
+          <label className="block text-sm">{t('pay_admin_payee')}<input required maxLength={80} value={payee} onChange={e => setPayee(e.target.value)} className={inputCls} /></label>
+          <Button type="submit" disabled={saveUpi.isPending || upi.isPending}>{t('pay_save')}</Button>
+        </form> : <div><p className="break-all text-sm">{upi.data?.upi_id || t('pay_no_upi')}</p><p className="text-sm text-muted-foreground">{upi.data?.payee}</p></div>}
+        <figure className="min-w-0 text-center">
+          {qr ? <img src={qr} alt={t('pay_qr_preview')} className="mx-auto h-56 w-56 max-w-full rounded bg-background p-2" /> : <p className="py-6 text-sm text-muted-foreground">{t('pay_no_upi')}</p>}
+          <figcaption className="mt-2 break-all text-sm">{t('pay_qr_preview')}{upi.data?.upi_id && <b className="mt-1 block select-all">{upi.data.upi_id}</b>}</figcaption>
+        </figure>
+      </div>
+    </section>
+    <h2 className="font-display text-xl font-bold">{t('pay_review_title')}</h2>
     <select aria-label={t('status')} value={filter} onChange={e => setFilter(e.target.value)} className={`${inputCls} w-auto`}>
       {['pending', 'approved', 'rejected', 'all'].map(s => <option key={s} value={s}>{t(s === 'all' ? 'filter_all' : `pay_st_${s}` as 'pay_st_pending')}</option>)}
     </select>
