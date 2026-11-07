@@ -23,7 +23,6 @@ import { FloatingActions } from "../components/site/FloatingActions";
 import { NotificationPopup } from "../components/site/NotificationPopup";
 import { BrandingProvider } from "../lib/branding";
 import { getAppBranding } from "../lib/branding.functions";
-import defaultLogo from "../assets/logo.png";
 
 function NotFoundComponent() {
   return (
