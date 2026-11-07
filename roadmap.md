@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [ ] Add My Product & Services directly below Home with five product links, preserving student affiliate/profile navigation.
 - [x] Manual Payments / UPI menu and Settings shortcut visible; saved QR preview shares destination builder with student checkout. Admin form/shortcut and mobile no-overflow verified; 10 tests pass, build OK. Real UPI is currently unset, so configured QR/save-to-student flow awaits the owner's real payment details; no dummy destination saved.
 - [x] Student Affiliate: own dashboard, direct team, all own commission levels, wallet shortcuts and search/date/status/level/sort/reset filters; signed-in navigation and empty-account filters verified at 1024/1280/1600/393, 9 tests pass. Populated real team/commission display remains unverified because the test student has no records; deeper member access unchanged.
 - [x] Student Wallet: own full commission/payment/bonus/refund/withdrawal history; bank/UPI save, preferred destination, refresh and masking verified signed-in; original details restored. No deposits/automatic transfers enabled; test student has no financial rows or eligible balance, so populated activity and actual withdrawal request remain unverified.
