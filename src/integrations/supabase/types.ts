@@ -1697,6 +1697,20 @@ export type Database = {
         }
         Returns: undefined
       }
+      save_my_profile_details: {
+        Args: {
+          _address: string
+          _avatar_path: string
+          _bio: string
+          _city: string
+          _date_of_birth: string
+          _full_name: string
+          _phone: string
+          _preferred_language: string
+          _state: string
+        }
+        Returns: undefined
+      }
       set_panel_permissions: {
         Args: { _permissions: Json; _user_id: string }
         Returns: undefined
