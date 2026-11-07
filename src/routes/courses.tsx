@@ -19,10 +19,10 @@ export const Route = createFileRoute("/courses")({
     meta: [
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { title: "Courses — Chartसीखो" },
-      { name: "description", content: "Browse stock-market courses: chart reading, options trading, price action, swing trading and more." },
-      { property: "og:title", content: "Courses — Chartसीखो" },
-      { property: "og:description", content: "Browse stock-market courses from beginner to pro." },
+      { title: "Products & Services — Chartसीखो" },
+      { name: "description", content: "Browse Chartसीखो courses, eBooks, live classes and webinars by product type." },
+      { property: "og:title", content: "Products & Services — Chartसीखो" },
+      { property: "og:description", content: "Browse Chartसीखो courses, eBooks, live classes and webinars by product type." },
     ],
   }),
   component: CoursesPage,
@@ -52,8 +52,7 @@ function CoursesPage() {
   const total = list.length + realCourses.length + ebooks.length + sessions.length + sampleClasses.length;
   return (
     <div className="catalog-screen w-full px-4 pt-8">
-      <h1 className="font-display text-3xl font-bold text-foreground">{t("all_courses")}</h1>
-      <p className="mt-1 text-muted-foreground">{t("all_courses_sub")}</p>
+      <h1 className="font-display text-3xl font-bold text-foreground">{t("student_products_services")}</h1>
       <div className="catalog-controls mt-6 flex flex-col gap-3 lg:flex-row lg:items-center">
         <label className="relative flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />

@@ -10,7 +10,8 @@
 <!-- LOVABLE:END -->
 
 ## Rules
-- Admin saved-payment QR previews and student checkout use the shared paymentUpiLink builder and payment-upi query; why: changing the configured UPI cannot leave the two surfaces pointing at different destinations.
+- Payment QR and checkout share paymentUpiLink and payment-upi; why: saved destinations must match.
+- Catalog product filters use shared filterProducts over safe published reads; why: All and type tabs apply identical search rules.
 - Wallet reads explicitly scope every financial query to the caller; withdrawal destinations are owner-private preferences snapshotted immutably on request. Why: later bank/UPI edits cannot reroute pending withdrawals; deposits and bonuses never inflate commission balance.
 - Student profile saves use the caller-scoped save_my_profile RPC with an explicit personal-field allowlist; profile photos stay private in owner-scoped storage and render through signed URLs. Why: users can update their own details without changing verification, account privileges or exposing photos publicly.
 - Public branding loads in the root loader before SSR and seeds the shared branding query; all logo surfaces and favicon consume that value, with no default fallback while unresolved. Why: initial open/refresh must not flash a previous logo or expose private settings.
