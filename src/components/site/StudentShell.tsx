@@ -5,15 +5,20 @@ import { Button } from "@/components/ui/button";
 import { useLang, type DictKey } from "@/lib/i18n";
 import { useAuth } from "@/hooks/use-auth";
 
-type Item = { to: string; label: DictKey; icon: typeof BookOpen };
+type Item = { to: string; label: DictKey; icon: typeof BookOpen; view?: 'webinars' };
 const groups: { title: DictKey; items: Item[] }[] = [
   { title: "my_learning", items: [
     { to: "/", label: "nav_home", icon: Home },
-    { to: "/dashboard", label: "my_learning", icon: LayoutDashboard },
+  ] },
+  { title: "student_products_services", items: [
     { to: "/courses", label: "nav_courses", icon: BookOpen },
     { to: "/ebooks", label: "nav_ebooks", icon: FileText },
     { to: "/sandbox/live", label: "cat_live", icon: Video },
     { to: "/sandbox/certificates", label: "up_certificates", icon: Award },
+    { to: "/sandbox/live", label: "cat_webinars", icon: Video, view: 'webinars' },
+  ] },
+  { title: "my_learning", items: [
+    { to: "/dashboard", label: "my_learning", icon: LayoutDashboard },
   ] },
   { title: "student_affiliate", items: [
     { to: "/affiliate", label: "affiliate_dashboard", icon: LayoutDashboard },
@@ -36,6 +41,7 @@ export function StudentShell({ children }: { children: ReactNode }) {
   const { t } = useLang();
   const { session } = useAuth();
   const path = useRouterState({ select: (s) => s.location.pathname });
+  const search = useRouterState({ select: (s) => s.location.search as { view?: string } });
   if (!session || EXCLUDED.some((p) => path.startsWith(p)) || (path.startsWith("/sandbox") && !STUDENT_SANDBOX.some((p) => path.startsWith(p)))) return <>{children}</>;
   const active = (to: string) => (to === "/" ? path === "/" : path === to || path.startsWith(to + "/"));
   return (
@@ -46,10 +52,10 @@ export function StudentShell({ children }: { children: ReactNode }) {
           <nav className="max-h-[calc(100dvh-8rem)] overflow-y-auto pr-1">
             {groups.map((g) => (
               <div key={g.title} className="mb-4">
-                <p className="mb-1 px-3 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">{t(g.title)}</p>
-                {g.items.map(({ to, label, icon: Icon }) => (
-                  <Button asChild key={to} size="sm" variant={active(to) ? "secondary" : "ghost"} className="w-full justify-start">
-                    <Link to={to}><Icon size={16} />{t(label)}</Link>
+                {g.items[0]?.to !== '/' && <p className="mb-1 px-3 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">{t(g.title)}</p>}
+                {g.items.map(({ to, label, icon: Icon, view }) => (
+                  <Button asChild key={label} size="sm" variant={active(to) && (to !== '/sandbox/live' || search.view === view) ? "secondary" : "ghost"} className="w-full justify-start">
+                    <Link to={to} search={view ? { view } : {}}><Icon size={16} />{t(label)}</Link>
                   </Button>
                 ))}
               </div>
