@@ -3,6 +3,14 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export type Lang = "en" | "hi";
 
 const dict = {
+  student_affiliate: { en: 'Affiliate', hi: 'एफिलिएट' },
+  student_referral_tree: { en: 'Referral Tree', hi: 'रेफरल ट्री' },
+  student_team: { en: 'My Team', hi: 'मेरी टीम' },
+  student_plans: { en: 'Plans', hi: 'प्लान' },
+  student_direct_team: { en: 'Direct referrals · Level 1', hi: 'डायरेक्ट रेफरल · लेवल 1' },
+  student_team_empty: { en: 'No direct referrals yet.', hi: 'अभी कोई डायरेक्ट रेफरल नहीं है।' },
+  student_member_id: { en: 'Member ID', hi: 'मेंबर ID' },
+  student_code_missing: { en: 'Referral code not assigned yet.', hi: 'अभी रेफरल कोड नहीं दिया गया है।' },
   panel_permissions: { en: 'User permissions', hi: 'यूज़र की अनुमतियाँ' },
   panel_choose_user: { en: 'Choose user for permissions', hi: 'अनुमति देने के लिए यूज़र चुनें' },
   panel_section: { en: 'Section', hi: 'सेक्शन' },
