@@ -1145,10 +1145,52 @@ export type Database = {
         }
         Relationships: []
       }
+      payout_preferences: {
+        Row: {
+          account_holder: string
+          account_number: string
+          bank_name: string
+          ifsc: string
+          preferred_method: string
+          updated_at: string
+          upi_id: string
+          user_id: string
+        }
+        Insert: {
+          account_holder?: string
+          account_number?: string
+          bank_name?: string
+          ifsc?: string
+          preferred_method?: string
+          updated_at?: string
+          upi_id?: string
+          user_id: string
+        }
+        Update: {
+          account_holder?: string
+          account_number?: string
+          bank_name?: string
+          ifsc?: string
+          preferred_method?: string
+          updated_at?: string
+          upi_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payout_preferences_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       payout_requests: {
         Row: {
           amount: number
           created_at: string
+          destination_snapshot: Json | null
           id: string
           status: string
           user_id: string
@@ -1156,6 +1198,7 @@ export type Database = {
         Insert: {
           amount: number
           created_at?: string
+          destination_snapshot?: Json | null
           id?: string
           status?: string
           user_id: string
@@ -1163,6 +1206,7 @@ export type Database = {
         Update: {
           amount?: number
           created_at?: string
+          destination_snapshot?: Json | null
           id?: string
           status?: string
           user_id?: string
@@ -1708,6 +1752,17 @@ export type Database = {
           _phone: string
           _preferred_language: string
           _state: string
+        }
+        Returns: undefined
+      }
+      save_payout_preferences: {
+        Args: {
+          _account_holder: string
+          _account_number: string
+          _bank_name: string
+          _ifsc: string
+          _preferred_method: string
+          _upi_id: string
         }
         Returns: undefined
       }
