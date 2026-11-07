@@ -88,8 +88,8 @@ function ProfilePage() {
   const input = 'mt-1 w-full rounded-lg border border-input bg-card px-3 py-2.5 text-sm text-foreground';
   const field = (k: 'full_name' | 'phone' | 'state' | 'city' | 'address' | 'bio' | 'date_of_birth', label: string) => (
     <label className="block text-sm font-medium">{label}
-      {k === 'bio' || k === 'address' ? <textarea className={input} rows={3} maxLength={500} value={f[k]} onChange={e => setF({ ...f, [k]: e.target.value })} /> :
-      <input className={input} type={k === 'date_of_birth' ? 'date' : k === 'phone' ? 'tel' : 'text'} maxLength={k === 'full_name' ? 120 : k === 'phone' ? 25 : 100} value={f[k]} onChange={e => setF({ ...f, [k]: e.target.value })} />}
+      {k === 'bio' || k === 'address' ? <textarea aria-label={label} className={input} rows={3} maxLength={500} value={f[k]} onChange={e => setF({ ...f, [k]: e.target.value })} /> :
+      <input aria-label={label} className={input} type={k === 'date_of_birth' ? 'date' : k === 'phone' ? 'tel' : 'text'} maxLength={k === 'full_name' ? 120 : k === 'phone' ? 25 : 100} value={f[k]} onChange={e => setF({ ...f, [k]: e.target.value })} />}
     </label>
   );
   const detail = (label: string, value?: string | null) => <div className="min-w-0"><dt className="text-sm text-muted-foreground">{label}</dt><dd className="mt-1 break-words whitespace-pre-wrap text-sm font-medium">{value || t('profile_empty')}</dd></div>;
