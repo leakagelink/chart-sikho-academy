@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [ ] Student My Profile: visible personal/account details, editable personal details and saved profile photo; verify signed-in save and refresh.
 - [x] Admin course list: separate Regular price and Offer price columns, offer highlighted; signed-in Courses and Pricing & Offers verified with saved ₹24,999/₹3,999, no price changes, 44 admin tests pass.
 - [x] Student affiliate navigation: Referral Tree, Wallet, Team and Plans links; real own referral code and direct-referral views, signed-in navigation checked at 1024/1280/1600 and mobile 393 with no overflow/runtime errors. Test student has no referrals, so populated-team display remains unverified; deeper levels and plan purchasing unchanged.
 - [x] Referral Settings: unlimited referral levels — admin can add/remove as many commission levels as needed (each 0–100%); add-to-5-levels save, Commission Rules display and restore-to-3 verified signed-in; 64 tests pass
