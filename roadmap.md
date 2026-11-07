@@ -1,7 +1,7 @@
 # Roadmap
 
 ## Open
-- [ ] Student My Profile: visible personal/account details, editable personal details and saved profile photo; verify signed-in save and refresh.
+- [x] Student My Profile: personal/account details visible, personal details and private profile photo editable; student save/photo upload/refresh/removal verified, temporary changes restored; 1024/1280/1600/393 widths checked, 3 tests pass.
 - [x] Admin course list: separate Regular price and Offer price columns, offer highlighted; signed-in Courses and Pricing & Offers verified with saved ₹24,999/₹3,999, no price changes, 44 admin tests pass.
 - [x] Student affiliate navigation: Referral Tree, Wallet, Team and Plans links; real own referral code and direct-referral views, signed-in navigation checked at 1024/1280/1600 and mobile 393 with no overflow/runtime errors. Test student has no referrals, so populated-team display remains unverified; deeper levels and plan purchasing unchanged.
 - [x] Referral Settings: unlimited referral levels — admin can add/remove as many commission levels as needed (each 0–100%); add-to-5-levels save, Commission Rules display and restore-to-3 verified signed-in; 64 tests pass
@@ -20,7 +20,7 @@
 - [ ] Live payments, money transfers, email/WhatsApp/SMS delivery — need separate approval and provider accounts
 - [ ] Activate real YouTube + Jitsi sessions — awaiting client testing approval, actual YouTube stream, and confirmed Jitsi hosting/cost; public meet.jit.si embeds are demo-limited
 - [ ] Verify rebuilt Android APK stays in-app on user's device (explicit project-host navigation configured and tests passed; Android project/device and actual redirect destination unavailable here; preview returns 401 without access)
-- [ ] Full signed-in data-change test of My Learning + Profile (signed-in screens verified; progress mutation/profile save verification still pending)
+- [ ] Full signed-in data-change test of My Learning (progress mutation verification pending; Profile save/photo/refresh verified)
 - [ ] Real course data from user (prices, ratings, class times, stats)
 - [ ] Payment gateway (LIVE) — only after client approves test app; do NOT add now
 
