@@ -1,13 +1,17 @@
 import { useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { ArrowRight, ChevronRight, MessageCircle, Users, Wallet, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useLang } from "@/lib/i18n";
+import { useAuth } from '@/hooks/use-auth';
 
 export function FloatingActions() {
   const { t } = useLang();
   const [open, setOpen] = useState(false);
+  const { session } = useAuth();
+  const path = useRouterState({ select: s => s.location.pathname });
+  const realStudent = Boolean(session) && !path.startsWith('/sandbox');
 
   return <>
     <div className="wallet-float fixed left-0 top-1/2 z-40 -translate-y-1/2">
@@ -24,8 +28,8 @@ export function FloatingActions() {
             <Button variant="ghost" size="icon" className="size-8" aria-label={t("hide_wallet")} onClick={() => setOpen(false)}><X /></Button>
           </div>
           <div className="grid gap-1">
-            <Button asChild variant="ghost" className="justify-start"><Link to="/sandbox/wallet" onClick={() => setOpen(false)}><Wallet />{t("wallet")}<ArrowRight className="ml-auto" /></Link></Button>
-            <Button asChild variant="ghost" className="justify-start"><Link to="/sandbox/referrals" onClick={() => setOpen(false)}><Users />{t("referrals")}<ArrowRight className="ml-auto" /></Link></Button>
+            <Button asChild variant="ghost" className="justify-start"><Link to={realStudent ? '/earnings' : '/sandbox/wallet'} onClick={() => setOpen(false)}><Wallet />{t("wallet")}<ArrowRight className="ml-auto" /></Link></Button>
+            <Button asChild variant="ghost" className="justify-start"><Link to={realStudent ? '/referrals' : '/sandbox/referrals'} onClick={() => setOpen(false)}><Users />{t("referrals")}<ArrowRight className="ml-auto" /></Link></Button>
           </div>
         </PopoverContent>
       </Popover>

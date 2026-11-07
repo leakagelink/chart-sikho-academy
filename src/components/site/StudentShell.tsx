@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Award, Bell, BookOpen, Crown, FileText, GraduationCap, Home, LayoutDashboard, User, Video, Wallet } from "lucide-react";
+import { Award, Bell, BookOpen, Crown, FileText, GitBranch, GraduationCap, Home, LayoutDashboard, User, Users, Video, Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLang, type DictKey } from "@/lib/i18n";
 import { useAuth } from "@/hooks/use-auth";
@@ -15,9 +15,13 @@ const groups: { title: DictKey; items: Item[] }[] = [
     { to: "/sandbox/live", label: "cat_live", icon: Video },
     { to: "/sandbox/certificates", label: "up_certificates", icon: Award },
   ] },
+  { title: "student_affiliate", items: [
+    { to: "/referrals", label: "student_referral_tree", icon: GitBranch },
+    { to: "/earnings", label: "wallet", icon: Wallet },
+    { to: "/team", label: "student_team", icon: Users },
+    { to: "/plans", label: "student_plans", icon: Crown },
+  ] },
   { title: "my_profile", items: [
-    { to: "/plans", label: "membership_cta", icon: Crown },
-    { to: "/earnings", label: "wallet_title", icon: Wallet },
     { to: "/notifications", label: "notifications", icon: Bell },
     { to: "/profile", label: "my_profile", icon: User },
   ] },
