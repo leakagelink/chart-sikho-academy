@@ -22,6 +22,7 @@
 - [ ] Payment gateway (LIVE) — only after client approves test app; do NOT add now
 
 ## Done
+- [x] Configured logo on first open/refresh: root public branding load, shared logo source for splash/header/login/favicon, no default flash while unresolved.
 - [x] Student blueprint visual correction: white content scoped to student screens, navy/gold branding, gold action gradients, compact course/order/live lists, lesson rows, horizontal referral tree and white Profile menu. Phone/desktop screens and signed-in Profile checked; original logo retained, generated sample cover/backdrop used, social login remains hidden by testing constraint. Not a pixel-identical replica of the low-resolution reference.
 - [x] Designated Admin and Student Cloud login accounts provisioned; real password login reaches /admin and /dashboard respectively, and Student is denied Admin access; existing security tests passed
 - [x] Secure Cloud admin panel at /admin with 16 sections, CSV export, role-protected saves, uploads, in-app notifications and audit history; course + notification save verified end-to-end

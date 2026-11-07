@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Rules
+- Public branding loads in the root loader before SSR and seeds the shared branding query; all logo surfaces and favicon consume that value, with no default fallback while unresolved. Why: initial open/refresh must not flash a previous logo or expose private settings.
 - Completed live-class recordings sync atomically to one source-linked course lesson via a role-checked database trigger; why: repeated saves update the same video without duplicate curriculum, and no external recording automation is implied.
 - Video Library deletion clears lesson video sources through the role-checked admin operation, retaining lesson/PDF records and stored files; why: removing a video must not erase accompanying notes or shared media.
 - Course deletion uses an atomic role-checked database function and preserves linked student/commerce records; why: removing curriculum must not partially delete a course or erase purchase history.
