@@ -22,6 +22,8 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AuthenticatedEarningsRouteImport } from './routes/_authenticated/earnings'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as AuthenticatedReferralsRouteImport } from './routes/_authenticated/referrals'
+import { Route as AuthenticatedTeamRouteImport } from './routes/_authenticated/team'
 import { Route as CoursesCourseIdRouteImport } from './routes/courses_.$courseId'
 import { Route as LiveClassIdRouteImport } from './routes/live.$classId'
 import { Route as SandboxIndexRouteImport } from './routes/sandbox.index'
@@ -106,6 +108,16 @@ const AuthenticatedNotificationsRoute =
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedReferralsRoute = AuthenticatedReferralsRouteImport.update({
+  id: '/referrals',
+  path: '/referrals',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedTeamRoute = AuthenticatedTeamRouteImport.update({
+  id: '/team',
+  path: '/team',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const CoursesCourseIdRoute = CoursesCourseIdRouteImport.update({
@@ -224,6 +236,8 @@ export interface FileRoutesByFullPath {
   '/earnings': typeof AuthenticatedEarningsRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/profile': typeof AuthenticatedProfileRoute
+  '/referrals': typeof AuthenticatedReferralsRoute
+  '/team': typeof AuthenticatedTeamRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
   '/live/$classId': typeof LiveClassIdRoute
   '/sandbox/admin': typeof SandboxAdminRouteWithChildren
@@ -256,6 +270,8 @@ export interface FileRoutesByTo {
   '/earnings': typeof AuthenticatedEarningsRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/profile': typeof AuthenticatedProfileRoute
+  '/referrals': typeof AuthenticatedReferralsRoute
+  '/team': typeof AuthenticatedTeamRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
   '/live/$classId': typeof LiveClassIdRoute
   '/sandbox/certificates': typeof SandboxCertificatesRoute
@@ -291,6 +307,8 @@ export interface FileRoutesById {
   '/_authenticated/earnings': typeof AuthenticatedEarningsRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/_authenticated/referrals': typeof AuthenticatedReferralsRoute
+  '/_authenticated/team': typeof AuthenticatedTeamRoute
   '/courses_/$courseId': typeof CoursesCourseIdRoute
   '/live/$classId': typeof LiveClassIdRoute
   '/sandbox/admin': typeof SandboxAdminRouteWithChildren
@@ -327,6 +345,8 @@ export interface FileRouteTypes {
     | '/earnings'
     | '/notifications'
     | '/profile'
+    | '/referrals'
+    | '/team'
     | '/courses/$courseId'
     | '/live/$classId'
     | '/sandbox/admin'
@@ -359,6 +379,8 @@ export interface FileRouteTypes {
     | '/earnings'
     | '/notifications'
     | '/profile'
+    | '/referrals'
+    | '/team'
     | '/courses/$courseId'
     | '/live/$classId'
     | '/sandbox/certificates'
@@ -393,6 +415,8 @@ export interface FileRouteTypes {
     | '/_authenticated/earnings'
     | '/_authenticated/notifications'
     | '/_authenticated/profile'
+    | '/_authenticated/referrals'
+    | '/_authenticated/team'
     | '/courses_/$courseId'
     | '/live/$classId'
     | '/sandbox/admin'
@@ -520,6 +544,20 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/referrals': {
+      id: '/_authenticated/referrals'
+      path: '/referrals'
+      fullPath: '/referrals'
+      preLoaderRoute: typeof AuthenticatedReferralsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/team': {
+      id: '/_authenticated/team'
+      path: '/team'
+      fullPath: '/team'
+      preLoaderRoute: typeof AuthenticatedTeamRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/courses_/$courseId': {
@@ -686,6 +724,8 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedEarningsRoute: typeof AuthenticatedEarningsRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedReferralsRoute: typeof AuthenticatedReferralsRoute
+  AuthenticatedTeamRoute: typeof AuthenticatedTeamRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -694,6 +734,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedEarningsRoute: AuthenticatedEarningsRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedReferralsRoute: AuthenticatedReferralsRoute,
+  AuthenticatedTeamRoute: AuthenticatedTeamRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
