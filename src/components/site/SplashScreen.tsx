@@ -1,6 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { ArrowRight } from "lucide-react";
-import logo from "@/assets/logo.png";
 import { Button } from "@/components/ui/button";
 import { useLang } from "@/lib/i18n";
 import { useBranding } from "@/lib/branding";
@@ -40,7 +39,7 @@ export function SplashScreen({ children }: { children: ReactNode }) {
         <div className="splash-candles" aria-hidden="true">
           {[0, 1, 2, 3, 4, 5, 6].map((i) => <span key={i} className={`splash-candle splash-candle-${i}`} />)}
         </div>
-        <img src={brandLogo || logo} alt="" width={112} height={112} className="splash-logo" />
+        {brandLogo ? <img src={brandLogo} alt="" width={112} height={112} className="splash-logo" /> : <span className="splash-logo h-28 w-28" aria-hidden="true" />}
         <h1 className="splash-name font-display font-bold text-foreground">Chart<span className="text-primary">सीखो</span></h1>
         <p className="splash-tagline text-base text-muted-foreground">{t("splash_tagline")}</p>
         <div className="splash-loader" aria-hidden="true"><span /></div>

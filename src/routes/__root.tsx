@@ -21,6 +21,9 @@ import { SplashScreen } from "../components/site/SplashScreen";
 import { PageMotion } from "../components/site/PageMotion";
 import { FloatingActions } from "../components/site/FloatingActions";
 import { NotificationPopup } from "../components/site/NotificationPopup";
+import { BrandingProvider } from "../lib/branding";
+import { getAppBranding } from "../lib/branding.functions";
+import defaultLogo from "../assets/logo.png";
 
 function NotFoundComponent() {
   return (
@@ -83,7 +86,9 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
+  loader: async () => ({ branding: await getAppBranding() }),
+  staleTime: 5 * 60 * 1000,
+  head: ({ loaderData }) => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
@@ -94,7 +99,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", type: "image/png", href: "/favicon.png" },
+      ...(loaderData?.branding !== null && loaderData?.branding !== undefined
+        ? [{ rel: "icon", href: loaderData.branding || defaultLogo }]
+        : []),
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Hind:wght@400;500;600;700&display=swap" },
@@ -122,9 +129,11 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const { branding } = Route.useLoaderData();
 
   return (
     <QueryClientProvider client={queryClient}>
+      <BrandingProvider initialLogo={branding}>
       <AuthProvider>
       <LangProvider>
         <SplashScreen>
@@ -140,6 +149,7 @@ function RootComponent() {
         </SplashScreen>
       </LangProvider>
       </AuthProvider>
+      </BrandingProvider>
     </QueryClientProvider>
   );
 }
