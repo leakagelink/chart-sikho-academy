@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [ ] Make manual UPI payment settings discoverable in admin, show saved QR preview and verify the same destination in student checkout.
 - [x] Student Affiliate: own dashboard, direct team, all own commission levels, wallet shortcuts and search/date/status/level/sort/reset filters; signed-in navigation and empty-account filters verified at 1024/1280/1600/393, 9 tests pass. Populated real team/commission display remains unverified because the test student has no records; deeper member access unchanged.
 - [x] Student Wallet: own full commission/payment/bonus/refund/withdrawal history; bank/UPI save, preferred destination, refresh and masking verified signed-in; original details restored. No deposits/automatic transfers enabled; test student has no financial rows or eligible balance, so populated activity and actual withdrawal request remain unverified.
 - [x] Student My Profile: personal/account details visible, personal details and private profile photo editable; student save/photo upload/refresh/removal verified, temporary changes restored; 1024/1280/1600/393 widths checked, 3 tests pass.
