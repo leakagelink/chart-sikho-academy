@@ -22,6 +22,7 @@ const dict = {
   profile_loading: { en: 'Loading profile…', hi: 'प्रोफ़ाइल खुल रही है…' },
   profile_empty: { en: 'Not added', hi: 'नहीं जोड़ा गया' },
   profile_active: { en: 'Active', hi: 'सक्रिय' },
+  profile_paused: { en: 'Paused', hi: 'रुका हुआ' },
   profile_suspended: { en: 'Suspended', hi: 'निलंबित' },
   profile_blocked: { en: 'Blocked', hi: 'ब्लॉक किया गया' },
   profile_verified: { en: 'Verified', hi: 'सत्यापित' },

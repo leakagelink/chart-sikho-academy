@@ -96,6 +96,7 @@ function ProfilePage() {
   const status = (value?: string | null) => {
     if (value === 'active') return t('profile_active');
     if (value === 'suspended') return t('profile_suspended');
+    if (value === 'paused') return t('profile_paused');
     if (value === 'blocked') return t('profile_blocked');
     if (value === 'verified') return t('profile_verified');
     if (value === 'pending') return t('profile_pending');
@@ -119,7 +120,7 @@ function ProfilePage() {
           {photoUrl ? <img src={photoUrl} alt={t('profile_photo')} className="h-full w-full object-cover" /> : name.charAt(0).toUpperCase()}
         </div>
         <div className="min-w-0 flex-1"><h1 className="break-words font-display text-2xl font-bold text-foreground">{name}</h1><p className="break-all text-sm text-muted-foreground">{user.email}</p></div>
-        {!editing && <Button onClick={edit}><Pencil className="h-4 w-4" />{t('edit_profile')}</Button>}
+        {!editing && <Button onClick={edit} className="w-full sm:w-auto"><Pencil className="h-4 w-4" />{t('edit_profile')}</Button>}
       </div>
       {message && <p role={failed ? 'alert' : 'status'} className={`mt-4 text-sm ${failed ? 'text-destructive' : 'text-success'}`}>{message}</p>}
       <div className="mt-6 grid min-w-0 gap-8 xl:grid-cols-[minmax(0,2fr)_minmax(240px,1fr)]">
