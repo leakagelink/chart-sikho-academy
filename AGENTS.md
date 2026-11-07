@@ -10,7 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Rules
-- Payment QR and checkout share payment-upi helpers; an admin-uploaded QR (private payment-qr bucket, signed URLs) overrides the generated UPI QR. Why: students must see exactly the saved destination.
+- Admin and checkout QR share payment-upi helpers; an uploaded QR (private bucket) overrides the generated one. Why: students see the saved destination.
 - Catalog product filters use shared filterProducts over safe published reads; why: All and type tabs apply identical search rules.
 - Wallet reads explicitly scope every financial query to the caller; withdrawal destinations are owner-private preferences snapshotted immutably on request. Why: later bank/UPI edits cannot reroute pending withdrawals; deposits and bonuses never inflate commission balance.
 - Student profile saves use the caller-scoped save_my_profile RPC with an explicit personal-field allowlist; profile photos stay private in owner-scoped storage and render through signed URLs. Why: users can update their own details without changing verification, account privileges or exposing photos publicly.
