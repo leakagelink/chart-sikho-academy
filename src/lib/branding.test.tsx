@@ -40,6 +40,6 @@ describe('Configured branding resolution', () => {
     rpc.mockResolvedValue({ data: 'https://example.com/replacement.png', error: null });
     const { result, client } = setup('https://example.com/current-logo.png');
     await act(async () => { await client.invalidateQueries({ queryKey: ['branding'] }); });
-    expect(result.current).toBe('https://example.com/replacement.png');
+    await waitFor(() => expect(result.current).toBe('https://example.com/replacement.png'));
   });
 });
