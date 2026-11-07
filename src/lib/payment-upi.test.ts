@@ -16,3 +16,20 @@ describe('configured payment destination', () => {
     expect(new URL(paymentUpiLink(configured, { price: 3999, title: 'Course' })).searchParams.get('pa')).toBe('updated@bank');
   });
 });
+import { paymentConfigured, qrSource, qrUploadAllowed } from './payment-upi';
+
+describe('uploaded payment QR', () => {
+  it('shows the uploaded QR to students instead of a generated one', () => {
+    expect(qrSource({ upi_id: 'a@bank', payee: 'X', qr_path: 'qr/1.png' })).toBe('uploaded');
+    expect(qrSource({ upi_id: 'a@bank', payee: 'X', qr_path: '' })).toBe('generated');
+  });
+  it('allows payment with only an uploaded QR and no UPI ID', () => {
+    expect(paymentConfigured({ upi_id: '', payee: '', qr_path: 'qr/1.png' })).toBe(true);
+    expect(paymentConfigured({ upi_id: '', payee: '', qr_path: '' })).toBe(false);
+  });
+  it('accepts only PNG/JPG/WebP up to 5 MB', () => {
+    expect(qrUploadAllowed({ type: 'image/png', size: 5 * 1024 * 1024 })).toBe(true);
+    expect(qrUploadAllowed({ type: 'application/pdf', size: 100 })).toBe(false);
+    expect(qrUploadAllowed({ type: 'image/jpeg', size: 5 * 1024 * 1024 + 1 })).toBe(false);
+  });
+});
