@@ -16,6 +16,7 @@ const groups: { title: DictKey; items: Item[] }[] = [
     { to: "/sandbox/certificates", label: "up_certificates", icon: Award },
   ] },
   { title: "student_affiliate", items: [
+    { to: "/affiliate", label: "affiliate_dashboard", icon: LayoutDashboard },
     { to: "/referrals", label: "student_referral_tree", icon: GitBranch },
     { to: "/earnings", label: "wallet", icon: Wallet },
     { to: "/team", label: "student_team", icon: Users },
