@@ -1172,8 +1172,12 @@ export type Database = {
       profiles: {
         Row: {
           account_status: string
+          address: string
+          avatar_path: string
+          bio: string
           city: string | null
           created_at: string
+          date_of_birth: string | null
           full_name: string | null
           id: string
           phone: string | null
@@ -1185,8 +1189,12 @@ export type Database = {
         }
         Insert: {
           account_status?: string
+          address?: string
+          avatar_path?: string
+          bio?: string
           city?: string | null
           created_at?: string
+          date_of_birth?: string | null
           full_name?: string | null
           id: string
           phone?: string | null
@@ -1198,8 +1206,12 @@ export type Database = {
         }
         Update: {
           account_status?: string
+          address?: string
+          avatar_path?: string
+          bio?: string
           city?: string | null
           created_at?: string
+          date_of_birth?: string | null
           full_name?: string | null
           id?: string
           phone?: string | null
@@ -1669,6 +1681,20 @@ export type Database = {
       request_payout: { Args: { _amount: number }; Returns: string }
       review_manual_payment: {
         Args: { _approve: boolean; _id: string; _note?: string }
+        Returns: undefined
+      }
+      save_my_profile: {
+        Args: {
+          _address: string
+          _avatar_path: string
+          _bio: string
+          _city: string
+          _date_of_birth: string
+          _full_name: string
+          _phone: string
+          _preferred_language: string
+          _state: string
+        }
         Returns: undefined
       }
       set_panel_permissions: {
