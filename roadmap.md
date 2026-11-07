@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [x] Product filters replace topic filters: All/eBooks/Courses/Live Classes/Webinars with shared search and URL state. Signed-in clicks verified: All 11, eBooks 1, Courses 7, sample classes 3, published webinars 0 (empty state); 5 rule tests pass, mobile no overflow and build OK. Live integrations unchanged.
 - [x] My Product & Services directly below Home with Courses/eBooks/Live Classes/Certificates/Webinars; affiliate/profile navigation preserved. Signed-in menu and webinar navigation verified; Live Classes, Certificates and Webinars reuse existing sample/test screens, no live-service changes.
 - [x] Manual Payments / UPI menu and Settings shortcut visible; saved QR preview shares destination builder with student checkout. Admin form/shortcut and mobile no-overflow verified; 10 tests pass, build OK. Real UPI is currently unset, so configured QR/save-to-student flow awaits the owner's real payment details; no dummy destination saved.
 - [x] Student Affiliate: own dashboard, direct team, all own commission levels, wallet shortcuts and search/date/status/level/sort/reset filters; signed-in navigation and empty-account filters verified at 1024/1280/1600/393, 9 tests pass. Populated real team/commission display remains unverified because the test student has no records; deeper member access unchanged.
