@@ -1,0 +1,4 @@
+CREATE OR REPLACE FUNCTION public.save_my_profile_details(_full_name text, _phone text, _state text, _city text, _preferred_language text, _address text, _bio text, _date_of_birth text, _avatar_path text) RETURNS void LANGUAGE sql SECURITY INVOKER SET search_path = public AS $$ SELECT public.save_my_profile(_full_name, _phone, _state, _city, _preferred_language, _address, _bio, NULLIF(_date_of_birth,'')::date, _avatar_path); $$;
+REVOKE ALL ON FUNCTION public.save_my_profile_details(text,text,text,text,text,text,text,text,text) FROM PUBLIC, anon;
+GRANT EXECUTE ON FUNCTION public.save_my_profile_details(text,text,text,text,text,text,text,text,text) TO authenticated;
+COMMENT ON FUNCTION public.save_my_profile(text,text,text,text,text,text,text,date,text) IS 'Internal validated implementation; browser profile saves use save_my_profile_details to support an empty optional birth date.';
