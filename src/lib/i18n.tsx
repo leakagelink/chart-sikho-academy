@@ -3,6 +3,8 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export type Lang = "en" | "hi";
 
 const dict = {
+  admin_regular_price: { en: 'Regular price (₹)', hi: 'नियमित कीमत (₹)' },
+  admin_offer_price: { en: 'Offer price (₹)', hi: 'ऑफर कीमत (₹)' },
   student_affiliate: { en: 'Affiliate', hi: 'एफिलिएट' },
   student_referral_tree: { en: 'Referral Tree', hi: 'रेफरल ट्री' },
   student_team: { en: 'My Team', hi: 'मेरी टीम' },
