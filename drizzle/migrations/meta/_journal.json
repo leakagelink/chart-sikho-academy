@@ -218,6 +218,13 @@
       "when": 1794023481775,
       "tag": "0030_student_payout_destinations",
       "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "7",
+      "when": 1794024613532,
+      "tag": "0031_payment_qr_upload",
+      "breakpoints": true
     }
   ]
 }
