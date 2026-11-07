@@ -4,6 +4,7 @@ export type Lang = "en" | "hi";
 
 const dict = {
   profile_photo: { en: 'Profile photo', hi: 'प्रोफ़ाइल फोटो' },
+  profile_referral_code: { en: 'Referral code', hi: 'रेफरल कोड' },
   profile_photo_change: { en: 'Change photo', hi: 'फोटो बदलें' },
   profile_photo_remove: { en: 'Remove photo', hi: 'फोटो हटाएँ' },
   profile_photo_error: { en: 'Choose a PNG, JPG or WebP photo up to 5 MB.', hi: '5 MB तक की PNG, JPG या WebP फोटो चुनें।' },

@@ -7,7 +7,7 @@ export const profilePhotoAllowed = (file: Pick<File, 'size' | 'type'>) =>
 export const profileValues = (f: { full_name: string; phone: string; state: string; city: string; preferred_language: string; address: string; bio: string; date_of_birth: string }, avatarPath: string) => ({
   _full_name: f.full_name.trim(), _phone: f.phone.trim(), _state: f.state.trim(), _city: f.city.trim(),
   _preferred_language: f.preferred_language, _address: f.address.trim(), _bio: f.bio.trim(),
-  _date_of_birth: f.date_of_birth || null, _avatar_path: avatarPath,
+  _date_of_birth: f.date_of_birth, _avatar_path: avatarPath,
 });
 
 export const studentProfileOptions = (userId: string) => queryOptions({

@@ -62,7 +62,7 @@ function ProfilePage() {
         if (upload.error) throw upload.error;
         avatarPath = newPath;
       }
-      const result = await supabase.rpc('save_my_profile', profileValues(f, avatarPath));
+      const result = await supabase.rpc('save_my_profile_details', profileValues(f, avatarPath));
       if (result.error) throw result.error;
       if (q.data.avatar_path && q.data.avatar_path !== avatarPath) {
         await supabase.storage.from('profile-photos').remove([q.data.avatar_path]);
@@ -147,7 +147,7 @@ function ProfilePage() {
             {detail(t('full_name'), q.data.full_name)}{detail(t('phone'), q.data.phone)}{detail(t('profile_dob'), q.data.date_of_birth)}{detail(t('pref_lang'), q.data.preferred_language === 'hi' ? 'हिंदी' : 'English')}{detail(t('state'), q.data.state)}{detail(t('city'), q.data.city)}{detail(t('profile_address'), q.data.address)}{detail(t('profile_bio'), q.data.bio)}
           </dl>}
           <h2 className="mb-5 mt-8 border-t border-border pt-6 font-display text-xl font-semibold">{t('profile_account')}</h2>
-          <dl className="grid gap-x-6 gap-y-5 sm:grid-cols-2">{detail(t('email'), user.email)}{detail(t('student_member_id'), user.id)}{detail(t('profile_status'), status(q.data.account_status))}{detail(t('profile_verification'), status(q.data.verification_status))}{detail(t('referral_code'), q.data.referral_code)}{detail(t('profile_joined'), q.data.created_at ? new Date(q.data.created_at).toLocaleDateString(lang === 'hi' ? 'hi-IN' : 'en-IN') : '')}</dl>
+          <dl className="grid gap-x-6 gap-y-5 sm:grid-cols-2">{detail(t('email'), user.email)}{detail(t('student_member_id'), user.id)}{detail(t('profile_status'), status(q.data.account_status))}{detail(t('profile_verification'), status(q.data.verification_status))}{detail(t('profile_referral_code'), q.data.referral_code)}{detail(t('profile_joined'), q.data.created_at ? new Date(q.data.created_at).toLocaleDateString(lang === 'hi' ? 'hi-IN' : 'en-IN') : '')}</dl>
         </section>
         <nav className="profile-menu min-w-0" aria-label={t('my_profile')}>
           {menu.filter(item => item.to !== '/admin' || panelAccess).map(({ icon: Icon, label, to }) => <Link key={label} to={to} className="flex items-center gap-3 border-b border-border p-4 text-sm hover:bg-muted/50"><Icon className="h-5 w-5 shrink-0" /><span className="flex-1">{label}</span><ChevronRight className="h-4 w-4" /></Link>)}
