@@ -8,6 +8,7 @@ import { pageMeta } from "@/lib/route-meta";
 import { LiveClassCombo } from "@/components/site/LiveClassCombo";
 
 export const Route = createFileRoute("/sandbox/live")({
+  validateSearch: (search: Record<string, unknown>) => ({ view: search['view'] === 'webinars' ? 'webinars' : undefined }),
   head: () => pageMeta("YouTube + Jitsi Classroom Preview", "Try sample YouTube classes and Jitsi doubt sessions on Chartसीखो without connecting to a live service."),
   component: Screen,
 });
@@ -19,12 +20,13 @@ const pastClasses = [
 
 function Screen() {
   const { t, lang } = useLang();
+  const { view } = Route.useSearch();
   const [tab, setTab] = useState<"upcoming" | "past">("upcoming");
   const [registered, setRegistered] = useState<string[]>([]);
 
   return (
     <div className="live-screen">
-      <h1 className="screen-title font-display font-bold">{t("live_sample")}</h1>
+      <h1 className="screen-title font-display font-bold">{t(view === 'webinars' ? "cat_webinars" : "live_sample")}</h1>
 
       {/* Upcoming / Past tabs — blueprint live classes screen */}
       <div className="mt-5 grid w-full max-w-xs grid-cols-2 rounded-full bg-muted p-1 text-sm font-semibold">
