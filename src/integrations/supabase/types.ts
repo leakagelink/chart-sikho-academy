@@ -106,6 +106,7 @@ export type Database = {
           updated_at: string
           upi_id: string
           upi_payee_name: string
+          upi_qr_path: string
         }
         Insert: {
           approval_mode?: string
@@ -141,6 +142,7 @@ export type Database = {
           updated_at?: string
           upi_id?: string
           upi_payee_name?: string
+          upi_qr_path?: string
         }
         Update: {
           approval_mode?: string
@@ -176,6 +178,7 @@ export type Database = {
           updated_at?: string
           upi_id?: string
           upi_payee_name?: string
+          upi_qr_path?: string
         }
         Relationships: []
       }
@@ -1771,7 +1774,7 @@ export type Database = {
         Returns: undefined
       }
       set_upi_settings: {
-        Args: { _payee: string; _upi_id: string }
+        Args: { _payee: string; _qr_path?: string; _upi_id: string }
         Returns: undefined
       }
       submit_course_quiz: {
