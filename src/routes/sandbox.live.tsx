@@ -8,7 +8,7 @@ import { pageMeta } from "@/lib/route-meta";
 import { LiveClassCombo } from "@/components/site/LiveClassCombo";
 
 export const Route = createFileRoute("/sandbox/live")({
-  validateSearch: (search: Record<string, unknown>) => ({ view: search['view'] === 'webinars' ? 'webinars' : undefined }),
+  validateSearch: (search: Record<string, unknown>): { view?: 'webinars' } => ({ view: search['view'] === 'webinars' ? 'webinars' : undefined }),
   head: () => pageMeta("YouTube + Jitsi Classroom Preview", "Try sample YouTube classes and Jitsi doubt sessions on Chartसीखो without connecting to a live service."),
   component: Screen,
 });
