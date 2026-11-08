@@ -7,8 +7,18 @@ import { adminChangeSchema, adminDeleteSchema, videoRemovalValues, liveClassSche
 
 export const deleteAdminRecord = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth]).inputValidator(input => adminDeleteSchema.parse(input)).handler(async ({ context, data }) => {
   const s = context.supabase;
-  await assertPanelAction(s,context.userId,data.resource,'delete');
-  if (data.resource === 'courses') {
+  const access = await assertPanelAction(s,context.userId,data.resource,'delete');
+  if (data.resource === 'users') {
+    if (!access.isAdmin) throw new Error('Forbidden');
+    const roles = await s.from('user_roles').select('role').eq('user_id',data.id);
+    if (roles.error) throw new Error('Unable to delete record');
+    if (data.id===context.userId || roles.data.some(r=>r.role==='admin')) throw new Error('Protected administrator');
+    const { supabaseAdmin } = await import('@/integrations/supabase/client.server');
+    const result = await supabaseAdmin.auth.admin.deleteUser(data.id);
+    if (result.error) throw new Error(result.error.message.includes('Linked records') ? 'Linked records' : 'User deletion blocked');
+    const audit = await supabaseAdmin.from('admin_audit_log').insert({actor_id:context.userId,resource:'users',record_id:data.id,action:'DELETE'});
+    if(audit.error) console.error('User deletion audit failed');
+  } else if (data.resource === 'courses') {
     const result = await s.rpc('delete_admin_course', { _course_id: data.id });
     if (result.error) throw new Error(result.error.message.includes('Course has linked records') ? 'Course has linked records' : 'Unable to delete record');
   } else if (data.resource === 'videos') {
@@ -20,7 +30,8 @@ export const deleteAdminRecord = createServerFn({ method: 'POST' }).middleware([
     const result = await s.from('course_lessons').delete().eq('id', data.id).select('id').single();
     if (result.error) throw new Error('Unable to delete record');
   } else {
-    const result = await s.rpc('delete_admin_learning_record', { _resource: data.resource, _id: data.id });
+    const learning = ['categories','classes','webinars','ebooks','quizzes','questions'].includes(data.resource);
+    const result = await s.rpc(learning ? 'delete_admin_learning_record' : 'delete_admin_managed_record', { _resource: data.resource, _id: data.id });
     if (result.error) throw new Error(result.error.message.includes('Linked records') ? 'Linked records' : result.error.message.includes('Forbidden') ? 'Forbidden' : 'Unable to delete record');
   }
   return { ok: true };
