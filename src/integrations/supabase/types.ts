@@ -379,6 +379,7 @@ export type Database = {
           recording_url: string
           starts_at: string
           status: string
+          thumbnail_url: string
           title: string
           youtube_url: string
         }
@@ -394,6 +395,7 @@ export type Database = {
           recording_url?: string
           starts_at: string
           status?: string
+          thumbnail_url?: string
           title: string
           youtube_url?: string
         }
@@ -409,6 +411,7 @@ export type Database = {
           recording_url?: string
           starts_at?: string
           status?: string
+          thumbnail_url?: string
           title?: string
           youtube_url?: string
         }
