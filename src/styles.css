@@ -505,6 +505,7 @@ html { scroll-padding-top: 80px; }
   .admin-surface .admin-record-table td > :where(div, span, a) { min-width: 0; max-width: 100%; }
   .admin-surface .admin-record-table td > button:not(:first-of-type) { grid-column: 2; }
   .admin-module-header, .admin-lesson-row { flex-wrap: wrap; }
+  .admin-surface .flex.items-end > label { flex-basis: 100%; }
   .admin-module-header > strong { flex-basis: calc(100% - 32px); white-space: normal; }
   .admin-lesson-row > span:first-of-type { flex-basis: calc(100% - 32px); white-space: normal; }
   .admin-editor-footer { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
