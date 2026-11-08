@@ -10,8 +10,11 @@ import { LiveClassCard } from "@/components/site/LiveClassCard";
 import { ScheduledLiveClasses } from "@/components/site/ScheduledLiveClasses";
 import { StudentCharts } from "@/components/site/StudentCharts";
 import { KycStatus } from '@/components/site/KycStatus';
+import { WebsiteBanners } from '@/components/site/WebsiteBanners';
+import { bannerQuery } from '@/lib/banner-query';
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
+  loader:({context})=>context.queryClient.ensureQueryData(bannerQuery()),
   head: () => ({
     meta: [
       { property: "og:type", content: "website" },
@@ -68,6 +71,7 @@ function Dashboard() {
       <p className="text-muted-foreground">{t("namaste")} 👋</p>
       <h1 className="font-display text-3xl font-bold text-foreground">{name}</h1>
       <KycStatus />
+      <WebsiteBanners page="dashboard" />
       <Button asChild variant="outline" className="mt-4"><Link to="/sandbox">{t("sandbox")}</Link></Button>
 
       <div className="mt-6 grid grid-cols-1 gap-3 min-[360px]:grid-cols-3">

@@ -140,7 +140,7 @@ const dict = {
   admin_templates_real: { en: 'Message templates', hi: 'मैसेज टेम्पलेट' },
   admin_announcements_real: { en: 'Announcements', hi: 'घोषणाएँ' },
   admin_tickets_real: { en: 'Support tickets', hi: 'सपोर्ट टिकट' },
-  admin_banners_real: { en: 'Banners', hi: 'बैनर' },
+  admin_banners_real: { en: 'Website Images / Banners', hi: 'वेबसाइट तस्वीरें / बैनर' },
   admin_campaigns_real: { en: 'Campaigns', hi: 'कैंपेन' },
   admin_leads_real: { en: 'Leads', hi: 'लीड्स' },
   admin_seo_real: { en: 'SEO pages', hi: 'SEO पेज' },
