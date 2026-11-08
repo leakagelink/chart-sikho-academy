@@ -505,3 +505,76 @@ html { scroll-padding-top: 80px; }
   .admin-editor-footer { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .admin-permissions-table :where(th, td) { min-width: 72px; }
 }
+
+/* Admin workspace refresh: navigation rail, readable work area and touch-first tools. */
+.admin-layout { min-height: calc(100dvh - 80px); }
+.admin-sidebar { border-right: 1px solid var(--sidebar-border); padding: 24px 18px; }
+.admin-main { padding: 24px; }
+.admin-sidebar .admin-nav-list { max-height: calc(100dvh - 260px); overflow-y: auto; padding-right: 4px; scrollbar-width: thin; }
+.admin-nav-link { border-left: 3px solid transparent; border-radius: 6px; transition: background-color 160ms ease; }
+.admin-nav-link.admin-nav-active { border-left-color: var(--sidebar-primary); }
+.admin-navigation-drawer .admin-nav-list { max-height: none; }
+.admin-page-header { padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+.admin-page-header h1 { font-size: 28px; line-height: 1.25; }
+.admin-page-actions > button { min-height: 40px; }
+.admin-mobile-navigation { position: absolute; right: 20px; top: 20px; }
+.admin-record-toolbar { margin-top: 20px; }
+.admin-filters { display: grid; grid-template-columns: minmax(200px, 1fr) auto; gap: 12px; }
+.admin-filters > :not(:first-child) { display: none; }
+.admin-filters-expanded { grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); }
+.admin-filters-expanded > :not(:first-child) { display: block; width: 100%; }
+.admin-filters input, .admin-filters select { min-height: 44px; }
+.admin-filters > label { grid-column: 1 / -1; }
+.admin-table-scroll { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.admin-surface .admin-record-table { min-width: 0; }
+.admin-surface .admin-record-table thead { background: var(--sidebar); }
+.admin-surface .admin-record-table th { font-size: 12px; font-weight: 600; height: 48px; }
+.admin-surface .admin-record-table td { min-width: 80px; padding-block: 18px; }
+.admin-surface .admin-record-table tbody tr:nth-child(even) { background: color-mix(in oklch,var(--card) 45%,transparent); }
+.admin-surface .admin-record-table td[data-field='referral_code'] { color: var(--primary); }
+.admin-surface .admin-record-table td[data-field='full_name'], .admin-surface .admin-record-table td[data-field='name_en'] { font-weight: 600; }
+.admin-editor-header { position: sticky; top: -24px; z-index: 2; padding-block: 16px; background: var(--card); border-bottom: 1px solid var(--border); }
+.admin-editor-footer { position: sticky; bottom: -24px; z-index: 2; padding-block: 16px; background: var(--card); border-top: 1px solid var(--border); }
+.admin-editor-form input:not([type='checkbox']), .admin-editor-form select, .admin-editor-form textarea { min-height: 44px; }
+@media(min-width:1024px) {
+ .admin-sidebar { top: 64px; }
+ .admin-main { padding: 28px 32px; }
+ .admin-layout { padding: 0; grid-template-columns: 260px minmax(0,1fr); }
+}
+@media(min-width:1800px) {
+ .admin-layout { grid-template-columns: 280px minmax(0,1fr); }
+ .admin-main { padding: 32px 44px; }
+}
+@media(max-width:1023px) {
+ .admin-layout { position: relative; }
+ .admin-main { padding: 20px; }
+ .admin-breadcrumb { padding-right: 56px; min-height: 44px; }
+ .admin-page-header { grid-template-columns: minmax(0,1fr); gap: 16px; }
+ .admin-page-actions { grid-column: 1 / -1; }
+ .admin-page-header h1 { font-size: 26px; }
+}
+@media(max-width:767px) {
+ .admin-main { padding: 16px; }
+ .admin-mobile-navigation { top: 16px; right: 16px; }
+ .admin-page-header h1 { font-size: 24px; }
+ .admin-page-actions { display: grid; grid-template-columns: 44px 44px minmax(0,1fr); gap: 8px; }
+ .admin-page-actions > button:last-child:not([aria-label]) { justify-self: end; }
+ .admin-filters, .admin-filters-expanded { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+ .admin-filters > label { grid-column: 1 / -1; }
+ .admin-record-toolbar { margin-top: 16px; }
+ .admin-table-scroll { border: 0; overflow: visible; }
+ .admin-surface .admin-record-table tbody { gap: 14px; padding: 0; }
+ .admin-surface .admin-record-table tbody tr { border-color: var(--border); background: var(--card); }
+ .admin-surface .admin-record-table tbody tr:nth-child(even) { background: var(--card); }
+ .admin-surface .admin-record-table td { min-width: 0; padding: 12px 14px; grid-template-columns: minmax(90px,35%) minmax(0,1fr); }
+ .admin-surface .admin-record-table td[data-field='full_name'], .admin-surface .admin-record-table td[data-field='title'], .admin-surface .admin-record-table td[data-field='name_en'] { background: var(--sidebar-accent); font-size: 16px; }
+ .admin-surface .admin-record-table td:not([data-field]) { background: var(--sidebar); }
+ .admin-surface .admin-record-table td button { min-width: 44px; min-height: 44px; }
+ .admin-editor-overlay { padding: 0; align-items: end; }
+ .admin-editor { max-height: 96dvh; border-radius: 8px 8px 0 0; padding: 16px; }
+ .admin-editor-header { top: -16px; }
+ .admin-editor-footer { bottom: -16px; padding-bottom: max(16px,env(safe-area-inset-bottom)); }
+ .admin-navigation-drawer input { font-size: 16px; }
+ .admin-navigation-drawer button { min-height: 44px; }
+}
+@media(prefers-reduced-motion:reduce) { .admin-nav-link { transition: none; } }
