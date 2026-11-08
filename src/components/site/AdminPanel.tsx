@@ -196,7 +196,7 @@ function Builder({data,open,setError,onDelete}:{data:Awaited<ReturnType<typeof g
  const act=useMutation({mutationFn:async(f:()=>Promise<unknown>)=>f(),onSuccess:done,onError:(e:Error)=>setError(['Invalid class recording','Course category mismatch','Module course mismatch','Recording requires published course','Published recording course cannot change'].includes(e.message)?t('admin_recording_error'):e.message.startsWith('Cannot publish')?e.message:t('admin_error'))});
  const can=(resource:string,action:PermissionAction)=>resourceSections(resource).some(section=>canAccess(data.access,section,action));
  const newCourse=<Button hidden={!can('courses','create')} onClick={()=>open({},'courses')}><Plus size={16}/>{t('admin_add')}</Button>;
- if(!data.courses.length)return <div className="py-10"><p className="mb-4 text-muted-foreground">{t('admin_no_courses_yet')}</p>{newCourse}<Button hidden={!can('courses','delete')} variant="outline" onClick={()=>onDelete('courses',c.id,c.title)}><Trash2 size={16}/>{t('admin_delete')}</Button></div>;
+ if(!data.courses.length)return <div className="py-10"><p className="mb-4 text-muted-foreground">{t('admin_no_courses_yet')}</p>{newCourse}</div>;
  const c=data.courses.find(x=>x.id===id)??data.courses[0];if(!c)return null;
  const mods=data.modules.filter(m=>m.course_id===c.id).sort((a,b)=>a.position-b.position);
  const less=data.lessons.filter(l=>l.course_id===c.id).sort((a,b)=>a.position-b.position);
