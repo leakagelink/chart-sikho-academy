@@ -3,6 +3,11 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export type Lang = "en" | "hi";
 
 const dict = {
+  admin_delete_user_note: { en: 'Permanently delete this account and its sign-in. Only full administrators can delete users. Administrators and accounts with learning, referral or financial history are protected; use Pause or Block instead.', hi: 'यह अकाउंट और उसका लॉगिन हमेशा के लिए हट जाएगा। केवल मुख्य एडमिन यूज़र हटा सकते हैं। एडमिन और पढ़ाई, रेफरल या भुगतान इतिहास वाले अकाउंट सुरक्षित हैं; ऐसे अकाउंट को Pause या Block करें।' },
+  admin_delete_affiliate_note: { en: 'Remove this referral relationship, not either user account. Links with purchases, commissions or a downstream team cannot be deleted. Existing earnings remain unchanged.', hi: 'केवल यह रेफरल संबंध हटेगा, दोनों यूज़र अकाउंट नहीं। खरीद, कमीशन या आगे की टीम वाले संबंध नहीं हटाए जा सकते। मौजूदा कमाई नहीं बदलेगी।' },
+  admin_delete_managed_linked: { en: 'Deletion blocked: this record has usage or linked history. Preserve the history and deactivate, pause or unlink unused content instead.', hi: 'यह रिकॉर्ड उपयोग में है या इतिहास से जुड़ा है, इसलिए नहीं हटेगा। इतिहास सुरक्षित रखें और इसे निष्क्रिय करें, Pause करें या उपयोग में नहीं आए सामग्री लिंक हटाएं।' },
+  admin_delete_user_blocked: { en: 'This account cannot be deleted because it has protected history or owned files. Use Pause or Block to stop access.', hi: 'इस अकाउंट में सुरक्षित इतिहास या इसकी फ़ाइलें हैं, इसलिए इसे नहीं हटाया जा सकता। एक्सेस रोकने के लिए Pause या Block करें।' },
+  admin_delete_admin_protected: { en: 'You cannot delete your own account or an administrator account.', hi: 'आप अपना या किसी एडमिन का अकाउंट नहीं हटा सकते।' },
   affiliate_dashboard: { en: 'Affiliate Dashboard', hi: 'एफिलिएट डैशबोर्ड' },
   affiliate_overview: { en: 'Overview', hi: 'सारांश' },
   affiliate_commissions: { en: 'My commissions', hi: 'मेरे कमीशन' },

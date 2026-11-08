@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const adminSections = ['overview','users','categories','builder','courses','lessons','videos','classes','webinars','ebooks','orders','payments','affiliates','commissions','payouts','notifications','settings','quizzes','questions','certificates','progress','reviews','pricing','coupons','refunds','invoices','instructors','roles','verification','blocked','bulk','refsettings','reflinks','teamtree','commrules','ranks','bonuses','fraud','templates','announcements','tickets','banners','campaigns','leads','seo','promocodes','maintenance'] as const;
 export type AdminSection = typeof adminSections[number];
-export const adminDeleteResources = ['courses', 'lessons', 'videos', 'categories', 'classes', 'webinars', 'ebooks', 'quizzes', 'questions'] as const;
+export const adminDeleteResources = ['courses', 'lessons', 'videos', 'categories', 'classes', 'webinars', 'ebooks', 'quizzes', 'questions', 'coupons', 'users', 'affiliates', 'instructors', 'ranks', 'templates', 'announcements', 'tickets', 'banners', 'campaigns', 'leads', 'seo', 'promocodes', 'reviews', 'notifications'] as const;
 export type AdminDeleteResource = typeof adminDeleteResources[number];
 export function deleteResourceForSection(section: string): AdminDeleteResource | null {
   return adminDeleteResources.find(resource => resource === section) ?? null;

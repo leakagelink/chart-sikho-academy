@@ -1713,6 +1713,10 @@ export type Database = {
         Args: { _id: string; _resource: string }
         Returns: undefined
       }
+      delete_admin_managed_record: {
+        Args: { _id: string; _resource: string }
+        Returns: undefined
+      }
       get_course_quiz: { Args: { _course_id: string }; Returns: Json }
       has_panel_permission: {
         Args: { _action: string; _section: string }

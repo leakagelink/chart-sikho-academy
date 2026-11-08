@@ -7,6 +7,8 @@ describe('admin deletion scope', () => {
   it('allows removing Video Library videos', () => { expect(adminDeleteSchema.safeParse({ resource: 'videos', id }).success).toBe(true); });
   it.each(['categories', 'classes', 'webinars', 'ebooks', 'quizzes', 'questions'])('allows deleting %s', resource => { expect(adminDeleteSchema.safeParse({ resource, id }).success).toBe(true); });
   it('rejects finance deletion', () => { expect(adminDeleteSchema.safeParse({ resource: 'orders', id }).success).toBe(false); });
+  it.each(['coupons','users','affiliates','instructors','ranks','templates','announcements','tickets','banners','campaigns','leads','seo','promocodes','reviews','notifications'])('allows managed deletion of %s', resource => { expect(adminDeleteSchema.safeParse({resource,id}).success).toBe(true); });
+  it.each(['commissions','payouts','refunds','invoices','bonuses'])('preserves %s history', resource => { expect(adminDeleteSchema.safeParse({resource,id}).success).toBe(false); });
   it('requires a specific valid record', () => { expect(adminDeleteSchema.safeParse({ resource: 'courses', id: '' }).success).toBe(false); });
 });
 describe('video removal', () => {
