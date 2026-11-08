@@ -74,7 +74,7 @@ function CoursesPage() {
         </label>
         <div className="catalog-tabs flex flex-wrap gap-2">
           {filters.map((x) => (
-            <Button variant={f === x.key ? "default" : "secondary"} aria-pressed={f === x.key} key={x.key} onClick={() => navigate({search:prev=>({...prev,type:x.key,cat:undefined})})} className="rounded-full">
+            <Button variant={f === x.key ? "default" : "secondary"} aria-pressed={f === x.key} key={x.key} onClick={() => navigate({search:prev=>({...(prev.q ? {q:prev.q} : {}),type:x.key})})} className="rounded-full">
               {t(x.label)}
             </Button>
           ))}
