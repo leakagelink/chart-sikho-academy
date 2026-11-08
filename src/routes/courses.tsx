@@ -14,7 +14,7 @@ import { productQuery } from '@/lib/product-query';
 import { filterProducts, type ProductFilter, type ProductType } from '@/lib/product-filters';
 
 export const Route = createFileRoute("/courses")({
-  validateSearch: (s: Record<string, unknown>): { type?: ProductFilter; q?: string } => ({ ...(typeof s['type'] === 'string' && ['all','courses','ebooks','classes','webinars'].includes(s['type']) ? { type: s['type'] as ProductFilter } : {}), ...(typeof s['q'] === 'string' ? { q: s['q'] } : {}) }),
+  validateSearch: (s: Record<string, unknown>): { type?: ProductFilter; q?: string; cat?: string } => ({ ...(typeof s['type'] === 'string' && ['all','courses','ebooks','classes','webinars'].includes(s['type']) ? { type: s['type'] as ProductFilter } : {}), ...(typeof s['q'] === 'string' ? { q: s['q'] } : {}), ...(typeof s['cat'] === 'string' ? {cat:s['cat']} : {}) }),
   loader:({context})=>Promise.all([context.queryClient.ensureQueryData(catalogQuery()),context.queryClient.ensureQueryData(productQuery())]),
   errorComponent:CatalogError,
   notFoundComponent:CatalogError,
@@ -47,11 +47,12 @@ function CoursesPage() {
   const navigate = Route.useNavigate();
   const f = search.type ?? 'all';
   const q = search.q ?? '';
-  const list = filterProducts(courses.map(c=>({...c,type:'courses' as const,title:c.title.en+' '+c.title.hi,course:c})),f,q);
-  const realCourses = filterProducts(cloud.map(c=>({...c,type:'courses' as const})),f,q);
-  const ebooks = filterProducts(products.ebooks.map(b=>({...b,type:'ebooks' as const})),f,q);
-  const sessions = filterProducts(products.sessions.map(s=>({...s,type:(s.kind==='webinar'?'webinars':'classes') as ProductType})),f,q);
-  const sampleClasses = filterProducts(liveClasses.map(c=>({...c,type:'classes' as const,title:c.title.en+' '+c.title.hi,session:c})),f,q);
+  const category = search.cat;
+  const list = filterProducts(courses.filter(c=>!category||c.category===category).map(c=>({...c,type:'courses' as const,title:c.title.en+' '+c.title.hi,course:c})),f,q);
+  const realCourses = filterProducts(cloud.filter(c=>!category||c.category===category).map(c=>({...c,type:'courses' as const})),f,q);
+  const ebooks = filterProducts(products.ebooks.filter(()=>!category||category==='ebooks').map(b=>({...b,type:'ebooks' as const})),f,q);
+  const sessions = filterProducts(products.sessions.filter(s=>!category||s.category_slug===category).map(s=>({...s,type:(s.kind==='webinar'?'webinars':'classes') as ProductType})),f,q);
+  const sampleClasses = filterProducts(liveClasses.filter(()=>!category||category==='liveclasses').map(c=>({...c,type:'classes' as const,title:c.title.en+' '+c.title.hi,session:c})),f,q);
   const total = list.length + realCourses.length + ebooks.length + sessions.length + sampleClasses.length;
   return (
     <div className="catalog-screen w-full px-4 pt-8">
@@ -73,7 +74,7 @@ function CoursesPage() {
         </label>
         <div className="catalog-tabs flex flex-wrap gap-2">
           {filters.map((x) => (
-            <Button variant={f === x.key ? "default" : "secondary"} aria-pressed={f === x.key} key={x.key} onClick={() => navigate({search:prev=>({...prev,type:x.key})})} className="rounded-full">
+            <Button variant={f === x.key ? "default" : "secondary"} aria-pressed={f === x.key} key={x.key} onClick={() => navigate({search:prev=>({...prev,type:x.key,cat:undefined})})} className="rounded-full">
               {t(x.label)}
             </Button>
           ))}
