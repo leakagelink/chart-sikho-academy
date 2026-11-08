@@ -67,7 +67,15 @@ export const getAdminData = createServerFn({ method: 'POST' }).middleware([requi
           }
         } catch { /* emails optional */ }
       }
-      const data = (profiles.data ?? []).map(p => ({...p, email: emails.get(String(p.id)) ?? ''}));
+      const photoUrls = new Map<string,string>();
+      if (canAccess(access,'teamtree') || canAccess(access,'affiliates')) {
+        const paths = (profiles.data ?? []).map(p=>p.avatar_path).filter(Boolean);
+        if (paths.length) {
+          const photos = await s.storage.from('profile-photos').createSignedUrls(paths,3600);
+          for (const photo of photos.data ?? []) if (photo.path && photo.signedUrl) photoUrls.set(photo.path,photo.signedUrl);
+        }
+      }
+      const data = (profiles.data ?? []).map(p => ({...p, email: emails.get(String(p.id)) ?? '', avatar_url: photoUrls.get(p.avatar_path) ?? ''}));
       return {data,error:profiles.error};
     }),
     read('courses',()=>s.from('courses').select('*').order('created_at', { ascending: false }).limit(1000)),
