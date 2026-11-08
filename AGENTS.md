@@ -11,7 +11,7 @@
 
 ## Rules
 - Admin and checkout QR share payment-upi helpers; an uploaded QR (private bucket) overrides the generated one. Why: students see the saved destination.
-- Catalog uses filterProducts and public visible-category/active-banner queries; admin retains all. Uploaded Home/Products banners replace defaults; dashboard renders saved banners. Why: visibility preserves records and refresh preserves images.
+- Catalog uses public visible-category, active-banner and published-plan queries; admin retains all and manages plans through section-scoped CRUD. Why: saved visibility/order drives public display; plans do not grant paid access.
 - Wallet reads explicitly scope every financial query to the caller; withdrawal destinations are owner-private preferences snapshotted immutably on request. Why: later bank/UPI edits cannot reroute pending withdrawals; deposits and bonuses never inflate commission balance.
 - Profile saves allow only personal fields; photos and KYC documents use private owner storage. KYC requests/reviews use atomic permission-checked RPCs, a separate protected status and targeted inbox notifications. Why: students cannot approve identities or expose documents.
 - Public branding loads in the root loader before SSR and seeds the shared branding query; all logo surfaces and favicon consume that value, with no default fallback while unresolved. Why: initial open/refresh must not flash a previous logo or expose private settings.

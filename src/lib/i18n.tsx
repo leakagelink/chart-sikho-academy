@@ -3,6 +3,15 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export type Lang = "en" | "hi";
 
 const dict = {
+  admin_plans_real: {en:'Plans',hi:'प्लान्स'},
+  plan_name_en: {en:'Plan name (English)',hi:'प्लान का नाम (English)'},
+  plan_name_hi: {en:'Plan name (Hindi)',hi:'प्लान का नाम (हिंदी)'},
+  plan_features_en: {en:'Benefits (English, one per line)',hi:'लाभ (English, हर लाइन में एक)'},
+  plan_features_hi: {en:'Benefits (Hindi, one per line)',hi:'लाभ (हिंदी, हर लाइन में एक)'},
+  plan_order: {en:'Display order',hi:'दिखाने का क्रम'},
+  plan_period: {en:'Plan period',hi:'प्लान अवधि'},
+  plan_lifetime: {en:'Lifetime',hi:'आजीवन'},
+  plans_empty: {en:'No plans are available yet.',hi:'अभी कोई प्लान उपलब्ध नहीं है।'},
   kyc_title:{en:'KYC Verification',hi:'KYC सत्यापन'},
   kyc_requests:{en:'KYC Requests',hi:'KYC अनुरोध'},
   kyc_status:{en:'KYC status',hi:'KYC स्थिति'},

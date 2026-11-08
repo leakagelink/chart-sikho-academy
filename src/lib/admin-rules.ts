@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
-export const adminSections = ['overview','users','categories','builder','courses','lessons','videos','classes','webinars','ebooks','orders','payments','affiliates','commissions','payouts','notifications','settings','quizzes','questions','certificates','progress','reviews','pricing','coupons','refunds','invoices','instructors','roles','verification','blocked','bulk','refsettings','reflinks','teamtree','commrules','ranks','bonuses','fraud','templates','announcements','tickets','banners','campaigns','leads','seo','promocodes','maintenance'] as const;
+export const adminSections = ['plans','overview','users','categories','builder','courses','lessons','videos','classes','webinars','ebooks','orders','payments','affiliates','commissions','payouts','notifications','settings','quizzes','questions','certificates','progress','reviews','pricing','coupons','refunds','invoices','instructors','roles','verification','blocked','bulk','refsettings','reflinks','teamtree','commrules','ranks','bonuses','fraud','templates','announcements','tickets','banners','campaigns','leads','seo','promocodes','maintenance'] as const;
 export type AdminSection = typeof adminSections[number];
-export const adminDeleteResources = ['courses', 'lessons', 'videos', 'categories', 'classes', 'webinars', 'ebooks', 'quizzes', 'questions', 'coupons', 'users', 'affiliates', 'instructors', 'ranks', 'templates', 'announcements', 'tickets', 'banners', 'campaigns', 'leads', 'seo', 'promocodes', 'reviews', 'notifications', 'modules', 'certificates', 'invoices', 'bonuses', 'roles'] as const;
+export const adminDeleteResources = ['plans', 'courses', 'lessons', 'videos', 'categories', 'classes', 'webinars', 'ebooks', 'quizzes', 'questions', 'coupons', 'users', 'affiliates', 'instructors', 'ranks', 'templates', 'announcements', 'tickets', 'banners', 'campaigns', 'leads', 'seo', 'promocodes', 'reviews', 'notifications', 'modules', 'certificates', 'invoices', 'bonuses', 'roles'] as const;
 export type AdminDeleteResource = typeof adminDeleteResources[number];
 export function deleteResourceForSection(section: string): AdminDeleteResource | null {
   if (section === 'pricing') return 'courses';
@@ -15,7 +15,7 @@ export function videoRemovalValues(resourcePath: string) {
   return { video_url: '', resource_path: /\.(mp4|webm)$/i.test(resourcePath) ? '' : resourcePath };
 }
 export const adminChangeSchema = z.object({
-  resource: z.enum(['categories','modules','courses','lessons','classes','ebooks','users','notifications','payouts','settings','quizzes','questions','certificates','reviews','coupons','refunds','invoices','instructors','roles','verification','ranks','bonuses','templates','announcements','tickets','banners','campaigns','leads','seo','promocodes','maintenance','commrules','commissions','influencers']),
+  resource: z.enum(['plans','categories','modules','courses','lessons','classes','ebooks','users','notifications','payouts','settings','quizzes','questions','certificates','reviews','coupons','refunds','invoices','instructors','roles','verification','ranks','bonuses','templates','announcements','tickets','banners','campaigns','leads','seo','promocodes','maintenance','commrules','commissions','influencers']),
   id: z.string().uuid().optional(),
   values: z.record(z.union([z.string().max(700000), z.number().finite(), z.boolean(), z.null()])).superRefine((values, ctx) => {
     for (const [key, value] of Object.entries(values)) {

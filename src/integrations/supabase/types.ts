@@ -1121,6 +1121,48 @@ export type Database = {
           },
         ]
       }
+      membership_plans: {
+        Row: {
+          billing_period: string
+          created_at: string
+          features_en: string
+          features_hi: string
+          id: string
+          name_en: string
+          name_hi: string
+          popular: boolean
+          position: number
+          price: number
+          status: string
+        }
+        Insert: {
+          billing_period?: string
+          created_at?: string
+          features_en?: string
+          features_hi?: string
+          id?: string
+          name_en: string
+          name_hi?: string
+          popular?: boolean
+          position?: number
+          price?: number
+          status?: string
+        }
+        Update: {
+          billing_period?: string
+          created_at?: string
+          features_en?: string
+          features_hi?: string
+          id?: string
+          name_en?: string
+          name_hi?: string
+          popular?: boolean
+          position?: number
+          price?: number
+          status?: string
+        }
+        Relationships: []
+      }
       message_templates: {
         Row: {
           body: string
