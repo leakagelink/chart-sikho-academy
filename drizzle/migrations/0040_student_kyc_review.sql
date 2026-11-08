@@ -1,0 +1,33 @@
+ALTER TABLE public.profiles ADD COLUMN kyc_status text NOT NULL DEFAULT 'unverified';
+CREATE TABLE public.kyc_requests (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), user_id uuid NOT NULL REFERENCES public.profiles(id), document_type text NOT NULL CHECK(document_type IN ('pan','aadhaar','voter_id')), document_path text NOT NULL, status text NOT NULL DEFAULT 'pending' CHECK(status IN ('pending','approved','rejected')), admin_note text NOT NULL DEFAULT '', created_at timestamptz NOT NULL DEFAULT now(), reviewed_at timestamptz, reviewed_by uuid);
+GRANT SELECT ON public.kyc_requests TO authenticated;
+GRANT ALL ON public.kyc_requests TO service_role;
+ALTER TABLE public.kyc_requests ENABLE ROW LEVEL SECURITY;
+CREATE POLICY kyc_owner_read ON public.kyc_requests FOR SELECT TO authenticated USING (user_id=auth.uid());
+CREATE POLICY kyc_admin_read ON public.kyc_requests FOR SELECT TO authenticated USING (public.has_panel_permission('verification','view'));
+CREATE UNIQUE INDEX kyc_one_pending ON public.kyc_requests(user_id) WHERE status='pending';
+CREATE POLICY kyc_upload ON storage.objects FOR INSERT TO authenticated WITH CHECK(bucket_id='kyc-documents' AND (storage.foldername(name))[1]=auth.uid()::text AND EXISTS(SELECT 1 FROM public.profiles WHERE id=auth.uid() AND account_status='active'));
+CREATE POLICY kyc_document_read ON storage.objects FOR SELECT TO authenticated USING(bucket_id='kyc-documents' AND ((storage.foldername(name))[1]=auth.uid()::text OR (public.has_panel_permission('verification','view') AND EXISTS(SELECT 1 FROM public.kyc_requests WHERE document_path=name))));
+CREATE POLICY kyc_notification_read ON public.notification_campaigns FOR SELECT TO authenticated USING(audience='user:'||auth.uid()::text AND EXISTS(SELECT 1 FROM public.user_notifications n WHERE n.campaign_id=notification_campaigns.id AND n.user_id=auth.uid()));
+CREATE FUNCTION public.guard_kyc_status() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path=public AS $$ BEGIN IF NEW.kyc_status IS DISTINCT FROM OLD.kyc_status AND current_setting('app.kyc_write',true) IS DISTINCT FROM 'yes' THEN RAISE EXCEPTION 'KYC status is managed through review'; END IF; RETURN NEW; END $$;
+CREATE TRIGGER protect_kyc_status BEFORE UPDATE ON public.profiles FOR EACH ROW EXECUTE FUNCTION public.guard_kyc_status();
+CREATE FUNCTION public.submit_kyc(_type text,_path text) RETURNS uuid LANGUAGE plpgsql SECURITY DEFINER SET search_path=public AS $$ DECLARE rid uuid; p public.profiles; BEGIN
+SELECT * INTO p FROM public.profiles WHERE id=auth.uid() FOR UPDATE;
+IF auth.uid() IS NULL OR p.id IS NULL OR p.account_status<>'active' THEN RAISE EXCEPTION 'Forbidden'; END IF;
+IF p.kyc_status='verified' OR EXISTS(SELECT 1 FROM public.kyc_requests WHERE user_id=auth.uid() AND status='pending') THEN RAISE EXCEPTION 'KYC already verified or pending'; END IF;
+IF _type NOT IN ('pan','aadhaar','voter_id') OR _path IS NULL OR split_part(_path,'/',1)<>auth.uid()::text OR NOT EXISTS(SELECT 1 FROM storage.objects WHERE bucket_id='kyc-documents' AND name=_path AND lower(metadata->>'mimetype') IN ('application/pdf','image/png','image/jpeg','image/webp') AND coalesce((metadata->>'size')::bigint,0) BETWEEN 1 AND 10485760) THEN RAISE EXCEPTION 'Invalid KYC document'; END IF;
+INSERT INTO public.kyc_requests(user_id,document_type,document_path) VALUES(auth.uid(),_type,_path) RETURNING id INTO rid;
+PERFORM set_config('app.kyc_write','yes',true); UPDATE public.profiles SET kyc_status='pending',updated_at=now() WHERE id=auth.uid(); PERFORM set_config('app.kyc_write','no',true); RETURN rid;
+END $$;
+CREATE FUNCTION public.review_kyc(_id uuid,_approve boolean,_note text DEFAULT '') RETURNS void LANGUAGE plpgsql SECURITY DEFINER SET search_path=public AS $$ DECLARE r public.kyc_requests; nid uuid; BEGIN
+IF NOT public.has_panel_permission('verification','edit') THEN RAISE EXCEPTION 'Forbidden'; END IF;
+SELECT * INTO r FROM public.kyc_requests WHERE id=_id AND status='pending' FOR UPDATE; IF NOT FOUND THEN RAISE EXCEPTION 'Request not pending'; END IF;
+IF NOT _approve AND nullif(btrim(_note),'') IS NULL THEN RAISE EXCEPTION 'Rejection reason required'; END IF;
+UPDATE public.kyc_requests SET status=CASE WHEN _approve THEN 'approved' ELSE 'rejected' END,admin_note=left(btrim(coalesce(_note,'')),500),reviewed_at=now(),reviewed_by=auth.uid() WHERE id=_id;
+PERFORM set_config('app.kyc_write','yes',true); UPDATE public.profiles SET kyc_status=CASE WHEN _approve THEN 'verified' ELSE 'rejected' END,verification_status=CASE WHEN _approve THEN 'verified' ELSE verification_status END,updated_at=now() WHERE id=r.user_id; PERFORM set_config('app.kyc_write','no',true);
+INSERT INTO public.notification_campaigns(title,message,audience,status,created_by) VALUES(CASE WHEN _approve THEN 'KYC approved / KYC स्वीकृत' ELSE 'KYC rejected / KYC अस्वीकृत' END,CASE WHEN _approve THEN 'Your KYC is verified. / आपकी KYC सत्यापित हो गई है।' ELSE 'Please resubmit your document. / कृपया दस्तावेज़ दोबारा जमा करें।' END||CASE WHEN nullif(btrim(_note),'') IS NOT NULL THEN E'\n'||left(btrim(_note),500) ELSE '' END,'user:'||r.user_id::text,'published',auth.uid()) RETURNING id INTO nid;
+INSERT INTO public.user_notifications(user_id,campaign_id) VALUES(r.user_id,nid) ON CONFLICT DO NOTHING;
+INSERT INTO public.admin_audit_log(actor_id,resource,record_id,action) VALUES(auth.uid(),'kyc_requests',_id,CASE WHEN _approve THEN 'APPROVE' ELSE 'REJECT' END);
+END $$;
+REVOKE ALL ON FUNCTION public.submit_kyc(text,text),public.review_kyc(uuid,boolean,text) FROM PUBLIC,anon;
+GRANT EXECUTE ON FUNCTION public.submit_kyc(text,text),public.review_kyc(uuid,boolean,text) TO authenticated;
