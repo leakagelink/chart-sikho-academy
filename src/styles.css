@@ -459,7 +459,7 @@ html { scroll-padding-top: 80px; }
 .admin-surface .admin-record-table td :where(.flex) { flex-wrap: wrap; }
 .admin-surface .admin-record-table tbody tr:hover { background: var(--muted); }
 .admin-filters > label { flex-basis: 240px; }
-.admin-filters > :where(input, select) { flex: 0 1 auto; max-width: 100%; }
+.admin-filters > :where(input, select) { flex: 0 1 180px; width: auto; max-width: 100%; }
 .admin-editor-form > :where(p, article, button) { grid-column: 1 / -1; }
 .admin-image-upload > input { flex: 1 1 180px; min-width: 0; }
 .admin-editor :where(input, select, textarea) { max-width: 100%; }
@@ -503,6 +503,7 @@ html { scroll-padding-top: 80px; }
   .admin-surface .admin-record-table td[colspan]::before { display: none; }
   .admin-surface .admin-record-table td > button { justify-self: start; max-width: 100%; }
   .admin-surface .admin-record-table td > :where(div, span, a) { min-width: 0; max-width: 100%; }
+  .admin-surface .admin-record-table td > button:not(:first-of-type) { grid-column: 2; }
   .admin-module-header, .admin-lesson-row { flex-wrap: wrap; }
   .admin-module-header > strong { flex-basis: calc(100% - 32px); white-space: normal; }
   .admin-lesson-row > span:first-of-type { flex-basis: calc(100% - 32px); white-space: normal; }
