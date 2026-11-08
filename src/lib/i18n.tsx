@@ -3,6 +3,12 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export type Lang = "en" | "hi";
 
 const dict = {
+  admin_navigation: {en:'Administration navigation',hi:'एडमिन मेन्यू'},
+  admin_open_menu: {en:'Open admin menu',hi:'एडमिन मेन्यू खोलें'},
+  admin_find_section: {en:'Find a section',hi:'सेक्शन खोजें'},
+  admin_filters_toggle: {en:'Filters',hi:'फ़िल्टर'},
+  admin_records_count: {en:'Records',hi:'रिकॉर्ड'},
+  admin_workspace: {en:'Workspace',hi:'कार्यस्थल'},
   admin_plans_real: {en:'Plans',hi:'प्लान्स'},
   plan_name_en: {en:'Plan name (English)',hi:'प्लान का नाम (English)'},
   plan_name_hi: {en:'Plan name (Hindi)',hi:'प्लान का नाम (हिंदी)'},
