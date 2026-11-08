@@ -251,6 +251,7 @@ export type Database = {
       bonus_entries: {
         Row: {
           amount: number
+          archived_at: string | null
           created_at: string
           id: string
           reason: string
@@ -259,6 +260,7 @@ export type Database = {
         }
         Insert: {
           amount: number
+          archived_at?: string | null
           created_at?: string
           id?: string
           reason?: string
@@ -267,6 +269,7 @@ export type Database = {
         }
         Update: {
           amount?: number
+          archived_at?: string | null
           created_at?: string
           id?: string
           reason?: string
@@ -324,6 +327,7 @@ export type Database = {
       }
       certificates: {
         Row: {
+          archived_at: string | null
           certificate_no: string
           course_id: string
           created_at: string
@@ -333,6 +337,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          archived_at?: string | null
           certificate_no: string
           course_id: string
           created_at?: string
@@ -342,6 +347,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          archived_at?: string | null
           certificate_no?: string
           course_id?: string
           created_at?: string
@@ -866,6 +872,7 @@ export type Database = {
       }
       invoices: {
         Row: {
+          archived_at: string | null
           buyer_gstin: string
           buyer_name: string
           gst_amount: number
@@ -879,6 +886,7 @@ export type Database = {
           total: number
         }
         Insert: {
+          archived_at?: string | null
           buyer_gstin?: string
           buyer_name: string
           gst_amount: number
@@ -892,6 +900,7 @@ export type Database = {
           total: number
         }
         Update: {
+          archived_at?: string | null
           buyer_gstin?: string
           buyer_name?: string
           gst_amount?: number
@@ -1707,6 +1716,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_record_remove: {
+        Args: { _id: string; _resource: string }
+        Returns: undefined
+      }
       app_branding: { Args: never; Returns: string }
       delete_admin_course: { Args: { _course_id: string }; Returns: undefined }
       delete_admin_learning_record: {
@@ -1716,6 +1729,10 @@ export type Database = {
       delete_admin_managed_record: {
         Args: { _id: string; _resource: string }
         Returns: undefined
+      }
+      edit_admin_role: {
+        Args: { _id: string; _role: Database["public"]["Enums"]["app_role"] }
+        Returns: string
       }
       get_course_quiz: { Args: { _course_id: string }; Returns: Json }
       has_panel_permission: {

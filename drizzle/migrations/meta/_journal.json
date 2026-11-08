@@ -239,6 +239,13 @@
       "when": 1794107520260,
       "tag": "0033_admin_managed_delete_actions",
       "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "7",
+      "when": 1794107794650,
+      "tag": "0034_complete_admin_record_actions",
+      "breakpoints": true
     }
   ]
 }
