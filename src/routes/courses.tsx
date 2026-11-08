@@ -3,6 +3,7 @@ import { Search, BookOpen, Video, Calendar } from "lucide-react";
 import hero from "@/assets/hero-bull.jpg";
 import { LiveClassCard, LiveClassThumbnail } from "@/components/site/LiveClassCard";
 import { CourseCard } from "@/components/site/CourseCard";
+import { EbookPurchase } from "@/components/site/EbookPurchase";
 import { CloudCourseCard } from "@/components/site/CloudCourseCard";
 import { courses, liveClasses, inr } from "@/lib/courses";
 import { useLang, type DictKey } from "@/lib/i18n";
@@ -81,7 +82,7 @@ function CoursesPage() {
       <div className="catalog-list mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
         {realCourses.map(c=><CloudCourseCard key={c.id} course={c}/>)}
         {list.map((c) => <CourseCard key={c.id} course={c.course} />)}
-        {ebooks.map(b=><article key={b.id} className="overflow-hidden rounded-lg border border-border bg-card"><div className="grid aspect-video place-items-center bg-muted">{b.cover_url?<img src={b.cover_url} alt={b.title} className="h-full w-full object-contain"/>:<BookOpen className="h-12 w-12 text-primary"/>}</div><div className="space-y-3 p-4"><p className="text-xs text-muted-foreground">{t('nav_ebooks')}</p><h2 className="font-semibold">{b.title}</h2><p className="line-clamp-2 text-sm text-muted-foreground">{b.description}</p><p className="font-bold text-primary">{inr(b.price)}</p><Button asChild variant="outline"><Link to="/ebooks">{t('nav_ebooks')}</Link></Button></div></article>)}
+        {ebooks.map(b=><article key={b.id} className="overflow-hidden rounded-lg border border-border bg-card"><div className="grid aspect-video place-items-center bg-muted">{b.cover_url?<img src={b.cover_url} alt={b.title} className="h-full w-full object-contain"/>:<BookOpen className="h-12 w-12 text-primary"/>}</div><div className="space-y-3 p-4"><p className="text-xs text-muted-foreground">{t('nav_ebooks')}</p><h2 className="font-semibold">{b.title}</h2><p className="line-clamp-2 text-sm text-muted-foreground">{b.description}</p><p className="font-bold text-primary">{inr(b.price)}</p><EbookPurchase book={b}/></div></article>)}
         {sessions.map(s=><article key={s.id} className="flex h-full min-w-0 flex-col overflow-hidden rounded-lg border border-border bg-card"><LiveClassThumbnail title={s.title}/><div className="flex flex-1 flex-col gap-3 p-4"><p className="text-xs text-muted-foreground">{t(s.type==='webinars'?'cat_webinars':'cat_live')}</p><h2 className="mt-2 font-semibold">{s.title}</h2><p className="mt-3 flex gap-2 text-sm text-muted-foreground"><Calendar size={16}/>{new Intl.DateTimeFormat(lang==='hi'?'hi-IN':'en-IN',{dateStyle:'medium',timeStyle:'short',timeZone:'Asia/Kolkata'}).format(new Date(s.starts_at))}</p></div></article>)}
         {sampleClasses.map(c => <LiveClassCard key={c.id} session={c.session} />)}
       </div>

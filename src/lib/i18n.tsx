@@ -3,6 +3,10 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export type Lang = "en" | "hi";
 
 const dict = {
+  ebook_signin: { en: 'Sign in to buy', hi: 'खरीदने के लिए लॉगिन करें' },
+  ebook_open: { en: 'Open PDF', hi: 'PDF खोलें' },
+  ebook_file_missing: { en: 'The eBook PDF is not available yet. Please contact support.', hi: 'eBook की PDF अभी उपलब्ध नहीं है। कृपया सहायता से संपर्क करें।' },
+  pay_col_product: { en: 'Product', hi: 'प्रोडक्ट' },
   admin_grp_products: { en: 'Product & Services', hi: 'प्रोडक्ट और सेवाएं' },
   admin_delete_archive_note: { en: 'Remove from this management list while preserving history. The certificate is revoked, invoice cancelled or unapproved bonus rejected. Approved bonuses cannot be removed. Student and financial records remain stored.', hi: 'इस प्रबंधन सूची से हटेगा लेकिन इतिहास सुरक्षित रहेगा। सर्टिफिकेट रद्द, इनवॉइस कैंसल या अप्रूव नहीं हुआ बोनस रिजेक्ट होगा। अप्रूव बोनस नहीं हटेगा। छात्र और वित्तीय रिकॉर्ड सुरक्षित रहेंगे।' },
   admin_delete_user_note: { en: 'Permanently delete this account and its sign-in. Only full administrators can delete users. Administrators and accounts with learning, referral or financial history are protected; use Pause or Block instead.', hi: 'यह अकाउंट और उसका लॉगिन हमेशा के लिए हट जाएगा। केवल मुख्य एडमिन यूज़र हटा सकते हैं। एडमिन और पढ़ाई, रेफरल या भुगतान इतिहास वाले अकाउंट सुरक्षित हैं; ऐसे अकाउंट को Pause या Block करें।' },

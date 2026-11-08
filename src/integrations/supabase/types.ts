@@ -782,6 +782,7 @@ export type Database = {
           cover_url: string
           created_at: string
           description: string
+          has_file: boolean | null
           id: string
           price: number
           resource_path: string
@@ -792,6 +793,7 @@ export type Database = {
           cover_url?: string
           created_at?: string
           description?: string
+          has_file?: boolean | null
           id?: string
           price?: number
           resource_path?: string
@@ -802,6 +804,7 @@ export type Database = {
           cover_url?: string
           created_at?: string
           description?: string
+          has_file?: boolean | null
           id?: string
           price?: number
           resource_path?: string
@@ -999,10 +1002,12 @@ export type Database = {
         Row: {
           admin_note: string
           amount: number
-          course_id: string
+          course_id: string | null
           created_at: string
+          ebook_id: string | null
           id: string
           order_id: string | null
+          product_title: string
           reviewed_at: string | null
           reviewed_by: string | null
           screenshot_path: string
@@ -1013,10 +1018,12 @@ export type Database = {
         Insert: {
           admin_note?: string
           amount: number
-          course_id: string
+          course_id?: string | null
           created_at?: string
+          ebook_id?: string | null
           id?: string
           order_id?: string | null
+          product_title?: string
           reviewed_at?: string | null
           reviewed_by?: string | null
           screenshot_path: string
@@ -1027,10 +1034,12 @@ export type Database = {
         Update: {
           admin_note?: string
           amount?: number
-          course_id?: string
+          course_id?: string | null
           created_at?: string
+          ebook_id?: string | null
           id?: string
           order_id?: string | null
+          product_title?: string
           reviewed_at?: string | null
           reviewed_by?: string | null
           screenshot_path?: string
@@ -1044,6 +1053,13 @@ export type Database = {
             columns: ["course_id"]
             isOneToOne: false
             referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "manual_payments_ebook_id_fkey"
+            columns: ["ebook_id"]
+            isOneToOne: false
+            referencedRelation: "ebooks"
             referencedColumns: ["id"]
           },
           {
@@ -1132,6 +1148,7 @@ export type Database = {
           amount: number
           course_id: string
           created_at: string
+          ebook_id: string | null
           id: string
           provider_reference: string | null
           status: string
@@ -1141,6 +1158,7 @@ export type Database = {
           amount: number
           course_id: string
           created_at?: string
+          ebook_id?: string | null
           id?: string
           provider_reference?: string | null
           status?: string
@@ -1150,12 +1168,21 @@ export type Database = {
           amount?: number
           course_id?: string
           created_at?: string
+          ebook_id?: string | null
           id?: string
           provider_reference?: string | null
           status?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "orders_ebook_id_fkey"
+            columns: ["ebook_id"]
+            isOneToOne: false
+            referencedRelation: "ebooks"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       payout_preferences: {
         Row: {
@@ -1721,6 +1748,7 @@ export type Database = {
         Returns: undefined
       }
       app_branding: { Args: never; Returns: string }
+      can_read_ebook_file: { Args: { _path: string }; Returns: boolean }
       delete_admin_course: { Args: { _course_id: string }; Returns: undefined }
       delete_admin_learning_record: {
         Args: { _id: string; _resource: string }
@@ -1746,6 +1774,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      my_ebook_resource: { Args: { _ebook_id: string }; Returns: string }
       my_wallet: { Args: never; Returns: Json }
       payment_upi: { Args: never; Returns: Json }
       release_commissions_for: { Args: { _user: string }; Returns: number }
@@ -1805,6 +1834,10 @@ export type Database = {
       submit_course_quiz: {
         Args: { _answers: Json; _course_id: string }
         Returns: Json
+      }
+      submit_ebook_payment: {
+        Args: { _ebook_id: string; _screenshot_path: string; _utr: string }
+        Returns: string
       }
       submit_manual_payment: {
         Args: { _course_id: string; _screenshot_path: string; _utr: string }

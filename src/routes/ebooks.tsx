@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { BookOpen, Lock } from "lucide-react";
-import { toast } from "sonner";
+import { BookOpen } from "lucide-react";
+import { EbookPurchase } from "@/components/site/EbookPurchase";
 import { supabase } from "@/integrations/supabase/client";
 import { inr } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
@@ -25,7 +25,7 @@ function EbooksPage() {
   const q = useQuery({
     queryKey: ["public-ebooks"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("ebooks").select("id,title,description,price,cover_url").eq("status", "published").order("created_at", { ascending: false });
+      const { data, error } = await supabase.from("ebooks").select("id,title,description,price,cover_url,has_file").eq("status", "published").order("created_at", { ascending: false });
       if (error) throw error;
       return data;
     },
@@ -35,7 +35,7 @@ function EbooksPage() {
       <h1 className="font-display text-3xl font-bold text-foreground">{t("ebooks_t")}</h1>
       <p className="mt-1 text-muted-foreground">{t("ebooks_s")}</p>
       {q.isLoading ? <p className="mt-8 text-muted-foreground">…</p> : !q.data?.length ? <p className="mt-8 text-muted-foreground">{t("ebooks_empty")}</p> : (
-        <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {q.data.map((b) => (
             <article key={b.id} className="flex min-w-0 flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card">
               <div className="aspect-[3/4] w-full bg-muted">
@@ -45,13 +45,13 @@ function EbooksPage() {
                 <h2 className="line-clamp-2 font-semibold text-foreground">{b.title}</h2>
                 {b.description && <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{b.description}</p>}
                 <p className="mt-auto pt-2 text-lg font-bold text-primary">{inr(Number(b.price))}</p>
-                <button onClick={() => toast.info(t("payments_soon_s"), { description: t("payments_soon_t") })} className="mt-2 rounded-lg bg-primary py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">{t("ebook_buy")}</button>
+                <EbookPurchase book={b} />
               </div>
             </article>
           ))}
         </div>
       )}
-      <p className="mt-6 flex items-start gap-1.5 text-xs text-muted-foreground"><Lock className="mt-0.5 h-3.5 w-3.5 shrink-0" />{t("payments_soon_t")}</p>
+
       <p className="mt-2 text-xs text-muted-foreground">{t("disclaimer")}</p>
     </div>
   );

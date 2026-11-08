@@ -1,0 +1,1 @@
+ALTER TABLE public.ebooks ADD COLUMN has_file boolean GENERATED ALWAYS AS (resource_path <> '') STORED;
