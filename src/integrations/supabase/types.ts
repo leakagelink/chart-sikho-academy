@@ -782,6 +782,7 @@ export type Database = {
           cover_url: string
           created_at: string
           description: string
+          has_file: boolean | null
           id: string
           price: number
           resource_path: string
@@ -792,6 +793,7 @@ export type Database = {
           cover_url?: string
           created_at?: string
           description?: string
+          has_file?: boolean | null
           id?: string
           price?: number
           resource_path?: string
@@ -802,6 +804,7 @@ export type Database = {
           cover_url?: string
           created_at?: string
           description?: string
+          has_file?: boolean | null
           id?: string
           price?: number
           resource_path?: string
