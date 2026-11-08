@@ -31,12 +31,12 @@ export function CourseCard({ course }: { course: Course }) {
   const { t, lang } = useLang();
   const off = course.mrp ? Math.round((1 - course.price / course.mrp) * 100) : 0;
   return (
-    <article className="course-row course-motion group overflow-hidden rounded-2xl border border-border bg-card shadow-card transition-transform hover:-translate-y-1">
-      <div className={`course-cover relative flex h-36 items-end justify-end bg-gradient-to-br p-4 ${thumb[course.hue]}`}>
+    <article className="course-row course-motion group flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card shadow-card transition-transform hover:-translate-y-1">
+      <div className={`course-cover relative aspect-video w-full shrink-0 overflow-hidden bg-gradient-to-br ${thumb[course.hue]}`}>
         <span className={`absolute left-3 top-3 rounded-full px-2.5 py-0.5 text-[11px] font-bold ${tagCls[course.tag]}`}>{course.tag}</span>
         <Link to="/courses/$courseId" params={{courseId:course.id}} aria-label={course.title[lang]} className="absolute inset-0"><img src={educator} alt="" width={1280} height={768} loading="lazy" /></Link>
       </div>
-      <div className="course-body p-4">
+      <div className="course-body flex flex-1 flex-col p-4">
         <h3 className="font-display text-lg font-semibold leading-tight text-card-foreground">
           <Link to="/courses/$courseId" params={{ courseId: course.id }} className="transition-colors hover:text-primary hover:underline">{course.title[lang]}</Link>
         </h3>
@@ -46,8 +46,8 @@ export function CourseCard({ course }: { course: Course }) {
           <span className="font-semibold">{course.rating}</span>
           <span className="text-muted-foreground">({course.reviews})</span>
         </div>
-        <div className="course-price mt-3 flex items-center justify-between">
-          <div className="flex items-baseline gap-2">
+        <div className="course-price mt-auto flex items-center justify-between pt-3">
+          <div className="flex flex-wrap items-baseline gap-2">
             <span className="text-lg font-bold text-gold">{course.price ? inr(course.price) : "FREE"}</span>
             {course.mrp > 0 && <span className="text-xs text-muted-foreground line-through">{inr(course.mrp)}</span>}
             {off > 0 && <span className="text-xs font-semibold text-success">{off}% off</span>}

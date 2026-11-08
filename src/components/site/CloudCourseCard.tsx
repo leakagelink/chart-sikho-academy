@@ -12,8 +12,8 @@ export function CloudCourseCard({ course: c }: { course: C }) {
   const now = sale ?? c.price;
   const off = sale != null && c.price > 0 ? Math.round((1 - sale / c.price) * 100) : 0;
   return (
-    <article className="course-row course-motion group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card transition-transform hover:-translate-y-1">
-      <div className="course-cover relative aspect-video w-full overflow-hidden bg-muted">
+    <article className="course-row course-motion group flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card shadow-card transition-transform hover:-translate-y-1">
+      <div className="course-cover relative aspect-video w-full shrink-0 overflow-hidden bg-muted">
         <Link to="/courses/$courseId" params={{ courseId: c.id }} aria-label={c.title} className="absolute inset-0">
           <img src={c.thumbnail_url || educator} alt="" loading="lazy" className="h-full w-full object-cover transition-transform group-hover:scale-105" />
         </Link>
@@ -26,7 +26,7 @@ export function CloudCourseCard({ course: c }: { course: C }) {
         </h3>
         {c.description && <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{c.description}</p>}
         {c.instructor && <p className="mt-2 flex items-center gap-1 text-xs text-muted-foreground"><User className="h-3.5 w-3.5" />{c.instructor}</p>}
-        <div className="course-price mt-auto flex items-baseline gap-2 pt-3">
+        <div className="course-price mt-auto flex flex-wrap items-baseline gap-2 pt-3">
           <span className="text-lg font-bold text-gold">{now ? inr(now) : "FREE"}</span>
           {sale != null && <span className="text-xs text-muted-foreground line-through">{inr(c.price)}</span>}
         </div>
