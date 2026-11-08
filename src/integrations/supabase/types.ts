@@ -526,6 +526,7 @@ export type Database = {
           created_at: string
           icon_url: string
           id: string
+          is_visible: boolean
           name: string
           position: number
           slug: string
@@ -534,6 +535,7 @@ export type Database = {
           created_at?: string
           icon_url?: string
           id?: string
+          is_visible?: boolean
           name: string
           position?: number
           slug: string
@@ -542,6 +544,7 @@ export type Database = {
           created_at?: string
           icon_url?: string
           id?: string
+          is_visible?: boolean
           name?: string
           position?: number
           slug?: string
