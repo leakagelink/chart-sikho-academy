@@ -25,7 +25,7 @@ function EbooksPage() {
   const q = useQuery({
     queryKey: ["public-ebooks"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("ebooks").select("id,title,description,price,cover_url").eq("status", "published").order("created_at", { ascending: false });
+      const { data, error } = await supabase.from("ebooks").select("id,title,description,price,cover_url,has_file").eq("status", "published").order("created_at", { ascending: false });
       if (error) throw error;
       return data;
     },
