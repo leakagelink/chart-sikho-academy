@@ -1,12 +1,20 @@
 import { createServerFn } from '@tanstack/react-start';
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from '@/integrations/supabase/types';
+import { visibleCategories } from './category-visibility';
+export const getHomeCategories = createServerFn({method:'GET'}).handler(async () => {
+ const key=process.env['SUPABASE_PUBLISHABLE_KEY']!;
+ const s=createClient<Database>(process.env['SUPABASE_URL']!,key,{auth:{persistSession:false,autoRefreshToken:false},global:{fetch:(input,init)=>{const h=new Headers(init?.headers);if(key.startsWith('sb_')&&h.get('Authorization')===`Bearer ${key}`)h.delete('Authorization');h.set('apikey',key);return fetch(input,{...init,headers:h});}}});
+ const result=await s.from('course_categories').select('id,name,slug,icon_url,position,is_visible').eq('is_visible',true).order('position').order('name');
+ if(result.error)throw new Error('Unable to load categories');
+ return visibleCategories(result.data ?? []);
+});
 export const getPublishedProducts = createServerFn({method:'GET'}).handler(async () => {
  const key=process.env['SUPABASE_PUBLISHABLE_KEY']!;
  const s=createClient<Database>(process.env['SUPABASE_URL']!,key,{auth:{persistSession:false,autoRefreshToken:false},global:{fetch:(input,init)=>{const h=new Headers(init?.headers);if(key.startsWith('sb_')&&h.get('Authorization')===`Bearer ${key}`)h.delete('Authorization');h.set('apikey',key);return fetch(input,{...init,headers:h});}}});
  const [ebooks, sessions] = await Promise.all([
   s.from('ebooks').select('id,title,description,price,cover_url,has_file').eq('status','published'),
-  s.from('class_sessions').select('id,title,kind,starts_at,thumbnail_url').eq('status','scheduled').order('starts_at'),
+  s.from('class_sessions').select('id,title,kind,starts_at,thumbnail_url,category_slug').eq('status','scheduled').order('starts_at'),
  ]);
  if (ebooks.error || sessions.error) throw new Error('Unable to load products');
  return { ebooks: ebooks.data ?? [], sessions: sessions.data ?? [] };
