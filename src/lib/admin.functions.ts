@@ -1,6 +1,7 @@
 import { assertPanelAction, resolvePanelAccess } from './admin-access.server';
 import { canAccess, canReadDataset } from './admin-permissions';
 import { createServerFn } from '@tanstack/react-start';
+import { categoryVisibility } from './category-visibility';
 import { z } from 'zod';
 import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
 import { adminChangeSchema, adminDeleteSchema, videoRemovalValues, liveClassSchema, requireAdminRole, safeHttps, coursePublishIssues, makeCertificateNo, makeInvoiceNo, invoiceTotals } from './admin-rules';
@@ -141,7 +142,8 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
   switch (data.resource) {
     case 'categories': {
       const row = z.object({ name: title, slug: z.string().trim().toLowerCase().transform(x=>x.replace(/[^a-z0-9-]+/g,"-").replace(/^-+|-+$/g,"")).pipe(z.string().regex(/^[a-z0-9-]{2,40}$/)), position: z.coerce.number().int().min(1).max(1000), icon_url: z.union([z.literal(''), z.string().max(700000).regex(/^data:image\/(png|jpe?g|webp|gif|svg\+xml);base64,/), z.string().url().max(500).startsWith('https://')]).default('') }).parse(v);
-      result = data.id ? await s.from('course_categories').update(row).eq('id',data.id).select('id').single() : await s.from('course_categories').insert(row).select('id').single(); break;
+      const category = {...row,is_visible:categoryVisibility.parse(v['is_visible'])};
+      result = data.id ? await s.from('course_categories').update(category).eq('id',data.id).select('id').single() : await s.from('course_categories').insert(category).select('id').single(); break;
     }
     case 'modules': {
       const row = z.object({ title, course_id: z.string().uuid(), position: z.coerce.number().int().min(1).max(10000), drip_days: z.coerce.number().int().min(0).max(3650) }).parse(v);

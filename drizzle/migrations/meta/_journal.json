@@ -267,6 +267,13 @@
       "when": 1794108797467,
       "tag": "0037_live_class_thumbnails",
       "breakpoints": true
+    },
+    {
+      "idx": 38,
+      "version": "7",
+      "when": 1794124627782,
+      "tag": "0038_category_home_visibility",
+      "breakpoints": true
     }
   ]
 }
