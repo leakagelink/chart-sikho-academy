@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [ ] Optimize all admin pages for desktop/mobile: shared navigation, headers, filters, record lists, product thumbnails, editor forms, payments, permissions and user details; verify signed-in without changing records or permissions.
 - [x] Replace eBook notice-only Buy with existing manual UPI checkout, admin review and private purchase-gated PDF opening on Marketplace and Products; 8 tests pass, signed-in missing-PDF state verified, build OK.
 - [ ] Verify eBook submission → approval → PDF end-to-end after the owner uploads the real PDF in Admin → eBooks → Edit → Resource file. Current published ₹3,499 eBook has no file; buying stays blocked rather than collecting payment for missing content.
 - [x] Add-surface Edit/Delete completed: Builder modules/lessons/courses, Pricing course deletion, Tickets detail editing, Roles atomic replacement/removal, Certificates status editing/revoked archive, Invoices buyer editing/cancelled archive, unapproved Bonuses editing/rejected archive. Ticket Add/Edit/reload/Delete exercised; Roles and Pricing buttons verified; 82 tests passed. Approved bonuses and linked histories remain protected; certificate/invoice/bonus populated flows remain unverified because lists are empty.
