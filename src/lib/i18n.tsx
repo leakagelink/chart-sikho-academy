@@ -8,6 +8,7 @@ const dict = {
   plan_name_hi: {en:'Plan name (Hindi)',hi:'प्लान का नाम (हिंदी)'},
   plan_features_en: {en:'Benefits (English, one per line)',hi:'लाभ (English, हर लाइन में एक)'},
   plan_features_hi: {en:'Benefits (Hindi, one per line)',hi:'लाभ (हिंदी, हर लाइन में एक)'},
+  plan_order: {en:'Display order',hi:'दिखाने का क्रम'},
   plan_period: {en:'Plan period',hi:'प्लान अवधि'},
   plan_lifetime: {en:'Lifetime',hi:'आजीवन'},
   plans_empty: {en:'No plans are available yet.',hi:'अभी कोई प्लान उपलब्ध नहीं है।'},
