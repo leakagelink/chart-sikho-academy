@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [ ] Add private KYC document requests, admin review, notifications and student dashboard status; verify submit/reject/resubmit/approve flow.
 - [x] Verified paid orders now assign unparented direct buyers to designated Admin before commission processing; existing parents/self/cycles protected. One historical verified buyer attached without changing old commissions; real Admin affiliate/team UI verified, six authenticated DB eligibility tests pass and trigger installed/build OK. Future new payment approval was not executed against real money/accounts.
 - [x] Verification and Blocked/Suspended have row selection, Select All filtered results and confirmed bulk Verify/Reject or Activate/Block/Pause. Existing permission-checked saves reused; failures retained and reported. Signed-in 5-member/1-member selection, cancel, unchanged-status verification save/reload and mobile no-overflow verified; no member status changed, 86 tests passed, build OK. Actual account suspension/activation deliberately not applied to real members.
 - [x] Home loads saved categories with icons/order and category catalog links; admin Add/Edit checkbox and per-row Show/Hide persist without removing courses. Signed-in temporary category create → Home → category link → Hide → refresh → absent → Show → visible verified; mobile no overflow, test category removed, 84 tests passed and build OK.

@@ -281,6 +281,13 @@
       "when": 1794125451793,
       "tag": "0039_direct_paid_buyer_admin_referral",
       "breakpoints": true
+    },
+    {
+      "idx": 40,
+      "version": "7",
+      "when": 1794125768309,
+      "tag": "0040_student_kyc_review",
+      "breakpoints": true
     }
   ]
 }

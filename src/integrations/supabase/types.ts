@@ -932,6 +932,50 @@ export type Database = {
           },
         ]
       }
+      kyc_requests: {
+        Row: {
+          admin_note: string
+          created_at: string
+          document_path: string
+          document_type: string
+          id: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          admin_note?: string
+          created_at?: string
+          document_path: string
+          document_type: string
+          id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          admin_note?: string
+          created_at?: string
+          document_path?: string
+          document_type?: string
+          id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "kyc_requests_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leads: {
         Row: {
           created_at: string
@@ -1269,6 +1313,7 @@ export type Database = {
           date_of_birth: string | null
           full_name: string | null
           id: string
+          kyc_status: string
           phone: string | null
           preferred_language: string
           referral_code: string | null
@@ -1286,6 +1331,7 @@ export type Database = {
           date_of_birth?: string | null
           full_name?: string | null
           id: string
+          kyc_status?: string
           phone?: string | null
           preferred_language?: string
           referral_code?: string | null
@@ -1303,6 +1349,7 @@ export type Database = {
           date_of_birth?: string | null
           full_name?: string | null
           id?: string
+          kyc_status?: string
           phone?: string | null
           preferred_language?: string
           referral_code?: string | null
@@ -1790,6 +1837,10 @@ export type Database = {
       release_commissions_for: { Args: { _user: string }; Returns: number }
       release_due_commissions: { Args: never; Returns: number }
       request_payout: { Args: { _amount: number }; Returns: string }
+      review_kyc: {
+        Args: { _approve: boolean; _id: string; _note?: string }
+        Returns: undefined
+      }
       review_manual_payment: {
         Args: { _approve: boolean; _id: string; _note?: string }
         Returns: undefined
@@ -1849,6 +1900,7 @@ export type Database = {
         Args: { _ebook_id: string; _screenshot_path: string; _utr: string }
         Returns: string
       }
+      submit_kyc: { Args: { _path: string; _type: string }; Returns: string }
       submit_manual_payment: {
         Args: { _course_id: string; _screenshot_path: string; _utr: string }
         Returns: string
