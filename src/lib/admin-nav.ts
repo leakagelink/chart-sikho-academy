@@ -3,7 +3,8 @@ import type { DictKey } from './i18n';
 type NavItem = { section: AdminSection } | { planned: DictKey; phase: number };
 export const adminNav: { group: DictKey; items: NavItem[] }[] = [
   {group:'admin_grp_overview',items:[{section:'overview'}]},
-  {group:'admin_grp_learning',items:[{section:'categories'},{section:'builder'},{section:'courses'},{section:'lessons'},{section:'videos'},{section:'ebooks'},{section:'classes'},{section:'webinars'},{section:'quizzes'},{section:'questions'},{section:'certificates'},{section:'progress'},{section:'reviews'}]},
+  {group:'admin_grp_products',items:[{section:'courses'},{section:'ebooks'},{section:'classes'},{section:'certificates'},{section:'webinars'}]},
+  {group:'admin_grp_learning',items:[{section:'categories'},{section:'builder'},{section:'lessons'},{section:'videos'},{section:'quizzes'},{section:'questions'},{section:'progress'},{section:'reviews'}]},
   {group:'admin_grp_commerce',items:[{section:'pricing'},{section:'orders'},{section:'payments'},{section:'coupons'},{section:'refunds'},{section:'invoices'}]},
   {group:'admin_grp_users',items:[{section:'users'},{section:'instructors'},{section:'roles'},{section:'verification'},{section:'blocked'},{section:'bulk'}]},
   {group:'admin_grp_referral',items:[{section:'refsettings'},{section:'reflinks'},{section:'affiliates'},{section:'teamtree'},{section:'commrules'},{section:'commissions'},{section:'ranks'},{section:'bonuses'},{section:'payouts'},{section:'fraud'}]},
