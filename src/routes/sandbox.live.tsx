@@ -40,7 +40,7 @@ function Screen() {
       </div>
 
       {tab === "upcoming" && (
-        <div className="mt-5 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="live-class-grid mt-5 grid items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
           {liveClasses.map((c) => (
             <LiveClassCard key={c.id} session={c} action={c.live ? undefined : (
               <Button variant={registered.includes(c.id) ? "secondary" : "outline"} className="w-full"
@@ -52,9 +52,9 @@ function Screen() {
         </div>
       )}
       {tab === "past" && (
-        <div className="mt-5 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="live-class-grid mt-5 grid items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
           {pastClasses.map((c) => (
-            <article key={c.id} className="overflow-hidden rounded-lg border border-border bg-card shadow-card">
+            <article key={c.id} className="live-class-card flex h-full min-w-0 flex-col overflow-hidden rounded-lg border border-border bg-card shadow-card">
               <LiveClassThumbnail title={c.title[lang]} />
               <div className="flex items-start gap-3 p-4">
                 <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-muted text-center font-display text-xs font-bold leading-tight text-muted-foreground">
