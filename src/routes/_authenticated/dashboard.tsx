@@ -7,6 +7,7 @@ import { courses, liveClasses } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { LiveClassCard } from "@/components/site/LiveClassCard";
+import { ScheduledLiveClasses } from "@/components/site/ScheduledLiveClasses";
 import { StudentCharts } from "@/components/site/StudentCharts";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -128,6 +129,7 @@ function Dashboard() {
       <section className="mt-10">
         <h2 className="font-display text-2xl font-bold text-foreground">{t("upcoming")}</h2>
         <div className="mt-4 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          <ScheduledLiveClasses />
           {liveClasses.map((c) => <LiveClassCard key={c.id} session={c} />)}
         </div>
       </section>
