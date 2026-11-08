@@ -443,3 +443,69 @@ html { scroll-padding-top: 80px; }
   .student-main table { width: 100%; }
   .student-main :where(section) { scroll-margin-top: 5rem; }
 }
+
+/* Administration: scoped layouts preserve student surfaces and access rules. */
+.admin-surface { width: 100%; min-width: 0; }
+.admin-surface :where(.grid > *, .flex > *, fieldset, section, main, aside) { min-width: 0; }
+.admin-surface :where(h1, h2, h3, p, dd, legend, label) { overflow-wrap: anywhere; }
+.admin-surface :where(input, select, textarea) { min-width: 0; max-width: 100%; }
+.admin-surface :where(.overflow-x-auto, .overflow-auto) { max-width: 100%; overscroll-behavior-inline: contain; scrollbar-width: thin; }
+.admin-surface .admin-record-table { min-width: 720px; border-collapse: collapse; }
+.admin-surface .admin-record-table :where(th, td) { vertical-align: middle; }
+.admin-surface .admin-record-table td { min-width: 100px; }
+.admin-surface .admin-record-table td[data-field="title"] { min-width: 200px; }
+.admin-surface .admin-record-table td[data-field="thumbnail_url"] { min-width: 136px; }
+.admin-surface .admin-record-table :where(td[data-field="price"], td[data-field="sale_price"]) { white-space: nowrap; }
+.admin-surface .admin-record-table td :where(.flex) { flex-wrap: wrap; }
+.admin-surface .admin-record-table tbody tr:hover { background: var(--muted); }
+.admin-filters > label { flex-basis: 240px; }
+.admin-filters > :where(input, select) { flex: 0 1 auto; max-width: 100%; }
+.admin-editor-form > :where(p, article, button) { grid-column: 1 / -1; }
+.admin-image-upload > input { flex: 1 1 180px; min-width: 0; }
+.admin-editor :where(input, select, textarea) { max-width: 100%; }
+.admin-dialog { max-width: min(42rem, calc(100vw - 2rem)); overflow-wrap: anywhere; max-height: 90dvh; overflow-y: auto; }
+.admin-user-detail { max-width: 1600px; margin-inline: auto; }
+@media (min-width: 1024px) {
+  .admin-layout { padding-block: 28px; }
+  .admin-sidebar { position: sticky; top: 88px; align-self: start; }
+  .admin-sidebar nav { max-height: calc(100dvh - 160px); scrollbar-width: thin; }
+  .admin-sidebar nav a { height: auto; min-height: 36px; white-space: normal; text-align: left; }
+  .admin-sidebar nav svg { flex-shrink: 0; }
+  .admin-table-scroll { padding-bottom: 8px; }
+}
+@media (min-width: 1600px) {
+  .admin-layout { grid-template-columns: 250px minmax(0, 1fr); padding-inline: 32px; }
+  .admin-main { padding-left: 32px; }
+  .admin-surface .admin-record-table :where(th, td) { padding-inline: 16px; }
+}
+@media (max-width: 767px) {
+  .admin-page-header h1 { grid-column: 1 / -1; }
+  .admin-page-actions { grid-column: 1 / -1; }
+  .admin-page-actions > button { flex: 0 1 auto; }
+  .admin-filters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .admin-filters > label, .admin-filters > div { grid-column: 1 / -1; }
+  .admin-filters > :where(input, select) { width: 100%; }
+  .admin-surface :where(input:not([type="checkbox"]), select, textarea), .admin-editor :where(input, select, textarea) { font-size: 16px; }
+  .admin-surface button, .admin-editor button { min-height: 44px; white-space: normal; height: auto; }
+  .admin-surface .admin-record-table { display: block; min-width: 0; width: 100%; }
+  .admin-surface .admin-record-table thead { display: none; }
+  .admin-surface .admin-record-table tbody { display: grid; width: 100%; gap: 16px; padding-block: 12px; }
+  .admin-surface .admin-record-table tbody tr { display: grid; grid-template-columns: minmax(0, 1fr); border: 1px solid var(--border); border-radius: 8px; background: var(--card); overflow: hidden; }
+  .admin-surface .admin-record-table td { display: grid; grid-template-columns: minmax(88px, 32%) minmax(0, 1fr); align-items: center; gap: 8px; min-width: 0; max-width: none; padding: 10px 12px; overflow-wrap: anywhere; border-bottom: 1px solid var(--border); }
+  .admin-surface .admin-record-table td::before { content: attr(data-label); color: var(--muted-foreground); font-size: 12px; font-weight: 500; white-space: normal; }
+  .admin-surface .admin-record-table td:last-child { border-bottom: 0; }
+  .admin-surface .admin-record-table td[data-field="thumbnail_url"], .admin-surface .admin-record-table td[data-field="cover_url"] { display: block; }
+  .admin-surface .admin-record-table td[data-field="thumbnail_url"]::before, .admin-surface .admin-record-table td[data-field="cover_url"]::before { display: none; }
+  .admin-surface .admin-record-table td[data-field="thumbnail_url"] img { width: 100%; height: auto; max-height: 220px; object-fit: contain; }
+  .admin-surface .admin-record-table td[data-field="cover_url"] img { width: auto; height: 160px; margin-inline: auto; }
+  .admin-surface .admin-record-table td[data-field="title"] { min-width: 0; font-weight: 600; }
+  .admin-surface .admin-record-table td[colspan] { display: block; text-align: center; }
+  .admin-surface .admin-record-table td[colspan]::before { display: none; }
+  .admin-surface .admin-record-table td > button { justify-self: start; max-width: 100%; }
+  .admin-surface .admin-record-table td > :where(div, span, a) { min-width: 0; max-width: 100%; }
+  .admin-module-header, .admin-lesson-row { flex-wrap: wrap; }
+  .admin-module-header > strong { flex-basis: calc(100% - 32px); white-space: normal; }
+  .admin-lesson-row > span:first-of-type { flex-basis: calc(100% - 32px); white-space: normal; }
+  .admin-editor-footer { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .admin-permissions-table :where(th, td) { min-width: 72px; }
+}
