@@ -2,6 +2,7 @@ import { assertPanelAction, resolvePanelAccess } from './admin-access.server';
 import { canAccess, canReadDataset } from './admin-permissions';
 import { createServerFn } from '@tanstack/react-start';
 import { categoryVisibility } from './category-visibility';
+import { bannerImage } from './website-banners';
 import { z } from 'zod';
 import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
 import { adminChangeSchema, adminDeleteSchema, videoRemovalValues, liveClassSchema, requireAdminRole, safeHttps, coursePublishIssues, makeCertificateNo, makeInvoiceNo, invoiceTotals } from './admin-rules';
@@ -351,7 +352,7 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
       result = await s.from('support_tickets').insert(row).select('id').single(); break;
     }
     case 'banners': {
-      const row = z.object({ title, image_url: url.default(''), link_url: url.default(''), placement: z.enum(['home','courses','dashboard']).default('home'), position: z.coerce.number().int().min(1).max(1000), active: z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]).default(true) }).parse(v);
+      const row = z.object({ title, image_url: bannerImage, link_url: url.default(''), placement: z.enum(['home','courses','dashboard']).default('home'), position: z.coerce.number().int().min(1).max(1000), active: z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]).default(true) }).parse(v);
       result = data.id ? await s.from('banners').update(row).eq('id',data.id).select('id').single() : await s.from('banners').insert(row).select('id').single(); break;
     }
     case 'campaigns': {

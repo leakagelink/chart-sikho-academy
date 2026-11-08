@@ -2,6 +2,11 @@ import { createServerFn } from '@tanstack/react-start';
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from '@/integrations/supabase/types';
 import { visibleCategories } from './category-visibility';
+export const getWebsiteBanners=createServerFn({method:'GET'}).handler(async()=>{
+ const key=process.env['SUPABASE_PUBLISHABLE_KEY']!;
+ const s=createClient<Database>(process.env['SUPABASE_URL']!,key,{auth:{persistSession:false,autoRefreshToken:false},global:{fetch:(input,init)=>{const h=new Headers(init?.headers);if(key.startsWith('sb_')&&h.get('Authorization')===`Bearer ${key}`)h.delete('Authorization');h.set('apikey',key);return fetch(input,{...init,headers:h});}}});
+ const r=await s.from('banners').select('id,title,image_url,link_url,placement,position,active').eq('active',true).order('position');if(r.error)throw new Error('Unable to load banners');return r.data;
+});
 export const getHomeCategories = createServerFn({method:'GET'}).handler(async () => {
  const key=process.env['SUPABASE_PUBLISHABLE_KEY']!;
  const s=createClient<Database>(process.env['SUPABASE_URL']!,key,{auth:{persistSession:false,autoRefreshToken:false},global:{fetch:(input,init)=>{const h=new Headers(init?.headers);if(key.startsWith('sb_')&&h.get('Authorization')===`Bearer ${key}`)h.delete('Authorization');h.set('apikey',key);return fetch(input,{...init,headers:h});}}});

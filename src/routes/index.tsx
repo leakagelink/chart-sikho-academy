@@ -11,9 +11,11 @@ import { useLang } from "@/lib/i18n";
 import { useAuth } from "@/hooks/use-auth";
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { categoryQuery } from '@/lib/category-query';
+import { bannerQuery } from '@/lib/banner-query';
+import { WebsiteBanners } from '@/components/site/WebsiteBanners';
 
 export const Route = createFileRoute("/")({
-  loader: ({context}) => context.queryClient.ensureQueryData(categoryQuery()),
+  loader: async ({context}) => {await Promise.all([context.queryClient.ensureQueryData(categoryQuery()),context.queryClient.ensureQueryData(bannerQuery())]);},
   head: () => ({
     meta: [
       { property: "og:type", content: "website" },
@@ -83,6 +85,7 @@ function Index() {
       </section>
 
       {/* Hero */}
+      <WebsiteBanners page="home" fallback={
       <section className="home-marketing relative mt-6 overflow-hidden rounded-3xl bg-navy text-navy-foreground">
         <img src={hero} alt="" width={1280} height={832} className="absolute inset-0 h-full w-full object-cover opacity-60 md:left-1/3 md:w-2/3 md:opacity-100" />
         <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-transparent" />
@@ -108,6 +111,7 @@ function Index() {
       </section>
 
       {/* Categories */}
+      }/>
       <section className="home-categories mt-6 grid grid-cols-3 gap-3 sm:grid-cols-6">
         {cats.map(({ icon: Icon, label, to }) => (
           <Link key={label} to={to} className="flex flex-col items-center gap-2 rounded-2xl border border-border bg-card p-4 text-center shadow-card">

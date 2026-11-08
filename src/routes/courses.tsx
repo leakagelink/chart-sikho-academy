@@ -11,11 +11,13 @@ import { Button } from "@/components/ui/button";
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { catalogQuery } from '@/lib/catalog-query';
 import { productQuery } from '@/lib/product-query';
+import { bannerQuery } from '@/lib/banner-query';
+import { WebsiteBanners } from '@/components/site/WebsiteBanners';
 import { filterProducts, type ProductFilter, type ProductType } from '@/lib/product-filters';
 
 export const Route = createFileRoute("/courses")({
   validateSearch: (s: Record<string, unknown>): { type?: ProductFilter; q?: string; cat?: string } => ({ ...(typeof s['type'] === 'string' && ['all','courses','ebooks','classes','webinars'].includes(s['type']) ? { type: s['type'] as ProductFilter } : {}), ...(typeof s['q'] === 'string' ? { q: s['q'] } : {}), ...(typeof s['cat'] === 'string' ? {cat:s['cat']} : {}) }),
-  loader:({context})=>Promise.all([context.queryClient.ensureQueryData(catalogQuery()),context.queryClient.ensureQueryData(productQuery())]),
+  loader:({context})=>Promise.all([context.queryClient.ensureQueryData(catalogQuery()),context.queryClient.ensureQueryData(productQuery()),context.queryClient.ensureQueryData(bannerQuery())]),
   errorComponent:CatalogError,
   notFoundComponent:CatalogError,
   head: () => ({
@@ -56,6 +58,7 @@ function CoursesPage() {
   const total = list.length + realCourses.length + ebooks.length + sessions.length + sampleClasses.length;
   return (
     <div className="catalog-screen w-full px-4 pt-8">
+      <WebsiteBanners page="courses" fallback={
       <section className="relative overflow-hidden rounded-3xl bg-navy text-navy-foreground">
         <img src={hero} alt="" width={1280} height={832} className="absolute inset-0 h-full w-full object-cover opacity-50 md:left-1/3 md:w-2/3 md:opacity-90" />
         <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-transparent" />
@@ -67,6 +70,7 @@ function CoursesPage() {
           <p className="mt-3 opacity-85">{t("products_hero_sub")}</p>
         </div>
       </section>
+      }/>
       <div className="catalog-controls mt-6 flex flex-col gap-3 lg:flex-row lg:items-center">
         <label className="relative flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
