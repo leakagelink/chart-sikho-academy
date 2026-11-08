@@ -1,0 +1,12 @@
+CREATE TABLE public.membership_plans (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), name_en text NOT NULL, name_hi text NOT NULL DEFAULT '', price integer NOT NULL DEFAULT 0 CHECK(price >= 0), billing_period text NOT NULL DEFAULT 'monthly' CHECK(billing_period IN ('monthly','yearly','lifetime')), features_en text NOT NULL DEFAULT '', features_hi text NOT NULL DEFAULT '', popular boolean NOT NULL DEFAULT false, position integer NOT NULL DEFAULT 1 CHECK(position >= 1), status text NOT NULL DEFAULT 'draft' CHECK(status IN ('draft','published')), created_at timestamptz NOT NULL DEFAULT now());
+GRANT SELECT ON public.membership_plans TO anon;
+GRANT SELECT,INSERT,UPDATE,DELETE ON public.membership_plans TO authenticated;
+GRANT ALL ON public.membership_plans TO service_role;
+ALTER TABLE public.membership_plans ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Published plans" ON public.membership_plans FOR SELECT TO anon,authenticated USING(status='published');
+CREATE POLICY "Panel plans read" ON public.membership_plans FOR SELECT TO authenticated USING(public.has_panel_permission('plans','view') OR public.has_panel_permission('overview','view'));
+CREATE POLICY "Panel plans create" ON public.membership_plans FOR INSERT TO authenticated WITH CHECK(public.has_panel_permission('plans','create'));
+CREATE POLICY "Panel plans edit" ON public.membership_plans FOR UPDATE TO authenticated USING(public.has_panel_permission('plans','edit')) WITH CHECK(public.has_panel_permission('plans','edit'));
+CREATE POLICY "Panel plans delete" ON public.membership_plans FOR DELETE TO authenticated USING(public.has_panel_permission('plans','delete'));
+CREATE TRIGGER audit_membership_plans AFTER INSERT OR UPDATE OR DELETE ON public.membership_plans FOR EACH ROW EXECUTE FUNCTION public.audit_admin_change();
+DO $$ DECLARE definition text; BEGIN SELECT pg_get_constraintdef(oid) INTO definition FROM pg_constraint WHERE conrelid='public.user_panel_permissions'::regclass AND conname='user_panel_permissions_section_check'; definition:=replace(definition,'ARRAY[','ARRAY[''plans''::text,'); ALTER TABLE public.user_panel_permissions DROP CONSTRAINT user_panel_permissions_section_check; EXECUTE 'ALTER TABLE public.user_panel_permissions ADD CONSTRAINT user_panel_permissions_section_check '||definition; END $$;

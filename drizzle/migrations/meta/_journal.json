@@ -288,6 +288,13 @@
       "when": 1794125768309,
       "tag": "0040_student_kyc_review",
       "breakpoints": true
+    },
+    {
+      "idx": 41,
+      "version": "7",
+      "when": 1794126738314,
+      "tag": "0041_managed_membership_plans",
+      "breakpoints": true
     }
   ]
 }
