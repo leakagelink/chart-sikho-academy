@@ -4,6 +4,7 @@ import { ArrowRight, Award, Bell, BookOpen, Calendar, ClipboardCheck, Crown, Fil
 import educator from "@/assets/course-educator-thumb.webp";
 import hero from "@/assets/hero-bull.jpg";
 import { LiveClassCard } from "@/components/site/LiveClassCard";
+import { ScheduledLiveClasses } from "@/components/site/ScheduledLiveClasses";
 import { CourseCard } from "@/components/site/CourseCard";
 import { courses, liveClasses } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
@@ -118,6 +119,7 @@ function Index() {
           <h2 className="font-display text-2xl font-bold text-foreground">{t("upcoming")}</h2>
         </div>
         <div className="mt-4 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          <ScheduledLiveClasses />
           {liveClasses.map((c) => <LiveClassCard key={c.id} session={c} />)}
         </div>
       </section>

@@ -6,9 +6,9 @@ import { liveClasses } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
 import type { ReactNode } from "react";
 
-export function LiveClassThumbnail({ title }: { title: string }) {
+export function LiveClassThumbnail({ title, thumbnailUrl }: { title: string; thumbnailUrl?: string }) {
   return <div className="live-class-cover relative aspect-video w-full shrink-0 overflow-hidden bg-muted">
-    <img src={educator} alt={title} loading="lazy" decoding="async" className="block h-full w-full object-contain" />
+    <img src={thumbnailUrl || educator} alt={title} loading="lazy" decoding="async" className="block h-full w-full object-contain" />
   </div>;
 }
 

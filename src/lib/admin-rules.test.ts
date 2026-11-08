@@ -21,6 +21,8 @@ describe('video removal', () => {
 describe('live class recordings', () => {
   const row = { title:'Market class', kind:'class', starts_at:'2026-11-01T18:00:00Z', youtube_url:'', jitsi_url:'', status:'scheduled', category_slug:'basics', course_id:'11111111-1111-4111-8111-111111111111', module_id:'22222222-2222-4222-8222-222222222222', completion_state:'completed', recording_url:'https://youtu.be/recording' };
   it('accepts completed recording linked to course and module', () => { expect(liveClassSchema.safeParse(row).success).toBe(true); });
+  it('retains the uploaded live class thumbnail', () => { const thumbnail_url = 'data:image/png;base64,AAAA'; expect(liveClassSchema.parse({ ...row, thumbnail_url }).thumbnail_url).toBe(thumbnail_url); });
+  it('rejects executable thumbnail links', () => { expect(liveClassSchema.safeParse({ ...row, thumbnail_url: 'javascript:alert(1)' }).success).toBe(false); });
   it('requires a course for completed recordings', () => { expect(liveClassSchema.safeParse({ ...row, course_id:'' }).success).toBe(false); });
   it('requires a module for completed recordings', () => { expect(liveClassSchema.safeParse({ ...row, module_id:'' }).success).toBe(false); });
   it('requires recording before completion', () => { expect(liveClassSchema.safeParse({ ...row, recording_url:'' }).success).toBe(false); });

@@ -1,0 +1,1 @@
+ALTER TABLE public.class_sessions ADD COLUMN thumbnail_url text NOT NULL DEFAULT '';
