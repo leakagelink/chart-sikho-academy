@@ -110,8 +110,8 @@ function Index() {
         </div>
       </section>
 
-      {/* Categories */}
       }/>
+      {/* Categories */}
       <section className="home-categories mt-6 grid grid-cols-3 gap-3 sm:grid-cols-6">
         {cats.map(({ icon: Icon, label, to }) => (
           <Link key={label} to={to} className="flex flex-col items-center gap-2 rounded-2xl border border-border bg-card p-4 text-center shadow-card">
