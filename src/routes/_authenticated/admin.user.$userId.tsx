@@ -20,7 +20,7 @@ function Section({ title, children, empty }: { title: string; children: ReactNod
   return <section className="rounded-lg border border-border bg-card p-4"><h2 className="mb-3 font-heading text-lg font-bold">{title}</h2>{empty ? <p className="text-sm text-muted-foreground">{t('up_none')}</p> : children}</section>;
 }
 function Table({ head, rows }: { head: string[]; rows: ReactNode[][] }) {
-  return <div className="overflow-x-auto"><table className="w-full text-sm"><thead><tr className="text-left text-muted-foreground">{head.map(h => <th key={h} className="py-1 pr-3 font-medium">{h}</th>)}</tr></thead><tbody>{rows.map((r, i) => <tr key={i} className="border-t border-border">{r.map((c, j) => <td key={j} className="py-2 pr-3 align-top">{c}</td>)}</tr>)}</tbody></table></div>;
+  return <div className="overflow-x-auto"><table className="admin-record-table w-full text-sm"><thead><tr className="text-left text-muted-foreground">{head.map(h => <th key={h} className="py-1 pr-3 font-medium">{h}</th>)}</tr></thead><tbody>{rows.map((r, i) => <tr key={i} className="border-t border-border">{r.map((c, j) => <td key={j} data-label={head[j]} className="py-2 pr-3 align-top">{c}</td>)}</tr>)}</tbody></table></div>;
 }
 
 function Screen() {
@@ -43,7 +43,7 @@ function Screen() {
     ['up_referred_by', d.referredBy ? <Link to="/admin/user/$userId" params={{ userId: d.referredBy.id }} className="text-primary underline">{name(d.referredBy.id)} · {fmt(d.referredBy.at)}</Link> : t('up_direct')],
     ['up_total_paid', inr(paid)],
   ];
-  return <main className="w-full space-y-4 p-4">
+  return <main className="admin-user-detail min-w-0 w-full space-y-5 p-4 sm:p-6">
     {back}
     <header><p className="text-sm text-muted-foreground">{t('up_title')}</p><h1 className="font-heading text-2xl font-bold">{p.full_name || d.email || p.id}</h1></header>
     <dl className="grid gap-3 rounded-lg border border-border bg-card p-4 sm:grid-cols-2 lg:grid-cols-3">{info.map(([k, v]) => <div key={k}><dt className="text-xs text-muted-foreground">{t(k)}</dt><dd className="font-semibold break-words">{v}</dd></div>)}</dl>
