@@ -1764,6 +1764,10 @@ export type Database = {
         Args: { _id: string; _resource: string }
         Returns: undefined
       }
+      direct_buyer_purchase_eligible: {
+        Args: { _amount: number; _reference: string; _status: string }
+        Returns: boolean
+      }
       edit_admin_role: {
         Args: { _id: string; _role: Database["public"]["Enums"]["app_role"] }
         Returns: string
