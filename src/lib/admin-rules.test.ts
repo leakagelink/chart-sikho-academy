@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { adminDeleteSchema, videoRemovalValues, liveClassSchema } from './admin-rules';
+import { adminDeleteSchema, videoRemovalValues, liveClassSchema, removalArchivesHistory, deleteResourceForSection } from './admin-rules';
 describe('admin deletion scope', () => {
   const id = '11111111-1111-4111-8111-111111111111';
   it('allows deleting courses', () => { expect(adminDeleteSchema.safeParse({ resource: 'courses', id }).success).toBe(true); });
@@ -8,7 +8,10 @@ describe('admin deletion scope', () => {
   it.each(['categories', 'classes', 'webinars', 'ebooks', 'quizzes', 'questions'])('allows deleting %s', resource => { expect(adminDeleteSchema.safeParse({ resource, id }).success).toBe(true); });
   it('rejects finance deletion', () => { expect(adminDeleteSchema.safeParse({ resource: 'orders', id }).success).toBe(false); });
   it.each(['coupons','users','affiliates','instructors','ranks','templates','announcements','tickets','banners','campaigns','leads','seo','promocodes','reviews','notifications'])('allows managed deletion of %s', resource => { expect(adminDeleteSchema.safeParse({resource,id}).success).toBe(true); });
-  it.each(['commissions','payouts','refunds','invoices','bonuses'])('preserves %s history', resource => { expect(adminDeleteSchema.safeParse({resource,id}).success).toBe(false); });
+  it.each(['commissions','payouts','refunds'])('preserves %s history', resource => { expect(adminDeleteSchema.safeParse({resource,id}).success).toBe(false); });
+  it.each(['certificates','invoices','bonuses'])('archives rather than erases %s', resource => { expect(adminDeleteSchema.safeParse({resource,id}).success).toBe(true); expect(removalArchivesHistory(resource)).toBe(true); });
+  it.each(['modules','roles'])('allows controlled %s removal', resource => { expect(adminDeleteSchema.safeParse({resource,id}).success).toBe(true); expect(removalArchivesHistory(resource)).toBe(false); });
+  it('pricing deletion targets the same course',()=>{ expect(deleteResourceForSection('pricing')).toBe('courses'); });
   it('requires a specific valid record', () => { expect(adminDeleteSchema.safeParse({ resource: 'courses', id: '' }).success).toBe(false); });
 });
 describe('video removal', () => {
