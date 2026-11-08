@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useLang } from "@/lib/i18n";
 import { liveClasses } from "@/lib/courses";
 import { pageMeta } from "@/lib/route-meta";
+import { LiveClassCard, LiveClassThumbnail } from "@/components/site/LiveClassCard";
 import { LiveClassCombo } from "@/components/site/LiveClassCombo";
 
 export const Route = createFileRoute("/sandbox/live")({
@@ -39,38 +40,23 @@ function Screen() {
       </div>
 
       {tab === "upcoming" && (
-        <div className="mt-5 grid gap-4 md:grid-cols-3">
+        <div className="mt-5 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
           {liveClasses.map((c) => (
-            <article key={c.id} className="rounded-2xl border border-border bg-card p-4 shadow-card">
-              <div className="flex items-start gap-3">
-                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gold/15 text-center font-display text-xs font-bold leading-tight text-gold">
-                  {t(c.day)}<br />{c.time}
-                </span>
-                <div className="min-w-0">
-                  {c.live && <span className="rounded bg-destructive px-2 py-0.5 text-[11px] font-bold text-destructive-foreground">● LIVE</span>}
-                  <h3 className="mt-1 font-semibold">{c.title[lang]}</h3>
-                  <p className="mt-1 flex items-center gap-1 text-xs text-muted-foreground"><Users className="h-3.5 w-3.5" />{c.joining} {t("joining")}</p>
-                </div>
-              </div>
-              {c.live ? (
-                <Link to="/live/$classId" params={{ classId: c.id }} className="mt-3 block w-full rounded-lg bg-gold py-2 text-center text-sm font-bold text-navy hover:bg-gold/90">
-                  {t("join_live")}
-                </Link>
-              ) : (
-                <Button variant={registered.includes(c.id) ? "secondary" : "outline"} className="mt-3 w-full"
-                  onClick={() => setRegistered((s) => (s.includes(c.id) ? s : [...s, c.id]))}>
-                  {t(registered.includes(c.id) ? "registered" : "register")}
-                </Button>
-              )}
-            </article>
+            <LiveClassCard key={c.id} session={c} action={c.live ? undefined : (
+              <Button variant={registered.includes(c.id) ? "secondary" : "outline"} className="w-full"
+                onClick={() => setRegistered((s) => s.includes(c.id) ? s : [...s, c.id])}>
+                {t(registered.includes(c.id) ? "registered" : "register")}
+              </Button>
+            )} />
           ))}
         </div>
       )}
       {tab === "past" && (
-        <div className="mt-5 grid gap-4 md:grid-cols-3">
+        <div className="mt-5 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
           {pastClasses.map((c) => (
-            <article key={c.id} className="rounded-2xl border border-border bg-card p-4 shadow-card">
-              <div className="flex items-start gap-3">
+            <article key={c.id} className="overflow-hidden rounded-lg border border-border bg-card shadow-card">
+              <LiveClassThumbnail title={c.title[lang]} />
+              <div className="flex items-start gap-3 p-4">
                 <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-muted text-center font-display text-xs font-bold leading-tight text-muted-foreground">
                   {c.date}<br />{c.time}
                 </span>

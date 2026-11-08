@@ -6,6 +6,7 @@ import { CourseCard, MiniChart } from "@/components/site/CourseCard";
 import { courses, liveClasses } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
+import { LiveClassCard } from "@/components/site/LiveClassCard";
 import { StudentCharts } from "@/components/site/StudentCharts";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -126,16 +127,8 @@ function Dashboard() {
 
       <section className="mt-10">
         <h2 className="font-display text-2xl font-bold text-foreground">{t("upcoming")}</h2>
-        <div className="mt-4 grid gap-3 md:grid-cols-3">
-          {liveClasses.map((c) => (
-            <div key={c.id} className="rounded-2xl border border-border bg-card p-4 shadow-card">
-              {c.live && <span className="rounded bg-destructive px-2 py-0.5 text-[11px] font-bold text-destructive-foreground">● LIVE</span>}
-              <h3 className="mt-2 font-semibold">{c.title[lang]}</h3>
-              <p className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-muted-foreground">
-                <span>{t(c.day)}, {c.time}</span><span className="flex items-center gap-1"><Users className="h-3.5 w-3.5" />{c.joining}</span>
-              </p>
-            </div>
-          ))}
+        <div className="mt-4 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          {liveClasses.map((c) => <LiveClassCard key={c.id} session={c} />)}
         </div>
       </section>
 

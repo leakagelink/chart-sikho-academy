@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight, Award, Bell, BookOpen, Calendar, ClipboardCheck, Crown, FileText, PlayCircle, Radio, Users, Video } from "lucide-react";
 import educator from "@/assets/course-educator-thumb.webp";
 import hero from "@/assets/hero-bull.jpg";
+import { LiveClassCard } from "@/components/site/LiveClassCard";
 import { CourseCard } from "@/components/site/CourseCard";
 import { courses, liveClasses } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
@@ -116,22 +117,8 @@ function Index() {
         <div className="flex items-center justify-between">
           <h2 className="font-display text-2xl font-bold text-foreground">{t("upcoming")}</h2>
         </div>
-        <div className="mt-4 grid gap-4 md:grid-cols-3">
-          {liveClasses.map((c) => (
-            <article key={c.id} className="rounded-2xl border border-border bg-card p-4 shadow-card">
-              <div className="flex h-24 items-start rounded-xl bg-gradient-to-br from-navy to-royal p-3">
-                {c.live && <span className="rounded bg-destructive px-2 py-0.5 text-[11px] font-bold text-destructive-foreground">● LIVE</span>}
-              </div>
-              <h3 className="mt-3 font-semibold">{c.title[lang]}</h3>
-              <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-muted-foreground [&_svg]:shrink-0">
-                <span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5" />{t(c.day)}, {c.time}</span>
-                <span className="flex items-center gap-1"><Users className="h-3.5 w-3.5" />{c.joining} {t("joining")}</span>
-              </div>
-              <Link to="/live/$classId" params={{ classId: c.id }} className={`mt-3 block w-full rounded-lg py-2 text-center text-sm font-semibold ${c.live ? "bg-primary text-primary-foreground" : "border border-primary text-primary"}`}>
-                {c.live ? t("join_live") : t("remind")}
-              </Link>
-            </article>
-          ))}
+        <div className="mt-4 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          {liveClasses.map((c) => <LiveClassCard key={c.id} session={c} />)}
         </div>
       </section>
 
