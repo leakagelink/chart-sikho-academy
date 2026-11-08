@@ -1,6 +1,7 @@
 import { assertPanelAction, resolvePanelAccess } from './admin-access.server';
 import { canAccess, canReadDataset } from './admin-permissions';
 import { createServerFn } from '@tanstack/react-start';
+import { planSchema } from './plans';
 import { categoryVisibility } from './category-visibility';
 import { bannerImage } from './website-banners';
 import { z } from 'zod';
@@ -20,6 +21,9 @@ export const deleteAdminRecord = createServerFn({ method: 'POST' }).middleware([
     if (result.error) throw new Error(result.error.message.includes('Linked records') ? 'Linked records' : 'User deletion blocked');
     const audit = await supabaseAdmin.from('admin_audit_log').insert({actor_id:context.userId,resource:'users',record_id:data.id,action:'DELETE'});
     if(audit.error) console.error('User deletion audit failed');
+  } else if (data.resource === 'plans') {
+    const result = await s.from('membership_plans').delete().eq('id',data.id).select('id').single();
+    if (result.error) throw new Error('Unable to delete record');
   } else if (['modules','certificates','invoices','bonuses','roles'].includes(data.resource)) {
     const result = await s.rpc('admin_record_remove',{_resource:data.resource,_id:data.id});
     if(result.error) throw new Error(result.error.message.includes('Protected administrator')?'Protected administrator':result.error.message.includes('Linked records')?'Linked records':'Unable to delete record');
@@ -123,12 +127,13 @@ export const getAdminData = createServerFn({ method: 'POST' }).middleware([requi
     read('leads',()=>s.from('leads').select('*').order('created_at', { ascending: false }).limit(1000)),
     read('seo',()=>s.from('seo_pages').select('*').order('path').limit(1000)),
     read('promocodes',()=>s.from('promo_codes').select('*').order('created_at', { ascending: false }).limit(1000)),
+    read('plans',()=>s.from('membership_plans').select('*').order('position').limit(1000)),
     read('influencers',()=>s.from('referral_influencers').select('*').limit(1000)),
   ]);
   if (results.some(r => r.error)) throw new Error('Unable to load administration records');
-  const [users,courses,lessons,classes,ebooks,enrollments,orders,affiliates,commissions,payouts,notifications,settings,audit,categories,modules,quizzes,questions,certificates,reviews,coupons,refunds,invoices,instructors,ranks,bonuses,userRoles,templates,announcements,tickets,banners,campaigns,leads,seo,promocodes,influencers] = results;
+  const [users,courses,lessons,classes,ebooks,enrollments,orders,affiliates,commissions,payouts,notifications,settings,audit,categories,modules,quizzes,questions,certificates,reviews,coupons,refunds,invoices,instructors,ranks,bonuses,userRoles,templates,announcements,tickets,banners,campaigns,leads,seo,promocodes,plans,influencers] = results;
   const grants = access.isAdmin ? await s.from('user_panel_permissions').select('user_id,section,action') : {data:[]};
-  return { influencers: (influencers.data ?? []) as {user_id:string}[], access, panelPermissions:(grants.data ?? []) as ({user_id:string}&import('./admin-permissions').PanelPermission)[], users: users.data ?? [], courses: courses.data ?? [], lessons: lessons.data ?? [], classes: (classes.data ?? []).filter(c=>access.isAdmin||canAccess(access,'overview')||canAccess(access,c.kind==='webinar'?'webinars':'classes')), ebooks: ebooks.data ?? [], enrollments: enrollments.data ?? [], orders: orders.data ?? [], affiliates: affiliates.data ?? [], commissions: commissions.data ?? [], payouts: payouts.data ?? [], notifications: notifications.data ?? [], settings: settings.data ?? [], audit: audit.data ?? [], categories: categories.data ?? [], modules: modules.data ?? [], quizzes: quizzes.data ?? [], questions: questions.data ?? [], certificates: certificates.data ?? [], reviews: reviews.data ?? [], coupons: coupons.data ?? [], refunds: refunds.data ?? [], invoices: invoices.data ?? [], instructors: instructors.data ?? [], ranks: ranks.data ?? [], bonuses: bonuses.data ?? [], userRoles: userRoles.data ?? [], templates: templates.data ?? [], announcements: announcements.data ?? [], tickets: tickets.data ?? [], banners: banners.data ?? [], campaigns: campaigns.data ?? [], leads: leads.data ?? [], seo: seo.data ?? [], promocodes: promocodes.data ?? [], capped: results.some(r => (r.data?.length ?? 0) >= 1000) };
+  return { plans: plans.data ?? [], influencers: (influencers.data ?? []) as {user_id:string}[], access, panelPermissions:(grants.data ?? []) as ({user_id:string}&import('./admin-permissions').PanelPermission)[], users: users.data ?? [], courses: courses.data ?? [], lessons: lessons.data ?? [], classes: (classes.data ?? []).filter(c=>access.isAdmin||canAccess(access,'overview')||canAccess(access,c.kind==='webinar'?'webinars':'classes')), ebooks: ebooks.data ?? [], enrollments: enrollments.data ?? [], orders: orders.data ?? [], affiliates: affiliates.data ?? [], commissions: commissions.data ?? [], payouts: payouts.data ?? [], notifications: notifications.data ?? [], settings: settings.data ?? [], audit: audit.data ?? [], categories: categories.data ?? [], modules: modules.data ?? [], quizzes: quizzes.data ?? [], questions: questions.data ?? [], certificates: certificates.data ?? [], reviews: reviews.data ?? [], coupons: coupons.data ?? [], refunds: refunds.data ?? [], invoices: invoices.data ?? [], instructors: instructors.data ?? [], ranks: ranks.data ?? [], bonuses: bonuses.data ?? [], userRoles: userRoles.data ?? [], templates: templates.data ?? [], announcements: announcements.data ?? [], tickets: tickets.data ?? [], banners: banners.data ?? [], campaigns: campaigns.data ?? [], leads: leads.data ?? [], seo: seo.data ?? [], promocodes: promocodes.data ?? [], capped: results.some(r => (r.data?.length ?? 0) >= 1000) };
 });
 const title = z.string().trim().min(2).max(120);
 const price = z.coerce.number().int().min(0).max(1000000);
@@ -141,6 +146,10 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
   const v = data.values;
   let result;
   switch (data.resource) {
+    case 'plans': {
+      const row = planSchema.parse(v);
+      result = data.id ? await s.from('membership_plans').update(row).eq('id',data.id).select('id').single() : await s.from('membership_plans').insert(row).select('id').single(); break;
+    }
     case 'categories': {
       const row = z.object({ name: title, slug: z.string().trim().toLowerCase().transform(x=>x.replace(/[^a-z0-9-]+/g,"-").replace(/^-+|-+$/g,"")).pipe(z.string().regex(/^[a-z0-9-]{2,40}$/)), position: z.coerce.number().int().min(1).max(1000), icon_url: z.union([z.literal(''), z.string().max(700000).regex(/^data:image\/(png|jpe?g|webp|gif|svg\+xml);base64,/), z.string().url().max(500).startsWith('https://')]).default('') }).parse(v);
       const category = {...row,is_visible:categoryVisibility.parse(v['is_visible'])};
