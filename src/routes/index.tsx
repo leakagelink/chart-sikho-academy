@@ -6,16 +6,18 @@ import hero from "@/assets/hero-bull.jpg";
 import { LiveClassCard } from "@/components/site/LiveClassCard";
 import { ScheduledLiveClasses } from "@/components/site/ScheduledLiveClasses";
 import { CourseCard } from "@/components/site/CourseCard";
-import { courses, liveClasses } from "@/lib/courses";
+import { courses, liveClasses, inr } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
 import { useAuth } from "@/hooks/use-auth";
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { categoryQuery } from '@/lib/category-query';
 import { bannerQuery } from '@/lib/banner-query';
 import { WebsiteBanners } from '@/components/site/WebsiteBanners';
+import { productQuery } from '@/lib/product-query';
+import { EbookPurchase } from '@/components/site/EbookPurchase';
 
 export const Route = createFileRoute("/")({
-  loader: async ({context}) => {await Promise.all([context.queryClient.ensureQueryData(categoryQuery()),context.queryClient.ensureQueryData(bannerQuery())]);},
+  loader: async ({context}) => {await Promise.all([context.queryClient.ensureQueryData(categoryQuery()),context.queryClient.ensureQueryData(bannerQuery()),context.queryClient.ensureQueryData(productQuery())]);},
   head: () => ({
     meta: [
       { property: "og:type", content: "website" },
@@ -31,6 +33,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const {data:homeCategories}=useSuspenseQuery(categoryQuery());
+  const {data:products}=useSuspenseQuery(productQuery());
   const { t, lang } = useLang();
   const { session } = useAuth();
   const meta = session?.user?.user_metadata as { full_name?: string } | undefined;
@@ -151,6 +154,26 @@ function Index() {
         <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {courses.slice(0, 4).map((c) => <CourseCard key={c.id} course={c} />)}
         </div>
+      </section>
+
+      <section className="home-ebooks mt-10">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
+          <h2 className="min-w-0 font-display text-2xl font-bold text-foreground">{t('nav_ebooks')}</h2>
+          <Link to="/ebooks" className="shrink-0 text-sm font-semibold text-primary">{t('see_all')} →</Link>
+        </div>
+        {products.ebooks.length ? <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+          {products.ebooks.slice(0,4).map(book=><article key={book.id} className="flex h-full min-w-0 flex-col overflow-hidden rounded-lg border border-border bg-card shadow-card">
+            <div className="aspect-[3/4] w-full shrink-0 overflow-hidden bg-muted">
+              {book.cover_url?<img src={book.cover_url} alt={book.title} loading="lazy" decoding="async" className="block h-full w-full object-contain"/>:<div className="grid h-full place-items-center"><BookOpen className="h-12 w-12 text-muted-foreground"/></div>}
+            </div>
+            <div className="flex min-w-0 flex-1 flex-col p-4">
+              <h3 className="break-words font-display text-lg font-semibold leading-snug">{book.title}</h3>
+              {book.description&&<p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{book.description}</p>}
+              <p className="mt-auto pt-3 text-lg font-bold text-primary">{inr(book.price)}</p>
+              <EbookPurchase book={book}/>
+            </div>
+          </article>)}
+        </div>:<p className="mt-4 text-muted-foreground">{t('ebooks_empty')}</p>}
       </section>
 
       {/* Membership */}
