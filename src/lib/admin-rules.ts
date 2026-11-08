@@ -28,6 +28,7 @@ export const adminChangeSchema = z.object({
 export function requireAdminRole(isAdmin: boolean) { if (!isAdmin) throw new Error('Forbidden'); }
 export function safeHttps(value: string) { if (!value) return ''; const url = new URL(value); if (url.protocol !== 'https:' || url.username || url.password) throw new Error('HTTPS required'); return url.toString(); }
 export const liveClassSchema = z.object({
+  thumbnail_url: z.union([z.literal(''), z.string().max(700000).regex(/^data:image\/(png|jpeg|webp|svg\+xml);base64,/), z.string().url().max(500).startsWith('https://')]).default(''),
   title: z.string().trim().min(2).max(120), kind: z.enum(['class','webinar']), starts_at: z.string().datetime(),
   youtube_url: z.string().max(2000).transform(safeHttps).refine(v => !v || ['youtube.com','www.youtube.com','youtu.be'].includes(new URL(v).hostname)),
   jitsi_url: z.string().max(2000).transform(safeHttps), status: z.enum(['draft','scheduled','cancelled']),
