@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [ ] Optimize admin Team Tree with private member photos, all-depth level views, member details and filters; preserve permission boundaries.
 - [x] Redesigned shared admin UI: searchable desktop rail/mobile drawer, breadcrumbs, compact actions, collapsible filters, labeled mobile records and sticky editor controls. Signed-in menu search → Courses → filters → Add/cancel verified without runtime errors; key screens checked at phone/tablet sizes, desktop screenshot verified, 84 tests pass. Full all-section/size sweep timed out; no permissions/data changed.
 - [x] Admin Plans Add/Edit/Delete with bilingual names/benefits, price, period, ordering, published/draft state and section permissions; public page displays saved published plans. Signed-in create → refresh → public display → mobile edit → public price update → confirmed delete verified; temporary plan removed, 89 tests pass. Subscription payments remain disabled; sample prices not migrated as real offers.
 - [x] Admin Website Images / Banners now supports image upload/preview, edit/delete, page placement, ordering and active status. Saved Home/Products images replace default banners; dashboard displays configured banners at full image ratio. Signed-in test upload → Home → refresh → edit Products → edit dashboard → delete verified; mobile no overflow, no runtime errors and 78 tests/build pass. Temporary banner removed; existing logo/course imagery unchanged.

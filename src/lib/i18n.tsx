@@ -3,6 +3,14 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export type Lang = "en" | "hi";
 
 const dict = {
+  tree_levels:{en:'Referral levels',hi:'रेफरल लेवल'},
+  tree_all_levels:{en:'All levels',hi:'सभी लेवल'},
+  tree_all_roots:{en:'All teams',hi:'सभी टीमें'},
+  tree_parent:{en:'Referred by',hi:'रेफर करने वाला'},
+  tree_details:{en:'Member details',hi:'मेंबर जानकारी'},
+  tree_updated:{en:'Last updated',hi:'आखिरी अपडेट'},
+  tree_language:{en:'Preferred language',hi:'पसंदीदा भाषा'},
+  tree_birth:{en:'Date of birth',hi:'जन्म तारीख'},
   admin_navigation: {en:'Administration navigation',hi:'एडमिन मेन्यू'},
   admin_open_menu: {en:'Open admin menu',hi:'एडमिन मेन्यू खोलें'},
   admin_find_section: {en:'Find a section',hi:'सेक्शन खोजें'},

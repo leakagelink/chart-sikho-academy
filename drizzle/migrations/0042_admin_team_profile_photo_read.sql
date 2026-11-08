@@ -1,0 +1,1 @@
+CREATE POLICY "Team panel private photo read" ON storage.objects FOR SELECT TO authenticated USING (bucket_id='profile-photos' AND (public.has_panel_permission('teamtree','view') OR public.has_panel_permission('affiliates','view')));

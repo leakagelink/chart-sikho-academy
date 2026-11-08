@@ -295,6 +295,13 @@
       "when": 1794126738314,
       "tag": "0041_managed_membership_plans",
       "breakpoints": true
+    },
+    {
+      "idx": 42,
+      "version": "7",
+      "when": 1794128323384,
+      "tag": "0042_admin_team_profile_photo_read",
+      "breakpoints": true
     }
   ]
 }
