@@ -28,6 +28,7 @@ const groups: { title: DictKey; items: Item[] }[] = [
     { to: "/plans", label: "student_plans", icon: Crown },
   ] },
   { title: "my_profile", items: [
+    { to: "/kyc", label: "kyc_title", icon: FileText },
     { to: "/notifications", label: "notifications", icon: Bell },
     { to: "/profile", label: "my_profile", icon: User },
   ] },
