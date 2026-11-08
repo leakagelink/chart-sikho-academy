@@ -293,6 +293,7 @@ html { scroll-padding-top: 80px; }
 }
 .course-cover { position:relative; }
 .course-cover img { width:100%; height:100%; object-fit:cover; }
+.student-main .course-cover img { width:100%; height:100%; object-fit:cover; }
 .catalog-screen { padding-top:16px; }
 .catalog-screen > h1,.catalog-screen > p { display:none; }
 .catalog-screen .catalog-controls { margin-top:0; }
