@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [ ] Ensure every admin Add surface offers Edit/Delete with permission checks and safe treatment of issued certificates, invoices, bonuses and roles.
 - [x] Extend confirmed, permission-checked deletion to coupons, users, affiliates, instructors, ranks, templates, announcements, tickets, banners, campaigns, leads, SEO, promo codes, reviews and unsent notifications. Coupon/affiliate/banner deletion, cancel and reload verified using temporary records (removed); self-admin deletion rejected; 78 tests pass and build OK. Accounts with financial/referral/learning history cannot be deleted; successful removal of a history-free Auth account was not exercised against a real user.
 - [x] Add permission-checked delete actions and confirmations for Courses, Categories, Live Classes, eBooks, Webinars, Video Library, Practice Tests and Question Bank. Admin UI deletion/cancellation/reload verified using temporary records (all removed), video retained its lesson, 58 tests pass and build OK. No separate Seminars section exists in the current app; no new seminar product was added.
 - [x] Product filters replace topic filters: All/eBooks/Courses/Live Classes/Webinars with shared search and URL state. Signed-in clicks verified: All 11, eBooks 1, Courses 7, sample classes 3, published webinars 0 (empty state); 5 rule tests pass, mobile no overflow and build OK. Live integrations unchanged.
