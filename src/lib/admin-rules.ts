@@ -2,7 +2,12 @@ import { z } from 'zod';
 
 export const adminSections = ['overview','users','categories','builder','courses','lessons','videos','classes','webinars','ebooks','orders','payments','affiliates','commissions','payouts','notifications','settings','quizzes','questions','certificates','progress','reviews','pricing','coupons','refunds','invoices','instructors','roles','verification','blocked','bulk','refsettings','reflinks','teamtree','commrules','ranks','bonuses','fraud','templates','announcements','tickets','banners','campaigns','leads','seo','promocodes','maintenance'] as const;
 export type AdminSection = typeof adminSections[number];
-export const adminDeleteSchema = z.object({ resource: z.enum(['courses', 'lessons', 'videos']), id: z.string().uuid() });
+export const adminDeleteResources = ['courses', 'lessons', 'videos', 'categories', 'classes', 'webinars', 'ebooks', 'quizzes', 'questions'] as const;
+export type AdminDeleteResource = typeof adminDeleteResources[number];
+export function deleteResourceForSection(section: string): AdminDeleteResource | null {
+  return adminDeleteResources.find(resource => resource === section) ?? null;
+}
+export const adminDeleteSchema = z.object({ resource: z.enum(adminDeleteResources), id: z.string().uuid() });
 /** Video Library removal clears video sources without deleting the lesson or its PDF. */
 export function videoRemovalValues(resourcePath: string) {
   return { video_url: '', resource_path: /\.(mp4|webm)$/i.test(resourcePath) ? '' : resourcePath };

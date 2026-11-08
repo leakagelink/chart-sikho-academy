@@ -1709,6 +1709,10 @@ export type Database = {
     Functions: {
       app_branding: { Args: never; Returns: string }
       delete_admin_course: { Args: { _course_id: string }; Returns: undefined }
+      delete_admin_learning_record: {
+        Args: { _id: string; _resource: string }
+        Returns: undefined
+      }
       get_course_quiz: { Args: { _course_id: string }; Returns: Json }
       has_panel_permission: {
         Args: { _action: string; _section: string }

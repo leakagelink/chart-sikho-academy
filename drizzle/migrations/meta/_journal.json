@@ -225,6 +225,13 @@
       "when": 1794024613532,
       "tag": "0031_payment_qr_upload",
       "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "7",
+      "when": 1794107168513,
+      "tag": "0032_admin_learning_delete_actions",
+      "breakpoints": true
     }
   ]
 }

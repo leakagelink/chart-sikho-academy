@@ -16,9 +16,12 @@ export const deleteAdminRecord = createServerFn({ method: 'POST' }).middleware([
     if (lesson.error || !lesson.data) throw new Error('Unable to delete record');
     const result = await s.from('course_lessons').update(videoRemovalValues(lesson.data.resource_path)).eq('id', data.id).select('id').single();
     if (result.error) throw new Error('Unable to delete record');
-  } else {
+  } else if (data.resource === 'lessons') {
     const result = await s.from('course_lessons').delete().eq('id', data.id).select('id').single();
     if (result.error) throw new Error('Unable to delete record');
+  } else {
+    const result = await s.rpc('delete_admin_learning_record', { _resource: data.resource, _id: data.id });
+    if (result.error) throw new Error(result.error.message.includes('Linked records') ? 'Linked records' : result.error.message.includes('Forbidden') ? 'Forbidden' : 'Unable to delete record');
   }
   return { ok: true };
 });
