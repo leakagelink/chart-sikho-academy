@@ -5,5 +5,5 @@ export const Route = createFileRoute('/_authenticated/admin')({
   loader:({context})=>context.queryClient.ensureQueryData(adminQuery()),
   errorComponent:AdminError,
   notFoundComponent:AdminError,
-  component:()=> <Outlet/>,
+  component:()=> <div className="admin-surface"><Outlet/></div>,
 });

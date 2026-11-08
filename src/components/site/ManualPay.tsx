@@ -134,13 +134,13 @@ export function ManualPayments({ canEdit, users, courses }: { canEdit: boolean; 
     <select aria-label={t('status')} value={filter} onChange={e => setFilter(e.target.value)} className={`${inputCls} w-auto`}>
       {['pending', 'approved', 'rejected', 'all'].map(s => <option key={s} value={s}>{t(s === 'all' ? 'filter_all' : `pay_st_${s}` as 'pay_st_pending')}</option>)}
     </select>
-    <div className="overflow-x-auto border-y border-border"><table className="w-full text-left text-sm"><thead className="bg-muted/40"><tr>{['pay_col_user', 'pay_col_phone', 'pay_col_product', 'pay_col_amount', 'pay_utr', 'status', 'pay_col_date', 'admin_action'].map(k => <th key={k} className="whitespace-nowrap px-3 py-3 text-muted-foreground">{t(k as 'status')}</th>)}</tr></thead>
+    <div className="overflow-x-auto border-y border-border"><table className="admin-record-table w-full text-left text-sm"><thead className="bg-muted/40"><tr>{['pay_col_user', 'pay_col_phone', 'pay_col_product', 'pay_col_amount', 'pay_utr', 'status', 'pay_col_date', 'admin_action'].map(k => <th key={k} className="whitespace-nowrap px-3 py-3 text-muted-foreground">{t(k as 'status')}</th>)}</tr></thead>
       <tbody>{rows.map(r => <tr key={r.id} className="border-t border-border">
-        <td className="px-3 py-3">{u(r.user_id)?.full_name ?? r.user_id.slice(0, 8)}</td><td className="px-3 py-3">{u(r.user_id)?.phone ?? '—'}</td>
-        <td className="px-3 py-3">{r.product_title || courses.find(c => c.id === r.course_id)?.title || '—'}{r.ebook_id && <span className="block text-xs text-muted-foreground">{t('nav_ebooks')}</span>}</td><td className="px-3 py-3">₹{r.amount}</td>
-        <td className="px-3 py-3 font-mono">{r.utr}</td><td className="px-3 py-3">{t(`pay_st_${r.status}` as 'pay_st_pending')}{r.admin_note ? ` — ${r.admin_note}` : ''}</td>
-        <td className="px-3 py-3">{new Date(r.created_at).toLocaleString()}</td>
-        <td className="px-3 py-3"><div className="flex flex-wrap gap-2"><Button size="sm" variant="outline" onClick={() => viewShot(r.screenshot_path)}>{t('pay_view_shot')}</Button>
+        <td data-label={t('pay_col_user')} className="px-3 py-3">{u(r.user_id)?.full_name ?? r.user_id.slice(0, 8)}</td><td data-label={t('pay_col_phone')} className="px-3 py-3">{u(r.user_id)?.phone ?? '—'}</td>
+        <td data-label={t('pay_col_product')} className="px-3 py-3">{r.product_title || courses.find(c => c.id === r.course_id)?.title || '—'}{r.ebook_id && <span className="block text-xs text-muted-foreground">{t('nav_ebooks')}</span>}</td><td data-label={t('pay_col_amount')} className="px-3 py-3">₹{r.amount}</td>
+        <td data-label={t('pay_utr')} className="px-3 py-3 font-mono">{r.utr}</td><td data-label={t('status')} className="px-3 py-3">{t(`pay_st_${r.status}` as 'pay_st_pending')}{r.admin_note ? ` — ${r.admin_note}` : ''}</td>
+        <td data-label={t('pay_col_date')} className="px-3 py-3">{new Date(r.created_at).toLocaleString()}</td>
+        <td data-label={t('admin_action')} className="px-3 py-3"><div className="flex flex-wrap gap-2"><Button size="sm" variant="outline" onClick={() => viewShot(r.screenshot_path)}>{t('pay_view_shot')}</Button>
           {canEdit && r.status === 'pending' && <><Button size="sm" disabled={review.isPending} onClick={() => confirm(t('pay_confirm_q')) && review.mutate({ id: r.id, approve: true, note: '' })}>{t('pay_confirm')}</Button>
             <Button size="sm" variant="outline" className="text-destructive" disabled={review.isPending} onClick={() => { const note = prompt(t('pay_reject_reason')); if (note !== null) review.mutate({ id: r.id, approve: false, note }); }}>{t('admin_reject')}</Button></>}</div></td>
       </tr>)}{!rows.length && <tr><td colSpan={8} className="px-3 py-6 text-center text-muted-foreground">{t('admin_empty')}</td></tr>}</tbody></table></div>
