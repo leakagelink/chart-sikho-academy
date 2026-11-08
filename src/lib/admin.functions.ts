@@ -18,6 +18,9 @@ export const deleteAdminRecord = createServerFn({ method: 'POST' }).middleware([
     if (result.error) throw new Error(result.error.message.includes('Linked records') ? 'Linked records' : 'User deletion blocked');
     const audit = await supabaseAdmin.from('admin_audit_log').insert({actor_id:context.userId,resource:'users',record_id:data.id,action:'DELETE'});
     if(audit.error) console.error('User deletion audit failed');
+  } else if (['modules','certificates','invoices','bonuses','roles'].includes(data.resource)) {
+    const result = await s.rpc('admin_record_remove',{_resource:data.resource,_id:data.id});
+    if(result.error) throw new Error(result.error.message.includes('Protected administrator')?'Protected administrator':result.error.message.includes('Linked records')?'Linked records':'Unable to delete record');
   } else if (data.resource === 'courses') {
     const result = await s.rpc('delete_admin_course', { _course_id: data.id });
     if (result.error) throw new Error(result.error.message.includes('Course has linked records') ? 'Course has linked records' : 'Unable to delete record');
@@ -192,6 +195,12 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
     }
     case 'roles': {
       if (data.id) {
+        if(v['role']) {
+          const role = z.enum(['admin','instructor','user']).parse(v['role']);
+          const changed = await s.rpc('edit_admin_role',{_id:data.id,_role:role});
+          if(changed.error) throw new Error('Unable to save record');
+          return {ok:true};
+        }
         const target = await s.from('user_roles').select('user_id,role').eq('id', data.id).maybeSingle();
         if (!target.data) throw new Error('Unable to save record');
         if (target.data.user_id === context.userId) throw new Error('Cannot change your own access');
@@ -211,6 +220,10 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
     }
     case 'bonuses': {
       if (data.id) {
+        if(v['amount']!==undefined) {
+          const row=z.object({amount:z.coerce.number().int().min(1).max(1000000),reason:z.string().trim().max(500)}).parse(v);
+          result=await s.from('bonus_entries').update(row).eq('id',data.id).eq('status','pending').is('archived_at',null).select('id').single();break;
+        }
         const row = z.object({ status: z.enum(['approved','rejected']) }).parse(v);
         result = await s.from('bonus_entries').update(row).eq('id',data.id).eq('status','pending').select('id').single(); break;
       }
@@ -266,6 +279,10 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
     }
     case 'invoices': {
       if (data.id) {
+        if(v['buyer_name']!==undefined) {
+          const row=z.object({buyer_name:z.string().trim().min(2).max(120),buyer_gstin:z.string().trim().max(15)}).parse(v);
+          result=await s.from('invoices').update(row).eq('id',data.id).is('archived_at',null).select('id').single();break;
+        }
         const row = z.object({ status: z.enum(['issued','cancelled']) }).parse(v);
         result = await s.from('invoices').update(row).eq('id',data.id).select('id').single(); break;
       }
@@ -321,6 +338,10 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
     }
     case 'tickets': {
       if (data.id) {
+        if(v['subject']!==undefined) {
+          const row=z.object({subject:z.string().trim().min(2).max(200),message:z.string().trim().min(2).max(2000),priority:z.enum(['low','normal','high'])}).parse(v);
+          result=await s.from('support_tickets').update({...row,updated_at:new Date().toISOString()}).eq('id',data.id).select('id').single();break;
+        }
         const row = z.object({ status: z.enum(['open','in_progress','resolved','closed']), reply: z.string().max(2000).default('') }).parse(v);
         result = await s.from('support_tickets').update({ ...row, updated_at: new Date().toISOString() }).eq('id',data.id).select('id').single(); break;
       }
