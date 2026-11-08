@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Search, BookOpen, Video, Calendar } from "lucide-react";
+import hero from "@/assets/hero-bull.jpg";
 import { CourseCard } from "@/components/site/CourseCard";
 import { CloudCourseCard } from "@/components/site/CloudCourseCard";
 import { courses, liveClasses, inr } from "@/lib/courses";
@@ -52,7 +53,17 @@ function CoursesPage() {
   const total = list.length + realCourses.length + ebooks.length + sessions.length + sampleClasses.length;
   return (
     <div className="catalog-screen w-full px-4 pt-8">
-      <h1 className="font-display text-3xl font-bold text-foreground">{t("student_products_services")}</h1>
+      <section className="relative overflow-hidden rounded-3xl bg-navy text-navy-foreground">
+        <img src={hero} alt="" width={1280} height={832} className="absolute inset-0 h-full w-full object-cover opacity-50 md:left-1/3 md:w-2/3 md:opacity-90" />
+        <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-transparent" />
+        <div className="relative max-w-xl p-6 sm:p-10 md:py-14">
+          <span className="inline-block rounded-full bg-gold/20 px-3 py-1 text-xs font-bold text-gold">{t("products_hero_badge")}</span>
+          <h1 className="mt-4 font-display text-3xl font-bold leading-tight sm:text-4xl">
+            {t("products_hero_title")}
+          </h1>
+          <p className="mt-3 opacity-85">{t("products_hero_sub")}</p>
+        </div>
+      </section>
       <div className="catalog-controls mt-6 flex flex-col gap-3 lg:flex-row lg:items-center">
         <label className="relative flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
