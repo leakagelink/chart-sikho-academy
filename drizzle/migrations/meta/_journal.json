@@ -246,6 +246,13 @@
       "when": 1794107794650,
       "tag": "0034_complete_admin_record_actions",
       "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "7",
+      "when": 1794108586289,
+      "tag": "0035_ebook_manual_checkout",
+      "breakpoints": true
     }
   ]
 }
