@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [ ] Add Select/Select All with confirmed bulk Verify/Reject and Block/Suspend/Activate using existing permission-checked actions; verify selection and persisted changes.
 - [x] Home loads saved categories with icons/order and category catalog links; admin Add/Edit checkbox and per-row Show/Hide persist without removing courses. Signed-in temporary category create → Home → category link → Hide → refresh → absent → Show → visible verified; mobile no overflow, test category removed, 84 tests passed and build OK.
 - [x] Optimize all admin pages for desktop/mobile: scoped shared navigation, headers, filters, labeled stacked mobile records, complete product thumbnails, two-column desktop editors, payments, permissions and user details. Signed-in navigation through 47 sections at 2094px/393px (94 checks) showed no page overflow or runtime errors; all five Product & Services Add forms opened/cancelled, user detail verified, 87 existing admin tests passed and build OK. No records or permissions changed; existing missing thumbnails remain unset.
 - [x] Replace eBook notice-only Buy with existing manual UPI checkout, admin review and private purchase-gated PDF opening on Marketplace and Products; 8 tests pass, signed-in missing-PDF state verified, build OK.
