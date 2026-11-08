@@ -325,7 +325,7 @@ const dict = {
   admin_invoice_note: { en: 'Invoices can be created only for verified paid orders.', hi: 'इनवॉइस केवल सत्यापित भुगतान किए गए ऑर्डर के लिए बन सकते हैं।' },
   admin_instructors_real: { en: 'Instructors & Mentors', hi: 'इंस्ट्रक्टर और मेंटोर' },
   admin_roles_real: { en: 'User Roles & Permissions', hi: 'यूज़र रोल और अनुमतियाँ' },
-  admin_verification_real: { en: 'Member Verification', hi: 'सदस्य सत्यापन' },
+  admin_verification_real: { en: 'Member Verification / KYC', hi: 'सदस्य सत्यापन / KYC' },
   admin_blocked_real: { en: 'Blocked / Suspended', hi: 'ब्लॉक / निलंबित' },
   admin_bulk_real: { en: 'Bulk Import & Export', hi: 'बल्क इम्पोर्ट और एक्सपोर्ट' },
   admin_refsettings_real: { en: 'Referral Settings', hi: 'रेफरल सेटिंग्स' },
