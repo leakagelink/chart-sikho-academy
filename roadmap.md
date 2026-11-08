@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [ ] Enable admin banner image uploads and connect saved banners to website Home, Products, dashboard and membership banner.
 - [x] KYC PAN/Aadhaar/Voter ID private uploads, permission-checked admin review within Member Verification / KYC, targeted approval/rejection inbox notices, separate protected dashboard status and resubmission. Signed-in test document submit → reject → resubmit → approve → dashboard verified and both inbox notices verified; mobile no overflow, 3 rules tests/build pass. Temporary request/notices removed and original account statuses restored. No external identity verification, email or SMS enabled.
 - [x] Verified paid orders now assign unparented direct buyers to designated Admin before commission processing; existing parents/self/cycles protected. One historical verified buyer attached without changing old commissions; real Admin affiliate/team UI verified, six authenticated DB eligibility tests pass and trigger installed/build OK. Future new payment approval was not executed against real money/accounts.
 - [x] Verification and Blocked/Suspended have row selection, Select All filtered results and confirmed bulk Verify/Reject or Activate/Block/Pause. Existing permission-checked saves reused; failures retained and reported. Signed-in 5-member/1-member selection, cancel, unchanged-status verification save/reload and mobile no-overflow verified; no member status changed, 86 tests passed, build OK. Actual account suspension/activation deliberately not applied to real members.
