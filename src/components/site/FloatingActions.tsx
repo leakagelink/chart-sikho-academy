@@ -11,7 +11,7 @@ export function FloatingActions() {
   const [open, setOpen] = useState(false);
   const { session } = useAuth();
   const path = useRouterState({ select: s => s.location.pathname });
-  const realStudent = Boolean(session) && !path.startsWith('/sandbox');
+  const realStudent = Boolean(session);
 
   return <>
     <div className="wallet-float fixed left-0 top-1/2 z-40 -translate-y-1/2">
@@ -28,12 +28,12 @@ export function FloatingActions() {
             <Button variant="ghost" size="icon" className="size-8" aria-label={t("hide_wallet")} onClick={() => setOpen(false)}><X /></Button>
           </div>
           <div className="grid gap-1">
-            <Button asChild variant="ghost" className="justify-start"><Link to={realStudent ? '/earnings' : '/sandbox/wallet'} onClick={() => setOpen(false)}><Wallet />{t("wallet")}<ArrowRight className="ml-auto" /></Link></Button>
-            <Button asChild variant="ghost" className="justify-start"><Link to={realStudent ? '/referrals' : '/sandbox/referrals'} onClick={() => setOpen(false)}><Users />{t("referrals")}<ArrowRight className="ml-auto" /></Link></Button>
+            <Button asChild variant="ghost" className="justify-start"><Link to={realStudent ? '/earnings' : '/auth'} onClick={() => setOpen(false)}><Wallet />{t("wallet")}<ArrowRight className="ml-auto" /></Link></Button>
+            <Button asChild variant="ghost" className="justify-start"><Link to={realStudent ? '/referrals' : '/auth'} onClick={() => setOpen(false)}><Users />{t("referrals")}<ArrowRight className="ml-auto" /></Link></Button>
           </div>
         </PopoverContent>
       </Popover>
     </div>
-    <Button asChild size="icon" className="support-float fixed right-3 z-40 h-10 w-10 rounded-full shadow-card"><Link to="/sandbox/support" aria-label={t("support")} title={t("support")}><MessageCircle className="size-5" /></Link></Button>
+    <Button asChild size="icon" className="support-float fixed right-3 z-40 h-10 w-10 rounded-full shadow-card"><Link to="/support" aria-label={t("support")} title={t("support")}><MessageCircle className="size-5" /></Link></Button>
   </>;
 }
