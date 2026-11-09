@@ -5,10 +5,10 @@ import { productQuery } from '@/lib/product-query';
 import { useLang } from '@/lib/i18n';
 import { LiveClassThumbnail } from './LiveClassCard';
 
-export function ScheduledLiveClasses() {
+export function ScheduledLiveClasses({ kind = 'class' }: { kind?: 'class' | 'webinar' | 'seminar' }) {
   const { data } = useQuery(productQuery());
   const { lang } = useLang();
-  return data?.sessions.filter(s => s.kind === 'class').map(s => <article key={s.id} className="live-class-card flex h-full min-w-0 flex-col overflow-hidden rounded-lg border border-border bg-card shadow-card">
+  return data?.sessions.filter(s => s.kind === kind).map(s => <article key={s.id} className="live-class-card flex h-full min-w-0 flex-col overflow-hidden rounded-lg border border-border bg-card shadow-card">
     <LiveClassThumbnail title={s.title} thumbnailUrl={s.thumbnail_url} />
     <div className="flex flex-1 flex-col gap-3 p-4">
       <h3 className="break-words font-semibold leading-snug">{s.title}</h3>
