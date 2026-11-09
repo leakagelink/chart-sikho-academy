@@ -1370,6 +1370,70 @@ export type Database = {
         }
         Relationships: []
       }
+      product_comments: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          product_id: string
+          product_kind: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          product_id: string
+          product_kind: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          product_id?: string
+          product_kind?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_comments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_likes: {
+        Row: {
+          created_at: string
+          product_id: string
+          product_kind: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          product_id: string
+          product_kind: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          product_id?: string
+          product_kind?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_likes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           account_status: string
@@ -1903,6 +1967,20 @@ export type Database = {
       my_session_access: { Args: { _session_id: string }; Returns: Json }
       my_wallet: { Args: never; Returns: Json }
       payment_upi: { Args: never; Returns: Json }
+      product_comment_feed: {
+        Args: { _id: string; _kind: string; _offset?: number }
+        Returns: {
+          author: string
+          body: string
+          created_at: string
+          id: string
+          is_own: boolean
+        }[]
+      }
+      product_social_summary: {
+        Args: { _id: string; _kind: string }
+        Returns: Json
+      }
       release_commissions_for: { Args: { _user: string }; Returns: number }
       release_due_commissions: { Args: never; Returns: number }
       request_payout: { Args: { _amount: number }; Returns: string }
@@ -1976,6 +2054,10 @@ export type Database = {
       }
       signup_referral_valid: { Args: { _code: string }; Returns: boolean }
       signup_referrer: { Args: { _code: string }; Returns: string }
+      social_product_visible: {
+        Args: { _id: string; _kind: string }
+        Returns: boolean
+      }
       submit_course_quiz: {
         Args: { _answers: Json; _course_id: string }
         Returns: Json

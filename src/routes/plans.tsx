@@ -6,6 +6,7 @@ import { useLang } from "@/lib/i18n";
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { plansQuery } from '@/lib/plans-query';
 import { Button } from '@/components/ui/button';
+import { ProductSocial } from '@/components/site/ProductSocial';
 
 export const Route = createFileRoute("/plans")({
   loader: ({context}) => context.queryClient.ensureQueryData(plansQuery),
@@ -35,7 +36,7 @@ function PlansPage() {
       {!plans.length && <p className="mt-8 text-center text-muted-foreground">{t('plans_empty')}</p>}
       <div className="mx-auto mt-8 grid max-w-6xl items-stretch gap-5 md:grid-cols-2 xl:grid-cols-3">
         {plans.map((p) => (
-          <div key={p.id} className={`relative flex min-w-0 flex-col rounded-lg border bg-card p-6 shadow-card ${p.popular ? "border-primary" : "border-border"}`}>
+          <div key={p.id} id={`plan-${p.id}`} className={`relative flex min-w-0 flex-col rounded-lg border bg-card p-6 shadow-card ${p.popular ? "border-primary" : "border-border"}`}>
             {p.popular && <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-3 py-0.5 text-xs font-bold text-primary-foreground">{t("most_popular")}</span>}
             <h2 className="break-words font-display text-lg font-bold text-foreground">{lang==='hi' ? p.name_hi || p.name_en : p.name_en}</h2>
             <p className="mt-2 flex flex-wrap items-baseline gap-2"><span className="text-3xl font-bold text-foreground">{inr(p.price)}</span> <span className="text-sm text-muted-foreground">/ {t(p.billing_period==='monthly'?'per_month':p.billing_period==='yearly'?'per_year':'plan_lifetime')}</span></p>
@@ -47,6 +48,7 @@ function PlansPage() {
             <Button variant={p.popular?'default':'outline'} onClick={() => toast.info(t("payments_soon_s"), { description: t("payments_soon_t") })} className="w-full">
               {t("choose_plan")}
             </Button>
+            <ProductSocial kind="plan" id={p.id} title={p.name_en}/>
           </div>
         ))}
       </div>

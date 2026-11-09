@@ -1,0 +1,2 @@
+# Product interactions
+- Use ProductSocial for every product card/detail; own-only RLS writes and safe metadata RPCs supply persistent engagement, and shared URLs never contain private resources or meeting links. Why: every product surface shares behavior without exposing participant identities or paid files.

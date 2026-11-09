@@ -5,6 +5,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { useLang } from '@/lib/i18n';
 import { inr } from '@/lib/courses';
 import { ManualPay } from './ManualPay';
+import { ProductSocial } from './ProductSocial';
 
 export type PurchasableSession = { id: string; title: string; access_mode: string; price: number };
 export function SessionPurchase({session,details=false}:{session:PurchasableSession;details?:boolean}) {
@@ -17,5 +18,6 @@ export function SessionPurchase({session,details=false}:{session:PurchasableSess
       {[access.data.youtube_url,access.data.jitsi_url,access.data.recording_url].filter(Boolean).map((url,i)=><a key={url} href={url} target="_blank" rel="noopener noreferrer" className="block font-semibold text-primary underline">{t(i===1?'doubt_session':'session_join')}</a>)}
       {!access.data.youtube_url&&!access.data.jitsi_url&&!access.data.recording_url&&<p className="text-sm text-muted-foreground">{t('session_not_started')}</p>}
     </>:<ManualPay course={session} userId={auth.user.id} productType="session"/>}
+    <ProductSocial kind="session" id={session.id} title={session.title}/>
   </div>;
 }

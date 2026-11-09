@@ -37,7 +37,7 @@ function EbooksPage() {
       {q.isLoading ? <p className="mt-8 text-muted-foreground">…</p> : !q.data?.length ? <p className="mt-8 text-muted-foreground">{t("ebooks_empty")}</p> : (
         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {q.data.map((b) => (
-            <article key={b.id} className="flex min-w-0 flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card">
+            <article key={b.id} id={`ebook-${b.id}`} className="flex min-w-0 flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card">
               <div className="aspect-[3/4] w-full bg-muted">
                 {b.cover_url ? <img src={b.cover_url} alt={b.title} loading="lazy" className="h-full w-full object-cover" /> : <div className="grid h-full place-items-center"><BookOpen className="h-10 w-10 text-muted-foreground" /></div>}
               </div>

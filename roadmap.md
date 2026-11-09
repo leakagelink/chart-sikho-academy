@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [ ] Add shared Like/Comment/Share on all real products with persistent own likes/comments, safe public counts and mobile sharing fallback; verify signed-in save/reload and cleanup.
 - [x] Added optional bilingual signup referral field and referral-link prefill; database lifecycle atomically assigns valid code owner or designated Admin, generates own unique code and never adds signup earnings/sample enrollment. Browser verified optional input, invalid error, anon valid/blank checks and 393px no overflow; transactional lifecycle test passed valid/blank/invalid/no-earnings/immutable-parent rules and rolled back fixtures. 84 tests passed. Confirmation-email completion and new-member readback through referrer's UI remain unverified; existing owner-scoped team reads consume the saved relationships.
 - [x] Added student session Free/Paid, All/Upcoming/Past, search/reset and refresh filters. Database confirms existing paid entries are Draft (not scheduled); preserved their status. Temporary ₹499 scheduled class and webinar appeared under Upcoming+Paid and opened purchase details; deleted both after verification. 393px no overflow, no page errors, 86 tests and build OK; no payment submitted or approved.
 - [x] Admin Team Tree changed from level-grouped lists to connected parent/child branches with root above descendants, compact photos/counts and expandable details. Ancestors remain visible for filtered matches; signed-in tree/details/level filter and mobile no-overflow verified, three traversal tests passed.

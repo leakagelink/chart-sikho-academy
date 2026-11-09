@@ -3,6 +3,19 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export type Lang = "en" | "hi";
 
 const dict = {
+  social_like:{en:'Like',hi:'पसंद करें'},
+  social_comment:{en:'Comment',hi:'कमेंट करें'},
+  social_share:{en:'Share',hi:'शेयर करें'},
+  social_comments:{en:'Comments',hi:'कमेंट्स'},
+  social_write:{en:'Write a comment',hi:'कमेंट लिखें'},
+  social_post:{en:'Post comment',hi:'कमेंट भेजें'},
+  social_no_comments:{en:'No comments yet.',hi:'अभी कोई कमेंट नहीं है।'},
+  social_delete:{en:'Delete your comment',hi:'अपना कमेंट हटाएँ'},
+  social_signin:{en:'Sign in to like or comment',hi:'पसंद या कमेंट के लिए लॉगिन करें'},
+  social_copy:{en:'Copy link',hi:'लिंक कॉपी करें'},
+  social_copied:{en:'Link copied',hi:'लिंक कॉपी हुआ'},
+  social_link:{en:'Product link',hi:'प्रोडक्ट लिंक'},
+  social_copy_manual:{en:'Select and copy the link above.',hi:'ऊपर वाला लिंक चुनकर कॉपी करें।'},
   signup_referral_code:{en:'Referral code (optional)',hi:'रेफरल कोड (वैकल्पिक)'},
   signup_referral_invalid:{en:'Referral code is invalid or unavailable. Check it or leave it blank.',hi:'रेफरल कोड गलत है या उपलब्ध नहीं है। सही कोड डालें या खाली छोड़ें।'},
   signup_referral_error:{en:'Could not verify the referral code. Please try again.',hi:'रेफरल कोड की जाँच नहीं हो सकी। कृपया फिर कोशिश करें।'},

@@ -8,8 +8,12 @@ import { useLang } from '@/lib/i18n';
 import { canOpenEbook } from '@/lib/ebook-access';
 import { Button } from '@/components/ui/button';
 import { ManualPay } from './ManualPay';
+import { ProductSocial } from './ProductSocial';
 
 export function EbookPurchase({ book }: { book: { id: string; title: string; price: number; has_file: boolean | null } }) {
+  return <><EbookPurchaseAction book={book}/><ProductSocial kind="ebook" id={book.id} title={book.title}/></>;
+}
+function EbookPurchaseAction({ book }: { book: { id: string; title: string; price: number; has_file: boolean | null } }) {
   const { session } = useAuth();
   const user = session?.user;
   const { t } = useLang();
