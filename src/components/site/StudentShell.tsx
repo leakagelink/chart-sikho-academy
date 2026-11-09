@@ -50,8 +50,8 @@ export function StudentShell({ children }: { children: ReactNode }) {
         <div className="sticky top-20">
           <div className="mb-4 flex items-center gap-2 font-display text-xl font-bold"><GraduationCap className="text-primary" />{t("my_learning")}</div>
           <nav className="max-h-[calc(100dvh-8rem)] overflow-y-auto pr-1">
-            {groups.map((g) => (
-              <div key={g.title} className="mb-4">
+            {groups.map((g, gi) => (
+              <div key={`${g.title}-${gi}`} className="mb-4">
                 {g.items[0]?.to !== '/' && <p className="mb-1 px-3 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">{t(g.title)}</p>}
                 {g.items.map(({ to, label, icon: Icon }) => (
                   <Button asChild key={label} size="sm" variant={active(to) ? "secondary" : "ghost"} className="w-full justify-start">
