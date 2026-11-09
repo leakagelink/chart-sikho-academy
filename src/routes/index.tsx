@@ -9,14 +9,13 @@ import { inr } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
 import { useAuth } from "@/hooks/use-auth";
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { categoryQuery } from '@/lib/category-query';
 import { bannerQuery } from '@/lib/banner-query';
 import { WebsiteBanners } from '@/components/site/WebsiteBanners';
 import { productQuery } from '@/lib/product-query';
 import { EbookPurchase } from '@/components/site/EbookPurchase';
 
 export const Route = createFileRoute("/")({
-  loader: async ({context}) => {await Promise.all([context.queryClient.ensureQueryData(catalogQuery()),context.queryClient.ensureQueryData(categoryQuery()),context.queryClient.ensureQueryData(bannerQuery()),context.queryClient.ensureQueryData(productQuery())]);},
+  loader: async ({context}) => {await Promise.all([context.queryClient.ensureQueryData(catalogQuery()),context.queryClient.ensureQueryData(bannerQuery()),context.queryClient.ensureQueryData(productQuery())]);},
   head: () => ({
     meta: [
       { property: "og:type", content: "website" },
@@ -31,7 +30,6 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const {data:homeCategories}=useSuspenseQuery(categoryQuery());
   const {data:products}=useSuspenseQuery(productQuery());
   const {data:catalog}=useSuspenseQuery(catalogQuery());
   const { t, lang } = useLang();
@@ -103,16 +101,6 @@ function Index() {
       </section>
 
       {/* Upcoming live */}
-      {homeCategories.length > 0 && <section className="mt-8">
-        <h2 className="font-display text-2xl font-bold text-foreground">{t('admin_nav_categories')}</h2>
-        <div className="home-categories mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
-          {homeCategories.map(category => <Link key={category.id} to="/courses" search={{cat:category.slug}} className="flex min-w-0 flex-col items-center gap-3 rounded-lg border border-border bg-card p-4 text-center shadow-card">
-            <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-gold/15 text-gold">{category.icon_url ? <img src={category.icon_url} alt="" className="h-12 w-12 object-contain" /> : <BookOpen className="h-6 w-6" />}</span>
-            <span className="w-full break-words text-sm font-semibold">{category.name}</span>
-          </Link>)}
-        </div>
-      </section>}
-
       <section className="mt-10">
         <div className="flex items-center justify-between">
           <h2 className="font-display text-2xl font-bold text-foreground">{t("upcoming")}</h2>
