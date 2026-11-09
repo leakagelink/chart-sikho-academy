@@ -1,14 +1,13 @@
 import { createServerFn } from '@tanstack/react-start';
 import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
-import { z } from 'zod';
-import { kycDocumentType, kycReviewInput } from './kyc';
+import { kycSubmissionInput, kycReviewInput } from './kyc';
 export const getMyKyc=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).handler(async({context})=>{
   const p=await context.supabase.from('profiles').select('kyc_status').eq('id',context.userId).single();if(p.error)throw p.error;
   const r=await context.supabase.from('kyc_requests').select('*').eq('user_id',context.userId).order('created_at',{ascending:false});if(r.error)throw r.error;
   return {status:p.data.kyc_status,requests:r.data};
 });
-export const submitKyc=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator((v:unknown)=>z.object({type:kycDocumentType,path:z.string().min(1).max(300)}).parse(v)).handler(async({context,data})=>{
-  const r=await context.supabase.rpc('submit_kyc',{_type:data.type,_path:data.path});if(r.error)throw r.error;return r.data;
+export const submitKyc=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator((v:unknown)=>kycSubmissionInput.parse(v)).handler(async({context,data})=>{
+  const r=await context.supabase.rpc('submit_kyc_documents',{_pan_path:data.panPath,_identity_type:data.identityType,_identity_path:data.identityPath});if(r.error)throw r.error;return r.data;
 });
 export const getAdminKyc=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).handler(async({context})=>{
   const access=await context.supabase.rpc('has_panel_permission',{_section:'verification',_action:'view'});if(access.error||!access.data)throw new Error('Forbidden');

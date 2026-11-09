@@ -945,6 +945,7 @@ export type Database = {
           document_path: string
           document_type: string
           id: string
+          pan_document_path: string | null
           reviewed_at: string | null
           reviewed_by: string | null
           status: string
@@ -956,6 +957,7 @@ export type Database = {
           document_path: string
           document_type: string
           id?: string
+          pan_document_path?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
           status?: string
@@ -967,6 +969,7 @@ export type Database = {
           document_path?: string
           document_type?: string
           id?: string
+          pan_document_path?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
           status?: string
@@ -2067,6 +2070,14 @@ export type Database = {
         Returns: string
       }
       submit_kyc: { Args: { _path: string; _type: string }; Returns: string }
+      submit_kyc_documents: {
+        Args: {
+          _identity_path: string
+          _identity_type: string
+          _pan_path: string
+        }
+        Returns: string
+      }
       submit_manual_payment: {
         Args: { _course_id: string; _screenshot_path: string; _utr: string }
         Returns: string
