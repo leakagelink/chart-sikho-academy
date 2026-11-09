@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useLang, type DictKey } from "@/lib/i18n";
 import { useAuth } from "@/hooks/use-auth";
 
-type Item = { to: string; label: DictKey; icon: typeof BookOpen; view?: 'webinars' };
+type Item = { to: string; label: DictKey; icon: typeof BookOpen };
 const groups: { title: DictKey; items: Item[] }[] = [
   { title: "my_learning", items: [
     { to: "/", label: "nav_home", icon: Home },
@@ -15,7 +15,7 @@ const groups: { title: DictKey; items: Item[] }[] = [
     { to: "/ebooks", label: "nav_ebooks", icon: FileText },
     { to: "/live-classes", label: "cat_live", icon: Video },
     { to: "/certificates", label: "up_certificates", icon: Award },
-    { to: "/webinars", label: "cat_webinars", icon: Video, view: 'webinars' },
+    { to: "/webinars", label: "cat_webinars", icon: Video },
   ] },
   { title: "my_learning", items: [
     { to: "/dashboard", label: "my_learning", icon: LayoutDashboard },
@@ -41,7 +41,6 @@ export function StudentShell({ children }: { children: ReactNode }) {
   const { t } = useLang();
   const { session } = useAuth();
   const path = useRouterState({ select: (s) => s.location.pathname });
-  const search = useRouterState({ select: (s) => s.location.search as { view?: string } });
   if (!session || EXCLUDED.some((p) => path.startsWith(p))) return <>{children}</>;
   const active = (to: string) => (to === "/" ? path === "/" : path === to || path.startsWith(to + "/"));
   return (
@@ -53,9 +52,9 @@ export function StudentShell({ children }: { children: ReactNode }) {
             {groups.map((g) => (
               <div key={g.title} className="mb-4">
                 {g.items[0]?.to !== '/' && <p className="mb-1 px-3 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">{t(g.title)}</p>}
-                {g.items.map(({ to, label, icon: Icon, view }) => (
+                {g.items.map(({ to, label, icon: Icon }) => (
                   <Button asChild key={label} size="sm" variant={active(to) ? "secondary" : "ghost"} className="w-full justify-start">
-                    <Link to={to} search={view ? { view } : {}}><Icon size={16} />{t(label)}</Link>
+                    <Link to={to} ><Icon size={16} />{t(label)}</Link>
                   </Button>
                 ))}
               </div>

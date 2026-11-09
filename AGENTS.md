@@ -27,11 +27,11 @@
 - Shared navigation switches to a bottom bar below the desktop breakpoint, with grid-based mobile headers and safe-area spacing; why: bilingual navigation remains accessible without header crowding across screen sizes.
 - The branded splash wraps the shared app shell and dismisses locally on each full app load, with reduced-motion support; why: every entry page gets the same launch experience without replaying on internal navigation or changing account data.
 - All UI copy goes through `src/lib/i18n.tsx` (`t(key)` with en/hi values); why: every screen must switch between Hindi and English.
-- Sample course/live-class data lives in `src/lib/courses.ts` until a real backend replaces it; why: one place to swap in real data.
+- Student catalog, learning stats, classes and certificates use Cloud records or empty states. Why: no fictional products or progress.
 - Auth: student accounts via Lovable Cloud; signed-in pages live under `src/routes/_authenticated/` (client-only gate redirects to /auth); why: one guard for every portal page.
 - Paid-course enrollment is blocked by database policy until payments are verified server-side; only free courses can be self-enrolled; why: browser can never grant itself paid access.
-- Client-test features live under `/sandbox` with browser-local state isolated from Cloud accounts, enrollments and permissions; why: clients can exercise student and admin mocks without receiving real access or moving money.
-- Live-class pages share LiveClassCombo with provider configuration in the sample catalog; previews never load third-party scripts, capture devices, or connect to meetings, so testing cannot accidentally create a live session.
+- Demo/Test Portal routes and browser-local mock data are removed. Why: the app must show only actual records.
+- Class pages show saved scheduled records without mock players or automatic external connections. Why: actual meetings require separate approval.
 
 - Student content surfaces use scoped semantic tokens in PageMotion; branded chrome/auth/splash and admin retain navy/gold tokens. Why: the reference mixes white student content with dark branding without changing admin or authentication behavior.
 - Course final quizzes link through the course record (one quiz may serve many courses); students get questions, scoring, attempt limits and automatic certificates only through security-definer database functions gated on full lesson completion; why: answer keys stay hidden and the browser cannot forge scores or certificates.

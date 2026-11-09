@@ -1,6 +1,5 @@
 import { Link } from "@tanstack/react-router";
 import { BookOpen, User } from "lucide-react";
-import educator from "@/assets/course-educator.jpg";
 import { inr } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
 
@@ -15,7 +14,7 @@ export function CloudCourseCard({ course: c }: { course: C }) {
     <article className="course-row course-motion group flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card shadow-card transition-transform hover:-translate-y-1">
       <div className="course-cover relative aspect-video w-full shrink-0 overflow-hidden bg-muted">
         <Link to="/courses/$courseId" params={{ courseId: c.id }} aria-label={c.title} className="absolute inset-0">
-          <img src={c.thumbnail_url || educator} alt="" loading="lazy" className="h-full w-full object-cover transition-transform group-hover:scale-105" />
+          {c.thumbnail_url?<img src={c.thumbnail_url} alt="" loading="lazy" className="h-full w-full object-cover transition-transform group-hover:scale-105" />:<span className="grid h-full place-items-center"><BookOpen className="h-10 w-10 text-muted-foreground" /></span>}
         </Link>
         {now === 0 ? <span className="absolute left-3 top-3 rounded-full bg-success px-2.5 py-0.5 text-[11px] font-bold text-success-foreground">FREE</span>
           : off > 0 && <span className="absolute left-3 top-3 rounded-full bg-gold px-2.5 py-0.5 text-[11px] font-bold text-navy">{off}% off</span>}
