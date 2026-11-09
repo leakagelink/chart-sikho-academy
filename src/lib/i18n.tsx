@@ -893,7 +893,7 @@ const dict = {
   rev_2_t: { en: "Priya Verma", hi: "प्रिया वर्मा" },
   rev_2_s: { en: "Practical examples in Hindi made options easy for me.", hi: "हिंदी में प्रैक्टिकल उदाहरणों से ऑप्शंस आसान लगे।" },
   upcoming: { en: "Upcoming Live Classes", hi: "आने वाली लाइव क्लास" },
-  popular: { en: "Most Popular Courses", hi: "सबसे लोकप्रिय कोर्स" },
+  popular: { en: "All Courses", hi: "सभी कोर्स" },
   see_all: { en: "See all", hi: "सभी देखें" },
   join_live: { en: "Join Live", hi: "लाइव जॉइन करें" },
   remind: { en: "Remind Me", hi: "याद दिलाएँ" },

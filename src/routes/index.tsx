@@ -84,6 +84,10 @@ function Index() {
         {catalog.map(c => <CloudCourseCard key={c.id} course={c} />)}
       </HomeProductShelf>
 
+      <HomeProductShelf title={t('cat_webinars')} seeAll={<Button asChild variant="link" className="shrink-0 gap-0 p-0"><Link to="/webinars">{t('see_all')}<ChevronRight className="h-4 w-4" /></Link></Button>}>
+        <ScheduledLiveClasses kind="webinar" />
+      </HomeProductShelf>
+
       {offers.length > 0 && <HomeProductShelf title={t('home_best_offer')} seeAll={<Button asChild variant="link" className="shrink-0 gap-0 p-0"><Link to="/courses" search={{type:'courses'}}>{t('see_all')}<ChevronRight className="h-4 w-4" /></Link></Button>}>
         {offers.map(c => <CloudCourseCard key={c.id} course={c} />)}
       </HomeProductShelf>}
