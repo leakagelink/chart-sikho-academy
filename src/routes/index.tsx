@@ -1,13 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { Bell, BookOpen, ChevronRight, Crown, FileText, PlayCircle, Radio, Search, Video } from "lucide-react";
+import { BookOpen, ChevronRight, Crown, FileText, PlayCircle, Radio, Video } from "lucide-react";
 import hero from "@/assets/hero-bull.jpg";
 import { ScheduledLiveClasses } from "@/components/site/ScheduledLiveClasses";
 import { CloudCourseCard } from "@/components/site/CloudCourseCard";
 import { catalogQuery } from "@/lib/catalog-query";
 import { inr } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
-import { useAuth } from "@/hooks/use-auth";
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { bannerQuery } from '@/lib/banner-query';
 import { WebsiteBanners } from '@/components/site/WebsiteBanners';
@@ -34,12 +32,6 @@ function Index() {
   const {data:products}=useSuspenseQuery(productQuery());
   const {data:catalog}=useSuspenseQuery(catalogQuery());
   const { t } = useLang();
-  const { session } = useAuth();
-  const meta = session?.user?.user_metadata as { full_name?: string } | undefined;
-  const firstName = (meta?.full_name ?? "").trim().split(" ")[0] || t("student_fallback");
-  const [hour, setHour] = useState<number | null>(null);
-  useEffect(() => { setHour(new Date().getHours()); }, []);
-  const greet = hour === null ? t("greet_morning") : hour < 12 ? t("greet_morning") : hour < 17 ? t("greet_afternoon") : t("greet_evening");
   const cats = [
     { icon: Radio, label: t("cat_live"), to: "/live-classes" },
     { icon: BookOpen, label: t("nav_courses"), to: "/courses" },
@@ -49,25 +41,6 @@ function Index() {
   const offers = catalog.filter(c => c.sale_price != null && c.sale_price < c.price);
   return (
     <div className="mobile-home w-full min-w-0 px-4">
-      {/* Greeting — blueprint home dashboard header */}
-      <section className="home-greeting mt-6 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
-        <div className="flex min-w-0 items-center gap-3">
-          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gold/15 font-display text-lg font-bold text-gold">
-            {firstName.charAt(0).toUpperCase()}
-          </span>
-          <div className="min-w-0">
-            <h1 className="truncate font-display text-xl font-bold text-foreground sm:text-2xl">
-              {t("hello")}, {firstName} 👋
-            </h1>
-            <p className="text-sm text-muted-foreground">{greet} · {t('home_learn_today')}</p>
-          </div>
-        </div>
-        <div className="flex shrink-0 gap-1">
-          <Button asChild variant="ghost" size="icon" className="h-11 w-11 rounded-full"><Link to="/courses" aria-label={t('search')}><Search className="h-5 w-5" /></Link></Button>
-          <Button asChild variant="ghost" size="icon" className="h-11 w-11 rounded-full"><Link to="/notifications" aria-label={t('notifications')}><Bell className="h-5 w-5" /></Link></Button>
-        </div>
-      </section>
-
       {/* Hero */}
       <WebsiteBanners page="home" fallback={
       <section className="home-marketing relative mt-6 overflow-hidden rounded-3xl bg-navy text-navy-foreground">
