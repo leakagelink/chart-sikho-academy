@@ -369,56 +369,83 @@ export type Database = {
       class_sessions: {
         Row: {
           access_mode: string
+          address: string
           category_slug: string
+          city: string
           completion_state: string
+          country: string
           course_id: string | null
           created_at: string
           id: string
           jitsi_url: string
           kind: string
           module_id: string | null
+          pin_code: string
           price: number
           recording_url: string
           starts_at: string
+          state: string
           status: string
+          support_email: string
+          support_name: string
+          support_phone: string
           thumbnail_url: string
           title: string
+          venue: string
           youtube_url: string
         }
         Insert: {
           access_mode?: string
+          address?: string
           category_slug?: string
+          city?: string
           completion_state?: string
+          country?: string
           course_id?: string | null
           created_at?: string
           id?: string
           jitsi_url?: string
           kind?: string
           module_id?: string | null
+          pin_code?: string
           price?: number
           recording_url?: string
           starts_at: string
+          state?: string
           status?: string
+          support_email?: string
+          support_name?: string
+          support_phone?: string
           thumbnail_url?: string
           title: string
+          venue?: string
           youtube_url?: string
         }
         Update: {
           access_mode?: string
+          address?: string
           category_slug?: string
+          city?: string
           completion_state?: string
+          country?: string
           course_id?: string | null
           created_at?: string
           id?: string
           jitsi_url?: string
           kind?: string
           module_id?: string | null
+          pin_code?: string
           price?: number
           recording_url?: string
           starts_at?: string
+          state?: string
           status?: string
+          support_email?: string
+          support_name?: string
+          support_phone?: string
           thumbnail_url?: string
           title?: string
+          venue?: string
           youtube_url?: string
         }
         Relationships: [
@@ -2051,13 +2078,22 @@ export type Database = {
         Args: never
         Returns: {
           access_mode: string
+          address: string
           category_slug: string
+          city: string
+          country: string
           id: string
           kind: string
+          pin_code: string
           price: number
           starts_at: string
+          state: string
+          support_email: string
+          support_name: string
+          support_phone: string
           thumbnail_url: string
           title: string
+          venue: string
         }[]
       }
       set_panel_permissions: {
