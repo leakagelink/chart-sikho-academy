@@ -59,14 +59,12 @@ export function rankFor(userId: string, ranks: RankRow[], affiliates: { referrer
   return [...ranks].sort((a, b) => b.min_sales - a.min_sales).find(r => sales >= r.min_sales) ?? null;
 }
 export type PublishCheck = { title: string; description: string; price: number; sale_price: number | null; modules: { id: string }[]; lessons: { module_id: string | null; video_url: string; resource_path: string }[] };
-/** Returns the failed checks; a course may be published only when this is empty. */
+/** Returns the failed checks; a course may be published only when this is empty. Modules are optional organisation: lessons may sit outside a module and empty modules do not block publishing. */
 export function coursePublishIssues(c: PublishCheck) {
-  const issues: ('title'|'description'|'modules'|'lessons'|'empty_module'|'lesson_content'|'sale_price')[] = [];
+  const issues: ('title'|'description'|'lessons'|'lesson_content'|'sale_price')[] = [];
   if (c.title.trim().length < 2) issues.push('title');
   if (c.description.trim().length < 20) issues.push('description');
-  if (!c.modules.length) issues.push('modules');
   if (!c.lessons.length) issues.push('lessons');
-  if (c.modules.some(m => !c.lessons.some(l => l.module_id === m.id))) issues.push('empty_module');
   if (c.lessons.some(l => !l.video_url && !l.resource_path)) issues.push('lesson_content');
   if (c.sale_price !== null && c.sale_price >= c.price) issues.push('sale_price');
   return issues;

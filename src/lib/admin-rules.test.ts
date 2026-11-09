@@ -44,8 +44,10 @@ describe('course publish validation', () => {
   it('allows a complete course', () => { expect(coursePublishIssues(ok)).toEqual([]); });
   it('allows video lessons without an optional PDF', () => { expect(coursePublishIssues({ ...ok, lessons: [{ module_id: 'm', video_url: 'https://youtu.be/x', resource_path: '' }] })).toEqual([]); });
   it('allows a PDF alongside a video lesson', () => { expect(coursePublishIssues({ ...ok, lessons: [{ module_id: 'm', video_url: 'https://youtu.be/x', resource_path: 'lesson/notes.pdf' }] })).toEqual([]); });
-  it('blocks a course without modules or lessons', () => { expect(coursePublishIssues({ ...ok, modules: [], lessons: [] })).toEqual(expect.arrayContaining(['modules','lessons'])); });
-  it('blocks an empty module and a lesson without content', () => { expect(coursePublishIssues({ ...ok, modules: [{ id: 'm' }, { id: 'n' }], lessons: [{ module_id: 'm', video_url: '', resource_path: '' }] })).toEqual(expect.arrayContaining(['empty_module','lesson_content'])); });
+  it('blocks a course without lessons', () => { expect(coursePublishIssues({ ...ok, modules: [], lessons: [] })).toContain('lessons'); });
+  it('allows lessons without any module', () => { expect(coursePublishIssues({ ...ok, modules: [], lessons: [{ module_id: null, video_url: 'https://youtu.be/x', resource_path: '' }] })).toEqual([]); });
+  it('does not block on an empty module', () => { expect(coursePublishIssues({ ...ok, modules: [{ id: 'm' }, { id: 'n' }], lessons: [{ module_id: null, video_url: 'https://youtu.be/x', resource_path: '' }] })).toEqual([]); });
+  it('blocks a lesson without video or PDF', () => { expect(coursePublishIssues({ ...ok, lessons: [{ module_id: 'm', video_url: '', resource_path: '' }] })).toContain('lesson_content'); });
   it('blocks a sale price not lower than price', () => { expect(coursePublishIssues({ ...ok, sale_price: 1999 })).toContain('sale_price'); });
 });
 describe('admin image upload envelope', () => {
