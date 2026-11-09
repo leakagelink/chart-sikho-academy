@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [ ] Show saved direct-referral names alongside member IDs across student affiliate/team/tree; verify privacy scope and populated signed-in display.
 - [x] Affiliate Team Tree uses a wide viewport-bounded window with separate scrolling content and always-visible top/footer close controls. Signed-in real four-member tree opened and both close actions verified at 2094px, 1280px and 393px; build OK, no records changed.
 - [x] All seven existing accounts now have unique six-character codes; new signup assigns one atomically, legacy codes remain valid and browser changes to either code are blocked. Referral/Team/Affiliate expose primary-domain signup link with copy/share, admin/profile display short code. Signed-in copy → signed-out signup prefill and mobile verified, five tests/build pass; transactional short/legacy signup sponsor checks passed and rolled back. Confirmation email completion was not exercised.
 - [x] Desktop Home uses shared single-row shelves: three class/course slots, four eBook slots, accessible previous/next controls and all saved products without slice limits. Verified five real classes and five eBooks stay one row, arrows move right/back, eBook See all opens catalog, mobile swipe remains and no overflow/runtime errors; build OK. Popular/offer each currently has one real course, so extra courses are not fabricated.

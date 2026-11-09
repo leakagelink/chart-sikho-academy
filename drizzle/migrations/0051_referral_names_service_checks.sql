@@ -1,0 +1,1 @@
+GRANT EXECUTE ON FUNCTION public.my_referral_members(integer) TO service_role;

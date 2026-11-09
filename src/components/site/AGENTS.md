@@ -1,4 +1,5 @@
 # Product interactions
+- Student referral surfaces read names through the own-direct-referrals RPC, never broader profile reads. Why: showing member names must not expose private profile fields or deeper teams.
 - Affiliate Team Tree dialogs keep close controls outside bounded scrolling content and use viewport-sized width. Why: wide/deep teams cannot hide dismissal controls or overflow the page.
 - Home uses a shared horizontal shelf with responsive widths and accessible previous/next controls; full catalogs keep grids. Why: all saved products remain reachable without multi-row Home sections or changes to admin branding.
 - Use ProductSocial for every product card/detail; own-only RLS writes and safe metadata RPCs supply persistent engagement, and shared URLs never contain private resources or meeting links. Why: every product surface shares behavior without exposing participant identities or paid files.
