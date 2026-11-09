@@ -1,3 +1,4 @@
+import { storedImageReference } from './image-reference';
 import { z } from 'zod';
 
 export const adminSections = ['plans','overview','users','categories','builder','courses','lessons','videos','classes','webinars','seminars','ebooks','orders','payments','affiliates','commissions','payouts','notifications','settings','quizzes','questions','certificates','progress','reviews','pricing','coupons','refunds','invoices','instructors','roles','verification','blocked','bulk','refsettings','reflinks','teamtree','commrules','ranks','bonuses','fraud','templates','announcements','tickets','banners','campaigns','leads','seo','promocodes','maintenance'] as const;
@@ -28,7 +29,7 @@ export const adminChangeSchema = z.object({
 export function requireAdminRole(isAdmin: boolean) { if (!isAdmin) throw new Error('Forbidden'); }
 export function safeHttps(value: string) { if (!value) return ''; const url = new URL(value); if (url.protocol !== 'https:' || url.username || url.password) throw new Error('HTTPS required'); return url.toString(); }
 export const liveClassSchema = z.object({
-  thumbnail_url: z.union([z.literal(''), z.string().max(700000).regex(/^data:image\/(png|jpeg|webp|svg\+xml);base64,/), z.string().url().max(500).startsWith('https://')]).default(''),
+  thumbnail_url: storedImageReference.default(''),
   title: z.string().trim().min(2).max(120), kind: z.enum(['class','webinar','seminar']), starts_at: z.string().datetime(),
   access_mode: z.enum(['free','paid']).default('free'),
   price: z.coerce.number().int().min(0).max(1000000).default(0),
