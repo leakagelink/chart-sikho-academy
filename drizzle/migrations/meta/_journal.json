@@ -372,6 +372,13 @@
       "when": 1794224793088,
       "tag": "0052_private_site_image_storage",
       "breakpoints": true
+    },
+    {
+      "idx": 53,
+      "version": "7",
+      "when": 1794225300840,
+      "tag": "0053_tighten_public_read_rules",
+      "breakpoints": true
     }
   ]
 }
