@@ -18,7 +18,7 @@ export const studentReferralsOptions = (userId: string) => queryOptions({
     const wallet = await supabase.rpc('my_wallet');
     if (wallet.error) throw wallet.error;
     const [profile, team, commissions] = await Promise.all([
-      supabase.from('profiles').select('full_name,referral_code').eq('id', userId).maybeSingle(),
+      supabase.from('profiles').select('full_name,referral_code,short_referral_code').eq('id', userId).maybeSingle(),
       allRows((a,b) => supabase.from('referral_relationships').select('id,referred_id,created_at').eq('referrer_id', userId).order('created_at', { ascending: false }).order('id').range(a,b)),
       allRows((a,b) => supabase.from('commission_entries').select('id,order_id,amount,tds_amount,level,status,created_at,currency,on_hold,release_at').eq('user_id', userId).order('created_at', { ascending: false }).order('id').range(a,b)),
     ]);

@@ -3,6 +3,9 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export type Lang = "en" | "hi";
 
 const dict = {
+  student_referral_link:{en:'Referral signup link',hi:'रेफरल signup लिंक'},
+  student_copy_referral_link:{en:'Copy referral link',hi:'रेफरल लिंक कॉपी करें'},
+  student_share_referral_link:{en:'Share referral link',hi:'रेफरल लिंक शेयर करें'},
   shelf_previous: {en:'Previous products',hi:'पिछले प्रोडक्ट'},
   shelf_next: {en:'Next products',hi:'अगले प्रोडक्ट'},
   home_learn_today: {en:'Learn something new today?',hi:'आज कुछ नया सीखें?'},
