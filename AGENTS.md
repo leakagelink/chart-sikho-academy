@@ -36,5 +36,5 @@
 
 - Student content surfaces use scoped semantic tokens in PageMotion; branded chrome/auth/splash and admin retain navy/gold tokens. Why: the reference mixes white student content with dark branding without changing admin or authentication behavior.
 - Course final quizzes link through the course record (one quiz may serve many courses); students get questions, scoring, attempt limits and automatic certificates only through security-definer database functions gated on full lesson completion; why: answer keys stay hidden and the browser cannot forge scores or certificates.
-- Verified paid orders attach unparented direct buyers to the designated admin before commission processing; preserve parents and prevent cycles. Commission/payout rules run only in checked database functions/triggers. Why: browsers cannot forge placement or earnings.
+- Auth signup trigger assigns validated referral/default Admin and own code, never sample enrollment or earnings; paid-order triggers retain parents. Why: metadata changes cannot reparent users or forge commissions.
 - Admin notifications flagged show_popup appear once as a homepage/dashboard popup and stay in the inbox; sent push Campaigns create one in-app notification via a role-checked trigger. Why: one delivery path for inbox and popup without duplicates.

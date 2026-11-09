@@ -3,6 +3,9 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export type Lang = "en" | "hi";
 
 const dict = {
+  signup_referral_code:{en:'Referral code (optional)',hi:'रेफरल कोड (वैकल्पिक)'},
+  signup_referral_invalid:{en:'Referral code is invalid or unavailable. Check it or leave it blank.',hi:'रेफरल कोड गलत है या उपलब्ध नहीं है। सही कोड डालें या खाली छोड़ें।'},
+  signup_referral_error:{en:'Could not verify the referral code. Please try again.',hi:'रेफरल कोड की जाँच नहीं हो सकी। कृपया फिर कोशिश करें।'},
   session_search:{en:'Search classes or webinars',hi:'क्लास या वेबिनार खोजें'},
   session_timing:{en:'Schedule',hi:'समय'},
   session_past:{en:'Past',hi:'पिछले'},

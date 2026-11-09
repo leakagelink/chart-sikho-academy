@@ -7,6 +7,7 @@ import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/use-auth";
 import { useLang } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
+import { normalizeSignupReferral, signupReferralFormatValid } from '@/lib/signup-referral';
 
 // Social buttons stay hidden while the client tests the app; flip to true at go-live.
 const SHOW_SOCIAL_LOGIN = false;
@@ -14,7 +15,7 @@ const SHOW_SOCIAL_LOGIN = false;
 const safePath = (p?: string) => (p && p.startsWith("/") && !p.startsWith("//") ? p : "/dashboard");
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (s: Record<string, unknown>) => ({ redirect: typeof s["redirect"] === "string" ? s["redirect"] : undefined }),
+  validateSearch: (s: Record<string, unknown>): { redirect?: string | undefined; ref?: string | undefined } => ({ redirect: typeof s["redirect"] === "string" ? s["redirect"] : undefined, ref: typeof s['ref'] === 'string' ? normalizeSignupReferral(s['ref']).slice(0,40) : undefined }),
   head: () => ({
     meta: [
       { property: "og:type", content: "website" },
@@ -32,10 +33,10 @@ function AuthPage() {
   const { t } = useLang();
   const { session } = useAuth();
   const brandLogo = useBranding();
-  const { redirect } = Route.useSearch();
+  const { redirect, ref } = Route.useSearch();
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"login" | "signup" | "forgot">("login");
-  const [form, setForm] = useState({ name: "", phone: "", email: "", password: "" });
+  const [mode, setMode] = useState<"login" | "signup" | "forgot">(ref ? 'signup' : 'login');
+  const [form, setForm] = useState({ name: "", phone: "", email: "", password: "", referral: ref ?? '' });
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
   const [busy, setBusy] = useState(false);
   const target = safePath(redirect);
@@ -54,10 +55,18 @@ function AuthPage() {
       const { error } = await supabase.auth.signInWithPassword({ email: form.email, password: form.password });
       if (error) setMsg({ ok: false, text: error.message });
     } else if (mode === "signup") {
+      const code = normalizeSignupReferral(form.referral);
+      if (!signupReferralFormatValid(code)) {
+        setMsg({ok:false,text:t('signup_referral_invalid')});setBusy(false);return;
+      }
+      const valid = await supabase.rpc('signup_referral_valid', {_code:code});
+      if (valid.error || !valid.data) {
+        setMsg({ok:false,text:t(valid.error?'signup_referral_error':'signup_referral_invalid')});setBusy(false);return;
+      }
       const { error } = await supabase.auth.signUp({
         email: form.email,
         password: form.password,
-        options: { emailRedirectTo: window.location.origin + target, data: { full_name: form.name, phone: form.phone } },
+        options: { emailRedirectTo: window.location.origin + '/auth', data: { full_name: form.name, phone: form.phone, referral_code: code } },
       });
       setMsg(error ? { ok: false, text: error.message } : { ok: true, text: t("check_email") });
     } else {
@@ -105,6 +114,7 @@ function AuthPage() {
             <>
               <input required placeholder={t("full_name")} value={form.name} onChange={set("name")} className={input} />
               <input type="tel" placeholder={t("phone")} value={form.phone} onChange={set("phone")} className={input} />
+              <label className="block space-y-1 text-sm"><span>{t('signup_referral_code')}</span><input aria-label={t('signup_referral_code')} autoCapitalize="characters" autoComplete="off" maxLength={40} value={form.referral} onChange={set('referral')} className={input}/></label>
             </>
           )}
           <input required type="email" placeholder={t("email")} value={form.email} onChange={set("email")} className={input} />
