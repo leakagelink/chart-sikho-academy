@@ -4,6 +4,8 @@ import { Calendar } from 'lucide-react';
 import { productQuery } from '@/lib/product-query';
 import { useLang } from '@/lib/i18n';
 import { LiveClassThumbnail } from './LiveClassCard';
+import { MapPin } from 'lucide-react';
+import { seminarPlace } from './SeminarVenue';
 
 export function ScheduledLiveClasses({ kind = 'class' }: { kind?: 'class' | 'webinar' | 'seminar' }) {
   const { data } = useQuery(productQuery());
@@ -13,7 +15,7 @@ export function ScheduledLiveClasses({ kind = 'class' }: { kind?: 'class' | 'web
     <div className="flex flex-1 flex-col gap-3 p-4">
       <h3 className="break-words font-semibold leading-snug">{s.title}</h3>
       <p className="flex items-start gap-2 text-xs text-muted-foreground"><Calendar className="h-4 w-4 shrink-0" />{new Intl.DateTimeFormat(lang === 'hi' ? 'hi-IN' : 'en-IN', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Kolkata' }).format(new Date(s.starts_at))}</p>
-      <SessionPurchase session={s}/>
+      {seminarPlace(s)&&<p className="flex items-start gap-2 text-xs text-muted-foreground"><MapPin className="h-4 w-4 shrink-0"/>{seminarPlace(s)}</p>}<SessionPurchase session={s}/>
     </div>
   </article>);
 }
