@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowRight, Award, Bell, BookOpen, Calendar, ClipboardCheck, Crown, FileText, PlayCircle, Radio, Users, Video } from "lucide-react";
+import { Bell, BookOpen, ChevronRight, Crown, FileText, PlayCircle, Radio, Search, Video } from "lucide-react";
 import hero from "@/assets/hero-bull.jpg";
 import { ScheduledLiveClasses } from "@/components/site/ScheduledLiveClasses";
 import { CloudCourseCard } from "@/components/site/CloudCourseCard";
@@ -13,6 +13,7 @@ import { bannerQuery } from '@/lib/banner-query';
 import { WebsiteBanners } from '@/components/site/WebsiteBanners';
 import { productQuery } from '@/lib/product-query';
 import { EbookPurchase } from '@/components/site/EbookPurchase';
+import { Button } from '@/components/ui/button';
 
 export const Route = createFileRoute("/")({
   loader: async ({context}) => {await Promise.all([context.queryClient.ensureQueryData(catalogQuery()),context.queryClient.ensureQueryData(bannerQuery()),context.queryClient.ensureQueryData(productQuery())]);},
@@ -32,7 +33,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   const {data:products}=useSuspenseQuery(productQuery());
   const {data:catalog}=useSuspenseQuery(catalogQuery());
-  const { t, lang } = useLang();
+  const { t } = useLang();
   const { session } = useAuth();
   const meta = session?.user?.user_metadata as { full_name?: string } | undefined;
   const firstName = (meta?.full_name ?? "").trim().split(" ")[0] || t("student_fallback");
@@ -40,15 +41,14 @@ function Index() {
   useEffect(() => { setHour(new Date().getHours()); }, []);
   const greet = hour === null ? t("greet_morning") : hour < 12 ? t("greet_morning") : hour < 17 ? t("greet_afternoon") : t("greet_evening");
   const cats = [
-    { icon: BookOpen, label: t("cat_mycourses"), to: "/dashboard" },
     { icon: Radio, label: t("cat_live"), to: "/live-classes" },
+    { icon: BookOpen, label: t("nav_courses"), to: "/courses" },
     { icon: Video, label: t("cat_webinars"), to: "/webinars" },
     { icon: FileText, label: t("cat_ebooks"), to: "/ebooks" },
-    { icon: ClipboardCheck, label: t("cat_tests"), to: "/dashboard" },
-    { icon: Award, label: t("cat_certificates"), to: "/certificates" },
   ] as const;
+  const offers = catalog.filter(c => c.sale_price != null && c.sale_price < c.price);
   return (
-    <div className="w-full px-4">
+    <div className="mobile-home w-full min-w-0 px-4">
       {/* Greeting — blueprint home dashboard header */}
       <section className="home-greeting mt-6 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
         <div className="flex min-w-0 items-center gap-3">
@@ -59,12 +59,13 @@ function Index() {
             <h1 className="truncate font-display text-xl font-bold text-foreground sm:text-2xl">
               {t("hello")}, {firstName} 👋
             </h1>
-            <p className="text-sm text-muted-foreground">{greet}</p>
+            <p className="text-sm text-muted-foreground">{greet} · {t('home_learn_today')}</p>
           </div>
         </div>
-        <Link to="/notifications" aria-label={t("notifications")} className="relative grid h-11 w-11 shrink-0 place-items-center rounded-full border border-border bg-card text-foreground shadow-card">
-          <Bell className="h-5 w-5" />
-        </Link>
+        <div className="flex shrink-0 gap-1">
+          <Button asChild variant="ghost" size="icon" className="h-11 w-11 rounded-full"><Link to="/courses" aria-label={t('search')}><Search className="h-5 w-5" /></Link></Button>
+          <Button asChild variant="ghost" size="icon" className="h-11 w-11 rounded-full"><Link to="/notifications" aria-label={t('notifications')}><Bell className="h-5 w-5" /></Link></Button>
+        </div>
       </section>
 
       {/* Hero */}
@@ -91,7 +92,7 @@ function Index() {
 
       }/>
       {/* Categories */}
-      <section className="home-categories mt-6 grid grid-cols-3 gap-3 sm:grid-cols-6">
+      <section className="home-categories mt-6 grid grid-cols-4 gap-3">
         {cats.map(({ icon: Icon, label, to }) => (
           <Link key={label} to={to} className="flex flex-col items-center gap-2 rounded-2xl border border-border bg-card p-4 text-center shadow-card">
             <span className="rounded-full bg-gold/15 p-3 text-gold"><Icon className="h-5 w-5" /></span>
@@ -102,31 +103,42 @@ function Index() {
 
       {/* Upcoming live */}
       <section className="mt-10">
-        <div className="flex items-center justify-between">
-          <h2 className="font-display text-2xl font-bold text-foreground">{t("upcoming")}</h2>
+        <div className="home-section-heading grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
+          <h2 className="min-w-0 font-display text-2xl font-bold text-foreground">{t("upcoming")}</h2>
+          <Button asChild variant="link" className="shrink-0 gap-0 p-0"><Link to="/live-classes">{t('see_all')}<ChevronRight className="h-4 w-4" /></Link></Button>
         </div>
-        <div className="mt-4 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="home-product-rail mt-4 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
           <ScheduledLiveClasses />
         </div>
       </section>
 
       {/* Popular */}
       <section className="mt-10">
-        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
+        <div className="home-section-heading grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
           <h2 className="font-display text-2xl font-bold text-foreground">{t("popular")}</h2>
-          <Link to="/courses" className="text-sm font-semibold text-primary">{t("see_all")} →</Link>
+          <Button asChild variant="link" className="shrink-0 gap-0 p-0"><Link to="/courses" search={{type:'courses'}}>{t('see_all')}<ChevronRight className="h-4 w-4" /></Link></Button>
         </div>
-        <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="home-product-rail mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {catalog.slice(0, 4).map((c) => <CloudCourseCard key={c.id} course={c} />)}
         </div>
       </section>
 
-      <section className="home-ebooks mt-10">
-        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
-          <h2 className="min-w-0 font-display text-2xl font-bold text-foreground">{t('nav_ebooks')}</h2>
-          <Link to="/ebooks" className="shrink-0 text-sm font-semibold text-primary">{t('see_all')} →</Link>
+      {offers.length > 0 && <section className="mt-10">
+        <div className="home-section-heading grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
+          <h2 className="min-w-0 font-display text-2xl font-bold">{t('home_best_offer')}</h2>
+          <Button asChild variant="link" className="shrink-0 gap-0 p-0"><Link to="/courses" search={{type:'courses'}}>{t('see_all')}<ChevronRight className="h-4 w-4" /></Link></Button>
         </div>
-        {products.ebooks.length ? <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+        <div className="home-product-rail mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {offers.slice(0,4).map(c => <CloudCourseCard key={c.id} course={c} />)}
+        </div>
+      </section>}
+
+      <section className="home-ebooks mt-10">
+        <div className="home-section-heading grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
+          <h2 className="min-w-0 font-display text-2xl font-bold text-foreground">{t('nav_ebooks')}</h2>
+          <Button asChild variant="link" className="shrink-0 gap-0 p-0"><Link to="/ebooks">{t('see_all')}<ChevronRight className="h-4 w-4" /></Link></Button>
+        </div>
+        {products.ebooks.length ? <div className="home-product-rail mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
           {products.ebooks.slice(0,4).map(book=><article key={book.id} className="flex h-full min-w-0 flex-col overflow-hidden rounded-lg border border-border bg-card shadow-card">
             <div className="aspect-[3/4] w-full shrink-0 overflow-hidden bg-muted">
               {book.cover_url?<img src={book.cover_url} alt={book.title} loading="lazy" decoding="async" className="block h-full w-full object-contain"/>:<div className="grid h-full place-items-center"><BookOpen className="h-12 w-12 text-muted-foreground"/></div>}
