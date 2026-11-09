@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [ ] Repair Courses save/publish workflow and expose existing permission-checked curriculum video link/upload controls directly from Courses; verify save, video persistence and mobile layout.
 - [x] Admin Team Tree now groups all-depth members by level with parent links, private signed photo support/fallback, contact/profile/status details, root/level/rank/search filters and responsive cards. Real Admin plus buyer rendered; level filter/details/search and 393px no-overflow verified; 11 tests/build pass. Existing shown members have no photos, so populated photo rendering remains unverified; bank/KYC files remain private.
 - [x] Redesigned shared admin UI: searchable desktop rail/mobile drawer, breadcrumbs, compact actions, collapsible filters, labeled mobile records and sticky editor controls. Signed-in menu search → Courses → filters → Add/cancel verified without runtime errors; key screens checked at phone/tablet sizes, desktop screenshot verified, 84 tests pass. Full all-section/size sweep timed out; no permissions/data changed.
 - [x] Admin Plans Add/Edit/Delete with bilingual names/benefits, price, period, ordering, published/draft state and section permissions; public page displays saved published plans. Signed-in create → refresh → public display → mobile edit → public price update → confirmed delete verified; temporary plan removed, 89 tests pass. Subscription payments remain disabled; sample prices not migrated as real offers.
