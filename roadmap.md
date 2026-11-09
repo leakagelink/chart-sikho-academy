@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [ ] Remove demo/mock catalogs, fabricated stats/progress/notifications, and Test Portal; replace student links with real live classes, certificates and support surfaces while preserving Cloud accounts, payments and learning records.
 - [x] Home/Courses now show published purchasable courses rather than sample paid cards; old sample detail links to available courses instead of disabled-payment toast. Checkout displays saved offer amount consistent with manual UPI RPC; signed-in pending payment and enrolled states, 393px no-overflow, 8 amount/destination tests and build verified. Existing payments untouched; no new money/proof submitted or approved.
 - [ ] Plans payment awaits defined purchased benefits/duration; live-class/webinar payment awaits authoritative pricing and paid-access requirements. No published plans exist. Keep sample/sandbox payments fictional and payout settlement disabled. eBook purchase still needs its real PDF as noted below.
 - [x] Courses now opens its existing permission-checked curriculum directly; Add is draft-first, Save draft & add videos preserves details and opens curriculum, and Edit shows missing publish checks. Real Admin draft → module → video link → publish → refresh and MP4 upload → refresh verified; temporary course/file removed, 393px no overflow, 84 tests and build pass. Empty courses still cannot publish.
