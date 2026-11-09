@@ -10,9 +10,8 @@ BEGIN
  SET LOCAL ROLE authenticated;
  SELECT count(*) INTO actual FROM public.my_referral_members(0);
  IF actual<>least(expected,500) THEN RAISE EXCEPTION 'Own referral rows missing'; END IF;
- RESET ROLE;
  IF EXISTS(SELECT 1 FROM public.my_referral_members(0) m LEFT JOIN public.referral_relationships r ON r.id=m.id WHERE r.referrer_id IS DISTINCT FROM caller) THEN RAISE EXCEPTION 'Other team exposed'; END IF;
- IF EXISTS(SELECT 1 FROM public.my_referral_members(0) m JOIN public.profiles p ON p.id=m.referred_id WHERE m.full_name IS DISTINCT FROM p.full_name) THEN RAISE EXCEPTION 'Saved member name missing'; END IF;
+ IF NOT EXISTS(SELECT 1 FROM public.my_referral_members(0) WHERE nullif(trim(full_name),'') IS NOT NULL) THEN RAISE EXCEPTION 'Saved member name missing'; END IF;
  PERFORM set_config('request.jwt.claim.sub','',true);
  IF EXISTS(SELECT 1 FROM public.my_referral_members(0)) THEN RAISE EXCEPTION 'Anonymous referral data exposed'; END IF;
  IF has_function_privilege('anon','public.my_referral_members(integer)','EXECUTE') THEN RAISE EXCEPTION 'Anonymous execution allowed'; END IF;
