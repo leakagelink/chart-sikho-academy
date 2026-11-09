@@ -3,6 +3,8 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export type Lang = "en" | "hi";
 
 const dict = {
+  browse_paid_courses:{en:'Browse available courses',hi:'उपलब्ध कोर्स देखें'},
+  sample_course_purchase:{en:'Sample course. Choose an available course for UPI payment.',hi:'यह सैंपल कोर्स है। UPI भुगतान के लिए उपलब्ध कोर्स चुनें।'},
   admin_manage_videos:{en:'Videos & curriculum',hi:'वीडियो और पाठ्यक्रम'},
   admin_save_draft_videos:{en:'Save draft & add videos',hi:'ड्राफ्ट सेव करें और वीडियो जोड़ें'},
   admin_lesson_media:{en:'Upload video or PDF notes (optional)',hi:'वीडियो या PDF नोट्स अपलोड करें (वैकल्पिक)'},

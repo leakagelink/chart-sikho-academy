@@ -72,9 +72,7 @@ function CourseDetail() {
     navigate({ to: "/dashboard" });
   }
 
-  function buyPaid() {
-    toast.info(t("payments_soon_s"), { description: t("payments_soon_t") });
-  }
+
 
   return (
     <div className="detail-screen w-full px-4 pt-0">
@@ -164,12 +162,8 @@ function CourseDetail() {
             </button>
           ) : (
             <>
-              <button onClick={buyPaid} className="mt-4 w-full rounded-lg bg-primary py-2.5 font-semibold text-primary-foreground hover:bg-primary/90">
-                {t("buy_now")}
-              </button>
-              <p className="mt-3 flex items-start gap-1.5 text-xs text-muted-foreground">
-                <Lock className="mt-0.5 h-3.5 w-3.5 shrink-0" /> {t("payments_soon_t")}
-              </p>
+              <Button asChild className="mt-4 w-full"><Link to="/courses" search={{type:'courses'}}>{t('browse_paid_courses')}</Link></Button>
+              <p className="mt-3 text-xs text-muted-foreground">{t('sample_course_purchase')}</p>
             </>
           )}
         </aside>
