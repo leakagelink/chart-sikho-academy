@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [x] Added student session Free/Paid, All/Upcoming/Past, search/reset and refresh filters. Database confirms existing paid entries are Draft (not scheduled); preserved their status. Temporary ₹499 scheduled class and webinar appeared under Upcoming+Paid and opened purchase details; deleted both after verification. 393px no overflow, no page errors, 86 tests and build OK; no payment submitted or approved.
 - [x] Admin Team Tree changed from level-grouped lists to connected parent/child branches with root above descendants, compact photos/counts and expandable details. Ancestors remain visible for filtered matches; signed-in tree/details/level filter and mobile no-overflow verified, three traversal tests passed.
 - [x] Added Free/Paid pricing to Live Classes/Webinars and safe public metadata, purchase-gated session access and manual UPI approval orders. Admin Paid ₹499 save/reload → user QR/UTR/screenshot checkout → Free ₹0 save → free access verified; mobile no overflow, Webinar paid form and 89 tests/build pass. Temporary sessions removed; no payment proof submitted or money approved.
 - [ ] Verify session payment submission → admin approval → purchased access with an actual payment proof; no real payment/proof supplied for this verification.
