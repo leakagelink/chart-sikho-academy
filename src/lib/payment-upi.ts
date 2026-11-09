@@ -25,3 +25,8 @@ export function qrSource(upi: PaymentUpi | null | undefined): 'uploaded' | 'gene
 export function qrUploadAllowed(file: { type: string; size: number }): boolean {
   return /^image\/(png|jpe?g|webp)$/.test(file.type) && file.size <= 5 * 1024 * 1024;
 }
+
+/** Mirrors the authoritative manual-payment amount; never invent an offer. */
+export function coursePaymentAmount(course: { price: number; sale_price?: number | null }): number {
+  return course.sale_price ?? course.price;
+}

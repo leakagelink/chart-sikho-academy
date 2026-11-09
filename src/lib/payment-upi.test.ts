@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { paymentUpiLink } from './payment-upi';
+import { paymentUpiLink, coursePaymentAmount } from './payment-upi';
 
 describe('configured payment destination', () => {
   it('uses the same saved UPI and payee in admin QR and student checkout', () => {
@@ -32,4 +32,10 @@ describe('uploaded payment QR', () => {
     expect(qrUploadAllowed({ type: 'application/pdf', size: 100 })).toBe(false);
     expect(qrUploadAllowed({ type: 'image/jpeg', size: 5 * 1024 * 1024 + 1 })).toBe(false);
   });
+});
+
+describe('course checkout amount',()=>{
+ it('uses the saved offer, not the regular price',()=>{expect(coursePaymentAmount({price:24999,sale_price:3999})).toBe(3999);});
+ it('uses regular price without an offer',()=>{expect(coursePaymentAmount({price:24999,sale_price:null})).toBe(24999);});
+ it('retains a free saved offer',()=>{expect(coursePaymentAmount({price:24999,sale_price:0})).toBe(0);});
 });

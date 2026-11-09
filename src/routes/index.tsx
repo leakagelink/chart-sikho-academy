@@ -5,8 +5,9 @@ import educator from "@/assets/course-educator-thumb.webp";
 import hero from "@/assets/hero-bull.jpg";
 import { LiveClassCard } from "@/components/site/LiveClassCard";
 import { ScheduledLiveClasses } from "@/components/site/ScheduledLiveClasses";
-import { CourseCard } from "@/components/site/CourseCard";
-import { courses, liveClasses, inr } from "@/lib/courses";
+import { CloudCourseCard } from "@/components/site/CloudCourseCard";
+import { catalogQuery } from "@/lib/catalog-query";
+import { liveClasses, inr } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
 import { useAuth } from "@/hooks/use-auth";
 import { useSuspenseQuery } from '@tanstack/react-query';
@@ -17,7 +18,7 @@ import { productQuery } from '@/lib/product-query';
 import { EbookPurchase } from '@/components/site/EbookPurchase';
 
 export const Route = createFileRoute("/")({
-  loader: async ({context}) => {await Promise.all([context.queryClient.ensureQueryData(categoryQuery()),context.queryClient.ensureQueryData(bannerQuery()),context.queryClient.ensureQueryData(productQuery())]);},
+  loader: async ({context}) => {await Promise.all([context.queryClient.ensureQueryData(catalogQuery()),context.queryClient.ensureQueryData(categoryQuery()),context.queryClient.ensureQueryData(bannerQuery()),context.queryClient.ensureQueryData(productQuery())]);},
   head: () => ({
     meta: [
       { property: "og:type", content: "website" },
@@ -34,6 +35,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   const {data:homeCategories}=useSuspenseQuery(categoryQuery());
   const {data:products}=useSuspenseQuery(productQuery());
+  const {data:catalog}=useSuspenseQuery(catalogQuery());
   const { t, lang } = useLang();
   const { session } = useAuth();
   const meta = session?.user?.user_metadata as { full_name?: string } | undefined;
@@ -152,7 +154,7 @@ function Index() {
           <Link to="/courses" className="text-sm font-semibold text-primary">{t("see_all")} →</Link>
         </div>
         <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {courses.slice(0, 4).map((c) => <CourseCard key={c.id} course={c} />)}
+          {catalog.slice(0, 4).map((c) => <CloudCourseCard key={c.id} course={c} />)}
         </div>
       </section>
 
