@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { BookOpen, ChevronRight, Crown, FileText, PlayCircle, Radio, Video } from "lucide-react";
+import { BookOpen, ChevronRight, Crown, FileText, PlayCircle, Radio, Users, Video } from "lucide-react";
 import hero from "@/assets/hero-bull.jpg";
 import { ScheduledLiveClasses } from "@/components/site/ScheduledLiveClasses";
 import { CloudCourseCard } from "@/components/site/CloudCourseCard";
@@ -37,6 +37,7 @@ function Index() {
     { icon: BookOpen, label: t("nav_courses"), to: "/courses" },
     { icon: Video, label: t("cat_webinars"), to: "/webinars" },
     { icon: FileText, label: t("cat_ebooks"), to: "/ebooks" },
+    { icon: Users, label: t("cat_seminars"), to: "/seminars" },
   ] as const;
   const offers = catalog.filter(c => c.sale_price != null && c.sale_price < c.price);
   return (
@@ -65,7 +66,7 @@ function Index() {
 
       }/>
       {/* Categories */}
-      <section className="home-categories mt-6 grid grid-cols-4 gap-3">
+      <section className="home-categories mt-6 grid grid-cols-3 gap-3 sm:grid-cols-5">
         {cats.map(({ icon: Icon, label, to }) => (
           <Link key={label} to={to} className="flex flex-col items-center gap-2 rounded-2xl border border-border bg-card p-4 text-center shadow-card">
             <span className="rounded-full bg-gold/15 p-3 text-gold"><Icon className="h-5 w-5" /></span>
