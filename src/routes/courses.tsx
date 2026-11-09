@@ -16,7 +16,7 @@ import { WebsiteBanners } from '@/components/site/WebsiteBanners';
 import { filterProducts, type ProductFilter, type ProductType } from '@/lib/product-filters';
 
 export const Route = createFileRoute("/courses")({
-  validateSearch: (s: Record<string, unknown>): { type?: ProductFilter; q?: string; cat?: string } => ({ ...(typeof s['type'] === 'string' && ['all','courses','ebooks','classes','webinars'].includes(s['type']) ? { type: s['type'] as ProductFilter } : {}), ...(typeof s['q'] === 'string' ? { q: s['q'] } : {}), ...(typeof s['cat'] === 'string' ? {cat:s['cat']} : {}) }),
+  validateSearch: (s: Record<string, unknown>): { type?: ProductFilter; q?: string; cat?: string } => ({ ...(typeof s['type'] === 'string' && ['all','courses','ebooks','classes','webinars','seminars'].includes(s['type']) ? { type: s['type'] as ProductFilter } : {}), ...(typeof s['q'] === 'string' ? { q: s['q'] } : {}), ...(typeof s['cat'] === 'string' ? {cat:s['cat']} : {}) }),
   loader:({context})=>Promise.all([context.queryClient.ensureQueryData(catalogQuery()),context.queryClient.ensureQueryData(productQuery()),context.queryClient.ensureQueryData(bannerQuery())]),
   errorComponent:CatalogError,
   notFoundComponent:CatalogError,
@@ -25,9 +25,9 @@ export const Route = createFileRoute("/courses")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { title: "Products & Services — Chartसीखो" },
-      { name: "description", content: "Browse Chartसीखो courses, eBooks, live classes and webinars by product type." },
+      { name: "description", content: "Browse Chartसीखो courses, eBooks, live classes, webinars and seminars by product type." },
       { property: "og:title", content: "Products & Services — Chartसीखो" },
-      { property: "og:description", content: "Browse Chartसीखो courses, eBooks, live classes and webinars by product type." },
+      { property: "og:description", content: "Browse Chartसीखो courses, eBooks, live classes, webinars and seminars by product type." },
     ],
   }),
   component: CoursesPage,
@@ -39,6 +39,7 @@ const filters: { key: ProductFilter; label: DictKey }[] = [
   { key: "courses", label: "nav_courses" },
   { key: "classes", label: "cat_live" },
   { key: "webinars", label: "cat_webinars" },
+  { key: "seminars", label: "cat_seminars" },
 ];
 
 function CoursesPage() {
@@ -52,7 +53,7 @@ function CoursesPage() {
   const category = search.cat;
   const realCourses = filterProducts(cloud.filter(c=>!category||c.category===category).map(c=>({...c,type:'courses' as const})),f,q);
   const ebooks = filterProducts(products.ebooks.filter(()=>!category||category==='ebooks').map(b=>({...b,type:'ebooks' as const})),f,q);
-  const sessions = filterProducts(products.sessions.filter(s=>!category||s.category_slug===category).map(s=>({...s,type:(s.kind==='webinar'?'webinars':'classes') as ProductType})),f,q);
+  const sessions = filterProducts(products.sessions.filter(s=>!category||s.category_slug===category).map(s=>({...s,type:(s.kind==='webinar'?'webinars':s.kind==='seminar'?'seminars':'classes') as ProductType})),f,q);
   const total = realCourses.length + ebooks.length + sessions.length;
   return (
     <div className="catalog-screen w-full px-4 pt-8">
@@ -85,7 +86,7 @@ function CoursesPage() {
       <div className="catalog-list mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
         {realCourses.map(c=><CloudCourseCard key={c.id} course={c}/>)}
         {ebooks.map(b=><article key={b.id} className="overflow-hidden rounded-lg border border-border bg-card"><div className="grid aspect-video place-items-center bg-muted">{b.cover_url?<img src={b.cover_url} alt={b.title} className="h-full w-full object-contain"/>:<BookOpen className="h-12 w-12 text-primary"/>}</div><div className="space-y-3 p-4"><p className="text-xs text-muted-foreground">{t('nav_ebooks')}</p><h2 className="font-semibold">{b.title}</h2><p className="line-clamp-2 text-sm text-muted-foreground">{b.description}</p><p className="font-bold text-primary">{inr(b.price)}</p><EbookPurchase book={b}/></div></article>)}
-        {sessions.map(s=><article key={s.id} className="flex h-full min-w-0 flex-col overflow-hidden rounded-lg border border-border bg-card"><LiveClassThumbnail title={s.title} thumbnailUrl={s.thumbnail_url}/><div className="flex flex-1 flex-col gap-3 p-4"><p className="text-xs text-muted-foreground">{t(s.type==='webinars'?'cat_webinars':'cat_live')}</p><h2 className="mt-2 font-semibold">{s.title}</h2><p className="mt-3 flex gap-2 text-sm text-muted-foreground"><Calendar size={16}/>{new Intl.DateTimeFormat(lang==='hi'?'hi-IN':'en-IN',{dateStyle:'medium',timeStyle:'short',timeZone:'Asia/Kolkata'}).format(new Date(s.starts_at))}</p><SessionPurchase session={s}/></div></article>)}
+        {sessions.map(s=><article key={s.id} className="flex h-full min-w-0 flex-col overflow-hidden rounded-lg border border-border bg-card"><LiveClassThumbnail title={s.title} thumbnailUrl={s.thumbnail_url}/><div className="flex flex-1 flex-col gap-3 p-4"><p className="text-xs text-muted-foreground">{t(s.type==='webinars'?'cat_webinars':s.type==='seminars'?'cat_seminars':'cat_live')}</p><h2 className="mt-2 font-semibold">{s.title}</h2><p className="mt-3 flex gap-2 text-sm text-muted-foreground"><Calendar size={16}/>{new Intl.DateTimeFormat(lang==='hi'?'hi-IN':'en-IN',{dateStyle:'medium',timeStyle:'short',timeZone:'Asia/Kolkata'}).format(new Date(s.starts_at))}</p><SessionPurchase session={s}/></div></article>)}
       </div>
       {total === 0 && <p className="mt-10 text-center text-muted-foreground">{t("no_results")}</p>}
     </div>

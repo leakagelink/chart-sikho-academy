@@ -17,6 +17,7 @@ import { Route as EbooksRouteImport } from './routes/ebooks'
 import { Route as LiveClassesRouteImport } from './routes/live-classes'
 import { Route as PlansRouteImport } from './routes/plans'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as SeminarsRouteImport } from './routes/seminars'
 import { Route as WebinarsRouteImport } from './routes/webinars'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAffiliateRouteImport } from './routes/_authenticated/affiliate'
@@ -74,6 +75,11 @@ const PlansRoute = PlansRouteImport.update({
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SeminarsRoute = SeminarsRouteImport.update({
+  id: '/seminars',
+  path: '/seminars',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WebinarsRoute = WebinarsRouteImport.update({
@@ -185,6 +191,7 @@ export interface FileRoutesByFullPath {
   '/live-classes': typeof LiveClassesRoute
   '/plans': typeof PlansRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/seminars': typeof SeminarsRoute
   '/webinars': typeof WebinarsRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/affiliate': typeof AuthenticatedAffiliateRoute
@@ -213,6 +220,7 @@ export interface FileRoutesByTo {
   '/live-classes': typeof LiveClassesRoute
   '/plans': typeof PlansRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/seminars': typeof SeminarsRoute
   '/webinars': typeof WebinarsRoute
   '/affiliate': typeof AuthenticatedAffiliateRoute
   '/certificates': typeof AuthenticatedCertificatesRoute
@@ -242,6 +250,7 @@ export interface FileRoutesById {
   '/live-classes': typeof LiveClassesRoute
   '/plans': typeof PlansRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/seminars': typeof SeminarsRoute
   '/webinars': typeof WebinarsRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/affiliate': typeof AuthenticatedAffiliateRoute
@@ -272,6 +281,7 @@ export interface FileRouteTypes {
     | '/live-classes'
     | '/plans'
     | '/reset-password'
+    | '/seminars'
     | '/webinars'
     | '/admin'
     | '/affiliate'
@@ -300,6 +310,7 @@ export interface FileRouteTypes {
     | '/live-classes'
     | '/plans'
     | '/reset-password'
+    | '/seminars'
     | '/webinars'
     | '/affiliate'
     | '/certificates'
@@ -328,6 +339,7 @@ export interface FileRouteTypes {
     | '/live-classes'
     | '/plans'
     | '/reset-password'
+    | '/seminars'
     | '/webinars'
     | '/_authenticated/admin'
     | '/_authenticated/affiliate'
@@ -358,6 +370,7 @@ export interface RootRouteChildren {
   LiveClassesRoute: typeof LiveClassesRoute
   PlansRoute: typeof PlansRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  SeminarsRoute: typeof SeminarsRoute
   WebinarsRoute: typeof WebinarsRoute
   CoursesCourseIdRoute: typeof CoursesCourseIdRoute
   LiveClassIdRoute: typeof LiveClassIdRoute
@@ -421,6 +434,13 @@ declare module '@tanstack/react-router' {
       path: '/reset-password'
       fullPath: '/reset-password'
       preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seminars': {
+      id: '/seminars'
+      path: '/seminars'
+      fullPath: '/seminars'
+      preLoaderRoute: typeof SeminarsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/webinars': {
@@ -614,6 +634,7 @@ const rootRouteChildren: RootRouteChildren = {
   LiveClassesRoute: LiveClassesRoute,
   PlansRoute: PlansRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  SeminarsRoute: SeminarsRoute,
   WebinarsRoute: WebinarsRoute,
   CoursesCourseIdRoute: CoursesCourseIdRoute,
   LiveClassIdRoute: LiveClassIdRoute,
