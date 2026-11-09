@@ -31,7 +31,7 @@
 - Auth: student accounts via Lovable Cloud; signed-in pages live under `src/routes/_authenticated/` (client-only gate redirects to /auth); why: one guard for every portal page.
 - Paid-course enrollment is blocked by database policy until payments are verified server-side; only free courses can be self-enrolled; why: browser can never grant itself paid access.
 - Demo/Test Portal routes and browser-local mock data are removed. Why: the app must show only actual records.
-- Class pages show saved scheduled records without mock players or automatic external connections. Why: actual meetings require separate approval.
+- Session catalogs use safe metadata RPCs; paid session links require own verified orders via my_session_access and manual UPI approval; no automatic external connections. Why: public listings must not leak paid meeting links.
 
 - Student content surfaces use scoped semantic tokens in PageMotion; branded chrome/auth/splash and admin retain navy/gold tokens. Why: the reference mixes white student content with dark branding without changing admin or authentication behavior.
 - Course final quizzes link through the course record (one quiz may serve many courses); students get questions, scoring, attempt limits and automatic certificates only through security-definer database functions gated on full lesson completion; why: answer keys stay hidden and the browser cannot forge scores or certificates.
