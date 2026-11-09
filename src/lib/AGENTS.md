@@ -1,4 +1,4 @@
 - Public loaders rewrite inline data-URL images via siteImage() to /api/public/site-image; why: embedded images bloated HTML.
-- New admin artwork uses private site-images uploads and stable RLS-gated file links; migrated artwork uses asset pointers. Why: records contain references instead of image bytes, while private personal/payment files remain separate.
+- New admin artwork uses private site-images uploads and stable file links served after a published-reference RPC check (no open storage read rule); migrated artwork uses asset pointers. Why: records contain references instead of image bytes, and unpublished or personal/payment files stay private.
 - Seminars reuse session catalogs, checkout and recording helpers with a separate kind and permission section; why: consistent management must not grant Classes access to Seminar managers or expose paid links.
 - Display protected short_referral_code while retaining legacy referral_code only for signup compatibility; share primary-domain /auth?ref links. Why: shorter codes must not break existing sponsor relationships or shared links.
