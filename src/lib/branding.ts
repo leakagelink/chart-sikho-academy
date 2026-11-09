@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { createContext, createElement, useContext, useEffect, type ReactNode } from 'react';
 import defaultLogo from '@/assets/logo.png';
+import { siteImage } from './site-image';
 
 const InitialBranding = createContext<string | null>(null);
 
@@ -33,7 +34,7 @@ export function useBranding() {
     queryFn: async () => {
       const { data, error } = await supabase.rpc('app_branding');
       if (error) throw error;
-      return typeof data === 'string' ? data : '';
+      return typeof data === 'string' ? siteImage('logo', 'logo', data) : '';
     },
     initialData: initialLogo === null ? undefined : initialLogo,
     staleTime: 5 * 60 * 1000,
