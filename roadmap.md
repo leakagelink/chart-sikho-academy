@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [ ] Add Free/Paid pricing for admin Live Classes/Webinars, secure manual UPI purchase and approved session access; verify both modes.
 - [x] Removed demo/mock course/class catalogs, fake progress/stats/notifications, sample videos and all Test Portal routes. Home/catalog/dashboard now use Cloud records; student links open saved classes/webinars, own certificates and real support tickets. Signed-in 9-page checks after splash, 393px no-overflow, no runtime errors, 10 tests and build verified. Cloud users/orders/enrollments and admin-created content untouched; no publishing performed.
 - [x] Home/Courses now show published purchasable courses rather than sample paid cards; old sample detail links to available courses instead of disabled-payment toast. Checkout displays saved offer amount consistent with manual UPI RPC; signed-in pending payment and enrolled states, 393px no-overflow, 8 amount/destination tests and build verified. Existing payments untouched; no new money/proof submitted or approved.
 - [ ] Plans payment awaits defined purchased benefits/duration; live-class/webinar payment awaits authoritative pricing and paid-access requirements. No published plans exist. Keep sample/sandbox payments fictional and payout settlement disabled. eBook purchase still needs its real PDF as noted below.

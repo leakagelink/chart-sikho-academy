@@ -368,6 +368,7 @@ export type Database = {
       }
       class_sessions: {
         Row: {
+          access_mode: string
           category_slug: string
           completion_state: string
           course_id: string | null
@@ -376,6 +377,7 @@ export type Database = {
           jitsi_url: string
           kind: string
           module_id: string | null
+          price: number
           recording_url: string
           starts_at: string
           status: string
@@ -384,6 +386,7 @@ export type Database = {
           youtube_url: string
         }
         Insert: {
+          access_mode?: string
           category_slug?: string
           completion_state?: string
           course_id?: string | null
@@ -392,6 +395,7 @@ export type Database = {
           jitsi_url?: string
           kind?: string
           module_id?: string | null
+          price?: number
           recording_url?: string
           starts_at: string
           status?: string
@@ -400,6 +404,7 @@ export type Database = {
           youtube_url?: string
         }
         Update: {
+          access_mode?: string
           category_slug?: string
           completion_state?: string
           course_id?: string | null
@@ -408,6 +413,7 @@ export type Database = {
           jitsi_url?: string
           kind?: string
           module_id?: string | null
+          price?: number
           recording_url?: string
           starts_at?: string
           status?: string
@@ -1061,6 +1067,7 @@ export type Database = {
           reviewed_at: string | null
           reviewed_by: string | null
           screenshot_path: string
+          session_id: string | null
           status: string
           user_id: string
           utr: string
@@ -1077,6 +1084,7 @@ export type Database = {
           reviewed_at?: string | null
           reviewed_by?: string | null
           screenshot_path: string
+          session_id?: string | null
           status?: string
           user_id: string
           utr: string
@@ -1093,6 +1101,7 @@ export type Database = {
           reviewed_at?: string | null
           reviewed_by?: string | null
           screenshot_path?: string
+          session_id?: string | null
           status?: string
           user_id?: string
           utr?: string
@@ -1117,6 +1126,13 @@ export type Database = {
             columns: ["order_id"]
             isOneToOne: false
             referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "manual_payments_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "class_sessions"
             referencedColumns: ["id"]
           },
         ]
@@ -1243,6 +1259,7 @@ export type Database = {
           ebook_id: string | null
           id: string
           provider_reference: string | null
+          session_id: string | null
           status: string
           user_id: string
         }
@@ -1253,6 +1270,7 @@ export type Database = {
           ebook_id?: string | null
           id?: string
           provider_reference?: string | null
+          session_id?: string | null
           status?: string
           user_id: string
         }
@@ -1263,6 +1281,7 @@ export type Database = {
           ebook_id?: string | null
           id?: string
           provider_reference?: string | null
+          session_id?: string | null
           status?: string
           user_id?: string
         }
@@ -1272,6 +1291,13 @@ export type Database = {
             columns: ["ebook_id"]
             isOneToOne: false
             referencedRelation: "ebooks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "class_sessions"
             referencedColumns: ["id"]
           },
         ]
@@ -1874,6 +1900,7 @@ export type Database = {
         Returns: boolean
       }
       my_ebook_resource: { Args: { _ebook_id: string }; Returns: string }
+      my_session_access: { Args: { _session_id: string }; Returns: Json }
       my_wallet: { Args: never; Returns: Json }
       payment_upi: { Args: never; Returns: Json }
       release_commissions_for: { Args: { _user: string }; Returns: number }
@@ -1926,6 +1953,19 @@ export type Database = {
         }
         Returns: undefined
       }
+      session_catalog: {
+        Args: never
+        Returns: {
+          access_mode: string
+          category_slug: string
+          id: string
+          kind: string
+          price: number
+          starts_at: string
+          thumbnail_url: string
+          title: string
+        }[]
+      }
       set_panel_permissions: {
         Args: { _permissions: Json; _user_id: string }
         Returns: undefined
@@ -1945,6 +1985,10 @@ export type Database = {
       submit_kyc: { Args: { _path: string; _type: string }; Returns: string }
       submit_manual_payment: {
         Args: { _course_id: string; _screenshot_path: string; _utr: string }
+        Returns: string
+      }
+      submit_session_payment: {
+        Args: { _screenshot_path: string; _session_id: string; _utr: string }
         Returns: string
       }
       valid_ref_levels: { Args: { _levels: Json }; Returns: boolean }
