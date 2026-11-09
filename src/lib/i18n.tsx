@@ -3,6 +3,8 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export type Lang = "en" | "hi";
 
 const dict = {
+  shelf_previous: {en:'Previous products',hi:'पिछले प्रोडक्ट'},
+  shelf_next: {en:'Next products',hi:'अगले प्रोडक्ट'},
   home_learn_today: {en:'Learn something new today?',hi:'आज कुछ नया सीखें?'},
   home_best_offer: {en:'Best Offer',hi:'बेहतरीन ऑफर'},
   social_like:{en:'Like',hi:'पसंद करें'},
