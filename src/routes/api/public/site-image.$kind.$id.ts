@@ -29,7 +29,7 @@ export const Route = createFileRoute('/api/public/site-image/$kind/$id')({
         const value = await readImage(params.kind, params.id).catch(() => null);
         const img = value ? decodeImageData(value) : null;
         if (!img) return new Response('Not found', { status: 404 });
-        return new Response(img.bytes, {
+        return new Response(img.bytes.buffer as ArrayBuffer, {
           headers: {
             'Content-Type': img.type,
             'Cache-Control': 'public, max-age=31536000, immutable',

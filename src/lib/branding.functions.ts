@@ -1,5 +1,6 @@
 import { createServerFn } from '@tanstack/react-start';
 import { createClient } from '@supabase/supabase-js';
+import { siteImage } from './site-image';
 
 /** Read only the public logo; never expose the administration settings. */
 export const getAppBranding = createServerFn({ method: 'GET' }).handler(async () => {
@@ -20,7 +21,7 @@ export const getAppBranding = createServerFn({ method: 'GET' }).handler(async ()
     });
     const { data, error } = await client.rpc('app_branding');
     if (error) return null;
-    return typeof data === 'string' ? data : '';
+    return typeof data === 'string' ? siteImage('logo', 'logo', data) : '';
   } catch {
     // Unknown branding is not the same as an intentional reset to the default.
     return null;

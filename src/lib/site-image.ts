@@ -19,8 +19,8 @@ export function siteImage(kind: SiteImageKind, id: string, value: string | null 
 export function decodeImageData(value: string): { type: string; bytes: Uint8Array } | null {
   const m = /^data:(image\/(?:png|jpeg|jpg|webp|gif|svg\+xml));base64,(.+)$/s.exec(value);
   if (!m) return null;
-  const bin = atob(m[2]);
+  const bin = atob(m[2] ?? "");
   const bytes = new Uint8Array(bin.length);
   for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-  return { type: m[1], bytes };
+  return { type: m[1] ?? "image/png", bytes };
 }
