@@ -12,6 +12,7 @@ import { StudentCharts } from "@/components/site/StudentCharts";
 import { KycStatus } from '@/components/site/KycStatus';
 import { WebsiteBanners } from '@/components/site/WebsiteBanners';
 import { bannerQuery } from '@/lib/banner-query';
+import { ProductSocial } from '@/components/site/ProductSocial';
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   loader:({context})=>Promise.all([context.queryClient.ensureQueryData(bannerQuery()),context.queryClient.ensureQueryData(catalogQuery()),context.queryClient.ensureQueryData(productQuery())]),
@@ -76,7 +77,7 @@ function Dashboard() {
 
       <section className="mt-8">
         <h2 className="font-display text-2xl font-bold text-foreground">{t("my_courses")}</h2>
-        {(enrolls.data??[]).filter(e=>cloudCourses.data?.some(c=>c.id===e.course_id)).map(e=><article key={e.course_id} className="mt-4 border-b border-border py-4"><h3 className="font-semibold">{cloudCourses.data?.find(c=>c.id===e.course_id)?.title}</h3><Button asChild className="mt-3"><Link to="/courses/$courseId" params={{courseId:e.course_id}}>{t('open_lesson')}</Link></Button></article>)}
+        {(enrolls.data??[]).filter(e=>cloudCourses.data?.some(c=>c.id===e.course_id)).map(e=><article key={e.course_id} className="mt-4 border-b border-border py-4"><h3 className="font-semibold">{cloudCourses.data?.find(c=>c.id===e.course_id)?.title}</h3><Button asChild className="mt-3"><Link to="/courses/$courseId" params={{courseId:e.course_id}}>{t('open_lesson')}</Link></Button><ProductSocial kind="course" id={e.course_id} title={cloudCourses.data?.find(c=>c.id===e.course_id)?.title??''}/></article>)}
         {!enrolls.isLoading&&!mine.length&&<p className="mt-4 text-muted-foreground">{t('no_enrollments')}</p>}
       </section>
 
