@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [ ] Add Seminar shortcut below Home hero, public Seminar listing and admin Product & Services management; verify desktop/mobile and saved records.
 - [x] New KYC requires PAN plus one Aadhaar/Voter ID in an atomic private-document bundle; old single-document submission is blocked, admin sees both documents and cannot approve incomplete legacy requests. Shared KYC account/dashboard status refreshes every 15 seconds while visible; existing atomic review updates status and sends notification. Five validation tests pass and build OK.
 - [ ] Verify new two-document submission → admin decision → student status through signed-in UI; requesting user's account has no matching preview login, so authenticated check awaits preview sign-in.
 - [x] Mobile Home uses light content, colorful shortcuts, swipeable full-thumbnail cards and See all links for classes/courses/offers/eBooks. Real cards, swipe and See all navigation verified; 320/393px and desktop have no page overflow, build OK. Desktop grids and saved records unchanged.
