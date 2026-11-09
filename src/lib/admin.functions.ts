@@ -1,3 +1,4 @@
+import { storedImageReference } from './image-reference';
 import { assertPanelAction, resolvePanelAccess } from './admin-access.server';
 import { canAccess, canReadDataset } from './admin-permissions';
 import { createServerFn } from '@tanstack/react-start';
@@ -159,7 +160,7 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
       result = data.id ? await s.from('membership_plans').update(row).eq('id',data.id).select('id').single() : await s.from('membership_plans').insert(row).select('id').single(); break;
     }
     case 'categories': {
-      const row = z.object({ name: title, slug: z.string().trim().toLowerCase().transform(x=>x.replace(/[^a-z0-9-]+/g,"-").replace(/^-+|-+$/g,"")).pipe(z.string().regex(/^[a-z0-9-]{2,40}$/)), position: z.coerce.number().int().min(1).max(1000), icon_url: z.union([z.literal(''), z.string().max(700000).regex(/^data:image\/(png|jpe?g|webp|gif|svg\+xml);base64,/), z.string().url().max(500).startsWith('https://')]).default('') }).parse(v);
+      const row = z.object({ name: title, slug: z.string().trim().toLowerCase().transform(x=>x.replace(/[^a-z0-9-]+/g,"-").replace(/^-+|-+$/g,"")).pipe(z.string().regex(/^[a-z0-9-]{2,40}$/)), position: z.coerce.number().int().min(1).max(1000), icon_url: storedImageReference.default('') }).parse(v);
       const category = {...row,is_visible:categoryVisibility.parse(v['is_visible'])};
       result = data.id ? await s.from('course_categories').update(category).eq('id',data.id).select('id').single() : await s.from('course_categories').insert(category).select('id').single(); break;
     }
@@ -168,7 +169,7 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
       result = data.id ? await s.from('course_modules').update(row).eq('id',data.id).select('id').single() : await s.from('course_modules').insert(row).select('id').single(); break;
     }
     case 'courses': {
-      const row = z.object({ title, price, category: z.string().regex(/^[a-z0-9-]{2,40}$/), status: z.enum(['draft','published']), description: z.string().max(2000).default(''), thumbnail_url: z.union([z.literal(''), z.string().max(700000).regex(/^data:image\/(png|jpeg|webp|svg\+xml);base64,/), z.string().url().max(500).startsWith('https://')]).default(''), instructor: z.string().max(120).default(''), objectives: z.string().max(2000).default(''), sale_price: z.union([z.literal('').transform(() => null), z.null(), price]).default(null), access_type: z.enum(['lifetime','fixed']).default('lifetime'), access_days: z.coerce.number().int().min(0).max(3650).default(0), final_quiz_id: z.union([z.literal('').transform(() => null), z.null(), z.string().uuid()]).default(null) }).parse(v);
+      const row = z.object({ title, price, category: z.string().regex(/^[a-z0-9-]{2,40}$/), status: z.enum(['draft','published']), description: z.string().max(2000).default(''), thumbnail_url: storedImageReference.default(''), instructor: z.string().max(120).default(''), objectives: z.string().max(2000).default(''), sale_price: z.union([z.literal('').transform(() => null), z.null(), price]).default(null), access_type: z.enum(['lifetime','fixed']).default('lifetime'), access_days: z.coerce.number().int().min(0).max(3650).default(0), final_quiz_id: z.union([z.literal('').transform(() => null), z.null(), z.string().uuid()]).default(null) }).parse(v);
       if (row.final_quiz_id) { const fq = await s.from('quizzes').select('id').eq('id', row.final_quiz_id).maybeSingle(); if (!fq.data) throw new Error('Unknown quiz'); }
       const cat = await s.from('course_categories').select('id').eq('slug',row.category).maybeSingle();
       if (!cat.data) throw new Error('Unknown category');
@@ -200,7 +201,7 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
       result = data.id ? await s.from('class_sessions').update(row).eq('id',data.id).select('id').single() : await s.from('class_sessions').insert(row).select('id').single(); break;
     }
     case 'ebooks': {
-      const row = z.object({ title, price, resource_path: path, description: z.string().max(4000).default(''), cover_url: z.union([z.literal(''), z.string().max(700000).regex(/^data:image\/(png|jpe?g|webp);base64,/), z.string().url().max(500).startsWith('https://')]).default(''), status: z.enum(['draft','published']) }).parse(v);
+      const row = z.object({ title, price, resource_path: path, description: z.string().max(4000).default(''), cover_url: storedImageReference.default(''), status: z.enum(['draft','published']) }).parse(v);
       result = data.id ? await s.from('ebooks').update(row).eq('id',data.id).select('id').single() : await s.from('ebooks').insert(row).select('id').single(); break;
     }
     case 'users': {
@@ -251,7 +252,7 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
       result = await s.from('bonus_entries').insert(row).select('id').single(); break;
     }
     case 'notifications': {
-      const row = z.object({ title, message: z.string().trim().min(2).max(1000), audience: z.string().min(1).max(200).refine(v => v === 'all' || /^(city|state|user|course):.+$/.test(v)), status: z.enum(['draft','published']), image_url: z.union([z.literal(''), z.string().max(700000).regex(/^data:image\/(png|jpeg|webp);base64,/), z.string().url().max(500).startsWith('https://')]).default(''), show_popup: z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]).default(false) }).parse(v);
+      const row = z.object({ title, message: z.string().trim().min(2).max(1000), audience: z.string().min(1).max(200).refine(v => v === 'all' || /^(city|state|user|course):.+$/.test(v)), status: z.enum(['draft','published']), image_url: storedImageReference.default(''), show_popup: z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]).default(false) }).parse(v);
       result = data.id ? await s.from('notification_campaigns').update(row).eq('id',data.id).eq('status','draft').select('id').single() : await s.from('notification_campaigns').insert({ ...row, created_by: context.userId }).select('id').single(); break;
     }
     case 'payouts': {
@@ -314,7 +315,7 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
       result = await s.from('invoices').insert({ ...row, invoice_no: makeInvoiceNo(new Date().getFullYear(), rand), gst_amount: gstAmount, total }).select('id').single(); break;
     }
     case 'settings': {
-      const row = z.object({ support_email: z.union([z.literal(''),z.string().email().max(200)]), support_phone: z.string().max(30), commission_percent: z.coerce.number().int().min(0).max(100), referral_enabled: z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]).optional(), ref_levels: z.union([z.literal(''), z.string().trim().regex(/^\d+(,\d+)*$/).refine(x => x.split(',').length <= 50, 'Maximum 50 referral levels')]).optional(), ref_level1_percent: z.coerce.number().int().min(0).max(100).optional(), ref_level2_percent: z.coerce.number().int().min(0).max(100).optional(), ref_level3_percent: z.coerce.number().int().min(0).max(100).optional(), logo_url: z.union([z.literal(''), z.string().regex(/^data:image\/(png|jpeg|webp);base64,/).max(700000), z.string().url().max(2000).refine(u => u.startsWith('https://'), 'HTTPS required')]).optional() }).parse(v);
+      const row = z.object({ support_email: z.union([z.literal(''),z.string().email().max(200)]), support_phone: z.string().max(30), commission_percent: z.coerce.number().int().min(0).max(100), referral_enabled: z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]).optional(), ref_levels: z.union([z.literal(''), z.string().trim().regex(/^\d+(,\d+)*$/).refine(x => x.split(',').length <= 50, 'Maximum 50 referral levels')]).optional(), ref_level1_percent: z.coerce.number().int().min(0).max(100).optional(), ref_level2_percent: z.coerce.number().int().min(0).max(100).optional(), ref_level3_percent: z.coerce.number().int().min(0).max(100).optional(), logo_url: storedImageReference.optional() }).parse(v);
       const { logo_url, referral_enabled, ref_levels, ref_level1_percent, ref_level2_percent, ref_level3_percent, ...rest } = row;
       const levels = ref_levels !== undefined && ref_levels !== '' ? ref_levels.split(',').map(x => Math.min(100, Math.max(0, parseInt(x, 10) || 0))) : null;
       const payload = { ...rest, ...(referral_enabled !== undefined ? { referral_enabled } : {}), ...(levels ? { ref_levels: levels, ref_level1_percent: levels[0], ref_level2_percent: levels[1] ?? 0, ref_level3_percent: levels[2] ?? 0 } : {}), ...(logo_url !== undefined ? { logo_url } : {}) };

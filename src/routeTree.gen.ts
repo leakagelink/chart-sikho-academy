@@ -36,6 +36,7 @@ import { Route as VerifyCertificateNoRouteImport } from './routes/verify.$certif
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminSectionRouteImport } from './routes/_authenticated/admin.$section'
 import { Route as AuthenticatedAdminUserUserIdRouteImport } from './routes/_authenticated/admin.user.$userId'
+import { Route as ApiPublicSiteFileSectionFileRouteImport } from './routes/api/public/site-file.$section.$file'
 import { Route as ApiPublicSiteImageKindIdRouteImport } from './routes/api/public/site-image.$kind.$id'
 
 const IndexRoute = IndexRouteImport.update({
@@ -176,6 +177,12 @@ const AuthenticatedAdminUserUserIdRoute =
     path: '/user/$userId',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const ApiPublicSiteFileSectionFileRoute =
+  ApiPublicSiteFileSectionFileRouteImport.update({
+    id: '/api/public/site-file/$section/$file',
+    path: '/api/public/site-file/$section/$file',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicSiteImageKindIdRoute =
   ApiPublicSiteImageKindIdRouteImport.update({
     id: '/api/public/site-image/$kind/$id',
@@ -210,6 +217,7 @@ export interface FileRoutesByFullPath {
   '/admin/$section': typeof AuthenticatedAdminSectionRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/admin/user/$userId': typeof AuthenticatedAdminUserUserIdRoute
+  '/api/public/site-file/$section/$file': typeof ApiPublicSiteFileSectionFileRoute
   '/api/public/site-image/$kind/$id': typeof ApiPublicSiteImageKindIdRoute
 }
 export interface FileRoutesByTo {
@@ -238,6 +246,7 @@ export interface FileRoutesByTo {
   '/admin/$section': typeof AuthenticatedAdminSectionRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/admin/user/$userId': typeof AuthenticatedAdminUserUserIdRoute
+  '/api/public/site-file/$section/$file': typeof ApiPublicSiteFileSectionFileRoute
   '/api/public/site-image/$kind/$id': typeof ApiPublicSiteImageKindIdRoute
 }
 export interface FileRoutesById {
@@ -269,6 +278,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/$section': typeof AuthenticatedAdminSectionRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/admin/user/$userId': typeof AuthenticatedAdminUserUserIdRoute
+  '/api/public/site-file/$section/$file': typeof ApiPublicSiteFileSectionFileRoute
   '/api/public/site-image/$kind/$id': typeof ApiPublicSiteImageKindIdRoute
 }
 export interface FileRouteTypes {
@@ -300,6 +310,7 @@ export interface FileRouteTypes {
     | '/admin/$section'
     | '/admin/'
     | '/admin/user/$userId'
+    | '/api/public/site-file/$section/$file'
     | '/api/public/site-image/$kind/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -328,6 +339,7 @@ export interface FileRouteTypes {
     | '/admin/$section'
     | '/admin'
     | '/admin/user/$userId'
+    | '/api/public/site-file/$section/$file'
     | '/api/public/site-image/$kind/$id'
   id:
     | '__root__'
@@ -358,6 +370,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/$section'
     | '/_authenticated/admin/'
     | '/_authenticated/admin/user/$userId'
+    | '/api/public/site-file/$section/$file'
     | '/api/public/site-image/$kind/$id'
   fileRoutesById: FileRoutesById
 }
@@ -375,6 +388,7 @@ export interface RootRouteChildren {
   CoursesCourseIdRoute: typeof CoursesCourseIdRoute
   LiveClassIdRoute: typeof LiveClassIdRoute
   VerifyCertificateNoRoute: typeof VerifyCertificateNoRoute
+  ApiPublicSiteFileSectionFileRoute: typeof ApiPublicSiteFileSectionFileRoute
   ApiPublicSiteImageKindIdRoute: typeof ApiPublicSiteImageKindIdRoute
 }
 
@@ -569,6 +583,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminUserUserIdRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/api/public/site-file/$section/$file': {
+      id: '/api/public/site-file/$section/$file'
+      path: '/api/public/site-file/$section/$file'
+      fullPath: '/api/public/site-file/$section/$file'
+      preLoaderRoute: typeof ApiPublicSiteFileSectionFileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/site-image/$kind/$id': {
       id: '/api/public/site-image/$kind/$id'
       path: '/api/public/site-image/$kind/$id'
@@ -639,6 +660,7 @@ const rootRouteChildren: RootRouteChildren = {
   CoursesCourseIdRoute: CoursesCourseIdRoute,
   LiveClassIdRoute: LiveClassIdRoute,
   VerifyCertificateNoRoute: VerifyCertificateNoRoute,
+  ApiPublicSiteFileSectionFileRoute: ApiPublicSiteFileSectionFileRoute,
   ApiPublicSiteImageKindIdRoute: ApiPublicSiteImageKindIdRoute,
 }
 export const routeTree = rootRouteImport
