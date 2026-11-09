@@ -14,16 +14,20 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CoursesRouteImport } from './routes/courses'
 import { Route as EbooksRouteImport } from './routes/ebooks'
+import { Route as LiveClassesRouteImport } from './routes/live-classes'
 import { Route as PlansRouteImport } from './routes/plans'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as WebinarsRouteImport } from './routes/webinars'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAffiliateRouteImport } from './routes/_authenticated/affiliate'
+import { Route as AuthenticatedCertificatesRouteImport } from './routes/_authenticated/certificates'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedEarningsRouteImport } from './routes/_authenticated/earnings'
 import { Route as AuthenticatedKycRouteImport } from './routes/_authenticated/kyc'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedReferralsRouteImport } from './routes/_authenticated/referrals'
+import { Route as AuthenticatedSupportRouteImport } from './routes/_authenticated/support'
 import { Route as AuthenticatedTeamRouteImport } from './routes/_authenticated/team'
 import { Route as CoursesCourseIdRouteImport } from './routes/courses_.$courseId'
 import { Route as LiveClassIdRouteImport } from './routes/live.$classId'
@@ -56,6 +60,11 @@ const EbooksRoute = EbooksRouteImport.update({
   path: '/ebooks',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LiveClassesRoute = LiveClassesRouteImport.update({
+  id: '/live-classes',
+  path: '/live-classes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PlansRoute = PlansRouteImport.update({
   id: '/plans',
   path: '/plans',
@@ -64,6 +73,11 @@ const PlansRoute = PlansRouteImport.update({
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WebinarsRoute = WebinarsRouteImport.update({
+  id: '/webinars',
+  path: '/webinars',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
@@ -76,6 +90,12 @@ const AuthenticatedAffiliateRoute = AuthenticatedAffiliateRouteImport.update({
   path: '/affiliate',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedCertificatesRoute =
+  AuthenticatedCertificatesRouteImport.update({
+    id: '/certificates',
+    path: '/certificates',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -105,6 +125,11 @@ const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
 const AuthenticatedReferralsRoute = AuthenticatedReferralsRouteImport.update({
   id: '/referrals',
   path: '/referrals',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedSupportRoute = AuthenticatedSupportRouteImport.update({
+  id: '/support',
+  path: '/support',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedTeamRoute = AuthenticatedTeamRouteImport.update({
@@ -150,16 +175,20 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/courses': typeof CoursesRoute
   '/ebooks': typeof EbooksRoute
+  '/live-classes': typeof LiveClassesRoute
   '/plans': typeof PlansRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/webinars': typeof WebinarsRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/affiliate': typeof AuthenticatedAffiliateRoute
+  '/certificates': typeof AuthenticatedCertificatesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/earnings': typeof AuthenticatedEarningsRoute
   '/kyc': typeof AuthenticatedKycRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/referrals': typeof AuthenticatedReferralsRoute
+  '/support': typeof AuthenticatedSupportRoute
   '/team': typeof AuthenticatedTeamRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
   '/live/$classId': typeof LiveClassIdRoute
@@ -173,15 +202,19 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/courses': typeof CoursesRoute
   '/ebooks': typeof EbooksRoute
+  '/live-classes': typeof LiveClassesRoute
   '/plans': typeof PlansRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/webinars': typeof WebinarsRoute
   '/affiliate': typeof AuthenticatedAffiliateRoute
+  '/certificates': typeof AuthenticatedCertificatesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/earnings': typeof AuthenticatedEarningsRoute
   '/kyc': typeof AuthenticatedKycRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/referrals': typeof AuthenticatedReferralsRoute
+  '/support': typeof AuthenticatedSupportRoute
   '/team': typeof AuthenticatedTeamRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
   '/live/$classId': typeof LiveClassIdRoute
@@ -197,16 +230,20 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/courses': typeof CoursesRoute
   '/ebooks': typeof EbooksRoute
+  '/live-classes': typeof LiveClassesRoute
   '/plans': typeof PlansRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/webinars': typeof WebinarsRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/affiliate': typeof AuthenticatedAffiliateRoute
+  '/_authenticated/certificates': typeof AuthenticatedCertificatesRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/earnings': typeof AuthenticatedEarningsRoute
   '/_authenticated/kyc': typeof AuthenticatedKycRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/referrals': typeof AuthenticatedReferralsRoute
+  '/_authenticated/support': typeof AuthenticatedSupportRoute
   '/_authenticated/team': typeof AuthenticatedTeamRoute
   '/courses_/$courseId': typeof CoursesCourseIdRoute
   '/live/$classId': typeof LiveClassIdRoute
@@ -222,16 +259,20 @@ export interface FileRouteTypes {
     | '/auth'
     | '/courses'
     | '/ebooks'
+    | '/live-classes'
     | '/plans'
     | '/reset-password'
+    | '/webinars'
     | '/admin'
     | '/affiliate'
+    | '/certificates'
     | '/dashboard'
     | '/earnings'
     | '/kyc'
     | '/notifications'
     | '/profile'
     | '/referrals'
+    | '/support'
     | '/team'
     | '/courses/$courseId'
     | '/live/$classId'
@@ -245,15 +286,19 @@ export interface FileRouteTypes {
     | '/auth'
     | '/courses'
     | '/ebooks'
+    | '/live-classes'
     | '/plans'
     | '/reset-password'
+    | '/webinars'
     | '/affiliate'
+    | '/certificates'
     | '/dashboard'
     | '/earnings'
     | '/kyc'
     | '/notifications'
     | '/profile'
     | '/referrals'
+    | '/support'
     | '/team'
     | '/courses/$courseId'
     | '/live/$classId'
@@ -268,16 +313,20 @@ export interface FileRouteTypes {
     | '/auth'
     | '/courses'
     | '/ebooks'
+    | '/live-classes'
     | '/plans'
     | '/reset-password'
+    | '/webinars'
     | '/_authenticated/admin'
     | '/_authenticated/affiliate'
+    | '/_authenticated/certificates'
     | '/_authenticated/dashboard'
     | '/_authenticated/earnings'
     | '/_authenticated/kyc'
     | '/_authenticated/notifications'
     | '/_authenticated/profile'
     | '/_authenticated/referrals'
+    | '/_authenticated/support'
     | '/_authenticated/team'
     | '/courses_/$courseId'
     | '/live/$classId'
@@ -293,8 +342,10 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   CoursesRoute: typeof CoursesRoute
   EbooksRoute: typeof EbooksRoute
+  LiveClassesRoute: typeof LiveClassesRoute
   PlansRoute: typeof PlansRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  WebinarsRoute: typeof WebinarsRoute
   CoursesCourseIdRoute: typeof CoursesCourseIdRoute
   LiveClassIdRoute: typeof LiveClassIdRoute
   VerifyCertificateNoRoute: typeof VerifyCertificateNoRoute
@@ -337,6 +388,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EbooksRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/live-classes': {
+      id: '/live-classes'
+      path: '/live-classes'
+      fullPath: '/live-classes'
+      preLoaderRoute: typeof LiveClassesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/plans': {
       id: '/plans'
       path: '/plans'
@@ -351,6 +409,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/webinars': {
+      id: '/webinars'
+      path: '/webinars'
+      fullPath: '/webinars'
+      preLoaderRoute: typeof WebinarsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
       path: '/admin'
@@ -363,6 +428,13 @@ declare module '@tanstack/react-router' {
       path: '/affiliate'
       fullPath: '/affiliate'
       preLoaderRoute: typeof AuthenticatedAffiliateRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/certificates': {
+      id: '/_authenticated/certificates'
+      path: '/certificates'
+      fullPath: '/certificates'
+      preLoaderRoute: typeof AuthenticatedCertificatesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/dashboard': {
@@ -405,6 +477,13 @@ declare module '@tanstack/react-router' {
       path: '/referrals'
       fullPath: '/referrals'
       preLoaderRoute: typeof AuthenticatedReferralsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/support': {
+      id: '/_authenticated/support'
+      path: '/support'
+      fullPath: '/support'
+      preLoaderRoute: typeof AuthenticatedSupportRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/team': {
@@ -477,24 +556,28 @@ const AuthenticatedAdminRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
   AuthenticatedAffiliateRoute: typeof AuthenticatedAffiliateRoute
+  AuthenticatedCertificatesRoute: typeof AuthenticatedCertificatesRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedEarningsRoute: typeof AuthenticatedEarningsRoute
   AuthenticatedKycRoute: typeof AuthenticatedKycRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedReferralsRoute: typeof AuthenticatedReferralsRoute
+  AuthenticatedSupportRoute: typeof AuthenticatedSupportRoute
   AuthenticatedTeamRoute: typeof AuthenticatedTeamRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
   AuthenticatedAffiliateRoute: AuthenticatedAffiliateRoute,
+  AuthenticatedCertificatesRoute: AuthenticatedCertificatesRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedEarningsRoute: AuthenticatedEarningsRoute,
   AuthenticatedKycRoute: AuthenticatedKycRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedReferralsRoute: AuthenticatedReferralsRoute,
+  AuthenticatedSupportRoute: AuthenticatedSupportRoute,
   AuthenticatedTeamRoute: AuthenticatedTeamRoute,
 }
 
@@ -507,8 +590,10 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   CoursesRoute: CoursesRoute,
   EbooksRoute: EbooksRoute,
+  LiveClassesRoute: LiveClassesRoute,
   PlansRoute: PlansRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  WebinarsRoute: WebinarsRoute,
   CoursesCourseIdRoute: CoursesCourseIdRoute,
   LiveClassIdRoute: LiveClassIdRoute,
   VerifyCertificateNoRoute: VerifyCertificateNoRoute,
