@@ -92,6 +92,10 @@ function Index() {
         {offers.map(c => <CloudCourseCard key={c.id} course={c} />)}
       </HomeProductShelf>}
 
+      <HomeProductShelf title={t('cat_seminars')} seeAll={<Button asChild variant="link" className="shrink-0 gap-0 p-0"><Link to="/seminars">{t('see_all')}<ChevronRight className="h-4 w-4" /></Link></Button>}>
+        <ScheduledLiveClasses kind="seminar" />
+      </HomeProductShelf>
+
       <HomeProductShelf ebooks title={t('nav_ebooks')} seeAll={<Button asChild variant="link" className="shrink-0 gap-0 p-0"><Link to="/ebooks">{t('see_all')}<ChevronRight className="h-4 w-4" /></Link></Button>}>
         {products.ebooks.length ? <>
           {products.ebooks.map(book=><article key={book.id} className="flex h-full min-w-0 flex-col overflow-hidden rounded-lg border border-border bg-card shadow-card">
