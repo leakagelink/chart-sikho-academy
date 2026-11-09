@@ -800,7 +800,7 @@ const dict = {
   sample_catalog: { en: "Sample course catalog", hi: "नमूना कोर्स सूची" },
   support: { en: "Support", hi: "सहायता" },
   support_question: { en: "Your question", hi: "आपका सवाल" },
-  send_question: { en: "Save test question", hi: "टेस्ट सवाल सेव करें" },
+  send_question: { en: "Send question", hi: "सवाल भेजें" },
   support_saved: { en: "Test question saved locally", hi: "टेस्ट सवाल यहाँ सेव हो गया" },
   live_sample: { en: "Live classroom preview", hi: "लाइव क्लास प्रीव्यू" },
   broadcast_class: { en: "YouTube · Class", hi: "YouTube · क्लास" },
