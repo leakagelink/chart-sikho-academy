@@ -595,6 +595,7 @@ html { scroll-padding-top: 80px; }
 
 /* Mobile Home: swipeable shelves; catalog and desktop layouts stay independent. */
 @media (max-width: 639px) {
+  .mobile-home { --background: var(--blueprint-paper); --card: var(--blueprint-paper); --foreground: var(--blueprint-ink); --card-foreground: var(--blueprint-ink); --muted-foreground: var(--blueprint-muted); --border: var(--blueprint-line); --muted: var(--blueprint-line); --primary: var(--royal); --primary-foreground: var(--navy-foreground); background: var(--background); padding-bottom: 24px; }
   .mobile-home .home-greeting { background: var(--card); color: var(--foreground); padding: 16px; }
   .mobile-home .home-greeting .text-foreground { color: var(--foreground); }
   .mobile-home .home-greeting .text-muted-foreground { color: var(--muted-foreground); }
