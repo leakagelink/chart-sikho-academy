@@ -15,7 +15,7 @@ const SHOW_SOCIAL_LOGIN = false;
 const safePath = (p?: string) => (p && p.startsWith("/") && !p.startsWith("//") ? p : "/dashboard");
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (s: Record<string, unknown>): { redirect?: string; ref?: string } => ({ redirect: typeof s["redirect"] === "string" ? s["redirect"] : undefined, ref: typeof s['ref'] === 'string' ? normalizeSignupReferral(s['ref']).slice(0,40) : undefined }),
+  validateSearch: (s: Record<string, unknown>): { redirect?: string | undefined; ref?: string | undefined } => ({ redirect: typeof s["redirect"] === "string" ? s["redirect"] : undefined, ref: typeof s['ref'] === 'string' ? normalizeSignupReferral(s['ref']).slice(0,40) : undefined }),
   head: () => ({
     meta: [
       { property: "og:type", content: "website" },
