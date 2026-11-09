@@ -25,14 +25,14 @@ function usePaymentQr(upi: PaymentUpi | null | undefined, link: string) {
 const inputCls = 'w-full rounded-md border border-input bg-background px-3 py-2 text-sm';
 
 /** Student: pay by UPI QR, then submit UTR + screenshot for admin verification. */
-export function ManualPay({ course, userId, productType = 'course' }: { course: { id: string; title: string; price: number }; userId: string; productType?: 'course' | 'ebook' }) {
+export function ManualPay({ course, userId, productType = 'course' }: { course: { id: string; title: string; price: number }; userId: string; productType?: 'course' | 'ebook' | 'session' }) {
   const { t } = useLang();
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
   const [utr, setUtr] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const upi = useQuery(paymentUpiQuery);
-  const mine = useQuery({ queryKey: ['manual-pay', userId, productType, course.id], refetchInterval: 15000, queryFn: async () => { const r = await supabase.from('manual_payments').select('status,utr,admin_note,created_at').eq('user_id', userId).eq(productType === 'ebook' ? 'ebook_id' : 'course_id', course.id).order('created_at', { ascending: false }).limit(1).maybeSingle(); if (r.error) throw r.error; return r.data; } });
+  const mine = useQuery({ queryKey: ['manual-pay', userId, productType, course.id], refetchInterval: 15000, queryFn: async () => { const r = await supabase.from('manual_payments').select('status,utr,admin_note,created_at').eq('user_id', userId).eq(productType === 'session' ? 'session_id' : productType === 'ebook' ? 'ebook_id' : 'course_id', course.id).order('created_at', { ascending: false }).limit(1).maybeSingle(); if (r.error) throw r.error; return r.data; } });
   const link = paymentUpiLink(upi.data, course);
   const qr = usePaymentQr(upi.data, link);
   const submit = useMutation({
@@ -43,7 +43,9 @@ export function ManualPay({ course, userId, productType = 'course' }: { course: 
       const path = `${userId}/${crypto.randomUUID()}.${file.name.split('.').pop() ?? 'jpg'}`;
       const up = await supabase.storage.from('payment-proofs').upload(path, file, { contentType: file.type });
       if (up.error) throw up.error;
-      const r = productType === 'ebook'
+      const r = productType === 'session'
+        ? await supabase.rpc('submit_session_payment', { _session_id: course.id, _utr: utr.trim(), _screenshot_path: path })
+        : productType === 'ebook'
         ? await supabase.rpc('submit_ebook_payment', { _ebook_id: course.id, _utr: utr.trim(), _screenshot_path: path })
         : await supabase.rpc('submit_manual_payment', { _course_id: course.id, _utr: utr.trim(), _screenshot_path: path });
       if (r.error) throw new Error(r.error.message.includes('UTR already') ? t('pay_utr_used') : r.error.message.includes('pending') ? t('pay_pending') : t('admin_error'));

@@ -30,6 +30,8 @@ export function safeHttps(value: string) { if (!value) return ''; const url = ne
 export const liveClassSchema = z.object({
   thumbnail_url: z.union([z.literal(''), z.string().max(700000).regex(/^data:image\/(png|jpeg|webp|svg\+xml);base64,/), z.string().url().max(500).startsWith('https://')]).default(''),
   title: z.string().trim().min(2).max(120), kind: z.enum(['class','webinar']), starts_at: z.string().datetime(),
+  access_mode: z.enum(['free','paid']).default('free'),
+  price: z.coerce.number().int().min(0).max(1000000).default(0),
   youtube_url: z.string().max(2000).transform(safeHttps).refine(v => !v || ['youtube.com','www.youtube.com','youtu.be'].includes(new URL(v).hostname)),
   jitsi_url: z.string().max(2000).transform(safeHttps), status: z.enum(['draft','scheduled','cancelled']),
   category_slug: z.string().max(40).default(''),
@@ -38,10 +40,11 @@ export const liveClassSchema = z.object({
   completion_state: z.enum(['pending','completed']).default('pending'),
   recording_url: z.string().max(2000).transform(safeHttps).default(''),
 }).superRefine((v, ctx) => {
+  if (v.access_mode === 'paid' && v.price <= 0) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['price'], message: 'Paid sessions require a positive price' });
   if (v.completion_state === 'completed' && (!v.course_id || !v.module_id || !v.recording_url || v.status !== 'scheduled')) {
     ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Completed class requires course module and recording' });
   }
-});
+}).transform(v => ({ ...v, price: v.access_mode === 'free' ? 0 : v.price }));
 export function financeActionAllowed(action: string) { return action === 'reviewed' || action === 'rejected'; }
 export type RankRow = { name: string; min_sales: number; position: number };
 /** Total paid order amount (₹) placed by users this user directly referred. */

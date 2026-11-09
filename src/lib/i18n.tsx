@@ -3,6 +3,13 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export type Lang = "en" | "hi";
 
 const dict = {
+  session_access_mode:{en:'Free / Paid',hi:'फ्री / पेड'},
+  session_free:{en:'Free',hi:'फ्री'},
+  session_paid:{en:'Paid',hi:'पेड'},
+  session_purchased:{en:'Purchase successful',hi:'खरीद सफल'},
+  session_signin:{en:'Sign in to access',hi:'एक्सेस के लिए लॉगिन करें'},
+  session_join:{en:'Join session',hi:'सेशन में शामिल हों'},
+  session_not_started:{en:'Session access confirmed. Links will appear when added by the admin.',hi:'सेशन एक्सेस मिला है। एडमिन लिंक जोड़ेंगे तो यहाँ दिखेंगे।'},
   browse_paid_courses:{en:'Browse available courses',hi:'उपलब्ध कोर्स देखें'},
   sample_course_purchase:{en:'Sample course. Choose an available course for UPI payment.',hi:'यह सैंपल कोर्स है। UPI भुगतान के लिए उपलब्ध कोर्स चुनें।'},
   admin_manage_videos:{en:'Videos & curriculum',hi:'वीडियो और पाठ्यक्रम'},
