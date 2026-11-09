@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { siteImage } from '@/lib/site-image';
 import { useQuery } from "@tanstack/react-query";
 import { BookOpen } from "lucide-react";
 import { EbookPurchase } from "@/components/site/EbookPurchase";
@@ -27,7 +28,7 @@ function EbooksPage() {
     queryFn: async () => {
       const { data, error } = await supabase.from("ebooks").select("id,title,description,price,cover_url,has_file").eq("status", "published").order("created_at", { ascending: false });
       if (error) throw error;
-      return data;
+      return data.map(e => ({ ...e, cover_url: siteImage('ebook', e.id, e.cover_url) }));
     },
   });
   return (
