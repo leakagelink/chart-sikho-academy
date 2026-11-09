@@ -1452,6 +1452,7 @@ export type Database = {
           phone: string | null
           preferred_language: string
           referral_code: string | null
+          short_referral_code: string | null
           state: string | null
           updated_at: string
           verification_status: string
@@ -1470,6 +1471,7 @@ export type Database = {
           phone?: string | null
           preferred_language?: string
           referral_code?: string | null
+          short_referral_code?: string | null
           state?: string | null
           updated_at?: string
           verification_status?: string
@@ -1488,6 +1490,7 @@ export type Database = {
           phone?: string | null
           preferred_language?: string
           referral_code?: string | null
+          short_referral_code?: string | null
           state?: string | null
           updated_at?: string
           verification_status?: string
@@ -1966,6 +1969,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      make_short_referral_code: { Args: never; Returns: string }
       my_ebook_resource: { Args: { _ebook_id: string }; Returns: string }
       my_session_access: { Args: { _session_id: string }; Returns: Json }
       my_wallet: { Args: never; Returns: Json }

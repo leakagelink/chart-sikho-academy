@@ -337,6 +337,20 @@
       "when": 1794216349810,
       "tag": "0047_seminar_session_management",
       "breakpoints": true
+    },
+    {
+      "idx": 48,
+      "version": "7",
+      "when": 1794217150272,
+      "tag": "0048_short_shareable_referral_codes",
+      "breakpoints": true
+    },
+    {
+      "idx": 49,
+      "version": "7",
+      "when": 1794217381074,
+      "tag": "0049_protect_legacy_referral_identity",
+      "breakpoints": true
     }
   ]
 }

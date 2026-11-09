@@ -1,12 +1,13 @@
 import { Link } from '@tanstack/react-router';
 import { useSuspenseQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { Copy, GitBranch, Users, Wallet, LayoutDashboard, Crown, RotateCcw, RefreshCw, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Copy, Share2, GitBranch, Users, Wallet, LayoutDashboard, Crown, RotateCcw, RefreshCw, ChevronLeft, ChevronRight } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { useLang } from '@/lib/i18n';
 import { studentReferralsOptions } from '@/lib/student-referrals';
 import { emptyAffiliateFilters, filterAffiliateRows, type AffiliateFilters } from '@/lib/affiliate-filters';
+import { referralSignupLink } from '@/lib/signup-referral';
 
 export function StudentReferrals({ userId, mode }: { userId: string; mode: 'tree' | 'team' | 'dashboard' }) {
   const { t, lang } = useLang();
@@ -16,7 +17,14 @@ export function StudentReferrals({ userId, mode }: { userId: string; mode: 'tree
   const [tab, setTab] = useState(mode === 'dashboard' ? 'commissions' : 'team');
   const [page,setPage] = useState(0);
   const [refreshing,setRefreshing] = useState(false);
-  const code = data.profile?.referral_code;
+  const code = data.profile?.short_referral_code || data.profile?.referral_code;
+  const referralLink = code ? referralSignupLink(code) : '';
+  const copy = async (value: string) => { try { await navigator.clipboard.writeText(value); toast.success(t('copied')); } catch { toast.error(t('admin_error')); } };
+  const share = async () => {
+    if (!referralLink) return;
+    try { if (navigator.share) await navigator.share({ title: 'Chartसीखो', url: referralLink }); else await copy(referralLink); }
+    catch (error) { if (!(error instanceof Error && error.name === 'AbortError')) await copy(referralLink); }
+  };
   const members = filterAffiliateRows(data.members.map(m => ({...m,level:1})), {...filters,status:'all'}, m => m.referred_id);
   const commissions = filterAffiliateRows(data.commissions, filters, c => `${c.id} ${c.order_id}`);
   const money = (n: number, currency=data.wallet.currency) => new Intl.NumberFormat(lang==='hi'?'hi-IN':'en-IN',{style:'currency',currency:currency==='USD'?'USD':'INR',maximumFractionDigits:0}).format(n);
@@ -35,6 +43,10 @@ export function StudentReferrals({ userId, mode }: { userId: string; mode: 'tree
     <div className="mt-6 grid grid-cols-2 gap-4 xl:grid-cols-3">{[[t('affiliate_team_total'),String(data.members.length)],[t('affiliate_sales'),String(sales)],[t('affiliate_net'),money(approved)],[t('wallet_available'),money(data.wallet.available)],[t('wallet_pending'),money(data.wallet.pending)],[t('wallet_withdrawn'),money(data.wallet.withdrawn)]].map(([label,value])=><div key={label} className="min-w-0 border-l-2 border-primary py-2 pl-3"><p className="text-xs text-muted-foreground">{label}</p><p className="mt-2 break-words font-display text-2xl font-bold">{value}</p></div>)}</div>
     <div className="mt-6 flex items-center gap-3 border-y border-border py-4"><div className="min-w-0 flex-1"><p className="text-xs text-muted-foreground">{t('admin_ref_code')}</p><p className="break-all font-mono font-semibold">{code || t('student_code_missing')}</p></div>{code && <Button variant="outline" size="icon" title={t('copy')} aria-label={t('copy')} onClick={async()=>{try{await navigator.clipboard.writeText(code);toast.success(t('copied'));}catch{toast.error(t('admin_error'));}}}><Copy className="h-4 w-4" /></Button>}</div>
     <p className="mt-3 text-xs text-muted-foreground">{t('affiliate_scope')}</p>
+    {referralLink && <div className="mt-4 grid grid-cols-[minmax(0,1fr)_auto] items-end gap-3 border-b border-border pb-4">
+      <label className="min-w-0 text-xs text-muted-foreground">{t('student_referral_link')}<input aria-label={t('student_referral_link')} readOnly value={referralLink} onFocus={e=>e.currentTarget.select()} className={input} /></label>
+      <div className="flex shrink-0 gap-2"><Button variant="outline" size="icon" aria-label={t('student_copy_referral_link')} title={t('student_copy_referral_link')} onClick={()=>copy(referralLink)}><Copy className="h-4 w-4" /></Button><Button variant="outline" size="icon" aria-label={t('student_share_referral_link')} title={t('student_share_referral_link')} onClick={share}><Share2 className="h-4 w-4" /></Button></div>
+    </div>}
     <section className="mt-6 min-w-0">
       <div className="flex gap-2"><Button variant={tab==='team'?'default':'outline'} onClick={()=>{setTab('team');setPage(0);setFilters({...filters,status:'all',level:'all'});}}><Users className="h-4 w-4" />{t('student_team')}</Button><Button variant={tab==='commissions'?'default':'outline'} onClick={()=>{setTab('commissions');setPage(0);}}>{t('affiliate_commissions')}</Button></div>
       <div className="mt-4 grid items-end gap-3 sm:grid-cols-2 xl:grid-cols-4">

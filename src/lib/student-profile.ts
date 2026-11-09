@@ -13,7 +13,7 @@ export const profileValues = (f: { full_name: string; phone: string; state: stri
 export const studentProfileOptions = (userId: string) => queryOptions({
   queryKey: ['profile-full', userId],
   queryFn: async () => {
-    const { data, error } = await supabase.from('profiles').select('full_name,phone,state,city,preferred_language,address,bio,date_of_birth,avatar_path,referral_code,account_status,verification_status,created_at').eq('id', userId).maybeSingle();
+    const { data, error } = await supabase.from('profiles').select('full_name,phone,state,city,preferred_language,address,bio,date_of_birth,avatar_path,referral_code,short_referral_code,account_status,verification_status,created_at').eq('id', userId).maybeSingle();
     if (error) throw error;
     let photoUrl = '';
     if (data?.avatar_path) {
@@ -21,7 +21,7 @@ export const studentProfileOptions = (userId: string) => queryOptions({
       if (photo.error) throw photo.error;
       photoUrl = photo.data.signedUrl;
     }
-    return { ...data, photoUrl };
+    return { ...data, referral_code: data?.short_referral_code || data?.referral_code, photoUrl };
   },
   staleTime: 60_000,
 });
