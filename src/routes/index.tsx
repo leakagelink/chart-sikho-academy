@@ -1,13 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ArrowRight, Award, Bell, BookOpen, Calendar, ClipboardCheck, Crown, FileText, PlayCircle, Radio, Users, Video } from "lucide-react";
-import educator from "@/assets/course-educator-thumb.webp";
 import hero from "@/assets/hero-bull.jpg";
-import { LiveClassCard } from "@/components/site/LiveClassCard";
 import { ScheduledLiveClasses } from "@/components/site/ScheduledLiveClasses";
 import { CloudCourseCard } from "@/components/site/CloudCourseCard";
 import { catalogQuery } from "@/lib/catalog-query";
-import { liveClasses, inr } from "@/lib/courses";
+import { inr } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
 import { useAuth } from "@/hooks/use-auth";
 import { useSuspenseQuery } from '@tanstack/react-query';
@@ -45,11 +43,11 @@ function Index() {
   const greet = hour === null ? t("greet_morning") : hour < 12 ? t("greet_morning") : hour < 17 ? t("greet_afternoon") : t("greet_evening");
   const cats = [
     { icon: BookOpen, label: t("cat_mycourses"), to: "/dashboard" },
-    { icon: Radio, label: t("cat_live"), to: "/sandbox/live" },
-    { icon: Video, label: t("cat_webinars"), to: "/sandbox/live" },
+    { icon: Radio, label: t("cat_live"), to: "/live-classes" },
+    { icon: Video, label: t("cat_webinars"), to: "/webinars" },
     { icon: FileText, label: t("cat_ebooks"), to: "/ebooks" },
-    { icon: ClipboardCheck, label: t("cat_tests"), to: "/sandbox/quiz" },
-    { icon: Award, label: t("cat_certificates"), to: "/sandbox/certificates" },
+    { icon: ClipboardCheck, label: t("cat_tests"), to: "/dashboard" },
+    { icon: Award, label: t("cat_certificates"), to: "/certificates" },
   ] as const;
   return (
     <div className="w-full px-4">
@@ -66,26 +64,8 @@ function Index() {
             <p className="text-sm text-muted-foreground">{greet}</p>
           </div>
         </div>
-        <Link to="/sandbox/support" aria-label={t("notifications")} className="relative grid h-11 w-11 shrink-0 place-items-center rounded-full border border-border bg-card text-foreground shadow-card">
+        <Link to="/notifications" aria-label={t("notifications")} className="relative grid h-11 w-11 shrink-0 place-items-center rounded-full border border-border bg-card text-foreground shadow-card">
           <Bell className="h-5 w-5" />
-          <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-destructive" />
-        </Link>
-      </section>
-
-      {/* Continue learning — blueprint progress card */}
-      <section className="home-progress mt-5 flex items-center gap-4 rounded-3xl border border-border bg-card p-4 shadow-card sm:p-5">
-        <div className="aspect-square w-16 shrink-0 self-center overflow-hidden rounded-xl bg-navy sm:w-20">
-          <img src={educator} alt="" width={160} height={160} loading="eager" decoding="async" className="block h-full w-full object-cover object-center" />
-        </div>
-        <div className="min-w-0 flex-1">
-          <p className="truncate font-semibold text-foreground">{t("continue_course_t")}</p>
-          <div className="mt-2 h-2 overflow-hidden rounded-full bg-muted">
-            <div className="h-full w-[68%] rounded-full bg-gold" />
-          </div>
-          <p className="mt-1 text-xs text-muted-foreground">68% {t("completed")}</p>
-        </div>
-        <Link to="/sandbox/learn" className="shrink-0 rounded-full bg-gold px-4 py-2.5 text-sm font-bold text-navy hover:bg-gold/90 sm:px-6">
-          {t("start_learning")}
         </Link>
       </section>
 
@@ -107,11 +87,7 @@ function Index() {
               <PlayCircle className="h-5 w-5" /> {t("explore")}
             </Link>
           </div>
-          <div className="mt-8 grid grid-cols-3 gap-3 text-sm sm:gap-8">
-            <div><p className="text-2xl font-bold">25K+</p><p className="opacity-70">{t("stats_students")}</p></div>
-            <div><p className="text-2xl font-bold">40+</p><p className="opacity-70">{t("stats_courses")}</p></div>
-            <div><p className="text-2xl font-bold">4.8★</p><p className="opacity-70">{t("stats_rating")}</p></div>
-          </div>
+
         </div>
       </section>
 
@@ -143,7 +119,6 @@ function Index() {
         </div>
         <div className="mt-4 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
           <ScheduledLiveClasses />
-          {liveClasses.map((c) => <LiveClassCard key={c.id} session={c} />)}
         </div>
       </section>
 

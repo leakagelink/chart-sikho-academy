@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useLang, type DictKey } from "@/lib/i18n";
 import { useAuth } from "@/hooks/use-auth";
 
-type Item = { to: string; label: DictKey; icon: typeof BookOpen; view?: 'webinars' };
+type Item = { to: string; label: DictKey; icon: typeof BookOpen };
 const groups: { title: DictKey; items: Item[] }[] = [
   { title: "my_learning", items: [
     { to: "/", label: "nav_home", icon: Home },
@@ -13,9 +13,9 @@ const groups: { title: DictKey; items: Item[] }[] = [
   { title: "student_products_services", items: [
     { to: "/courses", label: "nav_courses", icon: BookOpen },
     { to: "/ebooks", label: "nav_ebooks", icon: FileText },
-    { to: "/sandbox/live", label: "cat_live", icon: Video },
-    { to: "/sandbox/certificates", label: "up_certificates", icon: Award },
-    { to: "/sandbox/live", label: "cat_webinars", icon: Video, view: 'webinars' },
+    { to: "/live-classes", label: "cat_live", icon: Video },
+    { to: "/certificates", label: "up_certificates", icon: Award },
+    { to: "/webinars", label: "cat_webinars", icon: Video },
   ] },
   { title: "my_learning", items: [
     { to: "/dashboard", label: "my_learning", icon: LayoutDashboard },
@@ -35,15 +35,13 @@ const groups: { title: DictKey; items: Item[] }[] = [
 ];
 
 const EXCLUDED = ["/admin", "/auth", "/reset-password"];
-const STUDENT_SANDBOX = ["/sandbox/live", "/sandbox/certificates"];
 
 /** Admin-style left sidebar for signed-in students (desktop only; mobile keeps the bottom bar). */
 export function StudentShell({ children }: { children: ReactNode }) {
   const { t } = useLang();
   const { session } = useAuth();
   const path = useRouterState({ select: (s) => s.location.pathname });
-  const search = useRouterState({ select: (s) => s.location.search as { view?: string } });
-  if (!session || EXCLUDED.some((p) => path.startsWith(p)) || (path.startsWith("/sandbox") && !STUDENT_SANDBOX.some((p) => path.startsWith(p)))) return <>{children}</>;
+  if (!session || EXCLUDED.some((p) => path.startsWith(p))) return <>{children}</>;
   const active = (to: string) => (to === "/" ? path === "/" : path === to || path.startsWith(to + "/"));
   return (
     <div className="w-full lg:grid lg:grid-cols-[220px_minmax(0,1fr)] xl:grid-cols-[250px_minmax(0,1fr)] lg:gap-0">
@@ -54,9 +52,9 @@ export function StudentShell({ children }: { children: ReactNode }) {
             {groups.map((g) => (
               <div key={g.title} className="mb-4">
                 {g.items[0]?.to !== '/' && <p className="mb-1 px-3 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">{t(g.title)}</p>}
-                {g.items.map(({ to, label, icon: Icon, view }) => (
-                  <Button asChild key={label} size="sm" variant={active(to) && (to !== '/sandbox/live' || search.view === view) ? "secondary" : "ghost"} className="w-full justify-start">
-                    <Link to={to} search={view ? { view } : {}}><Icon size={16} />{t(label)}</Link>
+                {g.items.map(({ to, label, icon: Icon }) => (
+                  <Button asChild key={label} size="sm" variant={active(to) ? "secondary" : "ghost"} className="w-full justify-start">
+                    <Link to={to} ><Icon size={16} />{t(label)}</Link>
                   </Button>
                 ))}
               </div>

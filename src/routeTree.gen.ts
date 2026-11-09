@@ -14,37 +14,26 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CoursesRouteImport } from './routes/courses'
 import { Route as EbooksRouteImport } from './routes/ebooks'
+import { Route as LiveClassesRouteImport } from './routes/live-classes'
 import { Route as PlansRouteImport } from './routes/plans'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
-import { Route as SandboxRouteImport } from './routes/sandbox'
+import { Route as WebinarsRouteImport } from './routes/webinars'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAffiliateRouteImport } from './routes/_authenticated/affiliate'
+import { Route as AuthenticatedCertificatesRouteImport } from './routes/_authenticated/certificates'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedEarningsRouteImport } from './routes/_authenticated/earnings'
 import { Route as AuthenticatedKycRouteImport } from './routes/_authenticated/kyc'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedReferralsRouteImport } from './routes/_authenticated/referrals'
+import { Route as AuthenticatedSupportRouteImport } from './routes/_authenticated/support'
 import { Route as AuthenticatedTeamRouteImport } from './routes/_authenticated/team'
 import { Route as CoursesCourseIdRouteImport } from './routes/courses_.$courseId'
 import { Route as LiveClassIdRouteImport } from './routes/live.$classId'
-import { Route as SandboxIndexRouteImport } from './routes/sandbox.index'
-import { Route as SandboxAdminRouteImport } from './routes/sandbox.admin'
-import { Route as SandboxCertificatesRouteImport } from './routes/sandbox.certificates'
-import { Route as SandboxLearnRouteImport } from './routes/sandbox.learn'
-import { Route as SandboxLiveRouteImport } from './routes/sandbox.live'
-import { Route as SandboxOrdersRouteImport } from './routes/sandbox.orders'
-import { Route as SandboxQuizRouteImport } from './routes/sandbox.quiz'
-import { Route as SandboxReferralsRouteImport } from './routes/sandbox.referrals'
-import { Route as SandboxSupportRouteImport } from './routes/sandbox.support'
-import { Route as SandboxWalletRouteImport } from './routes/sandbox.wallet'
 import { Route as VerifyCertificateNoRouteImport } from './routes/verify.$certificateNo'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminSectionRouteImport } from './routes/_authenticated/admin.$section'
-import { Route as SandboxAdminIndexRouteImport } from './routes/sandbox.admin.index'
-import { Route as SandboxAdminCoursesRouteImport } from './routes/sandbox.admin.courses'
-import { Route as SandboxAdminSalesRouteImport } from './routes/sandbox.admin.sales'
-import { Route as SandboxAdminStudentsRouteImport } from './routes/sandbox.admin.students'
 import { Route as AuthenticatedAdminUserUserIdRouteImport } from './routes/_authenticated/admin.user.$userId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -71,6 +60,11 @@ const EbooksRoute = EbooksRouteImport.update({
   path: '/ebooks',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LiveClassesRoute = LiveClassesRouteImport.update({
+  id: '/live-classes',
+  path: '/live-classes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PlansRoute = PlansRouteImport.update({
   id: '/plans',
   path: '/plans',
@@ -81,9 +75,9 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SandboxRoute = SandboxRouteImport.update({
-  id: '/sandbox',
-  path: '/sandbox',
+const WebinarsRoute = WebinarsRouteImport.update({
+  id: '/webinars',
+  path: '/webinars',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
@@ -96,6 +90,12 @@ const AuthenticatedAffiliateRoute = AuthenticatedAffiliateRouteImport.update({
   path: '/affiliate',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedCertificatesRoute =
+  AuthenticatedCertificatesRouteImport.update({
+    id: '/certificates',
+    path: '/certificates',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -127,6 +127,11 @@ const AuthenticatedReferralsRoute = AuthenticatedReferralsRouteImport.update({
   path: '/referrals',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedSupportRoute = AuthenticatedSupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedTeamRoute = AuthenticatedTeamRouteImport.update({
   id: '/team',
   path: '/team',
@@ -141,56 +146,6 @@ const LiveClassIdRoute = LiveClassIdRouteImport.update({
   id: '/live/$classId',
   path: '/live/$classId',
   getParentRoute: () => rootRouteImport,
-} as any)
-const SandboxIndexRoute = SandboxIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => SandboxRoute,
-} as any)
-const SandboxAdminRoute = SandboxAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => SandboxRoute,
-} as any)
-const SandboxCertificatesRoute = SandboxCertificatesRouteImport.update({
-  id: '/certificates',
-  path: '/certificates',
-  getParentRoute: () => SandboxRoute,
-} as any)
-const SandboxLearnRoute = SandboxLearnRouteImport.update({
-  id: '/learn',
-  path: '/learn',
-  getParentRoute: () => SandboxRoute,
-} as any)
-const SandboxLiveRoute = SandboxLiveRouteImport.update({
-  id: '/live',
-  path: '/live',
-  getParentRoute: () => SandboxRoute,
-} as any)
-const SandboxOrdersRoute = SandboxOrdersRouteImport.update({
-  id: '/orders',
-  path: '/orders',
-  getParentRoute: () => SandboxRoute,
-} as any)
-const SandboxQuizRoute = SandboxQuizRouteImport.update({
-  id: '/quiz',
-  path: '/quiz',
-  getParentRoute: () => SandboxRoute,
-} as any)
-const SandboxReferralsRoute = SandboxReferralsRouteImport.update({
-  id: '/referrals',
-  path: '/referrals',
-  getParentRoute: () => SandboxRoute,
-} as any)
-const SandboxSupportRoute = SandboxSupportRouteImport.update({
-  id: '/support',
-  path: '/support',
-  getParentRoute: () => SandboxRoute,
-} as any)
-const SandboxWalletRoute = SandboxWalletRouteImport.update({
-  id: '/wallet',
-  path: '/wallet',
-  getParentRoute: () => SandboxRoute,
 } as any)
 const VerifyCertificateNoRoute = VerifyCertificateNoRouteImport.update({
   id: '/verify/$certificateNo',
@@ -208,26 +163,6 @@ const AuthenticatedAdminSectionRoute =
     path: '/$section',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
-const SandboxAdminIndexRoute = SandboxAdminIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => SandboxAdminRoute,
-} as any)
-const SandboxAdminCoursesRoute = SandboxAdminCoursesRouteImport.update({
-  id: '/courses',
-  path: '/courses',
-  getParentRoute: () => SandboxAdminRoute,
-} as any)
-const SandboxAdminSalesRoute = SandboxAdminSalesRouteImport.update({
-  id: '/sales',
-  path: '/sales',
-  getParentRoute: () => SandboxAdminRoute,
-} as any)
-const SandboxAdminStudentsRoute = SandboxAdminStudentsRouteImport.update({
-  id: '/students',
-  path: '/students',
-  getParentRoute: () => SandboxAdminRoute,
-} as any)
 const AuthenticatedAdminUserUserIdRoute =
   AuthenticatedAdminUserUserIdRouteImport.update({
     id: '/user/$userId',
@@ -240,37 +175,26 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/courses': typeof CoursesRoute
   '/ebooks': typeof EbooksRoute
+  '/live-classes': typeof LiveClassesRoute
   '/plans': typeof PlansRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/sandbox': typeof SandboxRouteWithChildren
+  '/webinars': typeof WebinarsRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/affiliate': typeof AuthenticatedAffiliateRoute
+  '/certificates': typeof AuthenticatedCertificatesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/earnings': typeof AuthenticatedEarningsRoute
   '/kyc': typeof AuthenticatedKycRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/referrals': typeof AuthenticatedReferralsRoute
+  '/support': typeof AuthenticatedSupportRoute
   '/team': typeof AuthenticatedTeamRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
   '/live/$classId': typeof LiveClassIdRoute
-  '/sandbox/admin': typeof SandboxAdminRouteWithChildren
-  '/sandbox/certificates': typeof SandboxCertificatesRoute
-  '/sandbox/learn': typeof SandboxLearnRoute
-  '/sandbox/live': typeof SandboxLiveRoute
-  '/sandbox/orders': typeof SandboxOrdersRoute
-  '/sandbox/quiz': typeof SandboxQuizRoute
-  '/sandbox/referrals': typeof SandboxReferralsRoute
-  '/sandbox/support': typeof SandboxSupportRoute
-  '/sandbox/wallet': typeof SandboxWalletRoute
   '/verify/$certificateNo': typeof VerifyCertificateNoRoute
-  '/sandbox/': typeof SandboxIndexRoute
   '/admin/$section': typeof AuthenticatedAdminSectionRoute
-  '/sandbox/admin/courses': typeof SandboxAdminCoursesRoute
-  '/sandbox/admin/sales': typeof SandboxAdminSalesRoute
-  '/sandbox/admin/students': typeof SandboxAdminStudentsRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
-  '/sandbox/admin/': typeof SandboxAdminIndexRoute
   '/admin/user/$userId': typeof AuthenticatedAdminUserUserIdRoute
 }
 export interface FileRoutesByTo {
@@ -278,34 +202,25 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/courses': typeof CoursesRoute
   '/ebooks': typeof EbooksRoute
+  '/live-classes': typeof LiveClassesRoute
   '/plans': typeof PlansRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/webinars': typeof WebinarsRoute
   '/affiliate': typeof AuthenticatedAffiliateRoute
+  '/certificates': typeof AuthenticatedCertificatesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/earnings': typeof AuthenticatedEarningsRoute
   '/kyc': typeof AuthenticatedKycRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/referrals': typeof AuthenticatedReferralsRoute
+  '/support': typeof AuthenticatedSupportRoute
   '/team': typeof AuthenticatedTeamRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
   '/live/$classId': typeof LiveClassIdRoute
-  '/sandbox/certificates': typeof SandboxCertificatesRoute
-  '/sandbox/learn': typeof SandboxLearnRoute
-  '/sandbox/live': typeof SandboxLiveRoute
-  '/sandbox/orders': typeof SandboxOrdersRoute
-  '/sandbox/quiz': typeof SandboxQuizRoute
-  '/sandbox/referrals': typeof SandboxReferralsRoute
-  '/sandbox/support': typeof SandboxSupportRoute
-  '/sandbox/wallet': typeof SandboxWalletRoute
   '/verify/$certificateNo': typeof VerifyCertificateNoRoute
-  '/sandbox': typeof SandboxIndexRoute
   '/admin/$section': typeof AuthenticatedAdminSectionRoute
-  '/sandbox/admin/courses': typeof SandboxAdminCoursesRoute
-  '/sandbox/admin/sales': typeof SandboxAdminSalesRoute
-  '/sandbox/admin/students': typeof SandboxAdminStudentsRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
-  '/sandbox/admin': typeof SandboxAdminIndexRoute
   '/admin/user/$userId': typeof AuthenticatedAdminUserUserIdRoute
 }
 export interface FileRoutesById {
@@ -315,37 +230,26 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/courses': typeof CoursesRoute
   '/ebooks': typeof EbooksRoute
+  '/live-classes': typeof LiveClassesRoute
   '/plans': typeof PlansRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/sandbox': typeof SandboxRouteWithChildren
+  '/webinars': typeof WebinarsRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/affiliate': typeof AuthenticatedAffiliateRoute
+  '/_authenticated/certificates': typeof AuthenticatedCertificatesRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/earnings': typeof AuthenticatedEarningsRoute
   '/_authenticated/kyc': typeof AuthenticatedKycRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/referrals': typeof AuthenticatedReferralsRoute
+  '/_authenticated/support': typeof AuthenticatedSupportRoute
   '/_authenticated/team': typeof AuthenticatedTeamRoute
   '/courses_/$courseId': typeof CoursesCourseIdRoute
   '/live/$classId': typeof LiveClassIdRoute
-  '/sandbox/admin': typeof SandboxAdminRouteWithChildren
-  '/sandbox/certificates': typeof SandboxCertificatesRoute
-  '/sandbox/learn': typeof SandboxLearnRoute
-  '/sandbox/live': typeof SandboxLiveRoute
-  '/sandbox/orders': typeof SandboxOrdersRoute
-  '/sandbox/quiz': typeof SandboxQuizRoute
-  '/sandbox/referrals': typeof SandboxReferralsRoute
-  '/sandbox/support': typeof SandboxSupportRoute
-  '/sandbox/wallet': typeof SandboxWalletRoute
   '/verify/$certificateNo': typeof VerifyCertificateNoRoute
-  '/sandbox/': typeof SandboxIndexRoute
   '/_authenticated/admin/$section': typeof AuthenticatedAdminSectionRoute
-  '/sandbox/admin/courses': typeof SandboxAdminCoursesRoute
-  '/sandbox/admin/sales': typeof SandboxAdminSalesRoute
-  '/sandbox/admin/students': typeof SandboxAdminStudentsRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
-  '/sandbox/admin/': typeof SandboxAdminIndexRoute
   '/_authenticated/admin/user/$userId': typeof AuthenticatedAdminUserUserIdRoute
 }
 export interface FileRouteTypes {
@@ -355,37 +259,26 @@ export interface FileRouteTypes {
     | '/auth'
     | '/courses'
     | '/ebooks'
+    | '/live-classes'
     | '/plans'
     | '/reset-password'
-    | '/sandbox'
+    | '/webinars'
     | '/admin'
     | '/affiliate'
+    | '/certificates'
     | '/dashboard'
     | '/earnings'
     | '/kyc'
     | '/notifications'
     | '/profile'
     | '/referrals'
+    | '/support'
     | '/team'
     | '/courses/$courseId'
     | '/live/$classId'
-    | '/sandbox/admin'
-    | '/sandbox/certificates'
-    | '/sandbox/learn'
-    | '/sandbox/live'
-    | '/sandbox/orders'
-    | '/sandbox/quiz'
-    | '/sandbox/referrals'
-    | '/sandbox/support'
-    | '/sandbox/wallet'
     | '/verify/$certificateNo'
-    | '/sandbox/'
     | '/admin/$section'
-    | '/sandbox/admin/courses'
-    | '/sandbox/admin/sales'
-    | '/sandbox/admin/students'
     | '/admin/'
-    | '/sandbox/admin/'
     | '/admin/user/$userId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -393,34 +286,25 @@ export interface FileRouteTypes {
     | '/auth'
     | '/courses'
     | '/ebooks'
+    | '/live-classes'
     | '/plans'
     | '/reset-password'
+    | '/webinars'
     | '/affiliate'
+    | '/certificates'
     | '/dashboard'
     | '/earnings'
     | '/kyc'
     | '/notifications'
     | '/profile'
     | '/referrals'
+    | '/support'
     | '/team'
     | '/courses/$courseId'
     | '/live/$classId'
-    | '/sandbox/certificates'
-    | '/sandbox/learn'
-    | '/sandbox/live'
-    | '/sandbox/orders'
-    | '/sandbox/quiz'
-    | '/sandbox/referrals'
-    | '/sandbox/support'
-    | '/sandbox/wallet'
     | '/verify/$certificateNo'
-    | '/sandbox'
     | '/admin/$section'
-    | '/sandbox/admin/courses'
-    | '/sandbox/admin/sales'
-    | '/sandbox/admin/students'
     | '/admin'
-    | '/sandbox/admin'
     | '/admin/user/$userId'
   id:
     | '__root__'
@@ -429,37 +313,26 @@ export interface FileRouteTypes {
     | '/auth'
     | '/courses'
     | '/ebooks'
+    | '/live-classes'
     | '/plans'
     | '/reset-password'
-    | '/sandbox'
+    | '/webinars'
     | '/_authenticated/admin'
     | '/_authenticated/affiliate'
+    | '/_authenticated/certificates'
     | '/_authenticated/dashboard'
     | '/_authenticated/earnings'
     | '/_authenticated/kyc'
     | '/_authenticated/notifications'
     | '/_authenticated/profile'
     | '/_authenticated/referrals'
+    | '/_authenticated/support'
     | '/_authenticated/team'
     | '/courses_/$courseId'
     | '/live/$classId'
-    | '/sandbox/admin'
-    | '/sandbox/certificates'
-    | '/sandbox/learn'
-    | '/sandbox/live'
-    | '/sandbox/orders'
-    | '/sandbox/quiz'
-    | '/sandbox/referrals'
-    | '/sandbox/support'
-    | '/sandbox/wallet'
     | '/verify/$certificateNo'
-    | '/sandbox/'
     | '/_authenticated/admin/$section'
-    | '/sandbox/admin/courses'
-    | '/sandbox/admin/sales'
-    | '/sandbox/admin/students'
     | '/_authenticated/admin/'
-    | '/sandbox/admin/'
     | '/_authenticated/admin/user/$userId'
   fileRoutesById: FileRoutesById
 }
@@ -469,9 +342,10 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   CoursesRoute: typeof CoursesRoute
   EbooksRoute: typeof EbooksRoute
+  LiveClassesRoute: typeof LiveClassesRoute
   PlansRoute: typeof PlansRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
-  SandboxRoute: typeof SandboxRouteWithChildren
+  WebinarsRoute: typeof WebinarsRoute
   CoursesCourseIdRoute: typeof CoursesCourseIdRoute
   LiveClassIdRoute: typeof LiveClassIdRoute
   VerifyCertificateNoRoute: typeof VerifyCertificateNoRoute
@@ -514,6 +388,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EbooksRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/live-classes': {
+      id: '/live-classes'
+      path: '/live-classes'
+      fullPath: '/live-classes'
+      preLoaderRoute: typeof LiveClassesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/plans': {
       id: '/plans'
       path: '/plans'
@@ -528,11 +409,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/sandbox': {
-      id: '/sandbox'
-      path: '/sandbox'
-      fullPath: '/sandbox'
-      preLoaderRoute: typeof SandboxRouteImport
+    '/webinars': {
+      id: '/webinars'
+      path: '/webinars'
+      fullPath: '/webinars'
+      preLoaderRoute: typeof WebinarsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
@@ -547,6 +428,13 @@ declare module '@tanstack/react-router' {
       path: '/affiliate'
       fullPath: '/affiliate'
       preLoaderRoute: typeof AuthenticatedAffiliateRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/certificates': {
+      id: '/_authenticated/certificates'
+      path: '/certificates'
+      fullPath: '/certificates'
+      preLoaderRoute: typeof AuthenticatedCertificatesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/dashboard': {
@@ -591,6 +479,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedReferralsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/support': {
+      id: '/_authenticated/support'
+      path: '/support'
+      fullPath: '/support'
+      preLoaderRoute: typeof AuthenticatedSupportRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/team': {
       id: '/_authenticated/team'
       path: '/team'
@@ -612,76 +507,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LiveClassIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/sandbox/': {
-      id: '/sandbox/'
-      path: '/'
-      fullPath: '/sandbox/'
-      preLoaderRoute: typeof SandboxIndexRouteImport
-      parentRoute: typeof SandboxRoute
-    }
-    '/sandbox/admin': {
-      id: '/sandbox/admin'
-      path: '/admin'
-      fullPath: '/sandbox/admin'
-      preLoaderRoute: typeof SandboxAdminRouteImport
-      parentRoute: typeof SandboxRoute
-    }
-    '/sandbox/certificates': {
-      id: '/sandbox/certificates'
-      path: '/certificates'
-      fullPath: '/sandbox/certificates'
-      preLoaderRoute: typeof SandboxCertificatesRouteImport
-      parentRoute: typeof SandboxRoute
-    }
-    '/sandbox/learn': {
-      id: '/sandbox/learn'
-      path: '/learn'
-      fullPath: '/sandbox/learn'
-      preLoaderRoute: typeof SandboxLearnRouteImport
-      parentRoute: typeof SandboxRoute
-    }
-    '/sandbox/live': {
-      id: '/sandbox/live'
-      path: '/live'
-      fullPath: '/sandbox/live'
-      preLoaderRoute: typeof SandboxLiveRouteImport
-      parentRoute: typeof SandboxRoute
-    }
-    '/sandbox/orders': {
-      id: '/sandbox/orders'
-      path: '/orders'
-      fullPath: '/sandbox/orders'
-      preLoaderRoute: typeof SandboxOrdersRouteImport
-      parentRoute: typeof SandboxRoute
-    }
-    '/sandbox/quiz': {
-      id: '/sandbox/quiz'
-      path: '/quiz'
-      fullPath: '/sandbox/quiz'
-      preLoaderRoute: typeof SandboxQuizRouteImport
-      parentRoute: typeof SandboxRoute
-    }
-    '/sandbox/referrals': {
-      id: '/sandbox/referrals'
-      path: '/referrals'
-      fullPath: '/sandbox/referrals'
-      preLoaderRoute: typeof SandboxReferralsRouteImport
-      parentRoute: typeof SandboxRoute
-    }
-    '/sandbox/support': {
-      id: '/sandbox/support'
-      path: '/support'
-      fullPath: '/sandbox/support'
-      preLoaderRoute: typeof SandboxSupportRouteImport
-      parentRoute: typeof SandboxRoute
-    }
-    '/sandbox/wallet': {
-      id: '/sandbox/wallet'
-      path: '/wallet'
-      fullPath: '/sandbox/wallet'
-      preLoaderRoute: typeof SandboxWalletRouteImport
-      parentRoute: typeof SandboxRoute
-    }
     '/verify/$certificateNo': {
       id: '/verify/$certificateNo'
       path: '/verify/$certificateNo'
@@ -702,34 +527,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/$section'
       preLoaderRoute: typeof AuthenticatedAdminSectionRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/sandbox/admin/': {
-      id: '/sandbox/admin/'
-      path: '/'
-      fullPath: '/sandbox/admin/'
-      preLoaderRoute: typeof SandboxAdminIndexRouteImport
-      parentRoute: typeof SandboxAdminRoute
-    }
-    '/sandbox/admin/courses': {
-      id: '/sandbox/admin/courses'
-      path: '/courses'
-      fullPath: '/sandbox/admin/courses'
-      preLoaderRoute: typeof SandboxAdminCoursesRouteImport
-      parentRoute: typeof SandboxAdminRoute
-    }
-    '/sandbox/admin/sales': {
-      id: '/sandbox/admin/sales'
-      path: '/sales'
-      fullPath: '/sandbox/admin/sales'
-      preLoaderRoute: typeof SandboxAdminSalesRouteImport
-      parentRoute: typeof SandboxAdminRoute
-    }
-    '/sandbox/admin/students': {
-      id: '/sandbox/admin/students'
-      path: '/students'
-      fullPath: '/sandbox/admin/students'
-      preLoaderRoute: typeof SandboxAdminStudentsRouteImport
-      parentRoute: typeof SandboxAdminRoute
     }
     '/_authenticated/admin/user/$userId': {
       id: '/_authenticated/admin/user/$userId'
@@ -759,76 +556,33 @@ const AuthenticatedAdminRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
   AuthenticatedAffiliateRoute: typeof AuthenticatedAffiliateRoute
+  AuthenticatedCertificatesRoute: typeof AuthenticatedCertificatesRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedEarningsRoute: typeof AuthenticatedEarningsRoute
   AuthenticatedKycRoute: typeof AuthenticatedKycRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedReferralsRoute: typeof AuthenticatedReferralsRoute
+  AuthenticatedSupportRoute: typeof AuthenticatedSupportRoute
   AuthenticatedTeamRoute: typeof AuthenticatedTeamRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
   AuthenticatedAffiliateRoute: AuthenticatedAffiliateRoute,
+  AuthenticatedCertificatesRoute: AuthenticatedCertificatesRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedEarningsRoute: AuthenticatedEarningsRoute,
   AuthenticatedKycRoute: AuthenticatedKycRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedReferralsRoute: AuthenticatedReferralsRoute,
+  AuthenticatedSupportRoute: AuthenticatedSupportRoute,
   AuthenticatedTeamRoute: AuthenticatedTeamRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
-
-interface SandboxAdminRouteChildren {
-  SandboxAdminCoursesRoute: typeof SandboxAdminCoursesRoute
-  SandboxAdminSalesRoute: typeof SandboxAdminSalesRoute
-  SandboxAdminStudentsRoute: typeof SandboxAdminStudentsRoute
-  SandboxAdminIndexRoute: typeof SandboxAdminIndexRoute
-}
-
-const SandboxAdminRouteChildren: SandboxAdminRouteChildren = {
-  SandboxAdminCoursesRoute: SandboxAdminCoursesRoute,
-  SandboxAdminSalesRoute: SandboxAdminSalesRoute,
-  SandboxAdminStudentsRoute: SandboxAdminStudentsRoute,
-  SandboxAdminIndexRoute: SandboxAdminIndexRoute,
-}
-
-const SandboxAdminRouteWithChildren = SandboxAdminRoute._addFileChildren(
-  SandboxAdminRouteChildren,
-)
-
-interface SandboxRouteChildren {
-  SandboxAdminRoute: typeof SandboxAdminRouteWithChildren
-  SandboxCertificatesRoute: typeof SandboxCertificatesRoute
-  SandboxLearnRoute: typeof SandboxLearnRoute
-  SandboxLiveRoute: typeof SandboxLiveRoute
-  SandboxOrdersRoute: typeof SandboxOrdersRoute
-  SandboxQuizRoute: typeof SandboxQuizRoute
-  SandboxReferralsRoute: typeof SandboxReferralsRoute
-  SandboxSupportRoute: typeof SandboxSupportRoute
-  SandboxWalletRoute: typeof SandboxWalletRoute
-  SandboxIndexRoute: typeof SandboxIndexRoute
-}
-
-const SandboxRouteChildren: SandboxRouteChildren = {
-  SandboxAdminRoute: SandboxAdminRouteWithChildren,
-  SandboxCertificatesRoute: SandboxCertificatesRoute,
-  SandboxLearnRoute: SandboxLearnRoute,
-  SandboxLiveRoute: SandboxLiveRoute,
-  SandboxOrdersRoute: SandboxOrdersRoute,
-  SandboxQuizRoute: SandboxQuizRoute,
-  SandboxReferralsRoute: SandboxReferralsRoute,
-  SandboxSupportRoute: SandboxSupportRoute,
-  SandboxWalletRoute: SandboxWalletRoute,
-  SandboxIndexRoute: SandboxIndexRoute,
-}
-
-const SandboxRouteWithChildren =
-  SandboxRoute._addFileChildren(SandboxRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -836,9 +590,10 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   CoursesRoute: CoursesRoute,
   EbooksRoute: EbooksRoute,
+  LiveClassesRoute: LiveClassesRoute,
   PlansRoute: PlansRoute,
   ResetPasswordRoute: ResetPasswordRoute,
-  SandboxRoute: SandboxRouteWithChildren,
+  WebinarsRoute: WebinarsRoute,
   CoursesCourseIdRoute: CoursesCourseIdRoute,
   LiveClassIdRoute: LiveClassIdRoute,
   VerifyCertificateNoRoute: VerifyCertificateNoRoute,

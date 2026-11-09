@@ -1,8 +1,0 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { useLang } from "@/lib/i18n";
-import { useMock } from "@/lib/mock-store";
-import { pageMeta } from "@/lib/route-meta";
-export const Route = createFileRoute("/sandbox/support")({ head: () => pageMeta("Sample Support", "Save a test support question locally without contacting a real team."), component: Screen });
-function Screen() { const { t } = useLang(); const { state, update } = useMock(); const [question, setQuestion] = useState(""); return <section className="max-w-2xl"><h1 className="font-display text-3xl font-bold">{t("support")}</h1><form className="mt-5" onSubmit={(e) => { e.preventDefault(); if (!question.trim()) return; update((s) => ({ ...s, questions: [...s.questions, question.trim()] })); setQuestion(""); }}><label htmlFor="support-question">{t("support_question")}</label><textarea id="support-question" required maxLength={2000} value={question} onChange={(e) => setQuestion(e.target.value)} rows={4} className="my-3 w-full rounded-md border border-input bg-background p-3"/><Button type="submit">{t("send_question")}</Button></form>{state.questions.map((q, i) => <article key={i} className="mt-5 border-t border-border pt-4"><p className="text-xs text-success">{t("support_saved")} · {i + 1}</p><p className="mt-2 break-words">{q}</p></article>)}</section>; }

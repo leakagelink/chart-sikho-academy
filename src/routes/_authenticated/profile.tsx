@@ -106,12 +106,12 @@ function ProfilePage() {
   const menu = [
     { icon: Settings, label: t('admin_go'), to: '/admin' },
     { icon: ClipboardList, label: t('my_courses'), to: '/dashboard' },
-    { icon: Award, label: t('my_certificates'), to: '/sandbox/certificates' },
+    { icon: Award, label: t('my_certificates'), to: '/certificates' },
     { icon: Users, label: t('referral_dashboard'), to: '/referrals' },
     { icon: IndianRupee, label: t('my_earnings'), to: '/earnings' },
     { icon: Wallet, label: t('payout_requests'), to: '/earnings' },
     { icon: Bell, label: t('notifications'), to: '/notifications' },
-    { icon: LifeBuoy, label: t('support'), to: '/sandbox/support' },
+    { icon: LifeBuoy, label: t('support'), to: '/support' },
   ] as const;
   return (
     <div className="profile-screen w-full px-4 pb-8 pt-0">
