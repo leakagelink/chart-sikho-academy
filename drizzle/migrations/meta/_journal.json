@@ -302,6 +302,13 @@
       "when": 1794128323384,
       "tag": "0042_admin_team_profile_photo_read",
       "breakpoints": true
+    },
+    {
+      "idx": 43,
+      "version": "7",
+      "when": 1794206239871,
+      "tag": "0043_session_free_paid_manual_checkout",
+      "breakpoints": true
     }
   ]
 }
