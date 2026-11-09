@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [ ] Verify Affiliate Team Tree modal fits desktop/mobile and top/footer close controls remain reachable while browsing real members.
 - [x] All seven existing accounts now have unique six-character codes; new signup assigns one atomically, legacy codes remain valid and browser changes to either code are blocked. Referral/Team/Affiliate expose primary-domain signup link with copy/share, admin/profile display short code. Signed-in copy → signed-out signup prefill and mobile verified, five tests/build pass; transactional short/legacy signup sponsor checks passed and rolled back. Confirmation email completion was not exercised.
 - [x] Desktop Home uses shared single-row shelves: three class/course slots, four eBook slots, accessible previous/next controls and all saved products without slice limits. Verified five real classes and five eBooks stay one row, arrows move right/back, eBook See all opens catalog, mobile swipe remains and no overflow/runtime errors; build OK. Popular/offer each currently has one real course, so extra courses are not fabricated.
 - [x] Added Seminar Home shortcut, student menu/catalog filter, public listing and permission-scoped admin Add/Edit/Delete using shared session pricing/access. Temporary paid ₹499 Seminar create → reload → edit → public display → delete verified; mobile shortcuts/admin have no overflow, 104 tests and build pass. Temporary record removed; no payment submitted or approved.
