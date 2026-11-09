@@ -593,7 +593,14 @@ html { scroll-padding-top: 80px; }
 .team-tree-children > .team-tree-branch:only-child::before { display: none; }
 @media(max-width:639px) { .team-tree-viewport { padding-inline: 0; } .team-tree-member { width: 270px; } .team-tree-branch { padding-inline: 8px; } }
 
-/* Mobile Home: swipeable shelves; catalog and desktop layouts stay independent. */
+/* Home shelves stay single-row; full catalogs retain their grids. */
+.mobile-home .home-product-rail { display: grid; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: calc((100% - 40px) / 3); gap: 20px; overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 8px; }
+.mobile-home .home-product-rail-ebooks { grid-auto-columns: calc((100% - 60px) / 4); }
+.mobile-home .home-product-rail::-webkit-scrollbar { display: none; }
+.mobile-home .home-product-rail > article { min-width: 0; scroll-snap-align: start; }
+@media (min-width: 640px) and (max-width: 1023px) {
+  .mobile-home .home-product-rail { grid-auto-columns: calc((100% - 20px) / 2); }
+}
 @media (max-width: 639px) {
   .mobile-home { --background: var(--blueprint-paper); --card: var(--blueprint-paper); --foreground: var(--blueprint-ink); --card-foreground: var(--blueprint-ink); --muted-foreground: var(--blueprint-muted); --border: var(--blueprint-line); --muted: var(--blueprint-line); --primary: var(--royal); --primary-foreground: var(--navy-foreground); background: var(--background); padding-bottom: 24px; }
   .mobile-home :where(article, .home-categories a) { color: var(--blueprint-ink); }

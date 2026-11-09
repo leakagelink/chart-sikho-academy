@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [x] Desktop Home uses shared single-row shelves: three class/course slots, four eBook slots, accessible previous/next controls and all saved products without slice limits. Verified five real classes and five eBooks stay one row, arrows move right/back, eBook See all opens catalog, mobile swipe remains and no overflow/runtime errors; build OK. Popular/offer each currently has one real course, so extra courses are not fabricated.
 - [x] Added Seminar Home shortcut, student menu/catalog filter, public listing and permission-scoped admin Add/Edit/Delete using shared session pricing/access. Temporary paid ₹499 Seminar create → reload → edit → public display → delete verified; mobile shortcuts/admin have no overflow, 104 tests and build pass. Temporary record removed; no payment submitted or approved.
 - [x] New KYC requires PAN plus one Aadhaar/Voter ID in an atomic private-document bundle; old single-document submission is blocked, admin sees both documents and cannot approve incomplete legacy requests. Shared KYC account/dashboard status refreshes every 15 seconds while visible; existing atomic review updates status and sends notification. Five validation tests pass and build OK.
 - [ ] Verify new two-document submission → admin decision → student status through signed-in UI; requesting user's account has no matching preview login, so authenticated check awaits preview sign-in.

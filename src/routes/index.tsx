@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { BookOpen, ChevronRight, Crown, FileText, PlayCircle, Radio, Users, Video } from "lucide-react";
 import hero from "@/assets/hero-bull.jpg";
+import { HomeProductShelf } from "@/components/site/HomeProductShelf";
 import { ScheduledLiveClasses } from "@/components/site/ScheduledLiveClasses";
 import { CloudCourseCard } from "@/components/site/CloudCourseCard";
 import { catalogQuery } from "@/lib/catalog-query";
@@ -75,45 +76,21 @@ function Index() {
         ))}
       </section>
 
-      {/* Upcoming live */}
-      <section className="mt-10">
-        <div className="home-section-heading grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
-          <h2 className="min-w-0 font-display text-2xl font-bold text-foreground">{t("upcoming")}</h2>
-          <Button asChild variant="link" className="shrink-0 gap-0 p-0"><Link to="/live-classes">{t('see_all')}<ChevronRight className="h-4 w-4" /></Link></Button>
-        </div>
-        <div className="home-product-rail mt-4 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-          <ScheduledLiveClasses />
-        </div>
-      </section>
+      <HomeProductShelf title={t('upcoming')} seeAll={<Button asChild variant="link" className="shrink-0 gap-0 p-0"><Link to="/live-classes">{t('see_all')}<ChevronRight className="h-4 w-4" /></Link></Button>}>
+        <ScheduledLiveClasses />
+      </HomeProductShelf>
 
-      {/* Popular */}
-      <section className="mt-10">
-        <div className="home-section-heading grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
-          <h2 className="font-display text-2xl font-bold text-foreground">{t("popular")}</h2>
-          <Button asChild variant="link" className="shrink-0 gap-0 p-0"><Link to="/courses" search={{type:'courses'}}>{t('see_all')}<ChevronRight className="h-4 w-4" /></Link></Button>
-        </div>
-        <div className="home-product-rail mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {catalog.slice(0, 4).map((c) => <CloudCourseCard key={c.id} course={c} />)}
-        </div>
-      </section>
+      <HomeProductShelf title={t('popular')} seeAll={<Button asChild variant="link" className="shrink-0 gap-0 p-0"><Link to="/courses" search={{type:'courses'}}>{t('see_all')}<ChevronRight className="h-4 w-4" /></Link></Button>}>
+        {catalog.map(c => <CloudCourseCard key={c.id} course={c} />)}
+      </HomeProductShelf>
 
-      {offers.length > 0 && <section className="mt-10">
-        <div className="home-section-heading grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
-          <h2 className="min-w-0 font-display text-2xl font-bold">{t('home_best_offer')}</h2>
-          <Button asChild variant="link" className="shrink-0 gap-0 p-0"><Link to="/courses" search={{type:'courses'}}>{t('see_all')}<ChevronRight className="h-4 w-4" /></Link></Button>
-        </div>
-        <div className="home-product-rail mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {offers.slice(0,4).map(c => <CloudCourseCard key={c.id} course={c} />)}
-        </div>
-      </section>}
+      {offers.length > 0 && <HomeProductShelf title={t('home_best_offer')} seeAll={<Button asChild variant="link" className="shrink-0 gap-0 p-0"><Link to="/courses" search={{type:'courses'}}>{t('see_all')}<ChevronRight className="h-4 w-4" /></Link></Button>}>
+        {offers.map(c => <CloudCourseCard key={c.id} course={c} />)}
+      </HomeProductShelf>}
 
-      <section className="home-ebooks mt-10">
-        <div className="home-section-heading grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
-          <h2 className="min-w-0 font-display text-2xl font-bold text-foreground">{t('nav_ebooks')}</h2>
-          <Button asChild variant="link" className="shrink-0 gap-0 p-0"><Link to="/ebooks">{t('see_all')}<ChevronRight className="h-4 w-4" /></Link></Button>
-        </div>
-        {products.ebooks.length ? <div className="home-product-rail mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-          {products.ebooks.slice(0,4).map(book=><article key={book.id} className="flex h-full min-w-0 flex-col overflow-hidden rounded-lg border border-border bg-card shadow-card">
+      <HomeProductShelf ebooks title={t('nav_ebooks')} seeAll={<Button asChild variant="link" className="shrink-0 gap-0 p-0"><Link to="/ebooks">{t('see_all')}<ChevronRight className="h-4 w-4" /></Link></Button>}>
+        {products.ebooks.length ? <>
+          {products.ebooks.map(book=><article key={book.id} className="flex h-full min-w-0 flex-col overflow-hidden rounded-lg border border-border bg-card shadow-card">
             <div className="aspect-[3/4] w-full shrink-0 overflow-hidden bg-muted">
               {book.cover_url?<img src={book.cover_url} alt={book.title} loading="lazy" decoding="async" className="block h-full w-full object-contain"/>:<div className="grid h-full place-items-center"><BookOpen className="h-12 w-12 text-muted-foreground"/></div>}
             </div>
@@ -124,8 +101,8 @@ function Index() {
               <EbookPurchase book={book}/>
             </div>
           </article>)}
-        </div>:<p className="mt-4 text-muted-foreground">{t('ebooks_empty')}</p>}
-      </section>
+        </>:<p className="mt-4 text-muted-foreground">{t('ebooks_empty')}</p>}
+      </HomeProductShelf>
 
       {/* Membership */}
       <section className="home-marketing mt-10 flex flex-col items-start gap-4 rounded-3xl bg-gradient-to-r from-primary to-navy p-6 text-primary-foreground sm:flex-row sm:items-center sm:p-8">
