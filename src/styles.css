@@ -584,7 +584,7 @@ html { scroll-padding-top: 80px; }
 .team-tree-branch { position: relative; display: flex; flex-direction: column; align-items: center; flex: 0 0 auto; padding-inline: 12px; }
 .team-tree-member { width: 320px; flex: 0 0 auto; position: relative; }
 .team-tree-children { position: relative; padding-top: 36px; }
-.team-tree-children::before { content: ''; position: absolute; top: 0; left: 50%; height: 18px; border-left: 2px solid var(--primary); }
+.team-tree-children::before { content: ''; position: absolute; top: 0; left: 50%; height: 36px; border-left: 2px solid var(--primary); }
 .team-tree-children > .team-tree-branch { padding-top: 18px; }
 .team-tree-children > .team-tree-branch::before { content: ''; position: absolute; top: 0; left: 0; right: 0; border-top: 2px solid var(--primary); }
 .team-tree-children > .team-tree-branch::after { content: ''; position: absolute; top: 0; left: 50%; height: 18px; border-left: 2px solid var(--primary); }

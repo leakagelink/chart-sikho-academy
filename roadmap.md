@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [x] Admin Team Tree changed from level-grouped lists to connected parent/child branches with root above descendants, compact photos/counts and expandable details. Ancestors remain visible for filtered matches; signed-in tree/details/level filter and mobile no-overflow verified, three traversal tests passed.
 - [x] Added Free/Paid pricing to Live Classes/Webinars and safe public metadata, purchase-gated session access and manual UPI approval orders. Admin Paid ₹499 save/reload → user QR/UTR/screenshot checkout → Free ₹0 save → free access verified; mobile no overflow, Webinar paid form and 89 tests/build pass. Temporary sessions removed; no payment proof submitted or money approved.
 - [ ] Verify session payment submission → admin approval → purchased access with an actual payment proof; no real payment/proof supplied for this verification.
 - [x] Removed demo/mock course/class catalogs, fake progress/stats/notifications, sample videos and all Test Portal routes. Home/catalog/dashboard now use Cloud records; student links open saved classes/webinars, own certificates and real support tickets. Signed-in 9-page checks after splash, 393px no-overflow, no runtime errors, 10 tests and build verified. Cloud users/orders/enrollments and admin-created content untouched; no publishing performed.
