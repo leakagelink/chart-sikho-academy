@@ -9,5 +9,6 @@ describe('Individual panel permissions',()=>{
   it('does not permit privilege escalation',()=>{expect(canAccess({isAdmin:false,permissions:[{section:'roles',action:'edit'}]},'roles','edit')).toBe(false);});
   it('admin retains full access',()=>{expect(canAccess({isAdmin:true,permissions:[]},'users','delete')).toBe(true);});
   it('direct question creation can use quiz permission',()=>{expect(resourceSections('questions')).toContain('quizzes');});
+  it('seminar-only access reads sessions but not webinars or orders',()=>{const seminarAccess={isAdmin:false,permissions:[{section:'seminars' as const,action:'view' as const}]};expect(canReadDataset(seminarAccess,'classes')).toBe(true);expect(canAccess(seminarAccess,'classes')).toBe(false);expect(canAccess(seminarAccess,'webinars')).toBe(false);expect(canReadDataset(seminarAccess,'orders')).toBe(false);});
   it('rejects invented sections',()=>{expect(permissionSchema.safeParse({userId:'4983f790-7312-4cc2-b3e7-8bf374f535ed',permissions:[{section:'anything',action:'view'}]}).success).toBe(false);});
 });

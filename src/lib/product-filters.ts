@@ -1,4 +1,4 @@
-export type ProductType = 'courses' | 'ebooks' | 'classes' | 'webinars';
+export type ProductType = 'courses' | 'ebooks' | 'classes' | 'webinars' | 'seminars';
 export type ProductFilter = 'all' | ProductType;
 export function filterProducts<T extends { type: ProductType; title: string }>(rows: T[], filter: ProductFilter, search: string): T[] {
   const text = search.trim().toLowerCase();

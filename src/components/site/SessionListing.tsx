@@ -8,7 +8,7 @@ import { productQuery } from '@/lib/product-query';
 import { useLang } from '@/lib/i18n';
 import { SessionPurchase } from './SessionPurchase';
 import { LiveClassThumbnail } from './LiveClassCard';
-export function SessionListing({kind}:{kind:'class'|'webinar'}) {
+export function SessionListing({kind}:{kind:'class'|'webinar'|'seminar'}) {
   const {data}=useSuspenseQuery(productQuery());
   const {t,lang}=useLang();
   const client=useQueryClient();
@@ -19,7 +19,7 @@ export function SessionListing({kind}:{kind:'class'|'webinar'}) {
   const sessions=filterSessions(data.sessions.filter(s=>s.kind===kind),{timing,price,search});
   const refresh=async()=>{setRefreshing(true);try{await client.invalidateQueries({queryKey:productQuery().queryKey});}finally{setRefreshing(false);}};
   return <section className="min-w-0 px-4 py-8">
-    <div className="flex items-start justify-between gap-3"><h1 className="font-display text-3xl font-bold">{t(kind==='class'?'cat_live':'cat_webinars')}</h1><Button variant="outline" size="icon" aria-label={t('affiliate_refresh')} title={t('affiliate_refresh')} disabled={refreshing} onClick={refresh}><RefreshCw className={refreshing?'animate-spin':''}/></Button></div>
+    <div className="flex items-start justify-between gap-3"><h1 className="font-display text-3xl font-bold">{t(kind==='class'?'cat_live':kind==='seminar'?'cat_seminars':'cat_webinars')}</h1><Button variant="outline" size="icon" aria-label={t('affiliate_refresh')} title={t('affiliate_refresh')} disabled={refreshing} onClick={refresh}><RefreshCw className={refreshing?'animate-spin':''}/></Button></div>
     <div className="mt-6 flex flex-col gap-4 border-y border-border py-4">
       <label className="relative"><Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"/><input type="search" aria-label={t('session_search')} placeholder={t('session_search')} value={search} onChange={e=>setSearch(e.target.value)} className="w-full rounded-md border border-input bg-card py-2.5 pl-10 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"/></label>
       <div className="flex flex-wrap items-end gap-5">

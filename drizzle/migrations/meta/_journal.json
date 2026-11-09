@@ -330,6 +330,13 @@
       "when": 1794215786549,
       "tag": "0046_kyc_required_pan_and_identity",
       "breakpoints": true
+    },
+    {
+      "idx": 47,
+      "version": "7",
+      "when": 1794216349810,
+      "tag": "0047_seminar_session_management",
+      "breakpoints": true
     }
   ]
 }
