@@ -1,0 +1,1 @@
+- Public loaders rewrite inline data-URL images via siteImage() to /api/public/site-image; why: embedded images bloated HTML.

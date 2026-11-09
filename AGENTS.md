@@ -38,4 +38,3 @@
 - Course final quizzes link through the course record (one quiz may serve many courses); students get questions, scoring, attempt limits and automatic certificates only through security-definer database functions gated on full lesson completion; why: answer keys stay hidden and the browser cannot forge scores or certificates.
 - Auth signup trigger assigns validated referral/default Admin and own code, never sample enrollment or earnings; paid-order triggers retain parents. Why: metadata changes cannot reparent users or forge commissions.
 - Admin notifications flagged show_popup appear once as a homepage/dashboard popup and stay in the inbox; sent push Campaigns create one in-app notification via a role-checked trigger. Why: one delivery path for inbox and popup without duplicates.
-- Public loaders rewrite inline data-URL images via siteImage() to /api/public/site-image; why: embedded images bloated HTML.
