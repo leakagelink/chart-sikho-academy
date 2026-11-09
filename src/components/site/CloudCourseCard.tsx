@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { BookOpen, User } from "lucide-react";
 import { inr } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
+import { ProductSocial } from './ProductSocial';
 
 type C = { id: string; title: string; price: number; sale_price: number | null; thumbnail_url: string; instructor: string; description: string };
 
@@ -30,6 +31,7 @@ export function CloudCourseCard({ course: c }: { course: C }) {
           {sale != null && <span className="text-xs text-muted-foreground line-through">{inr(c.price)}</span>}
         </div>
         <Link to="/courses/$courseId" params={{ courseId: c.id }} className="course-cta mt-3 flex items-center justify-center gap-1.5 rounded-lg bg-primary py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90"><BookOpen className="h-4 w-4" />{now ? t("buy_now") : t("enroll_free")}</Link>
+        <ProductSocial kind="course" id={c.id} title={c.title}/>
       </div>
     </article>
   );
