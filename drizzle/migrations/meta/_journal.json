@@ -386,6 +386,13 @@
       "when": 1794231256867,
       "tag": "0054_seminar_venue_details",
       "breakpoints": true
+    },
+    {
+      "idx": 55,
+      "version": "7",
+      "when": 1794231814856,
+      "tag": "0055_serial_member_ids",
+      "breakpoints": true
     }
   ]
 }

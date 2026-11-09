@@ -2004,6 +2004,7 @@ export type Database = {
           created_at: string
           full_name: string
           id: string
+          member_code: string
           referred_id: string
         }[]
       }
