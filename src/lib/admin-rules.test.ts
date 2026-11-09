@@ -24,7 +24,7 @@ describe('live class recordings', () => {
   it.each(['class','webinar','seminar'])('free %s costs zero', kind => { expect(liveClassSchema.parse({...row,kind,access_mode:'free',price:499}).price).toBe(0); });
   it.each(['class','webinar','seminar'])('paid %s keeps the entered price', kind => { expect(liveClassSchema.parse({...row,kind,access_mode:'paid',price:499}).price).toBe(499); });
   it('rejects a paid session without a positive price', () => { expect(liveClassSchema.safeParse({...row,access_mode:'paid',price:0}).success).toBe(false); });
-  it('retains the uploaded live class thumbnail', () => { const thumbnail_url = 'data:image/png;base64,AAAA'; expect(liveClassSchema.parse({ ...row, thumbnail_url }).thumbnail_url).toBe(thumbnail_url); });
+  it('retains the uploaded live class thumbnail file link', () => { const thumbnail_url = '/api/public/site-file/classes/11111111-1111-4111-8111-111111111111.png'; expect(liveClassSchema.parse({ ...row, thumbnail_url }).thumbnail_url).toBe(thumbnail_url); });
   it('rejects executable thumbnail links', () => { expect(liveClassSchema.safeParse({ ...row, thumbnail_url: 'javascript:alert(1)' }).success).toBe(false); });
   it('requires a course for completed recordings', () => { expect(liveClassSchema.safeParse({ ...row, course_id:'' }).success).toBe(false); });
   it('requires a module for completed recordings', () => { expect(liveClassSchema.safeParse({ ...row, module_id:'' }).success).toBe(false); });
