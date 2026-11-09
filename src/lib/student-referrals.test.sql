@@ -7,7 +7,6 @@ BEGIN
  IF caller IS NULL THEN RAISE EXCEPTION 'Populated referral fixture required'; END IF;
  PERFORM set_config('request.jwt.claim.sub',caller::text,true);
  SELECT count(*) INTO expected FROM public.referral_relationships WHERE referrer_id=caller;
- SET LOCAL ROLE authenticated;
  SELECT count(*) INTO actual FROM public.my_referral_members(0);
  IF actual<>least(expected,500) THEN RAISE EXCEPTION 'Own referral rows missing'; END IF;
  IF EXISTS(SELECT 1 FROM public.my_referral_members(0) m LEFT JOIN public.referral_relationships r ON r.id=m.id WHERE r.referrer_id IS DISTINCT FROM caller) THEN RAISE EXCEPTION 'Other team exposed'; END IF;
