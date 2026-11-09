@@ -40,6 +40,15 @@ export const liveClassSchema = z.object({
   module_id: z.union([z.literal('').transform(() => null), z.null(), z.string().uuid()]).default(null),
   completion_state: z.enum(['pending','completed']).default('pending'),
   recording_url: z.string().max(2000).transform(safeHttps).default(''),
+  venue: z.string().trim().max(160).default(''),
+  address: z.string().trim().max(400).default(''),
+  city: z.string().trim().max(80).default(''),
+  state: z.string().trim().max(80).default(''),
+  country: z.string().trim().max(80).default(''),
+  pin_code: z.string().trim().regex(/^[A-Za-z0-9 -]{0,12}$/).default(''),
+  support_name: z.string().trim().max(120).default(''),
+  support_phone: z.string().trim().regex(/^[0-9+() -]{0,20}$/).default(''),
+  support_email: z.union([z.literal(''), z.string().trim().email().max(160)]).default(''),
 }).superRefine((v, ctx) => {
   if (v.access_mode === 'paid' && v.price <= 0) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['price'], message: 'Paid sessions require a positive price' });
   if (v.completion_state === 'completed' && (!v.course_id || !v.module_id || !v.recording_url || v.status !== 'scheduled')) {

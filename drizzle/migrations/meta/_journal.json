@@ -379,6 +379,13 @@
       "when": 1794225300840,
       "tag": "0053_tighten_public_read_rules",
       "breakpoints": true
+    },
+    {
+      "idx": 54,
+      "version": "7",
+      "when": 1794231256867,
+      "tag": "0054_seminar_venue_details",
+      "breakpoints": true
     }
   ]
 }
