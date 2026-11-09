@@ -19,7 +19,7 @@ export const getPublishedProducts = createServerFn({method:'GET'}).handler(async
  const s=createClient<Database>(process.env['SUPABASE_URL']!,key,{auth:{persistSession:false,autoRefreshToken:false},global:{fetch:(input,init)=>{const h=new Headers(init?.headers);if(key.startsWith('sb_')&&h.get('Authorization')===`Bearer ${key}`)h.delete('Authorization');h.set('apikey',key);return fetch(input,{...init,headers:h});}}});
  const [ebooks, sessions] = await Promise.all([
   s.from('ebooks').select('id,title,description,price,cover_url,has_file').eq('status','published'),
-  s.from('class_sessions').select('id,title,kind,starts_at,thumbnail_url,category_slug').eq('status','scheduled').order('starts_at'),
+  s.rpc('session_catalog'),
  ]);
  if (ebooks.error || sessions.error) throw new Error('Unable to load products');
  return { ebooks: ebooks.data ?? [], sessions: sessions.data ?? [] };
