@@ -3,6 +3,9 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export type Lang = "en" | "hi";
 
 const dict = {
+  admin_manage_videos:{en:'Videos & curriculum',hi:'वीडियो और पाठ्यक्रम'},
+  admin_save_draft_videos:{en:'Save draft & add videos',hi:'ड्राफ्ट सेव करें और वीडियो जोड़ें'},
+  admin_lesson_media:{en:'Upload video or PDF notes (optional)',hi:'वीडियो या PDF नोट्स अपलोड करें (वैकल्पिक)'},
   tree_levels:{en:'Referral levels',hi:'रेफरल लेवल'},
   tree_all_levels:{en:'All levels',hi:'सभी लेवल'},
   tree_all_roots:{en:'All teams',hi:'सभी टीमें'},
