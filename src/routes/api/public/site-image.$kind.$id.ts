@@ -27,6 +27,7 @@ export const Route = createFileRoute('/api/public/site-image/$kind/$id')({
     handlers: {
       GET: async ({ params }) => {
         const value = await readImage(params.kind, params.id).catch(() => null);
+        if (value?.startsWith('https://')) return Response.redirect(value, 302);
         const img = value ? decodeImageData(value) : null;
         if (!img) return new Response('Not found', { status: 404 });
         return new Response(img.bytes.buffer as ArrayBuffer, {
