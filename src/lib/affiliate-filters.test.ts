@@ -8,6 +8,12 @@ const rows = [
 it('filters affiliate data by member/reference search', () => {
   expect(filterAffiliateRows(rows,{...emptyAffiliateFilters,search:'MEMBER-B'},r=>r.id).map(r=>r.id)).toEqual(['member-b']);
 });
+it('finds a referred member by saved name while retaining member-ID search', () => {
+  const members = [{referred_id:'member-a',full_name:'Pramod Kumar',created_at:'2026-11-01'}, {referred_id:'member-b',full_name:'Dheeraj Tagde',created_at:'2026-11-02'}];
+  const searchText = (m:typeof members[number]) => `${m.full_name} ${m.referred_id}`;
+  expect(filterAffiliateRows(members,{...emptyAffiliateFilters,search:'pramod'},searchText).map(m=>m.referred_id)).toEqual(['member-a']);
+  expect(filterAffiliateRows(members,{...emptyAffiliateFilters,search:'member-b'},searchText).map(m=>m.full_name)).toEqual(['Dheeraj Tagde']);
+});
 it('filters by inclusive date range', () => {
   expect(filterAffiliateRows(rows,{...emptyAffiliateFilters,from:'2026-11-01',to:'2026-11-06'},r=>r.id).map(r=>r.id)).toEqual(['member-b','member-a']);
 });
