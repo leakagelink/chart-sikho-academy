@@ -351,6 +351,13 @@
       "when": 1794217381074,
       "tag": "0049_protect_legacy_referral_identity",
       "breakpoints": true
+    },
+    {
+      "idx": 50,
+      "version": "7",
+      "when": 1794218166022,
+      "tag": "0050_own_referral_member_names",
+      "breakpoints": true
     }
   ]
 }

@@ -1971,6 +1971,15 @@ export type Database = {
       }
       make_short_referral_code: { Args: never; Returns: string }
       my_ebook_resource: { Args: { _ebook_id: string }; Returns: string }
+      my_referral_members: {
+        Args: { _offset?: number }
+        Returns: {
+          created_at: string
+          full_name: string
+          id: string
+          referred_id: string
+        }[]
+      }
       my_session_access: { Args: { _session_id: string }; Returns: Json }
       my_wallet: { Args: never; Returns: Json }
       payment_upi: { Args: never; Returns: Json }
