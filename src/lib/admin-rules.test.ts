@@ -27,6 +27,9 @@ describe('live class recordings', () => {
   it('retains the uploaded live class thumbnail file link', () => { const thumbnail_url = '/api/public/site-file/classes/11111111-1111-4111-8111-111111111111.png'; expect(liveClassSchema.parse({ ...row, thumbnail_url }).thumbnail_url).toBe(thumbnail_url); });
   it('rejects executable thumbnail links', () => { expect(liveClassSchema.safeParse({ ...row, thumbnail_url: 'javascript:alert(1)' }).success).toBe(false); });
   it('requires a course for completed recordings', () => { expect(liveClassSchema.safeParse({ ...row, course_id:'' }).success).toBe(false); });
+  it('keeps seminar venue and support contact details', () => { const v = { venue:'Hotel Sayaji', address:'Vijay Nagar', city:'Indore', state:'Madhya Pradesh', country:'India', pin_code:'452010', support_name:'Ravi', support_phone:'+91 98765 43210', support_email:'help@example.com' }; expect(liveClassSchema.parse({ ...row, kind:'seminar', ...v })).toMatchObject(v); });
+  it('rejects an invalid seminar support email', () => { expect(liveClassSchema.safeParse({ ...row, kind:'seminar', support_email:'not-an-email' }).success).toBe(false); });
+  it('rejects letters in the seminar support phone', () => { expect(liveClassSchema.safeParse({ ...row, kind:'seminar', support_phone:'call me' }).success).toBe(false); });
   it('requires a module for completed recordings', () => { expect(liveClassSchema.safeParse({ ...row, module_id:'' }).success).toBe(false); });
   it('requires recording before completion', () => { expect(liveClassSchema.safeParse({ ...row, recording_url:'' }).success).toBe(false); });
   it('cannot publish a cancelled class', () => { expect(liveClassSchema.safeParse({ ...row, status:'cancelled' }).success).toBe(false); });
