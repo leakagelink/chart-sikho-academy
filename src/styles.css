@@ -602,8 +602,7 @@ html { scroll-padding-top: 80px; }
   .mobile-home .home-product-rail { grid-auto-columns: calc((100% - 20px) / 2); }
 }
 @media (max-width: 639px) {
-  .mobile-home { --background: var(--blueprint-paper); --card: var(--blueprint-paper); --foreground: var(--blueprint-ink); --card-foreground: var(--blueprint-ink); --muted-foreground: var(--blueprint-muted); --border: var(--blueprint-line); --muted: var(--blueprint-line); --primary: var(--royal); --primary-foreground: var(--navy-foreground); background: var(--background); padding-bottom: 24px; }
-  .mobile-home :where(article, .home-categories a) { color: var(--blueprint-ink); }
+  .mobile-home { padding-bottom: 24px; }
   .mobile-home .home-greeting { background: var(--card); color: var(--foreground); padding: 16px; }
   .mobile-home .home-greeting .text-foreground { color: var(--foreground); }
   .mobile-home .home-greeting .text-muted-foreground { color: var(--muted-foreground); }
@@ -615,8 +614,6 @@ html { scroll-padding-top: 80px; }
   .mobile-home .home-categories a { min-width: 0; border: 1px solid var(--border); border-radius: 8px; padding: 12px 4px; background: var(--card); }
   .mobile-home .home-categories a > span:first-child { border-radius: 50%; }
   .mobile-home .home-categories a > span:last-child { font-size: 12px; line-height: 1.3; overflow-wrap: anywhere; }
-  .mobile-home .home-categories a:first-child { background: var(--primary); color: var(--primary-foreground); border-color: var(--primary); }
-  .mobile-home .home-categories a:first-child > span:first-child { background: var(--destructive); color: var(--destructive-foreground); }
   .mobile-home > section:not(.home-greeting):not(.home-categories) { margin-top: 24px; }
   .mobile-home .home-section-heading h2 { font-size: 23px; line-height: 1.25; }
   .mobile-home .home-section-heading a { min-height: 44px; font-size: 14px; white-space: nowrap; }
@@ -630,5 +627,5 @@ html { scroll-padding-top: 80px; }
   .mobile-home .course-row h3 { font-size: 17px; min-height: 44px; }
   .mobile-home .course-row .course-cta { display: flex; min-height: 44px; }
   .mobile-home .course-row .course-price { margin-top: auto; }
-  .mobile-home .course-row .course-price span:first-child { color: var(--success); font-size: 20px; }
+  .mobile-home .course-row .course-price span:first-child { font-size: 20px; }
 }
