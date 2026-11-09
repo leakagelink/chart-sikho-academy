@@ -1974,6 +1974,8 @@ export type Database = {
         Args: { _payee: string; _qr_path?: string; _upi_id: string }
         Returns: undefined
       }
+      signup_referral_valid: { Args: { _code: string }; Returns: boolean }
+      signup_referrer: { Args: { _code: string }; Returns: string }
       submit_course_quiz: {
         Args: { _answers: Json; _course_id: string }
         Returns: Json
