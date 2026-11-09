@@ -3,6 +3,10 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export type Lang = "en" | "hi";
 
 const dict = {
+  session_search:{en:'Search classes or webinars',hi:'क्लास या वेबिनार खोजें'},
+  session_timing:{en:'Schedule',hi:'समय'},
+  session_past:{en:'Past',hi:'पिछले'},
+  session_empty:{en:'No sessions match these filters.',hi:'इन फ़िल्टर में कोई सेशन नहीं मिला।'},
   session_access_mode:{en:'Free / Paid',hi:'फ्री / पेड'},
   session_free:{en:'Free',hi:'फ्री'},
   session_paid:{en:'Paid',hi:'पेड'},
