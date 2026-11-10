@@ -36,7 +36,7 @@ function BannerCaption({banner,overlay=false}:{banner:WebsiteBanner;overlay?:boo
  const go=(href:string)=>(e:MouseEvent<HTMLAnchorElement>)=>{if(!href.startsWith('/')||e.metaKey||e.ctrlKey||e.shiftKey||e.button!==0)return;e.preventDefault();router.history.push(href);};
  const links=buttons.map(b=>{const external=!b.href.startsWith('/');return <a key={b.kind} href={b.href} onClick={go(b.href)} {...(external?{target:'_blank',rel:'noopener noreferrer'}:{})} className={b.kind==='join_now'?BTN_JOIN:BTN_MORE}>{b.label}</a>;});
  if(overlay)return <div className="banner-overlay pointer-events-none absolute bottom-[6%] right-[3%] z-10 hidden max-w-[60%] sm:block">
-  <div className="pointer-events-auto flex items-center gap-3 rounded-full bg-navy/75 py-2 pl-5 pr-2 text-navy-foreground shadow-card backdrop-blur-sm lg:gap-4">
+  <div className="pointer-events-auto flex items-center gap-3 rounded-full bg-navy/30 py-2 pl-5 pr-2 text-navy-foreground shadow-card lg:gap-4">
    {showText&&<p className="min-w-0 truncate font-display text-base font-bold text-gold lg:text-xl" title={banner.subtitle||banner.title}>{banner.title}</p>}
    {buttons.length>0&&<div className="flex shrink-0 gap-2 lg:gap-3">{links}</div>}
   </div>
