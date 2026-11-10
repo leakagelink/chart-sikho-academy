@@ -2173,6 +2173,7 @@ export type Database = {
         Args: { _offset?: number }
         Returns: {
           created_at: string
+          earned: number
           full_name: string
           id: string
           level: number
