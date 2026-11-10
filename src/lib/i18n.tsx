@@ -28,6 +28,8 @@ const dict = {
   shelf_previous: {en:'Previous products',hi:'पिछले प्रोडक्ट'},
   shelf_next: {en:'Next products',hi:'अगले प्रोडक्ट'},
   banner_know_more:{en:'Know more',hi:'और जानें'},
+  banner_order:{en:'Slide order (1 shows first)',hi:'स्लाइड क्रम (1 सबसे पहले)'},
+  banner_image:{en:'Slide image',hi:'स्लाइड तस्वीर'},
   banner_join_now:{en:'Join Now',hi:'अभी जुड़ें'},
   banner_slider_label:{en:'Featured offers',hi:'खास ऑफर'},
   banner_prev:{en:'Previous slide',hi:'पिछली स्लाइड'},
