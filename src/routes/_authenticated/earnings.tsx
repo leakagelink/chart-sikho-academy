@@ -73,12 +73,13 @@ function EarningsPage() {
     </div>
     <div className="my-8 grid min-w-0 gap-8 xl:grid-cols-2">
       <PayoutDetails value={data.preferences} onSaved={refresh} />
-      <section className="min-w-0 border-t border-border pt-6"><form onSubmit={e => { e.preventDefault(); const n=Number(amount); if (Number.isInteger(n) && n>0) req.mutate(n); }}>
+      <section className="min-w-0 border-t border-border pt-6"><form onSubmit={e => { e.preventDefault(); const n=Number(amount); if (w.self_purchase_eligible && Number.isInteger(n) && n>0) req.mutate(n); }}>
         <h2 className="font-display text-xl font-semibold">{t('wallet_request')}</h2>
+        <div className="mt-4 space-y-2 border-l-2 border-primary pl-4 text-sm"><p>{t('withdrawal_self_min')}: <strong>{money(w.min_self_purchase_value,'INR')}</strong></p><p className="text-muted-foreground">{t('withdrawal_self_total')}: {money(w.self_purchase_total,'INR')}</p>{w.self_purchase_eligible?<p className="text-success">{t('withdrawal_self_ready')}</p>:<p className="text-primary">{t('withdrawal_self_remaining')}: {money(w.self_purchase_remaining,'INR')}</p>}<p className="text-xs text-muted-foreground">{t('withdrawal_self_condition')}</p></div>
         <p className="mt-3 text-xs text-muted-foreground">{t('wallet_limits')}: {money(w.min)} – {money(w.max)} · {w.requests_this_month}/{w.per_month}</p>
         {w.kyc_required && w.kyc !== 'verified' && <p className="mt-3 text-sm text-destructive">{t('wallet_kyc_needed')}</p>}
         {!ready && <p className="mt-3 text-sm text-muted-foreground">{t('wallet_details_needed')}</p>}
-        <div className="mt-4 flex flex-wrap gap-3"><input aria-label={t('amount')} type="number" step="1" min={w.min} max={Math.min(w.max,w.available)} required value={amount} onChange={e => setAmount(e.target.value)} className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm sm:w-40" /><Button disabled={!ready || req.isPending || w.available<w.min || (w.kyc_required && w.kyc!=='verified')} type="submit"><ArrowUpRight className="h-4 w-4" />{t('wallet_request')}</Button></div>
+        <div className="mt-4 flex flex-wrap gap-3"><input aria-label={t('amount')} type="number" step="1" min={w.min} max={Math.min(w.max,w.available)} required value={amount} onChange={e => setAmount(e.target.value)} className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm sm:w-40" /><Button disabled={!w.self_purchase_eligible || !ready || req.isPending || w.available<w.min || (w.kyc_required && w.kyc!=='verified')} type="submit"><ArrowUpRight className="h-4 w-4" />{t('wallet_request')}</Button></div>
         {req.error && <p role="alert" className="mt-3 text-sm text-destructive">{req.error.message}</p>}{req.isSuccess && <p role="status" className="mt-3 text-sm text-success">{t('wallet_sent')}</p>}
         <p className="mt-4 text-xs text-muted-foreground">{t('wallet_transfer_disabled')}</p>
       </form></section>

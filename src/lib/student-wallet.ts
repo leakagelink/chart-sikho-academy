@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-export type Wallet = { available: number; pending: number; tds: number; withdrawn: number; requests_this_month: number; min: number; max: number; per_month: number; currency: string; kyc_required: boolean; kyc: string; cycle: string };
+export type Wallet = { available: number; pending: number; tds: number; withdrawn: number; requests_this_month: number; min: number; max: number; per_month: number; currency: string; kyc_required: boolean; kyc: string; cycle: string; self_purchase_total:number; min_self_purchase_value:number; self_purchase_remaining:number; self_purchase_eligible:boolean };
 async function allRows<T>(fetch: (from: number, to: number) => PromiseLike<{ data: T[] | null; error: { message: string } | null }>) {
   const rows: T[] = [];
   for (let from = 0; ; from += 500) {
@@ -12,6 +12,8 @@ async function allRows<T>(fetch: (from: number, to: number) => PromiseLike<{ dat
 }
 export const studentWalletOptions = (uid: string) => queryOptions({
   queryKey: ['student-wallet', uid],
+  refetchOnWindowFocus: 'always',
+  refetchInterval: 15000,
   queryFn: async () => {
     const wallet = await supabase.rpc('my_wallet');
     if (wallet.error) throw wallet.error;
