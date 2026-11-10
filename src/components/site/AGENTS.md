@@ -1,5 +1,5 @@
 # Product interactions
-- Student referral surfaces read names through the own-direct-referrals RPC, never broader profile reads. Why: showing member names must not expose private profile fields or deeper teams.
+- Student referral surfaces read their all-level downline (names, member codes, parent, level, join date only) through the own-network RPC, never broader profile reads. Why: students see the same team relationships as Admin without exposing private profile fields or other teams.
 - Affiliate Team Tree dialogs keep close controls outside bounded scrolling content and use viewport-sized width. Why: wide/deep teams cannot hide dismissal controls or overflow the page.
 - Admin Team Tree keeps compact selectable nodes and a separate inspector inside a bounded canvas workspace. Why: opening private permitted member details must not reflow the relationship branches.
 - Home uses a shared horizontal shelf with responsive widths and accessible previous/next controls; full catalogs keep grids. Why: all saved products remain reachable without multi-row Home sections or changes to admin branding.
