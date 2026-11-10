@@ -15,7 +15,7 @@ const SHOW_SOCIAL_LOGIN = false;
 const safePath = (p?: string) => (p && p.startsWith("/") && !p.startsWith("//") ? p : "/dashboard");
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (s: Record<string, unknown>): { redirect?: string | undefined; ref?: string | undefined } => ({ redirect: typeof s["redirect"] === "string" ? s["redirect"] : undefined, ref: typeof s['ref'] === 'string' ? normalizeSignupReferral(s['ref']).slice(0,40) : undefined }),
+  validateSearch: (s: Record<string, unknown>): { redirect?: string | undefined; ref?: string | undefined; mode?: 'signup' | undefined } => ({ redirect: typeof s["redirect"] === "string" ? s["redirect"] : undefined, ref: typeof s['ref'] === 'string' ? normalizeSignupReferral(s['ref']).slice(0,40) : undefined, mode: s['mode'] === 'signup' ? 'signup' : undefined }),
   head: () => ({
     meta: [
       { property: "og:type", content: "website" },
@@ -33,9 +33,9 @@ function AuthPage() {
   const { t } = useLang();
   const { session } = useAuth();
   const brandLogo = useBranding();
-  const { redirect, ref } = Route.useSearch();
+  const { redirect, ref, mode: startMode } = Route.useSearch();
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"login" | "signup" | "forgot">(ref ? 'signup' : 'login');
+  const [mode, setMode] = useState<"login" | "signup" | "forgot">(ref || startMode === 'signup' ? 'signup' : 'login');
   const [form, setForm] = useState({ name: "", phone: "", email: "", password: "", referral: ref ?? '' });
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
   const [busy, setBusy] = useState(false);

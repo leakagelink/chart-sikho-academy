@@ -4,7 +4,7 @@ import { canAccess, canReadDataset } from './admin-permissions';
 import { createServerFn } from '@tanstack/react-start';
 import { planSchema } from './plans';
 import { categoryVisibility } from './category-visibility';
-import { bannerImage } from './website-banners';
+import { bannerImage, bannerLink } from './website-banners';
 import { z } from 'zod';
 import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
 import { adminChangeSchema, adminDeleteSchema, videoRemovalValues, liveClassSchema, requireAdminRole, safeHttps, coursePublishIssues, makeCertificateNo, makeInvoiceNo, invoiceTotals } from './admin-rules';
@@ -371,7 +371,9 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
       result = await s.from('support_tickets').insert(row).select('id').single(); break;
     }
     case 'banners': {
-      const row = z.object({ title, image_url: bannerImage, link_url: url.default(''), placement: z.enum(['home','courses','dashboard']).default('home'), position: z.coerce.number().int().min(1).max(1000), active: z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]).default(true) }).parse(v);
+      const flag = (d: boolean) => z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]).default(d);
+      const row = z.object({ title, image_url: bannerImage, link_url: bannerLink.default(''), subtitle: z.string().trim().max(300).default(''), show_text: flag(true), know_more_enabled: flag(true), know_more_label: z.string().trim().max(40).default(''), know_more_url: bannerLink.default(''), join_now_enabled: flag(true), join_now_label: z.string().trim().max(40).default(''), join_now_url: bannerLink.default(''), placement: z.enum(['home','courses','dashboard']).default('home'), position: z.coerce.number().int().min(1).max(1000), active: flag(true) }).parse(v);
+      if (row.know_more_enabled && !row.know_more_url && !row.link_url) throw new Error('Know more link required');
       result = data.id ? await s.from('banners').update(row).eq('id',data.id).select('id').single() : await s.from('banners').insert(row).select('id').single(); break;
     }
     case 'campaigns': {

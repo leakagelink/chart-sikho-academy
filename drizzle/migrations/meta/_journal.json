@@ -407,6 +407,20 @@
       "when": 1794284106853,
       "tag": "0057_automatic_purchase_bills_and_inclusive_gst",
       "breakpoints": true
+    },
+    {
+      "idx": 58,
+      "version": "7",
+      "when": 1794285211884,
+      "tag": "0058_banner_slider_buttons",
+      "breakpoints": true
+    },
+    {
+      "idx": 59,
+      "version": "7",
+      "when": 1794285228840,
+      "tag": "0059_banner_slider_text_toggle",
+      "breakpoints": true
     }
   ]
 }
