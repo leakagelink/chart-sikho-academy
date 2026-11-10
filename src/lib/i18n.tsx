@@ -970,8 +970,8 @@ const dict = {
   enroll: { en: "View Course", hi: "कोर्स देखें" },
   membership_t: { en: "Chartसीखो Membership", hi: "Chartसीखो मेंबरशिप" },
   membership_s: {
-    en: "Unlock every recorded course, weekly live sessions and members-only market notes.",
-    hi: "सभी रिकॉर्डेड कोर्स, साप्ताहिक लाइव सेशन और मेंबर्स-ओनली मार्केट नोट्स पाएँ।",
+    en: "Choose a plan with the product access and duration that suit you.",
+    hi: "अपनी ज़रूरत के अनुसार प्रोडक्ट एक्सेस और अवधि वाला प्लान चुनें।",
   },
   membership_cta: { en: "View Plans", hi: "प्लान देखें" },
   stats_students: { en: "Students", hi: "छात्र" },
