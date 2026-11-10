@@ -1,4 +1,19 @@
-export type NetworkMember = { id: string; referred_id: string; referrer_id: string | null; level: number; full_name: string | null; member_code: string | null; created_at: string };
+export type NetworkMember = { id: string; referred_id: string; referrer_id: string | null; level: number; full_name: string | null; member_code: string | null; created_at: string; earned?: number | string | null };
+
+/** Counts every downline member (all levels) under each member, cycle-safe. */
+export function teamTotals(members: NetworkMember[]) {
+  const kids = new Map<string, string[]>();
+  for (const m of members) if (m.referrer_id) kids.set(m.referrer_id, [...(kids.get(m.referrer_id) ?? []), m.referred_id]);
+  const totals = new Map<string, number>();
+  const count = (id: string) => {
+    const seen = new Set<string>([id]);
+    const stack = [...(kids.get(id) ?? [])];
+    while (stack.length) { const next = stack.pop()!; if (seen.has(next)) continue; seen.add(next); stack.push(...(kids.get(next) ?? [])); }
+    return seen.size - 1;
+  };
+  for (const m of members) totals.set(m.referred_id, count(m.referred_id));
+  return totals;
+}
 
 /** Builds the visible student tree: matching members plus their ancestors, so filtered nodes keep their branch. */
 export function studentTreeView(own: NetworkMember, members: NetworkMember[], query: string, level: string) {
