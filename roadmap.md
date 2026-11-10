@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [ ] Add single/multiple/all membership product category access, custom days, public benefit display and permission-enforced access; verify admin save/readback and category rules.
 - [x] Home top banner slider with admin-managed image, heading, Know more (link) / Join Now (default sign-up) buttons, on/off, custom text, order and live preview. Signed-in add → edit → home display/navigation → delete verified at desktop/mobile; 6 rule tests pass. Existing 'Diwali Offer' has no image, so it stays hidden until one is uploaded.
 - [x] Added atomic successful-payment bills, invoice-permission GST-inclusive seller settings, immutable decimal snapshots and owner-scoped student bill viewing/Print-Save PDF. Admin settings save/reload/mobile and existing ₹10,000 verified-order bill generation/view verified; 92 tests/build pass. No GST number invented or new payment approved.
 - [ ] Verify a new actual payment approval → automatic GST invoice → purchaser wallet readback and PDF print: requires a real configured GSTIN/seller details and the purchaser's signed-in session/payment proof; admin has no own purchases.

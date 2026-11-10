@@ -435,6 +435,13 @@
       "when": 1794303576886,
       "tag": "0061_plan_bill_title",
       "breakpoints": true
+    },
+    {
+      "idx": 62,
+      "version": "7",
+      "when": 1794304981549,
+      "tag": "0062_membership_product_category_access",
+      "breakpoints": true
     }
   ]
 }
