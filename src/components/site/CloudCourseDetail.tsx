@@ -5,12 +5,15 @@ import { useAuth } from '@/hooks/use-auth';
 import { useLang } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
-import { CheckCircle2, Circle } from 'lucide-react';
+import { BookOpen, CheckCircle2, Circle, User } from 'lucide-react';
+import { inr } from '@/lib/courses';
+import { ProductSocial } from './ProductSocial';
+import { DetailBackLink, DetailCover, DetailDescription, ProductDetailLayout } from './ProductDetailLayout';
 import { CourseQuiz } from './CourseQuiz';
 import { CourseReviews } from './CourseReviews';
 import { ManualPay } from './ManualPay';
 import { coursePaymentAmount } from '@/lib/payment-upi';
-export function CloudCourseDetail({course}:{course:{id:string;title:string;price:number;sale_price?:number|null}}){
+export function CloudCourseDetail({course}:{course:{id:string;title:string;price:number;sale_price?:number|null;thumbnail_url?:string|null;description?:string|null;instructor?:string|null}}){
  const amount=coursePaymentAmount(course);const {t}=useLang();const {session}=useAuth();const qc=useQueryClient();const [resource,setResource]=useState('');
  const enrolled=useQuery({queryKey:['cloud-enrollment',session?.user.id,course.id],enabled:!!session,queryFn:async()=>{const r=await supabase.from('enrollments').select('id').eq('user_id',session?.user.id??'').eq('course_id',course.id).maybeSingle();if(r.error)throw r.error;return r.data;}});
  const lessons=useQuery({queryKey:['cloud-lessons',session?.user.id,course.id],enabled:!!enrolled.data,queryFn:async()=>{const r=await supabase.from('course_lessons').select('*').eq('course_id',course.id).order('position');if(r.error)throw r.error;return r.data;}});
@@ -20,5 +23,35 @@ export function CloudCourseDetail({course}:{course:{id:string;title:string;price
  const memberEnroll=useMutation({mutationFn:async()=>{const r=await supabase.rpc('member_enroll',{_course_id:course.id});if(r.error)throw r.error;},onSuccess:()=>qc.invalidateQueries({queryKey:['cloud-enrollment']})});
  const enroll=useMutation({mutationFn:async()=>{if(!session)throw new Error('Login required');const r=await supabase.from('enrollments').insert({user_id:session.user.id,course_id:course.id});if(r.error&&r.error.code!=='23505')throw r.error;},onSuccess:()=>qc.invalidateQueries({queryKey:['cloud-enrollment']})});
  async function openResource(path:string){const r=await supabase.storage.from('course-resources').createSignedUrl(path,300);if(!r.error)setResource(r.data.signedUrl);}
- return <main className="w-full px-4 py-8"><Button variant="link" asChild><Link to="/courses">{t('all_courses')}</Link></Button><h1 className="mt-5 font-display text-3xl font-bold">{course.title}</h1><p className="my-5 text-2xl font-bold text-primary">₹{amount}{amount!==course.price&&<s className="ml-3 text-base text-muted-foreground">₹{course.price}</s>}</p>{!session?<Button asChild><Link to="/auth" search={{redirect:`/courses/${course.id}`}}>{t('login_to_enroll')}</Link></Button>:enrolled.data?<p className="text-success">{t('enrolled')}</p>:member.data?<Button disabled={memberEnroll.isPending} onClick={()=>memberEnroll.mutate()}>{t('member_enroll')}</Button>:amount===0?<Button disabled={enroll.isPending} onClick={()=>enroll.mutate()}>{t('enroll_free')}</Button>:<ManualPay course={{...course,price:amount}} userId={session.user.id}/>}{toggle.isError&&<p role="alert" className="mt-3 text-destructive">{t('admin_error')}</p>}{enroll.isError&&<p role="alert" className="mt-3 text-destructive">{t('admin_error')}</p>}<section className="mt-8"><h2 className="font-display text-xl font-bold">{t('lessons')}</h2>{lessons.data?.map(l=><article key={l.id} className="border-b border-border py-5"><h3 className="mb-3 font-semibold">{l.position}. {l.title}</h3>{l.video_url&&(/\.(mp4|webm)(\?|$)/i.test(l.video_url)?<video controls preload="metadata" src={l.video_url} className="w-full"/>:<a href={l.video_url} target="_blank" rel="noopener noreferrer" className="text-primary">{t('open_lesson')}</a>)}<div className="mt-3 flex flex-wrap gap-2">{l.resource_path&&<Button variant="outline" onClick={()=>openResource(l.resource_path)}>{t('tab_downloads')}</Button>}<Button variant={done.data?.has(l.id)?'secondary':'outline'} disabled={toggle.isPending||!done.data} aria-pressed={!!done.data?.has(l.id)} onClick={()=>toggle.mutate(l.id)}>{done.data?.has(l.id)?<CheckCircle2 className="text-success"/>:<Circle/>}{t(done.data?.has(l.id)?'lesson_completed':'lesson_mark_done')}</Button></div></article>)}{enrolled.data&&!lessons.data?.length&&<p className="mt-4 text-muted-foreground">{t('admin_empty')}</p>}{resource&&<a href={resource} target="_blank" rel="noopener noreferrer" className="mt-4 block text-primary">{t('tab_downloads')}</a>}</section>{enrolled.data&&<CourseQuiz courseId={course.id}/>}<CourseReviews courseId={course.id} canReview={!!enrolled.data}/><p className="mt-10 text-xs text-muted-foreground">{t('disclaimer')}</p></main>;
+ const off=amount<course.price&&course.price>0?Math.round((1-amount/course.price)*100):0;
+ const action=!session?<Button asChild size="lg" className="w-full"><Link to="/auth" search={{redirect:`/courses/${course.id}`}}>{t('login_to_enroll')}</Link></Button>:enrolled.isPending?<p className="text-sm text-muted-foreground">{t('admin_loading')}</p>:enrolled.data?<p className="rounded-md border border-success/40 bg-success/10 p-3 text-sm font-semibold text-success">{t('enrolled')}</p>:member.data?<Button size="lg" className="w-full" disabled={memberEnroll.isPending} onClick={()=>memberEnroll.mutate()}>{t('member_enroll')}</Button>:amount===0?<Button size="lg" className="w-full" disabled={enroll.isPending} onClick={()=>enroll.mutate()}>{t('enroll_free')}</Button>:<ManualPay course={{...course,price:amount}} userId={session.user.id} className="w-full"/>;
+ return <ProductDetailLayout
+  back={<DetailBackLink to="/courses" label={t('all_courses')}/>}
+  header={<>
+   <h1 className="break-words font-display text-2xl font-bold leading-tight sm:text-3xl">{course.title}</h1>
+   {course.instructor&&<p className="flex items-center gap-2 text-sm text-muted-foreground"><User className="h-4 w-4 shrink-0 text-primary"/>{course.instructor}</p>}
+   <DetailCover src={course.thumbnail_url} alt={course.title} fallback={<BookOpen className="h-12 w-12"/>}/>
+  </>}
+  aside={<div className="space-y-4">
+   <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1"><span className="text-3xl font-bold text-gold">{amount?inr(amount):t('session_free')}</span>{amount!==course.price&&<s className="text-base text-muted-foreground">{inr(course.price)}</s>}{off>0&&<span className="rounded-full bg-gold/15 px-2.5 py-0.5 text-xs font-bold text-gold">{off}% off</span>}</div>
+   {action}
+   {(toggle.isError||enroll.isError||memberEnroll.isError)&&<p role="alert" className="text-sm text-destructive">{t('admin_error')}</p>}
+   <ProductSocial kind="course" id={course.id} title={course.title}/>
+  </div>}>
+  {course.description&&<section className="rounded-xl border border-border bg-card p-4 sm:p-5"><DetailDescription text={course.description}/></section>}
+  <section className="min-w-0">
+   <h2 className="font-display text-xl font-bold">{t('lessons')}</h2>
+   <div className="mt-3 space-y-3">{lessons.data?.map(l=><article key={l.id} className="min-w-0 rounded-xl border border-border bg-card p-4">
+    <h3 className="mb-3 break-words font-semibold">{l.position}. {l.title}</h3>
+    {l.video_url&&(/\.(mp4|webm)(\?|$)/i.test(l.video_url)?<video controls preload="metadata" src={l.video_url} className="aspect-video w-full rounded-lg bg-muted"/>:<a href={l.video_url} target="_blank" rel="noopener noreferrer" className="break-all text-primary underline">{t('open_lesson')}</a>)}
+    <div className="mt-3 flex flex-wrap gap-2">{l.resource_path&&<Button variant="outline" onClick={()=>openResource(l.resource_path)}>{t('tab_downloads')}</Button>}<Button variant={done.data?.has(l.id)?'secondary':'outline'} disabled={toggle.isPending||!done.data} aria-pressed={!!done.data?.has(l.id)} onClick={()=>toggle.mutate(l.id)}>{done.data?.has(l.id)?<CheckCircle2 className="text-success"/>:<Circle/>}{t(done.data?.has(l.id)?'lesson_completed':'lesson_mark_done')}</Button></div>
+   </article>)}</div>
+   {!enrolled.data&&<p className="mt-2 rounded-xl border border-dashed border-border p-4 text-sm text-muted-foreground">{t('lessons_locked')}</p>}
+   {enrolled.data&&!lessons.data?.length&&<p className="mt-4 text-muted-foreground">{t('admin_empty')}</p>}
+   {resource&&<a href={resource} target="_blank" rel="noopener noreferrer" className="mt-4 block text-primary">{t('tab_downloads')}</a>}
+  </section>
+  {enrolled.data&&<CourseQuiz courseId={course.id}/>}
+  <CourseReviews courseId={course.id} canReview={!!enrolled.data}/>
+  <p className="text-xs text-muted-foreground">{t('disclaimer')}</p>
+ </ProductDetailLayout>;
 }
