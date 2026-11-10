@@ -677,6 +677,8 @@ const dict = {
   admin_fees: { en: 'Gateway fees', hi: 'गेटवे शुल्क' },
   admin_fees_note: { en: 'Recorded once a payment gateway is connected', hi: 'पेमेंट गेटवे जुड़ने के बाद दर्ज होगा' },
   admin_aff_comm: { en: 'Affiliate commission', hi: 'एफिलिएट कमीशन' },
+  admin_total_influencers: { en: 'Total influencers', hi: 'कुल इन्फ्लुएंसर' },
+  admin_influencer_comm: { en: 'Influencers commission', hi: 'इन्फ्लुएंसर कमीशन' },
   admin_pending_payouts: { en: 'Pending payouts', hi: 'लंबित पेआउट' },
   admin_payable: { en: 'Payable liability', hi: 'देय राशि' },
   admin_approved_payouts: { en: 'Reviewed payouts', hi: 'रिव्यू किए पेआउट' },

@@ -5,6 +5,7 @@ type Data = {
   courses: { status: string }[]; enrollments: { user_id: string; progress: number; course_id: string }[];
   commissions: { user_id: string; order_id: string; amount: number; created_at: string }[];
   payouts: { amount: number; status: string }[];
+  influencers?: { user_id: string }[];
 };
 const DAY = 86_400_000;
 /** Sums values per calendar day (YYYY-MM-DD), sorted ascending. */
@@ -35,6 +36,8 @@ export function summarize(d: Data, start: Date, end: Date) {
   const refunds = orders.filter(o => o.status === 'refunded').reduce((n, o) => n + o.amount, 0);
   const comms = d.commissions.filter(c => inRange(c.created_at));
   const commission = comms.reduce((n, c) => n + c.amount, 0);
+  const influencerIds = new Set((d.influencers ?? []).map(i => i.user_id));
+  const influencerCommission = comms.filter(c => influencerIds.has(c.user_id)).reduce((n, c) => n + c.amount, 0);
   const statusCounts = { paid: 0, pending: 0, failed: 0, refunded: 0 } as Record<'paid'|'pending'|'failed'|'refunded', number>;
   orders.forEach(o => { if (o.status in statusCounts) statusCounts[o.status as 'paid']++; });
   const byCourse: Record<string, number> = {}; paid.forEach(o => { byCourse[o.course_id] = (byCourse[o.course_id] ?? 0) + o.amount; });
@@ -44,7 +47,7 @@ export function summarize(d: Data, start: Date, end: Date) {
   const activeIds = new Set(d.users.filter(u => u.account_status === 'active').map(u => u.id));
   const enrolledUsers = new Set(d.enrollments.map(e => e.user_id));
   return {
-    gross, refunds, commission, net: gross - refunds - commission,
+    gross, refunds, commission, influencerCount: influencerIds.size, influencerCommission, net: gross - refunds - commission,
     pendingPayouts: d.payouts.filter(p => p.status === 'pending').reduce((n, p) => n + p.amount, 0),
     reviewedPayouts: d.payouts.filter(p => p.status === 'reviewed').reduce((n, p) => n + p.amount, 0),
     pendingPayoutCount: d.payouts.filter(p => p.status === 'pending').length,

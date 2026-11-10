@@ -175,6 +175,8 @@ function Overview({data}:{data:Awaited<ReturnType<typeof getAdminData>>}) {
   {label:'admin_refunds_amt',value:money(cur.refunds),to:'orders'},
   {label:'admin_fees',value:money(0),to:'payments',note:'admin_fees_note'},
   {label:'admin_aff_comm',value:money(cur.commission),to:'commissions'},
+  {label:'admin_total_influencers',value:String(cur.influencerCount),to:'commrules'},
+  {label:'admin_influencer_comm',value:money(cur.influencerCommission),d:delta(cur.influencerCommission,prev?.influencerCommission),to:'commissions'},
   {label:'admin_pending_payouts',value:money(cur.pendingPayouts),to:'payouts'},
   {label:'admin_users_real',value:String(data.users.length),to:'users'},
   {label:'admin_new_members',value:String(cur.newMembers),d:delta(cur.newMembers,prev?.newMembers),to:'users'},
