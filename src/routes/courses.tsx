@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Search, BookOpen, Video, Calendar } from "lucide-react";
 import hero from "@/assets/hero-bull.jpg";
-import { LiveClassThumbnail } from "@/components/site/LiveClassCard";
+import { LiveClassThumbnail, SessionDateSocial } from "@/components/site/LiveClassCard";
 import { SessionPurchase } from "@/components/site/SessionPurchase";
 import { EbookPurchase } from "@/components/site/EbookPurchase";
 import { CloudCourseCard } from "@/components/site/CloudCourseCard";
@@ -86,7 +86,7 @@ function CoursesPage() {
       <div className="catalog-list mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
         {realCourses.map(c=><CloudCourseCard key={c.id} course={c}/>)}
         {ebooks.map(b=><article key={b.id} className="overflow-hidden rounded-lg border border-border bg-card"><div className="grid aspect-video place-items-center bg-muted">{b.cover_url?<img src={b.cover_url} alt={b.title} className="h-full w-full object-contain"/>:<BookOpen className="h-12 w-12 text-primary"/>}</div><div className="space-y-3 p-4"><p className="text-xs text-muted-foreground">{t('nav_ebooks')}</p><h2 className="font-semibold">{b.title}</h2><p className="line-clamp-2 text-sm text-muted-foreground">{b.description}</p><p className="font-bold text-primary">{inr(b.price)}</p><EbookPurchase book={b}/></div></article>)}
-        {sessions.map(s=><article key={s.id} className="flex h-full min-w-0 flex-col overflow-hidden rounded-lg border border-border bg-card"><LiveClassThumbnail title={s.title} thumbnailUrl={s.thumbnail_url}/><div className="flex flex-1 flex-col gap-3 p-4"><p className="text-xs text-muted-foreground">{t(s.type==='webinars'?'cat_webinars':s.type==='seminars'?'cat_seminars':'cat_live')}</p><h2 className="mt-2 font-semibold">{s.title}</h2><p className="mt-3 flex gap-2 text-sm text-muted-foreground"><Calendar size={16}/>{new Intl.DateTimeFormat(lang==='hi'?'hi-IN':'en-IN',{dateStyle:'medium',timeStyle:'short',timeZone:'Asia/Kolkata'}).format(new Date(s.starts_at))}</p><SessionPurchase session={s}/></div></article>)}
+        {sessions.map(s=><article key={s.id} className="flex h-full min-w-0 flex-col overflow-hidden rounded-lg border border-border bg-card"><LiveClassThumbnail title={s.title} thumbnailUrl={s.thumbnail_url}/><div className="flex flex-1 flex-col gap-3 p-4"><p className="text-xs text-muted-foreground">{t(s.type==='webinars'?'cat_webinars':s.type==='seminars'?'cat_seminars':'cat_live')}</p><h2 className="font-semibold"><Link to="/live/$classId" params={{classId:s.id}} className="hover:text-primary hover:underline">{s.title}</Link></h2><SessionDateSocial session={s}/><SessionPurchase session={s}/></div></article>)}
       </div>
       {total === 0 && <p className="mt-10 text-center text-muted-foreground">{t("no_results")}</p>}
     </div>

@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Link } from '@tanstack/react-router';
 import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
-import { Calendar, RefreshCw, Search } from 'lucide-react';
+import { RefreshCw, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { filterSessions, type SessionPrice, type SessionTiming } from '@/lib/session-filters';
 import { productQuery } from '@/lib/product-query';
 import { useLang } from '@/lib/i18n';
 import { SessionPurchase } from './SessionPurchase';
-import { LiveClassThumbnail } from './LiveClassCard';
+import { LiveClassThumbnail, SessionDateSocial } from './LiveClassCard';
 import { MapPin } from 'lucide-react';
 import { seminarPlace } from './SeminarVenue';
 export function SessionListing({kind}:{kind:'class'|'webinar'|'seminar'}) {
@@ -31,7 +31,7 @@ export function SessionListing({kind}:{kind:'class'|'webinar'|'seminar'}) {
       </div>
     </div>
     <p aria-live="polite" className="mt-4 text-sm text-muted-foreground">{t('admin_records_count')}: {sessions.length}</p>
-    <div className="live-class-grid mt-4 grid items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">{sessions.map(s=><article key={s.id} className="flex min-w-0 flex-col overflow-hidden rounded-lg border border-border bg-card"><LiveClassThumbnail title={s.title} thumbnailUrl={s.thumbnail_url}/><div className="flex flex-1 flex-col gap-3 p-4"><h2 className="break-words font-semibold"><Link to="/live/$classId" params={{classId:s.id}} className="hover:text-primary">{s.title}</Link></h2><p className="flex items-start gap-2 text-sm text-muted-foreground"><Calendar className="h-4 w-4 shrink-0"/>{new Intl.DateTimeFormat(lang==='hi'?'hi-IN':'en-IN',{dateStyle:'medium',timeStyle:'short',timeZone:'Asia/Kolkata'}).format(new Date(s.starts_at))}</p>{seminarPlace(s)&&<p className="flex items-start gap-2 text-sm text-muted-foreground"><MapPin className="h-4 w-4 shrink-0"/>{seminarPlace(s)}</p>}<SessionPurchase session={s}/></div></article>)}</div>
+    <div className="live-class-grid mt-4 grid items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">{sessions.map(s=><article key={s.id} className="flex min-w-0 flex-col overflow-hidden rounded-lg border border-border bg-card"><LiveClassThumbnail title={s.title} thumbnailUrl={s.thumbnail_url}/><div className="flex flex-1 flex-col gap-3 p-4"><h2 className="break-words font-semibold"><Link to="/live/$classId" params={{classId:s.id}} className="hover:text-primary">{s.title}</Link></h2><SessionDateSocial session={s}/>{seminarPlace(s)&&<p className="flex items-start gap-2 text-sm text-muted-foreground"><MapPin className="h-4 w-4 shrink-0"/>{seminarPlace(s)}</p>}<SessionPurchase session={s}/></div></article>)}</div>
     {!sessions.length&&<p className="py-10 text-center text-muted-foreground">{t('session_empty')}</p>}
   </section>;
 }
