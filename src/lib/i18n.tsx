@@ -43,7 +43,7 @@ const dict = {
   banner_join_now_enabled:{en:'Show "Join Now" button',hi:'"अभी जुड़ें" बटन दिखाएँ'},
   banner_join_now_label:{en:'"Join Now" button text',hi:'"अभी जुड़ें" बटन का टेक्स्ट'},
   banner_join_now_url:{en:'"Join Now" link (empty = sign-up page)',hi:'"अभी जुड़ें" लिंक (खाली = साइन-अप पेज)'},
-  banner_size_hint:{en:'Best image size: 1920 × 800 px. Slides change automatically every 6 seconds; lower Position shows first.',hi:'सबसे अच्छा साइज़: 1920 × 800 px. स्लाइड हर 6 सेकंड में बदलती है; कम Position पहले दिखेगी।'},
+  banner_size_hint:{en:'Best image size: 1920 × 768 px (5:2) — the full image is shown and buttons appear below it. Slides change automatically every 6 seconds; lower Position shows first.',hi:'सबसे अच्छा साइज़: 1920 × 768 px (5:2) — पूरी इमेज दिखेगी और बटन उसके नीचे आएँगे। स्लाइड हर 6 सेकंड में बदलती है; कम Position पहले दिखेगी।'},
   banner_know_more_required:{en:'Add a "Know more" link, or turn the button off.',hi:'"और जानें" लिंक डालें, या बटन बंद करें।'},
   home_learn_today: {en:'Learn something new today?',hi:'आज कुछ नया सीखें?'},
   home_best_offer: {en:'Best Offer',hi:'बेहतरीन ऑफर'},
