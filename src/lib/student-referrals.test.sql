@@ -14,5 +14,6 @@ BEGIN
  PERFORM set_config('request.jwt.claim.sub','',true);
  IF EXISTS(SELECT 1 FROM public.my_referral_members(0)) THEN RAISE EXCEPTION 'Anonymous referral data exposed'; END IF;
  IF has_function_privilege('anon','public.my_referral_members(integer)','EXECUTE') THEN RAISE EXCEPTION 'Anonymous execution allowed'; END IF;
+ IF has_function_privilege('anon','public.my_referral_network(integer)','EXECUTE') THEN RAISE EXCEPTION 'Anonymous network execution allowed'; END IF;
 END $$;
 ROLLBACK;

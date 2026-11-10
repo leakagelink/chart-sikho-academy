@@ -184,7 +184,7 @@ const dict = {
   affiliate_oldest: { en: 'Oldest first', hi: 'पुराने पहले' },
   affiliate_reset: { en: 'Reset filters', hi: 'फ़िल्टर हटाएँ' },
   affiliate_results: { en: 'Matching records', hi: 'मिलते रिकॉर्ड' },
-  affiliate_scope: { en: 'Team shows your direct referrals. Commissions show all recorded earning levels for your account.', hi: 'टीम में आपके डायरेक्ट रेफरल दिखते हैं। कमीशन में आपके अकाउंट के सभी दर्ज कमाई स्तर दिखते हैं।' },
+  affiliate_scope: { en: 'Team shows your full referral network across every level. Commissions show all recorded earning levels for your account.', hi: 'टीम में हर लेवल का आपका पूरा रेफरल नेटवर्क दिखता है। कमीशन में आपके अकाउंट के सभी दर्ज कमाई स्तर दिखते हैं।' },
   affiliate_gross: { en: 'Gross', hi: 'कुल राशि' },
   affiliate_net_column: { en: 'Net', hi: 'नेट' },
   affiliate_refresh: { en: 'Refresh data', hi: 'डेटा फिर लाएँ' },

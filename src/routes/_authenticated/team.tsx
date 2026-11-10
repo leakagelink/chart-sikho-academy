@@ -4,7 +4,7 @@ import { studentReferralsOptions } from '@/lib/student-referrals';
 import { pageMeta } from '@/lib/route-meta';
 
 export const Route = createFileRoute('/_authenticated/team')({
-  head: () => pageMeta('My Affiliate Team', 'Your ChartSikho direct team members and joining dates.'),
+  head: () => pageMeta('My Affiliate Team', 'Your ChartSikho referral team across every level with joining dates.'),
   loader: async ({ context }) => { await context.queryClient.ensureQueryData(studentReferralsOptions(context.user.id)); },
   component: Page,
 });

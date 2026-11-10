@@ -2169,6 +2169,18 @@ export type Database = {
           referred_id: string
         }[]
       }
+      my_referral_network: {
+        Args: { _offset?: number }
+        Returns: {
+          created_at: string
+          full_name: string
+          id: string
+          level: number
+          member_code: string
+          referred_id: string
+          referrer_id: string
+        }[]
+      }
       my_session_access: { Args: { _session_id: string }; Returns: Json }
       my_wallet: { Args: never; Returns: Json }
       own_course_purchase_total: { Args: { _user: string }; Returns: number }
