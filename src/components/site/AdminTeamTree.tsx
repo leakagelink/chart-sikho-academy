@@ -40,6 +40,8 @@ export function AdminTeamTree({data,rootId}:{data:AdminData;rootId?:string}) {
     const summary=commissionSummary(data.commissions.filter(c=>id?c.user_id===id:ids.has(c.user_id)));
     return summary.approved+summary.paid-summary.tds;
   };
+  // Card total: all genuine income earned so far, including amounts still in the holding period.
+  const income=(id:string)=>data.commissions.filter(c=>c.user_id===id&&['pending','approved','paid'].includes(c.status)).reduce((a,c)=>a+Number(c.amount||0)-Number(c.tds_amount||0),0);
   const matching=new Set(shown.map(n=>n.id));
   const included=new Set(matching);
   const byId=new Map(nodes.map(n=>[n.id,n]));
@@ -61,7 +63,7 @@ export function AdminTeamTree({data,rootId}:{data:AdminData;rootId?:string}) {
         {n.level===0&&<span className="tree-root-label"><Crown size={14}/>{t('admin_team_root')}</span>}
         {avatar(n.id,n.level===0)}
         <span className="tree-node-copy"><span className="tree-node-name">{name(n.id)}</span><span className="tree-id-row"><span className="tree-member-id">{u?.referral_code||'—'}</span><span className="tree-level">L{n.level}</span></span>{rk&&<span className="tree-node-rank">{rk.name}</span>}</span>
-        <span className="tree-node-footer"><span><Users size={15}/>{t('admin_total_members')}: <strong>{st.total}</strong></span><span className="tree-node-earn" title={t('wallet_total_earned')}><Wallet size={14}/>{currency(earnings(n.id))}</span></span>
+        <span className="tree-node-footer"><span><Users size={15}/>{t('admin_total_members')}: <strong>{st.total}</strong></span><span className="tree-node-earn" title={t('wallet_total_earned')}><Wallet size={14}/>{currency(income(n.id))}</span></span>
       </Button>
       {kids.length>0&&<ul className="team-tree-children">{kids.map(renderBranch)}</ul>}
     </li>;

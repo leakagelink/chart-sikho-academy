@@ -456,6 +456,13 @@
       "when": 1794312655252,
       "tag": "0064_own_referral_network_earnings",
       "breakpoints": true
+    },
+    {
+      "idx": 65,
+      "version": "7",
+      "when": 1794312808990,
+      "tag": "0065_referral_network_income_incl_holding",
+      "breakpoints": true
     }
   ]
 }
