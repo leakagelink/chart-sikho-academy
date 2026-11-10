@@ -1,6 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CheckCircle2, Crown, Lock } from "lucide-react";
-import { toast } from "sonner";
+import { Link } from "@tanstack/react-router";
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
+import { ManualPay } from '@/components/site/ManualPay';
+import { useEffect, useState } from 'react';
 import { inr } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
 import { useSuspenseQuery } from '@tanstack/react-query';
@@ -26,6 +30,9 @@ export const Route = createFileRoute("/plans")({
 function PlansPage() {
   const { t, lang } = useLang();
   const {data: plans} = useSuspenseQuery(plansQuery);
+  const [userId, setUserId] = useState<string | null>(null);
+  useEffect(() => { supabase.auth.getUser().then(r => setUserId(r.data.user?.id ?? null)); }, []);
+  const member = useQuery({ queryKey: ['my-membership', userId], enabled: !!userId, queryFn: async () => { const r = await supabase.rpc('my_membership'); if (r.error) throw r.error; return r.data as { active: boolean; plan_name?: string; expires_at?: string | null }; } });
   return (
     <div className="w-full px-4 pt-8">
       <div className="text-center">
@@ -33,6 +40,7 @@ function PlansPage() {
         <h1 className="mt-2 font-display text-3xl font-bold text-foreground">{t("membership_t")}</h1>
         <p className="mt-2 text-muted-foreground">{t("membership_s")}</p>
       </div>
+      {member.data?.active && <p className="mx-auto mt-6 max-w-xl rounded-lg border border-success bg-card p-3 text-center text-sm text-foreground">{t('member_active')}: <b>{member.data.plan_name}</b> — {member.data.expires_at ? `${t('member_until')} ${new Date(member.data.expires_at).toLocaleDateString(lang==='hi'?'hi-IN':'en-IN')}` : t('plan_lifetime')}</p>}
       {!plans.length && <p className="mt-8 text-center text-muted-foreground">{t('plans_empty')}</p>}
       <div className="mx-auto mt-8 grid max-w-6xl items-stretch gap-5 md:grid-cols-2 xl:grid-cols-3">
         {plans.map((p) => (
@@ -45,16 +53,12 @@ function PlansPage() {
                 <li key={i} className="flex items-start gap-2 break-words"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success" /><span className="min-w-0 break-words">{k}</span></li>
               ))}
             </ul>
-            <Button variant={p.popular?'default':'outline'} onClick={() => toast.info(t("payments_soon_s"), { description: t("payments_soon_t") })} className="w-full">
-              {t("choose_plan")}
-            </Button>
+            {userId ? <ManualPay productType="plan" userId={userId} course={{ id: p.id, title: p.name_en, price: p.price }} /> : <Button asChild variant={p.popular?'default':'outline'} className="w-full"><Link to="/auth" search={{ redirect: '/plans' } as never}>{t("choose_plan")}</Link></Button>}
             <ProductSocial kind="plan" id={p.id} title={p.name_en}/>
           </div>
         ))}
       </div>
-      <p className="mt-6 flex items-start justify-center gap-1.5 text-center text-xs text-muted-foreground">
-        <Lock className="mt-0.5 h-3.5 w-3.5 shrink-0" /> {t("payments_soon_t")}
-      </p>
+      <p className="mt-6 flex items-start justify-center gap-1.5 text-center text-xs text-muted-foreground"><Lock className="mt-0.5 h-3.5 w-3.5 shrink-0" /> {t("plan_pay_note")}</p>
     </div>
   );
 }
