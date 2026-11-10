@@ -98,7 +98,7 @@ export function ManualPay({ course, userId, productType = 'course', label, class
   if (last?.status === 'pending' && !open) return <p className="rounded-md border border-border bg-muted/40 p-3 text-sm">{t('pay_pending')} (UTR {last.utr})</p>;
   return <div className="space-y-2">
     {last?.status === 'rejected' && <p className="text-sm text-destructive">{t('pay_rejected')}{last.admin_note ? ` — ${last.admin_note}` : ''}</p>}
-    <Button size="lg" className={productType === 'plan' ? `w-full ${className}` : className} onClick={() => setOpen(true)}>{label ?? t(productType === 'plan' ? 'choose_plan' : 'buy_now')}</Button>
+    <Button size="lg" className={productType === 'plan' ? `w-full ${className}` : className} onClick={() => setOpen(true)}>{label ?? t(productType === 'plan' ? 'choose_plan' : productType === 'session' ? 'join_now_btn' : 'buy_now')}</Button>
     <PaymentDialog open={open} onOpenChange={setOpen} description={course.title}>{open && <ManualPayForm course={course} userId={userId} productType={productType} onDone={() => setOpen(false)} />}</PaymentDialog>
   </div>;
 }
