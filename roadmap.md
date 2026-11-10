@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [x] Home top banner slider with admin-managed image, heading, Know more (link) / Join Now (default sign-up) buttons, on/off, custom text, order and live preview. Signed-in add → edit → home display/navigation → delete verified at desktop/mobile; 6 rule tests pass. Existing 'Diwali Offer' has no image, so it stays hidden until one is uploaded.
 - [x] Added atomic successful-payment bills, invoice-permission GST-inclusive seller settings, immutable decimal snapshots and owner-scoped student bill viewing/Print-Save PDF. Admin settings save/reload/mobile and existing ₹10,000 verified-order bill generation/view verified; 92 tests/build pass. No GST number invented or new payment approved.
 - [ ] Verify a new actual payment approval → automatic GST invoice → purchaser wallet readback and PDF print: requires a real configured GSTIN/seller details and the purchaser's signed-in session/payment proof; admin has no own purchases.
 - [x] Added editable ₹3,999 cumulative verified own-course purchase gate on payout insertion, net of approved refunds; wallet displays total/remaining while earnings stay unchanged. Admin change → save/reload → restore ₹3,999 and own-wallet blocked state/mobile verified. Six database eligibility assertions and 94 tests passed; actual qualifying purchase/payment/withdrawal not performed.
