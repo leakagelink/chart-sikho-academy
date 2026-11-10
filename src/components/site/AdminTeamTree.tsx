@@ -60,8 +60,8 @@ export function AdminTeamTree({data,rootId}:{data:AdminData;rootId?:string}) {
       <Button variant="ghost" className={`team-tree-member ${n.level===0?'tree-root-member':''} ${selected===n.id?'tree-member-selected':''} ${matching.has(n.id)?'':'tree-member-context'}`} aria-label={`${t('tree_details')}: ${name(n.id)}`} aria-pressed={selected===n.id} onClick={()=>setSelected(n.id)}>
         {n.level===0&&<span className="tree-root-label"><Crown size={14}/>{t('admin_team_root')}</span>}
         {avatar(n.id,n.level===0)}
-        <span className="tree-node-copy"><span className="tree-node-name">{name(n.id)}</span><span className="tree-member-id">{u?.referral_code||'—'}</span>{rk&&<span className="tree-node-rank">{rk.name}</span>}</span>
-        <span className="tree-node-footer"><span><Users size={15}/>{t('admin_total_members')}: <strong>{st.total}</strong></span><span className="tree-level">L{n.level}</span></span>
+        <span className="tree-node-copy"><span className="tree-node-name">{name(n.id)}</span><span className="tree-id-row"><span className="tree-member-id">{u?.referral_code||'—'}</span><span className="tree-level">L{n.level}</span></span>{rk&&<span className="tree-node-rank">{rk.name}</span>}</span>
+        <span className="tree-node-footer"><span><Users size={15}/>{t('admin_total_members')}: <strong>{st.total}</strong></span><span className="tree-node-earn" title={t('wallet_total_earned')}><Wallet size={14}/>{currency(earnings(n.id))}</span></span>
       </Button>
       {kids.length>0&&<ul className="team-tree-children">{kids.map(renderBranch)}</ul>}
     </li>;

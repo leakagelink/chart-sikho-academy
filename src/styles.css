@@ -647,6 +647,10 @@ html { scroll-padding-top: 80px; }
 .tree-node-footer > span:first-child { display: flex; align-items: center; gap: 4px; }
 .tree-root-member .tree-node-footer { grid-column: 1 / -1; width: calc(100% + 32px); margin-left: -16px; border-color: color-mix(in oklch,var(--gold) 35%,transparent); }
 .tree-level { font-weight: 600; }
+.tree-id-row { display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; }
+.tree-root-member .tree-id-row { justify-content: flex-start; }
+.tree-id-row .tree-level { font-size: 11px; padding: 1px 6px; border: 1px solid var(--tree-line); border-radius: 5px; }
+.tree-node-earn { display: inline-flex; align-items: center; gap: 4px; font-weight: 700; color: var(--gold); white-space: nowrap; }
 .tree-inspector { position: relative; align-self: start; margin: 20px 20px 20px 0; border: 2px solid var(--gold-deep); border-radius: 8px; background: var(--tree-panel); color: var(--tree-ink); box-shadow: var(--tree-shadow); overflow: hidden; }
 .tree-inspector-header { display: grid; grid-template-columns: 72px minmax(0,1fr); gap: 14px; align-items: center; padding: 26px 18px 20px; background: var(--navy); color: var(--navy-foreground); }
 .tree-inspector-header h3 { font: 600 21px/1.25 var(--font-display); padding-right: 10px; overflow-wrap: anywhere; }
