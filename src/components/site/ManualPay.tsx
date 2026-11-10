@@ -45,7 +45,7 @@ export function PaymentDialog({ open, onOpenChange, title, description, children
 }
 
 /** Popup body: pay by UPI QR, then submit UTR + screenshot for admin verification. */
-export function ManualPayForm({ course, userId, productType = 'course', onDone }: { course: PayItem; userId: string; productType?: PayProduct; onDone?: () => void }) {
+export function ManualPayForm({ course, userId, productType = 'course', onDone }: { course: PayItem; userId: string; productType?: PayProduct; onDone?: (() => void) | undefined }) {
   const { t } = useLang();
   const qc = useQueryClient();
   const [utr, setUtr] = useState('');
