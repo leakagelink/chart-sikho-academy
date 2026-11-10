@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useLang, type DictKey } from '@/lib/i18n';
 import { studentTreeView, teamTotals, type NetworkMember } from '@/lib/student-team-tree';
 
-export function StudentTeamTree({ userId, name, code, members, earnings, available, currency }: { userId: string; name: string; code: string; members: NetworkMember[]; earnings: number; available: number; currency: string }) {
+export function StudentTeamTree({ userId, name, code, members, earnings, income, available, currency }: { userId: string; name: string; code: string; members: NetworkMember[]; earnings: number; income: number; available: number; currency: string }) {
   const { t, lang } = useLang();
   const [query, setQuery] = useState('');
   const [level, setLevel] = useState('all');
@@ -15,7 +15,7 @@ export function StudentTeamTree({ userId, name, code, members, earnings, availab
   const own: NetworkMember = { id: userId, referred_id: userId, referrer_id: null, level: 0, full_name: name, member_code: code, created_at: '' };
   const view = useMemo(() => studentTreeView(own, members, query, level), [members, query, level, userId, name, code]); // eslint-disable-line react-hooks/exhaustive-deps
   const totals = useMemo(() => teamTotals(members), [members]);
-  const earnedOf = (m: NetworkMember) => m.level === 0 ? earnings : Number(m.earned ?? 0);
+  const earnedOf = (m: NetworkMember) => m.level === 0 ? income : Number(m.earned ?? 0);
   const teamOf = (m: NetworkMember) => m.level === 0 ? members.length : totals.get(m.referred_id) ?? 0;
   const byId = new Map([own, ...members].map(m => [m.referred_id, m]));
   const chosen = selected ? byId.get(selected) : undefined;
