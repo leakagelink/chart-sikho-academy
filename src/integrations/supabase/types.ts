@@ -251,6 +251,39 @@ export type Database = {
         }
         Relationships: []
       }
+      billing_settings: {
+        Row: {
+          gst_percent: number
+          id: boolean
+          sac_code: string
+          seller_address: string
+          seller_gstin: string
+          seller_name: string
+          seller_state: string
+          updated_at: string
+        }
+        Insert: {
+          gst_percent?: number
+          id?: boolean
+          sac_code?: string
+          seller_address?: string
+          seller_gstin?: string
+          seller_name?: string
+          seller_state?: string
+          updated_at?: string
+        }
+        Update: {
+          gst_percent?: number
+          id?: boolean
+          sac_code?: string
+          seller_address?: string
+          seller_gstin?: string
+          seller_name?: string
+          seller_state?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       bonus_entries: {
         Row: {
           amount: number
@@ -918,6 +951,7 @@ export type Database = {
       invoices: {
         Row: {
           archived_at: string | null
+          billing_snapshot: Json | null
           buyer_gstin: string
           buyer_name: string
           gst_amount: number
@@ -932,6 +966,7 @@ export type Database = {
         }
         Insert: {
           archived_at?: string | null
+          billing_snapshot?: Json | null
           buyer_gstin?: string
           buyer_name: string
           gst_amount: number
@@ -946,6 +981,7 @@ export type Database = {
         }
         Update: {
           archived_at?: string | null
+          billing_snapshot?: Json | null
           buyer_gstin?: string
           buyer_name?: string
           gst_amount?: number
@@ -1970,6 +2006,10 @@ export type Database = {
       }
       app_branding: { Args: never; Returns: string }
       can_read_ebook_file: { Args: { _path: string }; Returns: boolean }
+      create_verified_order_bill: {
+        Args: { _order_id: string }
+        Returns: string
+      }
       delete_admin_course: { Args: { _course_id: string }; Returns: undefined }
       delete_admin_learning_record: {
         Args: { _id: string; _resource: string }
@@ -1999,6 +2039,11 @@ export type Database = {
         }
         Returns: boolean
       }
+      inclusive_bill_totals: {
+        Args: { _gst: number; _total: number }
+        Returns: Json
+      }
+      issue_purchase_bill: { Args: { _order_id: string }; Returns: string }
       make_short_referral_code: { Args: never; Returns: string }
       my_ebook_resource: { Args: { _ebook_id: string }; Returns: string }
       my_referral_members: {
