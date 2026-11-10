@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [ ] Add automatic successful-payment bills, editable GST-inclusive billing settings and student/admin invoice viewing/download; verify settings and billing rules.
 - [x] Added editable ₹3,999 cumulative verified own-course purchase gate on payout insertion, net of approved refunds; wallet displays total/remaining while earnings stay unchanged. Admin change → save/reload → restore ₹3,999 and own-wallet blocked state/mobile verified. Six database eligibility assertions and 94 tests passed; actual qualifying purchase/payment/withdrawal not performed.
 - [x] Restyled Admin Team Tree to reference-style summary tiles, compact connected photo/ID nodes and a dismissible member inspector. Signed-in real 12-member tree verified at desktop/mobile: details, close, downline, search/reset, no page overflow or browser errors; 92 existing tests and build pass. No account data changed.
 - [x] Moved all 27 inline website/product images to asset storage with byte-for-byte checks; no inline images remain. Future admin uploads use private image storage and stable permission-gated links. Signed-in thumbnail upload → course Save → refresh/image readback → delete verified; 88 tests pass and build OK. Live homepage returned 200 in 1.82 seconds (one measurement); no publishing performed.
