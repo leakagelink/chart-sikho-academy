@@ -258,7 +258,21 @@ html { scroll-padding-top: 80px; }
   .motion-surface :where(input, textarea, select) { font-size: 16px; }
   .motion-surface :where(button, a.motion-control) { min-height: 44px; white-space: normal; }
   .motion-surface .grid-cols-3 > :where(div) { padding-left: 10px; padding-right: 10px; }
+  /* Phone tables become labelled cards instead of sideways-scrolling rows. */
+  .motion-surface .stack-table { display: block; min-width: 0; width: 100%; }
+  .motion-surface .stack-table thead { display: none; }
+  .motion-surface .stack-table tbody { display: grid; gap: 12px; padding-block: 12px; }
+  .motion-surface .stack-table tbody tr { display: grid; border: 1px solid var(--border); border-radius: 12px; background: var(--card); overflow: hidden; }
+  .motion-surface .stack-table td { display: grid; grid-template-columns: minmax(96px, 38%) minmax(0, 1fr); gap: 8px; align-items: start; padding: 10px 14px; border-bottom: 1px solid var(--border); white-space: normal; max-width: none; }
+  .motion-surface .stack-table td:last-child { border-bottom: 0; }
+  .motion-surface .stack-table td::before { content: attr(data-label); color: var(--muted-foreground); font-size: 12px; font-weight: 500; }
+  .motion-surface .stack-table td[colspan] { display: block; }
+  .motion-surface .stack-table td[colspan]::before { display: none; }
+  .wallet-float button { height: 2.25rem; padding-inline: 2px; opacity: .9; }
+  .wallet-float button svg { width: 1rem; height: 1rem; }
 }
+.motion-surface input[type=file] { color: var(--muted-foreground); border: 1px dashed var(--border); border-radius: 10px; padding: 8px; background: var(--card); cursor: pointer; }
+.motion-surface input[type=file]::file-selector-button { margin-right: 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--muted); color: var(--foreground); padding: 8px 12px; font-weight: 600; cursor: pointer; }
 @media (prefers-reduced-motion: reduce) {
   .motion-surface [data-motion], .mini-chart > span, .course-motion:hover .mini-chart > span { animation: none; }
   .motion-control, .motion-control svg, .course-motion, .motion-surface input, .motion-surface textarea, .motion-surface select, .motion-surface progress, .motion-surface .bg-success { transition: none; }

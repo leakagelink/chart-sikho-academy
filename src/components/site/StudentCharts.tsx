@@ -26,13 +26,13 @@ export function StudentCharts({ userId, progress }: Props) {
     <section className="mt-8">
       <h2 className="font-display text-2xl font-bold text-foreground">{t("my_analytics")}</h2>
       <div className="mt-4 grid gap-4 lg:grid-cols-3">
-        <div className={box}><h3 className="mb-2 font-semibold">{t("chart_my_progress")}</h3><div className="h-52">{progress.length ? (
+        <div className={box}><h3 className="mb-2 font-semibold">{t("chart_my_progress")}</h3><div className={progress.length ? "h-52" : "h-20 sm:h-52"}>{progress.length ? (
           <ResponsiveContainer width="100%" height="100%"><BarChart data={progress}><XAxis dataKey="name" tick={{ fontSize: 10 }} stroke="var(--muted-foreground)" /><YAxis domain={[0, 100]} stroke="var(--muted-foreground)" /><Tooltip contentStyle={tip} /><Bar dataKey="progress" fill="var(--primary)" radius={[4, 4, 0, 0]} /></BarChart></ResponsiveContainer>
         ) : empty}</div></div>
-        <div className={box}><h3 className="mb-2 font-semibold">{t("chart_my_spend")}</h3><div className="h-52">{spend.length ? (
+        <div className={box}><h3 className="mb-2 font-semibold">{t("chart_my_spend")}</h3><div className={spend.length ? "h-52" : "h-20 sm:h-52"}>{spend.length ? (
           <ResponsiveContainer width="100%" height="100%"><LineChart data={spend}><CartesianGrid stroke="var(--border)" strokeDasharray="3 3" /><XAxis dataKey="label" stroke="var(--muted-foreground)" /><YAxis stroke="var(--muted-foreground)" /><Tooltip contentStyle={tip} /><Line type="monotone" dataKey="value" stroke="var(--chart-2)" strokeWidth={2} /></LineChart></ResponsiveContainer>
         ) : empty}</div></div>
-        <div className={box}><h3 className="mb-2 font-semibold">{t("chart_my_commission")}</h3><div className="h-52">{earn.length ? (
+        <div className={box}><h3 className="mb-2 font-semibold">{t("chart_my_commission")}</h3><div className={earn.length ? "h-52" : "h-20 sm:h-52"}>{earn.length ? (
           <ResponsiveContainer width="100%" height="100%"><LineChart data={earn}><CartesianGrid stroke="var(--border)" strokeDasharray="3 3" /><XAxis dataKey="label" stroke="var(--muted-foreground)" /><YAxis stroke="var(--muted-foreground)" /><Tooltip contentStyle={tip} /><Line type="monotone" dataKey="value" stroke="var(--chart-4)" strokeWidth={2} /></LineChart></ResponsiveContainer>
         ) : empty}</div></div>
       </div>
