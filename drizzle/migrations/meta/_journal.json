@@ -421,6 +421,20 @@
       "when": 1794285228840,
       "tag": "0059_banner_slider_text_toggle",
       "breakpoints": true
+    },
+    {
+      "idx": 60,
+      "version": "7",
+      "when": 1794303558166,
+      "tag": "0060_membership_manual_upi",
+      "breakpoints": true
+    },
+    {
+      "idx": 61,
+      "version": "7",
+      "when": 1794303576886,
+      "tag": "0061_plan_bill_title",
+      "breakpoints": true
     }
   ]
 }

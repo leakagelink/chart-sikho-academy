@@ -921,6 +921,7 @@ export type Database = {
           progress: number
           updated_at: string
           user_id: string
+          via_membership: boolean
         }
         Insert: {
           course_id: string
@@ -930,6 +931,7 @@ export type Database = {
           progress?: number
           updated_at?: string
           user_id: string
+          via_membership?: boolean
         }
         Update: {
           course_id?: string
@@ -939,6 +941,7 @@ export type Database = {
           progress?: number
           updated_at?: string
           user_id?: string
+          via_membership?: boolean
         }
         Relationships: []
       }
@@ -1156,6 +1159,7 @@ export type Database = {
           ebook_id: string | null
           id: string
           order_id: string | null
+          plan_id: string | null
           product_title: string
           reviewed_at: string | null
           reviewed_by: string | null
@@ -1173,6 +1177,7 @@ export type Database = {
           ebook_id?: string | null
           id?: string
           order_id?: string | null
+          plan_id?: string | null
           product_title?: string
           reviewed_at?: string | null
           reviewed_by?: string | null
@@ -1190,6 +1195,7 @@ export type Database = {
           ebook_id?: string | null
           id?: string
           order_id?: string | null
+          plan_id?: string | null
           product_title?: string
           reviewed_at?: string | null
           reviewed_by?: string | null
@@ -1219,6 +1225,13 @@ export type Database = {
             columns: ["order_id"]
             isOneToOne: false
             referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "manual_payments_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "membership_plans"
             referencedColumns: ["id"]
           },
           {
@@ -1271,6 +1284,54 @@ export type Database = {
           status?: string
         }
         Relationships: []
+      }
+      memberships: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          id: string
+          order_id: string
+          plan_id: string
+          plan_name: string
+          starts_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          order_id: string
+          plan_id: string
+          plan_name?: string
+          starts_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          order_id?: string
+          plan_id?: string
+          plan_name?: string
+          starts_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "memberships_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: true
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "memberships_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "membership_plans"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       message_templates: {
         Row: {
@@ -1351,6 +1412,7 @@ export type Database = {
           created_at: string
           ebook_id: string | null
           id: string
+          plan_id: string | null
           provider_reference: string | null
           session_id: string | null
           status: string
@@ -1362,6 +1424,7 @@ export type Database = {
           created_at?: string
           ebook_id?: string | null
           id?: string
+          plan_id?: string | null
           provider_reference?: string | null
           session_id?: string | null
           status?: string
@@ -1373,6 +1436,7 @@ export type Database = {
           created_at?: string
           ebook_id?: string | null
           id?: string
+          plan_id?: string | null
           provider_reference?: string | null
           session_id?: string | null
           status?: string
@@ -1384,6 +1448,13 @@ export type Database = {
             columns: ["ebook_id"]
             isOneToOne: false
             referencedRelation: "ebooks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "membership_plans"
             referencedColumns: ["id"]
           },
           {
@@ -2052,6 +2123,8 @@ export type Database = {
         Returns: string
       }
       get_course_quiz: { Args: { _course_id: string }; Returns: Json }
+      has_active_membership: { Args: { _user: string }; Returns: boolean }
+      has_course_access: { Args: { _course: string }; Returns: boolean }
       has_panel_permission: {
         Args: { _action: string; _section: string }
         Returns: boolean
@@ -2069,7 +2142,9 @@ export type Database = {
       }
       issue_purchase_bill: { Args: { _order_id: string }; Returns: string }
       make_short_referral_code: { Args: never; Returns: string }
+      member_enroll: { Args: { _course_id: string }; Returns: undefined }
       my_ebook_resource: { Args: { _ebook_id: string }; Returns: string }
+      my_membership: { Args: never; Returns: Json }
       my_referral_members: {
         Args: { _offset?: number }
         Returns: {
@@ -2208,6 +2283,10 @@ export type Database = {
       }
       submit_manual_payment: {
         Args: { _course_id: string; _screenshot_path: string; _utr: string }
+        Returns: string
+      }
+      submit_plan_payment: {
+        Args: { _plan_id: string; _screenshot_path: string; _utr: string }
         Returns: string
       }
       submit_session_payment: {
