@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { BookOpen, CheckCircle2, Circle, User } from 'lucide-react';
 import { inr } from '@/lib/courses';
 import { ProductSocial } from './ProductSocial';
-import { DetailBackLink, DetailCover, ProductDetailLayout } from './ProductDetailLayout';
+import { DetailBackLink, DetailCover, DetailDescription, ProductDetailLayout } from './ProductDetailLayout';
 import { CourseQuiz } from './CourseQuiz';
 import { CourseReviews } from './CourseReviews';
 import { ManualPay } from './ManualPay';
@@ -38,7 +38,7 @@ export function CloudCourseDetail({course}:{course:{id:string;title:string;price
    {(toggle.isError||enroll.isError||memberEnroll.isError)&&<p role="alert" className="text-sm text-destructive">{t('admin_error')}</p>}
    <ProductSocial kind="course" id={course.id} title={course.title}/>
   </div>}>
-  {course.description&&<section className="rounded-xl border border-border bg-card p-4 sm:p-5"><p className="whitespace-pre-line break-words text-sm leading-relaxed text-muted-foreground">{course.description}</p></section>}
+  {course.description&&<section className="rounded-xl border border-border bg-card p-4 sm:p-5"><DetailDescription text={course.description}/></section>}
   <section className="min-w-0">
    <h2 className="font-display text-xl font-bold">{t('lessons')}</h2>
    <div className="mt-3 space-y-3">{lessons.data?.map(l=><article key={l.id} className="min-w-0 rounded-xl border border-border bg-card p-4">

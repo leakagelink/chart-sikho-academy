@@ -26,3 +26,16 @@ export function DetailCover({ src, alt, fallback }: { src?: string | null | unde
     {src ? <img src={src} alt={alt} decoding="async" className="block h-full w-full object-contain" /> : <div className="grid h-full place-items-center text-muted-foreground">{fallback}</div>}
   </div>;
 }
+
+/** Light formatting for admin-written descriptions: "# heading" lines and **bold** text; everything else stays plain text. */
+export function DetailDescription({ text }: { text: string }) {
+  return <div className="space-y-2 break-words text-sm leading-relaxed text-muted-foreground">
+    {text.split(/\r?\n/).map((raw, i) => {
+      const line = raw.trim();
+      if (!line) return null;
+      const heading = /^#{1,6}\s+/.test(line);
+      const body = line.replace(/^#{1,6}\s+/, '').split(/(\*\*[^*]+\*\*)/g).map((part, j) => /^\*\*[^*]+\*\*$/.test(part) ? <strong key={j} className="font-semibold text-foreground">{part.slice(2, -2)}</strong> : part);
+      return heading ? <h2 key={i} className="pt-1 font-display text-lg font-bold text-foreground">{body}</h2> : <p key={i}>{body}</p>;
+    })}
+  </div>;
+}
