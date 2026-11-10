@@ -224,9 +224,16 @@ export type Database = {
           created_at: string
           id: string
           image_url: string
+          join_now_enabled: boolean
+          join_now_label: string
+          join_now_url: string
+          know_more_enabled: boolean
+          know_more_label: string
+          know_more_url: string
           link_url: string
           placement: string
           position: number
+          subtitle: string
           title: string
         }
         Insert: {
@@ -234,9 +241,16 @@ export type Database = {
           created_at?: string
           id?: string
           image_url?: string
+          join_now_enabled?: boolean
+          join_now_label?: string
+          join_now_url?: string
+          know_more_enabled?: boolean
+          know_more_label?: string
+          know_more_url?: string
           link_url?: string
           placement?: string
           position?: number
+          subtitle?: string
           title: string
         }
         Update: {
@@ -244,9 +258,16 @@ export type Database = {
           created_at?: string
           id?: string
           image_url?: string
+          join_now_enabled?: boolean
+          join_now_label?: string
+          join_now_url?: string
+          know_more_enabled?: boolean
+          know_more_label?: string
+          know_more_url?: string
           link_url?: string
           placement?: string
           position?: number
+          subtitle?: string
           title?: string
         }
         Relationships: []
