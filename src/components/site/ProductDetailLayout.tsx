@@ -9,10 +9,10 @@ import { ChevronLeft } from 'lucide-react';
 export function ProductDetailLayout({ back, header, aside, children }: { back: ReactNode; header: ReactNode; aside: ReactNode; children?: ReactNode }) {
   return <main className="product-detail mx-auto w-full min-w-0 max-w-7xl px-4 py-5 sm:px-6 lg:py-8">
     {back}
-    <div className="mt-4 grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-8 xl:grid-cols-[minmax(0,1fr)_380px]">
-      <header className="min-w-0 space-y-4 lg:col-start-1 lg:row-start-1">{header}</header>
-      <aside className="min-w-0 self-start rounded-xl border border-border bg-card p-4 shadow-card sm:p-5 lg:sticky lg:top-20 lg:col-start-2 lg:row-span-2 lg:row-start-1">{aside}</aside>
-      <div className="min-w-0 space-y-6 lg:col-start-1 lg:row-start-2">{children}</div>
+    <div className="mt-4 grid min-w-0 gap-5 xl:grid-cols-[minmax(0,1fr)_340px] xl:gap-8 2xl:grid-cols-[minmax(0,1fr)_380px]">
+      <header className="min-w-0 space-y-4 xl:col-start-1 xl:row-start-1">{header}</header>
+      <aside className="min-w-0 self-start rounded-xl border border-border bg-card p-4 shadow-card sm:p-5 xl:sticky xl:top-20 xl:col-start-2 xl:row-span-2 xl:row-start-1">{aside}</aside>
+      <div className="min-w-0 space-y-6 xl:col-start-1 xl:row-start-2">{children}</div>
     </div>
   </main>;
 }
