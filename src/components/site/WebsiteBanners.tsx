@@ -48,7 +48,7 @@ function BannerSlider({banners}:{banners:WebsiteBanner[]}){
   {count>1&&<>
    <button type="button" onClick={()=>goTo(current-1)} aria-label={t('banner_prev')} className="absolute left-3 top-1/2 hidden h-10 w-10 -translate-y-1/2 place-items-center rounded-full bg-navy/60 text-navy-foreground backdrop-blur transition hover:bg-navy/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring sm:grid"><ChevronLeft className="h-5 w-5"/></button>
    <button type="button" onClick={()=>goTo(current+1)} aria-label={t('banner_next')} className="absolute right-3 top-1/2 hidden h-10 w-10 -translate-y-1/2 place-items-center rounded-full bg-navy/60 text-navy-foreground backdrop-blur transition hover:bg-navy/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring sm:grid"><ChevronRight className="h-5 w-5"/></button>
-   <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-2">{banners.map((b,i)=><button key={b.id} type="button" onClick={()=>goTo(i)} aria-label={`${t('banner_go_to')} ${i+1}`} aria-current={i===current} className={`h-2.5 rounded-full transition-all ${i===current?'w-7 bg-gold':'w-2.5 bg-navy-foreground/60 hover:bg-navy-foreground'}`}/>)}</div>
+   <div className="absolute bottom-2 left-1/2 flex -translate-x-1/2 gap-1.5">{banners.map((b,i)=><button key={b.id} type="button" onClick={()=>goTo(i)} aria-label={`${t('banner_go_to')} ${i+1}`} aria-current={i===current} className="grid h-6 min-h-0 place-items-center px-0.5"><span className={`block h-2.5 rounded-full transition-all ${i===current?'w-7 bg-gold':'w-2.5 bg-navy-foreground/60 hover:bg-navy-foreground'}`}/></button>)}</div>
   </>}
  </section>;
 }
