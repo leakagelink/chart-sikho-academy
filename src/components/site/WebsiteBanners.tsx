@@ -20,7 +20,7 @@ const BTN_MORE='inline-flex items-center rounded-full border border-navy-foregro
 /** Full, uncropped artwork with no overlay; a blurred copy fills any side space. */
 function BannerImage({banner,eager=false}:{banner:WebsiteBanner;eager?:boolean}){
  const showText=banner.show_text!==false;
- return <div className="banner-image relative aspect-[5/2] max-h-[440px] w-full overflow-hidden bg-navy">
+ return <div className="banner-image relative aspect-[3/1] w-full overflow-hidden bg-navy">
   {banner.image_url&&<>
    <img src={banner.image_url} alt={showText?'':banner.title} loading={eager?'eager':'lazy'} decoding="async" {...(eager?{fetchPriority:'high' as const}:{})} className="relative h-full w-full object-cover"/>
   </>}
