@@ -393,6 +393,13 @@
       "when": 1794231814856,
       "tag": "0055_serial_member_ids",
       "breakpoints": true
+    },
+    {
+      "idx": 56,
+      "version": "7",
+      "when": 1794283645671,
+      "tag": "0056_withdrawal_own_course_purchase_requirement",
+      "breakpoints": true
     }
   ]
 }
