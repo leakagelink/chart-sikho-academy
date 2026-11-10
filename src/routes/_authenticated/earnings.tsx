@@ -9,6 +9,7 @@ import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { studentWalletOptions } from '@/lib/student-wallet';
 import { payoutTotals, uniquePayments } from '@/lib/wallet-rules';
 import { PayoutDetails } from '@/components/site/PayoutDetails';
+import { PurchaseBill } from '@/components/site/PurchaseBill';
 
 export const Route = createFileRoute("/_authenticated/earnings")({
   head: () => ({
@@ -91,6 +92,7 @@ function EarningsPage() {
         <div className="mt-4 flex items-center justify-end gap-3"><Button variant="outline" size="icon" disabled={page===0} aria-label={t('wallet_previous')} title={t('wallet_previous')} onClick={() => setPage(page-1)}><ChevronLeft className="h-4 w-4" /></Button><span className="text-xs text-muted-foreground">{page+1} / {Math.max(1,Math.ceil(filtered.length/20))}</span><Button variant="outline" size="icon" disabled={(page+1)*20>=filtered.length} aria-label={t('wallet_next')} title={t('wallet_next')} onClick={() => setPage(page+1)}><ChevronRight className="h-4 w-4" /></Button></div>
       </>}
     </section>
+    <section className="mt-8 min-w-0 border-t border-border pt-6"><h2 className="font-display text-xl font-semibold">{t('billing_my_bills')}</h2><div className="mt-4 space-y-3">{data.invoices.length ? data.invoices.map(invoice => <div key={invoice.id} className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3"><div><p className="font-semibold">{invoice.invoice_no}</p><p className="text-xs text-muted-foreground">{new Date(invoice.issued_at).toLocaleDateString(lang==='hi'?'hi-IN':'en-IN')} · {money(invoice.total,'INR')}</p></div><PurchaseBill invoice={invoice}/></div>) : <p className="text-sm text-muted-foreground">{t('billing_empty')}</p>}</div></section>
     <p className="mt-8 text-xs text-muted-foreground">{t('admin_real_commission')}</p>
   </main>;
 }

@@ -7,6 +7,8 @@ import { selectedVisibleIds } from '@/lib/member-selection';
 import { PanelPermissions } from './PanelPermissions';
 import { ManualPayments } from './ManualPay';
 import { AdminKyc } from './AdminKyc';
+import { BillingSettings } from './BillingSettings';
+import { PurchaseBill } from './PurchaseBill';
 import { ReferralDashboard, CommissionRules, ReleaseCommissions } from './ReferralAdmin';
 import { canAccess, resourceSections, type PermissionAction } from '@/lib/admin-permissions';
 import { useState, useEffect, type FormEvent } from 'react';
@@ -46,7 +48,7 @@ const fields: Partial<Record<EditKind,Field[]>> = {
   certificates: [{key:'user_id',label:'admin_student',type:'user'},{key:'course_id',label:'admin_course_id',type:'course'}],
   settings: [{key:'support_email',label:'admin_support_email',type:'email'},{key:'support_phone',label:'admin_support_phone'},{key:'commission_percent',label:'admin_percent',type:'number'}],
   coupons: [{key:'code',label:'admin_code'},{key:'kind',label:'admin_kind',options:['percent','flat']},{key:'value',label:'admin_value',type:'number'},{key:'min_order',label:'admin_min_order',type:'number'},{key:'max_uses',label:'admin_max_uses',type:'optnumber'},{key:'active',label:'admin_enabled',options:['true','false']},{key:'expires_at',label:'admin_expires',type:'optdate'}],
-  invoices: [{key:'order_id',label:'admin_order',type:'order'},{key:'buyer_name',label:'admin_buyer_name'},{key:'buyer_gstin',label:'admin_buyer_gstin',type:'optional'},{key:'subtotal',label:'admin_subtotal',type:'number'},{key:'gst_rate',label:'admin_gst_rate',type:'number'}],
+  invoices: [{key:'order_id',label:'admin_order',type:'order'},{key:'buyer_name',label:'admin_buyer_name',type:'optional'},{key:'buyer_gstin',label:'admin_buyer_gstin',type:'optional'}],
   instructors: [{key:'name',label:'admin_name_label'},{key:'expertise',label:'admin_expertise'},{key:'bio',label:'admin_bio',type:'textarea'},{key:'photo_url',label:'admin_photo',type:'url'},{key:'status',label:'status',options:['active','inactive']}],
   roles: [{key:'user_id',label:'admin_user_id',type:'user'},{key:'role',label:'admin_role',options:['user','instructor','admin']}],
   ranks: [{key:'name',label:'admin_name_label'},{key:'min_sales',label:'admin_min_sales',type:'number'},{key:'bonus_amount',label:'admin_bonus_amount',type:'number'},{key:'position',label:'admin_position',type:'number'}],
@@ -145,7 +147,7 @@ export function AdminPanel({ section, query, status, cat, when, rank, ustate='al
     {section==='settings'&&canAccess(data.access,'payments')&&<Button asChild variant="outline" className="mb-5"><Link to="/admin/$section" params={{section:'payments'}} search={{q:'',status:'all',cat:'all',when:'all',rank:'all',state:'all',city:'all'}}><Receipt size={17}/>{t('pay_settings_title')}</Link></Button>}
     {section==='notifications'&&<p className="mb-5 text-sm text-muted-foreground">{t('admin_external_off')}</p>}
     {section==='refunds'&&<p className="mb-5 text-sm text-muted-foreground">{t('admin_refund_note')}</p>}
-    {section==='invoices'&&<p className="mb-5 text-sm text-muted-foreground">{t('admin_invoice_note')}</p>}
+    {section==='invoices'&&<><BillingSettings canEdit={can('edit')}/><div className="mb-5 flex flex-wrap gap-3">{data.invoices.filter(i=>!i.archived_at).map(invoice=><div key={invoice.id} className="flex items-center gap-2"><span className="text-xs">{invoice.invoice_no}</span><PurchaseBill invoice={invoice}/></div>)}</div><p className="mb-5 text-sm text-muted-foreground">{t('admin_invoice_note')}</p></>}
     {section==='maintenance'&&<p className="mb-5 text-sm text-muted-foreground">{t('admin_maint_note')}</p>}
     {error&&<p role="alert" className="mb-4 text-destructive">{error}</p>}
     {section==='verification'&&<AdminKyc canEdit={can('edit')}/>}

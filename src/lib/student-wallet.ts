@@ -17,7 +17,7 @@ export const studentWalletOptions = (uid: string) => queryOptions({
   queryFn: async () => {
     const wallet = await supabase.rpc('my_wallet');
     if (wallet.error) throw wallet.error;
-    const [commissions, payouts, orders, payments, bonuses, refunds, prefs] = await Promise.all([
+    const [commissions, payouts, orders, payments, bonuses, refunds, prefs, invoices] = await Promise.all([
       allRows((a,b) => supabase.from('commission_entries').select('id,amount,tds_amount,level,status,created_at,order_id,release_at,on_hold,currency').eq('user_id',uid).order('created_at',{ascending:false}).order('id').range(a,b)),
       allRows((a,b) => supabase.from('payout_requests').select('id,amount,status,created_at,destination_snapshot').eq('user_id',uid).order('created_at',{ascending:false}).order('id').range(a,b)),
       allRows((a,b) => supabase.from('orders').select('id,amount,status,created_at,course_id,provider_reference').eq('user_id',uid).order('created_at',{ascending:false}).order('id').range(a,b)),
@@ -25,8 +25,9 @@ export const studentWalletOptions = (uid: string) => queryOptions({
       allRows((a,b) => supabase.from('bonus_entries').select('id,amount,status,created_at,reason').eq('user_id',uid).order('created_at',{ascending:false}).order('id').range(a,b)),
       allRows((a,b) => supabase.from('refund_requests').select('id,amount,status,created_at,reason,order_id').eq('user_id',uid).order('created_at',{ascending:false}).order('id').range(a,b)),
       supabase.from('payout_preferences').select('account_holder,bank_name,account_number,ifsc,upi_id,preferred_method').eq('user_id',uid).maybeSingle(),
+      allRows((a,b) => supabase.from('invoices').select('*,orders!inner(user_id)').eq('orders.user_id',uid).order('issued_at',{ascending:false}).order('id').range(a,b)),
     ]);
     if (prefs.error) throw prefs.error;
-    return { wallet: wallet.data as unknown as Wallet, commissions, payouts, orders, payments, bonuses, refunds, preferences: prefs.data };
+    return { wallet: wallet.data as unknown as Wallet, commissions, payouts, orders, payments, bonuses, refunds, invoices, preferences: prefs.data };
   },
 });

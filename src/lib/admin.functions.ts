@@ -307,12 +307,12 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
         const row = z.object({ status: z.enum(['issued','cancelled']) }).parse(v);
         result = await s.from('invoices').update(row).eq('id',data.id).select('id').single(); break;
       }
-      const row = z.object({ order_id: z.string().uuid(), buyer_name: z.string().trim().min(2).max(120), buyer_gstin: z.string().trim().max(15).default(''), subtotal: z.coerce.number().int().min(0).max(10000000), gst_rate: z.coerce.number().int().min(0).max(28).default(18) }).parse(v);
+      const row = z.object({ order_id: z.string().uuid() }).parse(v);
       const order = await s.from('orders').select('id,status,provider_reference').eq('id', row.order_id).maybeSingle();
       if (!order.data || order.data.status !== 'paid' || !order.data.provider_reference) throw new Error('Invoice needs a verified paid order');
-      const { gstAmount, total } = invoiceTotals(row.subtotal, row.gst_rate);
-      const rand = Array.from(crypto.getRandomValues(new Uint8Array(6)), b => 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[b % 32]).join('');
-      result = await s.from('invoices').insert({ ...row, invoice_no: makeInvoiceNo(new Date().getFullYear(), rand), gst_amount: gstAmount, total }).select('id').single(); break;
+      const issued = await s.rpc('create_verified_order_bill', { _order_id: row.order_id });
+      if (issued.error) throw new Error(issued.error.message);
+      return { id: issued.data };
     }
     case 'settings': {
       const row = z.object({ support_email: z.union([z.literal(''),z.string().email().max(200)]), support_phone: z.string().max(30), commission_percent: z.coerce.number().int().min(0).max(100), referral_enabled: z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]).optional(), ref_levels: z.union([z.literal(''), z.string().trim().regex(/^\d+(,\d+)*$/).refine(x => x.split(',').length <= 50, 'Maximum 50 referral levels')]).optional(), ref_level1_percent: z.coerce.number().int().min(0).max(100).optional(), ref_level2_percent: z.coerce.number().int().min(0).max(100).optional(), ref_level3_percent: z.coerce.number().int().min(0).max(100).optional(), logo_url: storedImageReference.optional(), min_self_purchase_value: z.coerce.number().int().min(0).max(10000000).optional() }).parse(v);

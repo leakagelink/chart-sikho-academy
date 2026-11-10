@@ -400,6 +400,13 @@
       "when": 1794283645671,
       "tag": "0056_withdrawal_own_course_purchase_requirement",
       "breakpoints": true
+    },
+    {
+      "idx": 57,
+      "version": "7",
+      "when": 1794284106853,
+      "tag": "0057_automatic_purchase_bills_and_inclusive_gst",
+      "breakpoints": true
     }
   ]
 }

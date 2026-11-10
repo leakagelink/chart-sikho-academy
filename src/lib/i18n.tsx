@@ -3,6 +3,20 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export type Lang = "en" | "hi";
 
 const dict = {
+  billing_settings:{en:'Billing & GST settings',hi:'Billing और GST सेटिंग्स'},
+  billing_seller:{en:'Registered business name',hi:'रजिस्टर्ड व्यवसाय का नाम'},
+  billing_gstin:{en:'Seller GSTIN',hi:'विक्रेता GST नंबर'},
+  billing_sac:{en:'SAC / HSN code',hi:'SAC / HSN कोड'},
+  billing_inclusive:{en:'Product prices include GST. Without a GSTIN, bills carry no tax. Saved settings apply to future successful payments only.',hi:'Product की कीमत में GST शामिल है। GST नंबर के बिना bill पर tax नहीं लगेगा। सेटिंग्स भविष्य के सफल payments पर लागू होंगी।'},
+  billing_invalid:{en:'Enter a valid GSTIN, business address, state and SAC / HSN code; GST must be between 0 and 28%.',hi:'सही GST नंबर, व्यवसाय का पता, राज्य और SAC / HSN कोड भरें; GST 0 से 28% के बीच रखें।'},
+  billing_saved:{en:'Billing settings saved',hi:'Billing सेटिंग्स सेव हो गईं'},
+  billing_bill:{en:'Payment bill',hi:'Payment बिल'},
+  billing_invoice:{en:'Tax invoice',hi:'GST इनवॉइस'},
+  billing_print:{en:'Print / Save PDF',hi:'प्रिंट / PDF सेव करें'},
+  billing_tax_included:{en:'GST included in the amount paid.',hi:'भुगतान की राशि में GST शामिल है।'},
+  billing_no_tax:{en:'No tax charged.',hi:'कोई tax नहीं लगाया गया है।'},
+  billing_my_bills:{en:'My bills & invoices',hi:'मेरे बिल और इनवॉइस'},
+  billing_empty:{en:'Bills appear here after successful payment confirmation.',hi:'Payment की सफल पुष्टि के बाद बिल यहाँ दिखेंगे।'},
   withdrawal_self_min:{en:'Minimum own course purchase for withdrawal (₹)',hi:'Withdrawal के लिए न्यूनतम अपनी course खरीद (₹)'},
   withdrawal_self_condition:{en:'Referral earnings remain visible. Withdrawal requires verified own course purchases totalling the configured minimum, across one or multiple courses.',hi:'Referral कमाई दिखती रहेगी। Withdrawal के लिए एक या कई courses की अपनी verified खरीद का कुल मूल्य तय न्यूनतम राशि तक होना चाहिए।'},
   withdrawal_self_total:{en:'Your verified course purchases',hi:'आपकी verified course खरीद'},
