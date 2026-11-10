@@ -233,6 +233,7 @@ export type Database = {
           link_url: string
           placement: string
           position: number
+          show_text: boolean
           subtitle: string
           title: string
         }
@@ -250,6 +251,7 @@ export type Database = {
           link_url?: string
           placement?: string
           position?: number
+          show_text?: boolean
           subtitle?: string
           title: string
         }
@@ -267,6 +269,7 @@ export type Database = {
           link_url?: string
           placement?: string
           position?: number
+          show_text?: boolean
           subtitle?: string
           title?: string
         }
