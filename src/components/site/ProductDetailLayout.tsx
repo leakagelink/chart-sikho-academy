@@ -21,7 +21,7 @@ export function DetailBackLink({ to, label }: { to: '/courses' | '/live-classes'
   return <Link to={to} className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline"><ChevronLeft className="h-4 w-4" />{label}</Link>;
 }
 
-export function DetailCover({ src, alt, fallback }: { src?: string | null; alt: string; fallback: ReactNode }) {
+export function DetailCover({ src, alt, fallback }: { src?: string | null | undefined; alt: string; fallback: ReactNode }) {
   return <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-border bg-muted">
     {src ? <img src={src} alt={alt} decoding="async" className="block h-full w-full object-contain" /> : <div className="grid h-full place-items-center text-muted-foreground">{fallback}</div>}
   </div>;

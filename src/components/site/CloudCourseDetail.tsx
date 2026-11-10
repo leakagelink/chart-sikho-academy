@@ -46,7 +46,7 @@ export function CloudCourseDetail({course}:{course:{id:string;title:string;price
     {l.video_url&&(/\.(mp4|webm)(\?|$)/i.test(l.video_url)?<video controls preload="metadata" src={l.video_url} className="aspect-video w-full rounded-lg bg-muted"/>:<a href={l.video_url} target="_blank" rel="noopener noreferrer" className="break-all text-primary underline">{t('open_lesson')}</a>)}
     <div className="mt-3 flex flex-wrap gap-2">{l.resource_path&&<Button variant="outline" onClick={()=>openResource(l.resource_path)}>{t('tab_downloads')}</Button>}<Button variant={done.data?.has(l.id)?'secondary':'outline'} disabled={toggle.isPending||!done.data} aria-pressed={!!done.data?.has(l.id)} onClick={()=>toggle.mutate(l.id)}>{done.data?.has(l.id)?<CheckCircle2 className="text-success"/>:<Circle/>}{t(done.data?.has(l.id)?'lesson_completed':'lesson_mark_done')}</Button></div>
    </article>)}</div>
-   {!enrolled.data&&<p className="mt-2 rounded-xl border border-dashed border-border p-4 text-sm text-muted-foreground">{t(session?'buy_now':'login_to_enroll')} → {t('lessons')}</p>}
+   {!enrolled.data&&<p className="mt-2 rounded-xl border border-dashed border-border p-4 text-sm text-muted-foreground">{t('lessons_locked')}</p>}
    {enrolled.data&&!lessons.data?.length&&<p className="mt-4 text-muted-foreground">{t('admin_empty')}</p>}
    {resource&&<a href={resource} target="_blank" rel="noopener noreferrer" className="mt-4 block text-primary">{t('tab_downloads')}</a>}
   </section>

@@ -1039,6 +1039,7 @@ const dict = {
   join_now_btn: { en: "Join now", hi: "अभी जुड़ें" },
   pay_close: { en: "Close", hi: "बंद करें" },
   purchase_signin: { en: "Please sign in to continue with this purchase.", hi: "खरीदारी जारी रखने के लिए कृपया लॉगिन करें।" },
+  lessons_locked: { en: "Lessons unlock after purchase or enrollment.", hi: "खरीद या एनरोल करने के बाद Lessons खुलेंगे।" },
   go_to_course: { en: "Go to course", hi: "कोर्स पर जाएँ" },
   payments_soon_t: { en: "Payments are not live yet — this is a test build.", hi: "पेमेंट अभी लाइव नहीं है — यह टेस्ट बिल्ड है।" },
   pay_upi_title: { en: "Pay by UPI", hi: "UPI से भुगतान करें" },
