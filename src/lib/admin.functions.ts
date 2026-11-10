@@ -307,7 +307,7 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
         const row = z.object({ status: z.enum(['issued','cancelled']) }).parse(v);
         result = await s.from('invoices').update(row).eq('id',data.id).select('id').single(); break;
       }
-      const row = z.object({ order_id: z.string().uuid(), buyer_name: z.string().trim().min(2).max(120), buyer_gstin: z.string().trim().max(15).default(''), subtotal: z.coerce.number().int().min(0).max(10000000), gst_rate: z.coerce.number().int().min(0).max(28).default(18) }).parse(v);
+      const row = z.object({ order_id: z.string().uuid() }).parse(v);
       const order = await s.from('orders').select('id,status,provider_reference').eq('id', row.order_id).maybeSingle();
       if (!order.data || order.data.status !== 'paid' || !order.data.provider_reference) throw new Error('Invoice needs a verified paid order');
       const issued = await s.rpc('create_verified_order_bill', { _order_id: row.order_id });
