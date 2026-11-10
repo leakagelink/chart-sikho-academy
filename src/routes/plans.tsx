@@ -53,7 +53,7 @@ function PlansPage() {
                 <li key={i} className="flex items-start gap-2 break-words"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success" /><span className="min-w-0 break-words">{k}</span></li>
               ))}
             </ul>
-            {userId ? <ManualPay productType="plan" userId={userId} course={{ id: p.id, title: p.name_en, price: p.price }} /> : <Button asChild variant={p.popular?'default':'outline'} className="w-full"><Link to="/auth" search={{ redirect: '/plans' } as never}>{t("choose_plan")}</Link></Button>}
+            {userId ? <ManualPay productType="plan" userId={userId} course={{ id: p.id, title: p.name_en, price: p.price }} /> : <Button asChild variant={p.popular?'default':'outline'} className="w-full"><Link to="/auth" search={{ redirect: '/plans' }}>{t("choose_plan")}</Link></Button>}
             <ProductSocial kind="plan" id={p.id} title={p.name_en}/>
           </div>
         ))}
