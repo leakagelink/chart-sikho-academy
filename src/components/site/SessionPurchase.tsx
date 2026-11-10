@@ -30,7 +30,7 @@ export function SessionPurchase({ session, details = false }: { session: Purchas
   const { t } = useLang();
   const [open, setOpen] = useState(false);
   const paid = session.access_mode !== 'free';
-  const price = <p className="text-lg font-bold text-primary">{paid ? inr(session.price) : t('session_free')}</p>;
+  const price = <p className={`${details ? 'text-3xl' : 'text-lg'} font-bold text-primary`}>{paid ? inr(session.price) : t('session_free')}</p>;
   if (details) return <div className="mt-4 space-y-4 border-t border-border pt-4">{price}<SessionAccess session={session} inDialog={false} /><ProductSocial kind="session" id={session.id} title={session.title} /></div>;
   return <div className="mt-auto space-y-3 pt-3">
     <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">{price}<Link to="/live/$classId" params={{ classId: session.id }} className="shrink-0 text-sm font-semibold text-primary underline">{t('view_details')}</Link></div>
