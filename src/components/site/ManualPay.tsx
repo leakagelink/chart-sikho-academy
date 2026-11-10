@@ -1,8 +1,9 @@
-import { useEffect, useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent, type ReactNode } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import QRCode from 'qrcode';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useLang } from '@/lib/i18n';
 import { toast } from 'sonner';
 import { paymentConfigured, paymentUpiLink, qrUploadAllowed, type PaymentUpi } from '@/lib/payment-upi';
@@ -24,15 +25,33 @@ function usePaymentQr(upi: PaymentUpi | null | undefined, link: string) {
 
 const inputCls = 'w-full rounded-md border border-input bg-background px-3 py-2 text-sm';
 
-/** Student: pay by UPI QR, then submit UTR + screenshot for admin verification. */
-export function ManualPay({ course, userId, productType = 'course' }: { course: { id: string; title: string; price: number }; userId: string; productType?: 'course' | 'ebook' | 'session' | 'plan' }) {
+type PayProduct = 'course' | 'ebook' | 'session' | 'plan';
+type PayItem = { id: string; title: string; price: number };
+
+function useLastPayment(userId: string, productType: PayProduct, id: string) {
+  return useQuery({ queryKey: ['manual-pay', userId, productType, id], refetchInterval: 15000, queryFn: async () => { const r = await supabase.from('manual_payments').select('status,utr,admin_note,created_at').eq('user_id', userId).eq(productType === 'plan' ? 'plan_id' : productType === 'session' ? 'session_id' : productType === 'ebook' ? 'ebook_id' : 'course_id', id).order('created_at', { ascending: false }).limit(1).maybeSingle(); if (r.error) throw r.error; return r.data; } });
+}
+
+/** Shared purchase popup: responsive, scrollable, closable by X, Close button, Escape or backdrop. */
+export function PaymentDialog({ open, onOpenChange, title, description, children }: { open: boolean; onOpenChange: (open: boolean) => void; title?: string; description: string; children: ReactNode }) {
+  const { t } = useLang();
+  return <Dialog open={open} onOpenChange={onOpenChange}>
+    <DialogContent className="max-h-[92dvh] w-[calc(100%-1.5rem)] max-w-md gap-3 overflow-y-auto rounded-xl p-4 sm:p-6">
+      <DialogHeader className="pr-6 text-left"><DialogTitle className="font-display text-xl">{title ?? t('pay_upi_title')}</DialogTitle><DialogDescription className="break-words">{description}</DialogDescription></DialogHeader>
+      {children}
+      <DialogClose asChild><Button type="button" variant="outline" className="w-full">{t('pay_close')}</Button></DialogClose>
+    </DialogContent>
+  </Dialog>;
+}
+
+/** Popup body: pay by UPI QR, then submit UTR + screenshot for admin verification. */
+export function ManualPayForm({ course, userId, productType = 'course', onDone }: { course: PayItem; userId: string; productType?: PayProduct; onDone?: () => void }) {
   const { t } = useLang();
   const qc = useQueryClient();
-  const [open, setOpen] = useState(false);
   const [utr, setUtr] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const upi = useQuery(paymentUpiQuery);
-  const mine = useQuery({ queryKey: ['manual-pay', userId, productType, course.id], refetchInterval: 15000, queryFn: async () => { const r = await supabase.from('manual_payments').select('status,utr,admin_note,created_at').eq('user_id', userId).eq(productType === 'plan' ? 'plan_id' : productType === 'session' ? 'session_id' : productType === 'ebook' ? 'ebook_id' : 'course_id', course.id).order('created_at', { ascending: false }).limit(1).maybeSingle(); if (r.error) throw r.error; return r.data; } });
+  const mine = useLastPayment(userId, productType, course.id);
   const link = paymentUpiLink(upi.data, course);
   const qr = usePaymentQr(upi.data, link);
   const submit = useMutation({
@@ -52,26 +71,35 @@ export function ManualPay({ course, userId, productType = 'course' }: { course: 
         : await supabase.rpc('submit_manual_payment', { _course_id: course.id, _utr: utr.trim(), _screenshot_path: path });
       if (r.error) throw new Error(r.error.message.includes('UTR already') ? t('pay_utr_used') : r.error.message.includes('pending') ? t('pay_pending') : t('admin_error'));
     },
-    onSuccess: () => { toast.success(t('pay_submitted')); setOpen(false); qc.invalidateQueries({ queryKey: ['manual-pay'] }); qc.invalidateQueries({ queryKey: ['my-membership'] }); },
+    onSuccess: () => { toast.success(t('pay_submitted')); setUtr(''); setFile(null); qc.invalidateQueries({ queryKey: ['manual-pay'] }); qc.invalidateQueries({ queryKey: ['my-membership'] }); onDone?.(); },
     onError: e => toast.error((e as Error).message),
   });
   const last = mine.data;
+  if (mine.isPending || upi.isPending) return <p className="text-sm text-muted-foreground">{t('admin_loading')}</p>;
   if (last?.status === 'pending') return <p className="rounded-md border border-border bg-muted/40 p-3 text-sm">{t('pay_pending')} (UTR {last.utr})</p>;
+  if (!paymentConfigured(upi.data)) return <p className="text-sm text-muted-foreground">{t('pay_no_upi')}</p>;
+  return <form onSubmit={(e: FormEvent) => { e.preventDefault(); submit.mutate(); }} className="min-w-0 space-y-3">
+    {last?.status === 'rejected' && <p className="text-sm text-destructive">{t('pay_rejected')}{last.admin_note ? ` — ${last.admin_note}` : ''}</p>}
+    <p className="text-sm">{t('pay_step1')} <b className="text-primary">₹{course.price}</b></p>
+    {qr && <img src={qr} alt={t('pay_qr_preview')} className="mx-auto aspect-square w-full max-w-[13rem] rounded bg-background p-2 sm:max-w-[14rem]" />}
+    {upi.data?.upi_id && <p className="break-all text-center text-sm">UPI ID: <b className="select-all">{upi.data.upi_id}</b></p>}
+    {link && <a href={link} className="block text-center text-sm text-primary underline sm:hidden">{t('pay_open_app')}</a>}
+    <label className="block text-sm">{t('pay_utr')}<input required value={utr} onChange={e => setUtr(e.target.value)} maxLength={30} className={inputCls} placeholder="e.g. 412345678901" /></label>
+    <label className="block text-sm">{t('pay_shot')}<input required type="file" accept="image/png,image/jpeg,image/webp" onChange={e => setFile(e.target.files?.[0] ?? null)} className={inputCls} /></label>
+    <Button type="submit" className="w-full" disabled={submit.isPending}>{t('pay_submit')}</Button>
+  </form>;
+}
+
+/** Student trigger: a Buy button that opens the payment popup; shows pending status once submitted. */
+export function ManualPay({ course, userId, productType = 'course', label, className = '' }: { course: PayItem; userId: string; productType?: PayProduct; label?: string; className?: string }) {
+  const { t } = useLang();
+  const [open, setOpen] = useState(false);
+  const last = useLastPayment(userId, productType, course.id).data;
+  if (last?.status === 'pending' && !open) return <p className="rounded-md border border-border bg-muted/40 p-3 text-sm">{t('pay_pending')} (UTR {last.utr})</p>;
   return <div className="space-y-2">
     {last?.status === 'rejected' && <p className="text-sm text-destructive">{t('pay_rejected')}{last.admin_note ? ` — ${last.admin_note}` : ''}</p>}
-    {!open ? <Button size="lg" className={productType==='plan'?'w-full':''} onClick={() => setOpen(true)}>{t(productType==='plan'?'choose_plan':'buy_now')}</Button> :
-      <form onSubmit={(e: FormEvent) => { e.preventDefault(); submit.mutate(); }} className="max-w-md space-y-3 rounded-lg border border-border bg-card p-4">
-        <h3 className="font-display text-lg font-bold">{t('pay_upi_title')}</h3>
-        {!paymentConfigured(upi.data) ? <p className="text-sm text-muted-foreground">{t('pay_no_upi')}</p> : <>
-          <p className="text-sm">{t('pay_step1')} <b className="text-primary">₹{course.price}</b></p>
-          {qr && <img src={qr} alt={t('pay_qr_preview')} className="mx-auto h-56 w-56 rounded bg-background p-2" />}
-          {upi.data?.upi_id && <p className="text-center text-sm">UPI ID: <b className="select-all">{upi.data.upi_id}</b></p>}
-          {link && <a href={link} className="block text-center text-sm text-primary underline sm:hidden">{t('pay_open_app')}</a>}
-          <label className="block text-sm">{t('pay_utr')}<input required value={utr} onChange={e => setUtr(e.target.value)} maxLength={30} className={inputCls} placeholder="e.g. 412345678901" /></label>
-          <label className="block text-sm">{t('pay_shot')}<input required type="file" accept="image/png,image/jpeg,image/webp" onChange={e => setFile(e.target.files?.[0] ?? null)} className={inputCls} /></label>
-          <div className="flex gap-2"><Button type="submit" disabled={submit.isPending}>{t('pay_submit')}</Button><Button type="button" variant="outline" onClick={() => setOpen(false)}>{t('pay_cancel')}</Button></div>
-        </>}
-      </form>}
+    <Button size="lg" className={productType === 'plan' ? `w-full ${className}` : className} onClick={() => setOpen(true)}>{label ?? t(productType === 'plan' ? 'choose_plan' : 'buy_now')}</Button>
+    <PaymentDialog open={open} onOpenChange={setOpen} description={course.title}>{open && <ManualPayForm course={course} userId={userId} productType={productType} onDone={() => setOpen(false)} />}</PaymentDialog>
   </div>;
 }
 
