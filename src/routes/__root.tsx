@@ -84,8 +84,19 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   );
 }
 
+let lastKnownBranding: string | null = null;
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  loader: async () => ({ branding: await getAppBranding() }),
+  // A dropped connection while re-checking the logo must never blank the whole app.
+  loader: async () => {
+    try {
+      const branding = await getAppBranding();
+      if (branding !== null) lastKnownBranding = branding;
+      return { branding: branding ?? lastKnownBranding };
+    } catch {
+      return { branding: lastKnownBranding };
+    }
+  },
   staleTime: 5 * 60 * 1000,
   head: ({ loaderData }) => ({
     meta: [
