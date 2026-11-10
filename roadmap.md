@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [ ] Add admin-editable ₹3,999 cumulative own-course purchase requirement for withdrawal, enforce in Cloud, display own progress and verify rules/settings/wallet.
 - [x] Restyled Admin Team Tree to reference-style summary tiles, compact connected photo/ID nodes and a dismissible member inspector. Signed-in real 12-member tree verified at desktop/mobile: details, close, downline, search/reset, no page overflow or browser errors; 92 existing tests and build pass. No account data changed.
 - [x] Moved all 27 inline website/product images to asset storage with byte-for-byte checks; no inline images remain. Future admin uploads use private image storage and stable permission-gated links. Signed-in thumbnail upload → course Save → refresh/image readback → delete verified; 88 tests pass and build OK. Live homepage returned 200 in 1.82 seconds (one measurement); no publishing performed.
 - [x] Student affiliate/team/tree show saved direct-member names alongside IDs and search matches names or IDs. Populated signed-in display verified across all three pages; mobile has no page overflow, five filter tests/build pass. Deployed RPC explicitly scopes to auth.uid() and excludes private profile columns; transactional SQL test is retained but could not run because the query tool role cannot execute the RPC or switch to authenticated.
