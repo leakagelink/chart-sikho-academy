@@ -316,9 +316,9 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
     }
     case 'settings': {
       const row = z.object({ support_email: z.union([z.literal(''),z.string().email().max(200)]), support_phone: z.string().max(30), commission_percent: z.coerce.number().int().min(0).max(100), referral_enabled: z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]).optional(), ref_levels: z.union([z.literal(''), z.string().trim().regex(/^\d+(,\d+)*$/).refine(x => x.split(',').length <= 50, 'Maximum 50 referral levels')]).optional(), ref_level1_percent: z.coerce.number().int().min(0).max(100).optional(), ref_level2_percent: z.coerce.number().int().min(0).max(100).optional(), ref_level3_percent: z.coerce.number().int().min(0).max(100).optional(), logo_url: storedImageReference.optional(), min_self_purchase_value: z.coerce.number().int().min(0).max(10000000).optional() }).parse(v);
-      const { logo_url, referral_enabled, ref_levels, ref_level1_percent, ref_level2_percent, ref_level3_percent, ...rest } = row;
+      const { logo_url, referral_enabled, ref_levels, ref_level1_percent, ref_level2_percent, ref_level3_percent, min_self_purchase_value, ...rest } = row;
       const levels = ref_levels !== undefined && ref_levels !== '' ? ref_levels.split(',').map(x => Math.min(100, Math.max(0, parseInt(x, 10) || 0))) : null;
-      const payload = { ...rest, ...(referral_enabled !== undefined ? { referral_enabled } : {}), ...(levels ? { ref_levels: levels, ref_level1_percent: levels[0], ref_level2_percent: levels[1] ?? 0, ref_level3_percent: levels[2] ?? 0 } : {}), ...(logo_url !== undefined ? { logo_url } : {}) };
+      const payload = { ...rest, ...(min_self_purchase_value !== undefined ? { min_self_purchase_value } : {}), ...(referral_enabled !== undefined ? { referral_enabled } : {}), ...(levels ? { ref_levels: levels, ref_level1_percent: levels[0], ref_level2_percent: levels[1] ?? 0, ref_level3_percent: levels[2] ?? 0 } : {}), ...(logo_url !== undefined ? { logo_url } : {}) };
       result = data.id ? await s.from('admin_settings').update({ ...payload, updated_at: new Date().toISOString() }).eq('id',data.id).select('id').single() : await s.from('admin_settings').insert(payload).select('id').single(); break;
     }
     case 'commrules': {
@@ -331,7 +331,8 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
       const pct = row.ref_levels.split(',').map(Number);
       if (pct.some(x => x > 100)) throw new Error('Level percent cannot exceed 100');
       const fixed = row.ref_fixed_levels.split(',').map(Number);
-      result = await s.from('admin_settings').update({ ...row, ref_levels: pct, ref_level1_percent: Math.round(pct[0] ?? 0), ref_level2_percent: Math.round(pct[1] ?? 0), ref_level3_percent: Math.round(pct[2] ?? 0), ref_fixed_levels: fixed, updated_at: new Date().toISOString() }).eq('id',data.id).select('id').single(); break;
+      const { min_self_purchase_value, ...ruleValues } = row;
+      result = await s.from('admin_settings').update({ ...ruleValues, ...(min_self_purchase_value !== undefined ? { min_self_purchase_value } : {}), ref_levels: pct, ref_level1_percent: Math.round(pct[0] ?? 0), ref_level2_percent: Math.round(pct[1] ?? 0), ref_level3_percent: Math.round(pct[2] ?? 0), ref_fixed_levels: fixed, updated_at: new Date().toISOString() }).eq('id',data.id).select('id').single(); break;
     }
     case 'commissions': {
       if (!data.id) throw new Error('Record required');
