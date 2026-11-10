@@ -7,6 +7,8 @@ import { selectedVisibleIds } from '@/lib/member-selection';
 import { PanelPermissions } from './PanelPermissions';
 import { ManualPayments } from './ManualPay';
 import { AdminKyc } from './AdminKyc';
+import { BillingSettings } from './BillingSettings';
+import { PurchaseBill } from './PurchaseBill';
 import { ReferralDashboard, CommissionRules, ReleaseCommissions } from './ReferralAdmin';
 import { canAccess, resourceSections, type PermissionAction } from '@/lib/admin-permissions';
 import { useState, useEffect, type FormEvent } from 'react';
@@ -145,7 +147,7 @@ export function AdminPanel({ section, query, status, cat, when, rank, ustate='al
     {section==='settings'&&canAccess(data.access,'payments')&&<Button asChild variant="outline" className="mb-5"><Link to="/admin/$section" params={{section:'payments'}} search={{q:'',status:'all',cat:'all',when:'all',rank:'all',state:'all',city:'all'}}><Receipt size={17}/>{t('pay_settings_title')}</Link></Button>}
     {section==='notifications'&&<p className="mb-5 text-sm text-muted-foreground">{t('admin_external_off')}</p>}
     {section==='refunds'&&<p className="mb-5 text-sm text-muted-foreground">{t('admin_refund_note')}</p>}
-    {section==='invoices'&&<p className="mb-5 text-sm text-muted-foreground">{t('admin_invoice_note')}</p>}
+    {section==='invoices'&&<><BillingSettings canEdit={can('edit')}/><div className="mb-5 flex flex-wrap gap-3">{data.invoices.filter(i=>!i.archived_at).map(invoice=><div key={invoice.id} className="flex items-center gap-2"><span className="text-xs">{invoice.invoice_no}</span><PurchaseBill invoice={invoice}/></div>)}</div><p className="mb-5 text-sm text-muted-foreground">{t('admin_invoice_note')}</p></>}
     {section==='maintenance'&&<p className="mb-5 text-sm text-muted-foreground">{t('admin_maint_note')}</p>}
     {error&&<p role="alert" className="mb-4 text-destructive">{error}</p>}
     {section==='verification'&&<AdminKyc canEdit={can('edit')}/>}
