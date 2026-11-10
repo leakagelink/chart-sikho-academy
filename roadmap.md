@@ -1,7 +1,7 @@
 # Roadmap
 
 ## Open
-- [ ] Match student Referral Tree to admin connected-node UI, summary, search, level filter and dismissible inspector; retain own-direct-member data scope and verify desktop/mobile.
+- [x] Matched student Referral Tree to admin connected-node UI, brand summary tiles, search, level filter, scrolling arrows and dismissible inspector. Signed-in own root + four real direct members verified at 1884px/393px, search/empty/reset and inspector close passed; no overflow/runtime errors, five affiliate tests and build OK. No deeper-team access or private member fields added.
 - [x] Added single/multiple/all membership product category access, custom days, public benefit display and category-aware server checks with purchase-time snapshots. Signed-in Admin ₹100 live-only save/reopen → ₹200 courses/live/webinars edit/readback → mobile All selection verified; temporary draft deleted. 11 tests, five database category assertions and build passed. Actual paid membership approval/access awaits genuine payment proof.
 - [x] Home top banner slider with admin-managed image, heading, Know more (link) / Join Now (default sign-up) buttons, on/off, custom text, order and live preview. Signed-in add → edit → home display/navigation → delete verified at desktop/mobile; 6 rule tests pass. Existing 'Diwali Offer' has no image, so it stays hidden until one is uploaded.
 - [x] Added atomic successful-payment bills, invoice-permission GST-inclusive seller settings, immutable decimal snapshots and owner-scoped student bill viewing/Print-Save PDF. Admin settings save/reload/mobile and existing ₹10,000 verified-order bill generation/view verified; 92 tests/build pass. No GST number invented or new payment approved.
