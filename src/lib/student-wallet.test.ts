@@ -27,5 +27,6 @@ it('scopes all earnings, payments, withdrawals and bank details to the current u
     { table: 'bonus_entries', field: 'user_id', uid: 'current-student' },
     { table: 'refund_requests', field: 'user_id', uid: 'current-student' },
     { table: 'payout_preferences', field: 'user_id', uid: 'current-student' },
+    { table: 'invoices', field: 'orders.user_id', uid: 'current-student' },
   ]);
 });
