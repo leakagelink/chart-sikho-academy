@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Search, BookOpen, Video, Calendar } from "lucide-react";
+import { Search, BookOpen, Video } from "lucide-react";
 import hero from "@/assets/hero-bull.jpg";
 import { LiveClassThumbnail, SessionDateSocial } from "@/components/site/LiveClassCard";
 import { SessionPurchase } from "@/components/site/SessionPurchase";
@@ -43,7 +43,7 @@ const filters: { key: ProductFilter; label: DictKey }[] = [
 ];
 
 function CoursesPage() {
-  const { t, lang } = useLang();
+  const { t } = useLang();
   const {data:cloud}=useSuspenseQuery(catalogQuery());
   const {data:products}=useSuspenseQuery(productQuery());
   const search = Route.useSearch();

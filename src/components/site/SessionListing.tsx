@@ -12,7 +12,7 @@ import { MapPin } from 'lucide-react';
 import { seminarPlace } from './SeminarVenue';
 export function SessionListing({kind}:{kind:'class'|'webinar'|'seminar'}) {
   const {data}=useSuspenseQuery(productQuery());
-  const {t,lang}=useLang();
+  const {t}=useLang();
   const client=useQueryClient();
   const [timing,setTiming]=useState<SessionTiming>('all');
   const [price,setPrice]=useState<SessionPrice>('all');
