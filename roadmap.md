@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [x] Mobile pass across all screens: audited ~70 public/student/admin pages at 320/360/393px with no sideways overflow; student Team/Commission/Wallet tables stack as cards on phones, styled upload fields, slimmer wallet tab, compact empty charts. Build OK.
 - [x] Matched student Referral Tree to admin connected-node UI, brand summary tiles, search, level filter, scrolling arrows and dismissible inspector. Signed-in own root + four real direct members verified at 1884px/393px, search/empty/reset and inspector close passed; no overflow/runtime errors, five affiliate tests and build OK. No deeper-team access or private member fields added.
 - [x] Added single/multiple/all membership product category access, custom days, public benefit display and category-aware server checks with purchase-time snapshots. Signed-in Admin ₹100 live-only save/reopen → ₹200 courses/live/webinars edit/readback → mobile All selection verified; temporary draft deleted. 11 tests, five database category assertions and build passed. Actual paid membership approval/access awaits genuine payment proof.
 - [x] Home top banner slider with admin-managed image, heading, Know more (link) / Join Now (default sign-up) buttons, on/off, custom text, order and live preview. Signed-in add → edit → home display/navigation → delete verified at desktop/mobile; 6 rule tests pass. Existing 'Diwali Offer' has no image, so it stays hidden until one is uploaded.
