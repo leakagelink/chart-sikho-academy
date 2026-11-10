@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import { BookOpen } from "lucide-react";
 import { EbookPurchase } from "@/components/site/EbookPurchase";
 import { supabase } from "@/integrations/supabase/client";
-import { inr } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/ebooks")({

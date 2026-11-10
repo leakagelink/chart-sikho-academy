@@ -5,7 +5,6 @@ import { LiveClassThumbnail, SessionDateSocial } from "@/components/site/LiveCla
 import { SessionPurchase } from "@/components/site/SessionPurchase";
 import { EbookPurchase } from "@/components/site/EbookPurchase";
 import { CloudCourseCard } from "@/components/site/CloudCourseCard";
-import { inr } from "@/lib/courses";
 import { useLang, type DictKey } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { useSuspenseQuery } from '@tanstack/react-query';

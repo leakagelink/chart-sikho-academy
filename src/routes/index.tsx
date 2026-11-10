@@ -5,7 +5,6 @@ import { HomeProductShelf } from "@/components/site/HomeProductShelf";
 import { ScheduledLiveClasses } from "@/components/site/ScheduledLiveClasses";
 import { CloudCourseCard } from "@/components/site/CloudCourseCard";
 import { catalogQuery } from "@/lib/catalog-query";
-import { inr } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { bannerQuery } from '@/lib/banner-query';
