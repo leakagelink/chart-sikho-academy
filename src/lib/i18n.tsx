@@ -3,6 +3,11 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export type Lang = "en" | "hi";
 
 const dict = {
+  withdrawal_self_min:{en:'Minimum own course purchase for withdrawal (₹)',hi:'Withdrawal के लिए न्यूनतम अपनी course खरीद (₹)'},
+  withdrawal_self_condition:{en:'Referral earnings remain visible. Withdrawal requires verified own course purchases totalling the configured minimum, across one or multiple courses.',hi:'Referral कमाई दिखती रहेगी। Withdrawal के लिए एक या कई courses की अपनी verified खरीद का कुल मूल्य तय न्यूनतम राशि तक होना चाहिए।'},
+  withdrawal_self_total:{en:'Your verified course purchases',hi:'आपकी verified course खरीद'},
+  withdrawal_self_remaining:{en:'Additional course purchase required',hi:'अभी और course खरीद आवश्यक'},
+  withdrawal_self_ready:{en:'Own course purchase requirement met',hi:'अपनी course खरीद की शर्त पूरी हुई'},
   student_referral_link:{en:'Referral signup link',hi:'रेफरल signup लिंक'},
   student_copy_referral_link:{en:'Copy referral link',hi:'रेफरल लिंक कॉपी करें'},
   student_share_referral_link:{en:'Share referral link',hi:'रेफरल लिंक शेयर करें'},

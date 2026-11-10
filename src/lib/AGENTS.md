@@ -3,3 +3,4 @@
 - Seminars reuse session catalogs, checkout and recording helpers with a separate kind and permission section; why: consistent management must not grant Classes access to Seminar managers or expose paid links.
 - Display protected short_referral_code while retaining legacy referral_code only for signup compatibility; share primary-domain /auth?ref links. Why: shorter codes must not break existing sponsor relationships or shared links.
 - Seminar venue, address and support contact are public session_catalog metadata shown on cards/details; meeting links stay behind my_session_access. Why: attendees need the location before buying without exposing paid links.
+- Withdrawal purchase eligibility is calculated from caller-owned verified course orders net of approved refunds and enforced on payout insertion; wallet reads return its progress. Why: UI bypasses cannot grant withdrawal and other products/deposits do not count as courses.

@@ -90,6 +90,7 @@ export type Database = {
           maintenance_mode: boolean
           max_withdrawal: number
           max_withdrawals_per_month: number
+          min_self_purchase_value: number
           min_withdrawal: number
           payout_cycle: string
           ref_fixed_levels: Json
@@ -126,6 +127,7 @@ export type Database = {
           maintenance_mode?: boolean
           max_withdrawal?: number
           max_withdrawals_per_month?: number
+          min_self_purchase_value?: number
           min_withdrawal?: number
           payout_cycle?: string
           ref_fixed_levels?: Json
@@ -162,6 +164,7 @@ export type Database = {
           maintenance_mode?: boolean
           max_withdrawal?: number
           max_withdrawals_per_month?: number
+          min_self_purchase_value?: number
           min_withdrawal?: number
           payout_cycle?: string
           ref_fixed_levels?: Json
@@ -2010,6 +2013,7 @@ export type Database = {
       }
       my_session_access: { Args: { _session_id: string }; Returns: Json }
       my_wallet: { Args: never; Returns: Json }
+      own_course_purchase_total: { Args: { _user: string }; Returns: number }
       payment_upi: { Args: never; Returns: Json }
       product_comment_feed: {
         Args: { _id: string; _kind: string; _offset?: number }
@@ -2024,6 +2028,10 @@ export type Database = {
       product_social_summary: {
         Args: { _id: string; _kind: string }
         Returns: Json
+      }
+      purchase_withdrawal_eligible: {
+        Args: { _minimum: number; _total: number }
+        Returns: boolean
       }
       release_commissions_for: { Args: { _user: string }; Returns: number }
       release_due_commissions: { Args: never; Returns: number }
