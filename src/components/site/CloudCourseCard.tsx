@@ -3,6 +3,7 @@ import { BookOpen, User } from "lucide-react";
 import { inr } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
 import { ProductSocial } from './ProductSocial';
+import { CoursePurchaseButton } from './CoursePurchase';
 
 type C = { id: string; title: string; price: number; sale_price: number | null; thumbnail_url: string; instructor: string; description: string };
 
@@ -20,7 +21,8 @@ export function CloudCourseCard({ course: c }: { course: C }) {
         {now === 0 ? <span className="absolute left-3 top-3 rounded-full bg-success px-2.5 py-0.5 text-[11px] font-bold text-success-foreground">FREE</span>
           : off > 0 && <span className="absolute left-3 top-3 rounded-full bg-gold px-2.5 py-0.5 text-[11px] font-bold text-navy">{off}% off</span>}
       </div>
-      <div className="course-body flex flex-1 flex-col p-4">
+      <div className="course-body flex flex-1 flex-col p-4 pt-1.5">
+        <ProductSocial compact kind="course" id={c.id} title={c.title} className="-mr-2 mb-1.5 border-b border-border pb-1"/>
         <h3 className="line-clamp-2 font-display text-lg font-semibold leading-tight text-card-foreground">
           <Link to="/courses/$courseId" params={{ courseId: c.id }} className="transition-colors hover:text-primary hover:underline">{c.title}</Link>
         </h3>
@@ -30,8 +32,7 @@ export function CloudCourseCard({ course: c }: { course: C }) {
           <span className="text-lg font-bold text-gold">{now ? inr(now) : "FREE"}</span>
           {sale != null && <span className="text-xs text-muted-foreground line-through">{inr(c.price)}</span>}
         </div>
-        <Link to="/courses/$courseId" params={{ courseId: c.id }} className="course-cta mt-3 flex items-center justify-center gap-1.5 rounded-lg bg-primary py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90"><BookOpen className="h-4 w-4" />{now ? t("buy_now") : t("enroll_free")}</Link>
-        <ProductSocial kind="course" id={c.id} title={c.title}/>
+        <CoursePurchaseButton course={c} amount={now}/>
       </div>
     </article>
   );
