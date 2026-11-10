@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import { BookOpen } from "lucide-react";
 import { EbookPurchase } from "@/components/site/EbookPurchase";
 import { supabase } from "@/integrations/supabase/client";
-import { inr } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/ebooks")({
@@ -45,7 +44,6 @@ function EbooksPage() {
               <div className="flex flex-1 flex-col p-3">
                 <h2 className="line-clamp-2 font-semibold text-foreground">{b.title}</h2>
                 {b.description && <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{b.description}</p>}
-                <p className="mt-auto pt-2 text-lg font-bold text-primary">{inr(Number(b.price))}</p>
                 <EbookPurchase book={b} />
               </div>
             </article>

@@ -9,9 +9,14 @@ import { canOpenEbook } from '@/lib/ebook-access';
 import { Button } from '@/components/ui/button';
 import { ManualPay } from './ManualPay';
 import { ProductSocial } from './ProductSocial';
+import { inr } from '@/lib/courses';
 
+/** eBook card footer: price with compact Like / Comment / Share, then the buy/open action (payment opens in a popup). */
 export function EbookPurchase({ book }: { book: { id: string; title: string; price: number; has_file: boolean | null } }) {
-  return <><EbookPurchaseAction book={book}/><ProductSocial kind="ebook" id={book.id} title={book.title}/></>;
+  return <div className="mt-auto pt-3">
+    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2"><p className="min-w-0 text-lg font-bold text-primary">{inr(Number(book.price))}</p><ProductSocial compact kind="ebook" id={book.id} title={book.title} className="-mr-2"/></div>
+    <EbookPurchaseAction book={book}/>
+  </div>;
 }
 function EbookPurchaseAction({ book }: { book: { id: string; title: string; price: number; has_file: boolean | null } }) {
   const { session } = useAuth();
@@ -37,5 +42,5 @@ function EbookPurchaseAction({ book }: { book: { id: string; title: string; pric
   if (owned.isPending) return <p className="mt-3 text-sm text-muted-foreground">{t('admin_loading')}</p>;
   if (owned.isError) return <p role="alert" className="text-sm text-destructive">{t('admin_error')}</p>;
   if (canOpenEbook(book.price, owned.data ?? false)) return <Button className="mt-3 w-full" disabled={download.isPending} onClick={() => download.mutate()}><Download className="h-4 w-4" />{t('ebook_open')}</Button>;
-  return <div className="mt-3"><ManualPay course={book} userId={user.id} productType="ebook" /></div>;
+  return <div className="mt-3"><ManualPay course={book} userId={user.id} productType="ebook" className="w-full" /></div>;
 }

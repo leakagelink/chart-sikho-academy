@@ -5,7 +5,6 @@ import { HomeProductShelf } from "@/components/site/HomeProductShelf";
 import { ScheduledLiveClasses } from "@/components/site/ScheduledLiveClasses";
 import { CloudCourseCard } from "@/components/site/CloudCourseCard";
 import { catalogQuery } from "@/lib/catalog-query";
-import { inr } from "@/lib/courses";
 import { useLang } from "@/lib/i18n";
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { bannerQuery } from '@/lib/banner-query';
@@ -101,7 +100,6 @@ function Index() {
             <div className="flex min-w-0 flex-1 flex-col p-4">
               <h3 className="break-words font-display text-lg font-semibold leading-snug">{book.title}</h3>
               {book.description&&<p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{book.description}</p>}
-              <p className="mt-auto pt-3 text-lg font-bold text-primary">{inr(book.price)}</p>
               <EbookPurchase book={book}/>
             </div>
           </article>)}

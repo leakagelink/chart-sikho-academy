@@ -9,7 +9,8 @@ import { useAuth } from '@/hooks/use-auth';
 import { useLang } from '@/lib/i18n';
 import { productSharePath, validProductComment, type SocialProductKind } from '@/lib/product-social';
 
-export function ProductSocial({kind,id,title}:{kind:SocialProductKind;id:string;title:string}) {
+/** compact = inline icon row for cards (beside the date / under the cover); default = full-width row for detail pages. */
+export function ProductSocial({kind,id,title,compact=false,className=''}:{kind:SocialProductKind;id:string;title:string;compact?:boolean;className?:string}) {
   const {session}=useAuth(); const user=session?.user; const {t,lang}=useLang(); const client=useQueryClient();
   const [open,setOpen]=useState(false);const [sharing,setSharing]=useState(false);const [body,setBody]=useState('');const [busy,setBusy]=useState(false);const [error,setError]=useState('');const [offset,setOffset]=useState(0);const [copied,setCopied]=useState(false);
   const key=['product-social',kind,id,user?.id];
@@ -24,13 +25,14 @@ export function ProductSocial({kind,id,title}:{kind:SocialProductKind;id:string;
   const url='https://chartsikho.in'+productSharePath(kind,id);
   async function share(){setCopied(false);setError('');if(navigator.share){try{await navigator.share({title,url});return;}catch(e){if(e instanceof Error&&e.name==='AbortError')return;}}setSharing(true);}
   async function copy(){try{await navigator.clipboard.writeText(url);setCopied(true);}catch{setError(t('social_copy_manual'));}}
-  return <div className="mt-3 border-t border-border pt-2">
-    <div className="grid grid-cols-3 gap-1">
-      <Button variant="ghost" size="sm" aria-label={t('social_like')} title={t('social_like')} aria-pressed={summary.data?.liked??false} disabled={busy||summary.isPending||summary.isError} onClick={like} className={summary.data?.liked?'text-destructive':''}><Heart className={summary.data?.liked?'fill-current':''}/><span>{summary.data?.likes??'—'}</span></Button>
-      <Button variant="ghost" size="sm" aria-label={t('social_comment')} title={t('social_comment')} onClick={()=>{setOffset(0);setOpen(true);}}><MessageCircle/><span>{summary.data?.comments??'—'}</span></Button>
-      <Button variant="ghost" size="sm" aria-label={t('social_share')} title={t('social_share')} onClick={share}><Share2/></Button>
+  const btn=compact?'h-8 gap-1 px-2 text-xs [&_svg]:size-4':'';
+  return <div className={`${compact?'min-w-0':'mt-3 border-t border-border pt-2'} ${className}`}>
+    <div className={compact?'flex items-center justify-end gap-0.5':'grid grid-cols-3 gap-1'}>
+      <Button variant="ghost" size="sm" aria-label={t('social_like')} title={t('social_like')} aria-pressed={summary.data?.liked??false} disabled={busy||summary.isPending||summary.isError} onClick={like} className={`${btn} ${summary.data?.liked?'text-destructive':''}`}><Heart className={summary.data?.liked?'fill-current':''}/><span>{summary.data?.likes??'—'}</span></Button>
+      <Button variant="ghost" size="sm" aria-label={t('social_comment')} title={t('social_comment')} onClick={()=>{setOffset(0);setOpen(true);}} className={btn}><MessageCircle/><span>{summary.data?.comments??'—'}</span></Button>
+      <Button variant="ghost" size="sm" aria-label={t('social_share')} title={t('social_share')} onClick={share} className={btn}><Share2/></Button>
     </div>
-    {(error||summary.isError)&&<p role="alert" className="mt-2 text-xs text-destructive">{error||t('admin_error')}</p>}
+    {(error||summary.isError)&&<p role="alert" className="mt-1 text-xs text-destructive">{error||t('admin_error')}</p>}
     <Dialog open={open} onOpenChange={setOpen}><DialogContent className="max-h-[85dvh] w-[calc(100%-2rem)] overflow-y-auto rounded-lg"><DialogTitle>{t('social_comments')}</DialogTitle><DialogDescription className="break-words">{title}</DialogDescription>
       {feed.isPending?<p>{t('admin_loading')}</p>:feed.isError?<p role="alert">{t('admin_error')}</p>:<div className="space-y-4">{feed.data?.map(c=><div key={c.id} className="border-b border-border pb-3"><div className="flex items-start justify-between gap-2"><div className="min-w-0"><p className="break-words text-sm font-semibold">{c.author}</p><p className="text-xs text-muted-foreground">{new Date(c.created_at).toLocaleDateString(lang==='hi'?'hi-IN':'en-IN')}</p></div>{c.is_own&&<Button variant="ghost" size="icon" aria-label={t('social_delete')} title={t('social_delete')} disabled={busy} onClick={()=>action(()=>supabase.from('product_comments').delete().eq('id',c.id).eq('user_id',user?.id??''))}><Trash2/></Button>}</div><p className="mt-2 whitespace-pre-wrap break-words text-sm">{c.body}</p></div>)}{!feed.data?.length&&<p className="text-sm text-muted-foreground">{t('social_no_comments')}</p>}</div>}
       <div className="flex justify-between"><Button variant="ghost" disabled={offset===0} onClick={()=>setOffset(Math.max(0,offset-20))}>{t('wallet_previous')}</Button><Button variant="ghost" disabled={(feed.data?.length??0)<20} onClick={()=>setOffset(offset+20)}>{t('wallet_next')}</Button></div>
