@@ -22,3 +22,13 @@ t2('dailyCounts sums per day in date order', () => {
   e2(dc([{ at: '2026-01-02T10:00:00Z', v: 5 }, { at: '2026-01-01T09:00:00Z', v: 1 }, { at: '2026-01-02T23:00:00Z', v: 2 }]))
     .toEqual([{ label: '2026-01-01', value: 1 }, { label: '2026-01-02', value: 7 }]);
 });
+
+t2('influencer cards count marked influencers and only their commission in range', () => {
+  const d = { ...base, orders: [], influencers: [{ user_id: 'inf1' }, { user_id: 'inf2' }], commissions: [
+    { user_id: 'inf1', order_id: 'a', amount: 300, created_at: '2026-10-10T10:00:00Z' },
+    { user_id: 'x', order_id: 'a', amount: 100, created_at: '2026-10-10T10:00:00Z' },
+    { user_id: 'inf2', order_id: 'b', amount: 50, created_at: '2026-09-10T10:00:00Z' },
+  ] };
+  const s = summarize(d, new Date('2026-10-01'), new Date('2026-11-01'));
+  e2(s.influencerCount).toBe(2); e2(s.influencerCommission).toBe(300); e2(s.commission).toBe(400);
+});
