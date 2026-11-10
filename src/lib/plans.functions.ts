@@ -14,7 +14,7 @@ export const getPublishedPlans = createServerFn({method: 'GET'}).handler(async (
       return fetch(input, {...init, headers: h});
     }},
   });
-  const r = await s.from('membership_plans').select('id,name_en,name_hi,price,billing_period,features_en,features_hi,popular,position,status').eq('status','published').order('position');
+  const r = await s.from('membership_plans').select('id,name_en,name_hi,price,billing_period,features_en,features_hi,popular,position,status,access_categories,access_days').eq('status','published').order('position');
   if (r.error) throw new Error('Unable to load plans');
   return publishedPlans(r.data ?? []);
 });

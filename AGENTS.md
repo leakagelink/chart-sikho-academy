@@ -38,3 +38,5 @@
 - Course final quizzes link through the course record (one quiz may serve many courses); students get questions, scoring, attempt limits and automatic certificates only through security-definer database functions gated on full lesson completion; why: answer keys stay hidden and the browser cannot forge scores or certificates.
 - Auth signup trigger assigns validated referral/default Admin and own code, never sample enrollment or earnings; paid-order triggers retain parents. Why: metadata changes cannot reparent users or forge commissions.
 - Admin notifications flagged show_popup appear once as a homepage/dashboard popup and stay in the inbox; sent push Campaigns create one in-app notification via a role-checked trigger. Why: one delivery path for inbox and popup without duplicates.
+
+- Membership purchases snapshot product-category entitlements and custom-day or calendar duration; every resource access uses category-aware server checks. Why: a live-only plan must not unlock unrelated products, and plan edits affect new purchases only.
