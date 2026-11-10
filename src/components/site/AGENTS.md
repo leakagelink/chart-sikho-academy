@@ -7,3 +7,4 @@
 
 - Product cards open purchases in the shared PaymentDialog (ManualPayForm body, mounted only while open) and show ProductSocial compact beside the date/price or under the cover; detail pages keep the full social row. Why: buyers pay without leaving the list, and access/payment queries do not run for every card.
 - Course and session detail pages share ProductDetailLayout (header, sticky purchase aside, body; mobile order header→purchase→body). Why: every product opens with the same responsive buying layout.
+- Student data tables add `stack-table` with per-cell `data-label` so phones show labelled cards instead of sideways scrolling; why: wide tables stay readable on small screens.
