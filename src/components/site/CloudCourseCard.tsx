@@ -7,6 +7,9 @@ import { coursePaymentAmount } from '@/lib/payment-upi';
 
 type C = { id: string; title: string; price: number; sale_price: number | null; thumbnail_url: string; instructor: string; description: string };
 
+// Card previews show plain text; detail pages render the formatting.
+const plain = (s: string) => s.replace(/^#+\s*/gm, '').replace(/\*\*|__|`/g, '').replace(/\s+/g, ' ').trim();
+
 export function CloudCourseCard({ course: c }: { course: C }) {
   const sale = c.sale_price != null && c.sale_price < c.price ? c.sale_price : null;
   const now = sale ?? c.price;
@@ -25,7 +28,7 @@ export function CloudCourseCard({ course: c }: { course: C }) {
         <h3 className="line-clamp-2 font-display text-lg font-semibold leading-tight text-card-foreground">
           <Link to="/courses/$courseId" params={{ courseId: c.id }} className="transition-colors hover:text-primary hover:underline">{c.title}</Link>
         </h3>
-        {c.description && <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{c.description}</p>}
+        {c.description && <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{plain(c.description)}</p>}
         {c.instructor && <p className="mt-2 flex items-center gap-1 text-xs text-muted-foreground"><User className="h-3.5 w-3.5" />{c.instructor}</p>}
         <div className="course-price mt-auto flex flex-wrap items-baseline gap-2 pt-3">
           <span className="text-lg font-bold text-gold">{now ? inr(now) : "FREE"}</span>
