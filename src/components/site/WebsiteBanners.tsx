@@ -27,22 +27,29 @@ function BannerImage({banner,eager=false}:{banner:WebsiteBanner;eager?:boolean})
  </div>;
 }
 
-/** Title and buttons shown in a strip below the image so nothing covers the artwork. */
-function BannerCaption({banner}:{banner:WebsiteBanner}){
+/** Title and buttons: overlaid at the bottom-right of the artwork on tablet/desktop, a strip below it on phones. */
+function BannerCaption({banner,overlay=false}:{banner:WebsiteBanner;overlay?:boolean}){
  const {t}=useLang();const router=useRouter();
  const buttons=bannerButtons(banner,{know_more:t('banner_know_more'),join_now:t('banner_join_now')});
  const showText=banner.show_text!==false&&!!banner.title;
  if(!showText&&!buttons.length)return null;
  const go=(href:string)=>(e:MouseEvent<HTMLAnchorElement>)=>{if(!href.startsWith('/')||e.metaKey||e.ctrlKey||e.shiftKey||e.button!==0)return;e.preventDefault();router.history.push(href);};
- return <div className={`banner-caption flex flex-col gap-3 bg-navy px-4 py-3 text-navy-foreground sm:flex-row sm:items-center sm:px-6 ${showText?'sm:justify-between':'sm:justify-center'}`}>
-  {showText&&<div className="min-w-0"><h2 className="font-display text-lg font-bold leading-tight sm:text-2xl">{banner.title}</h2>{banner.subtitle&&<p className="line-clamp-2 text-sm opacity-90">{banner.subtitle}</p>}</div>}
-  {buttons.length>0&&<div className="flex shrink-0 flex-wrap gap-3">{buttons.map(b=>{const external=!b.href.startsWith('/');return <a key={b.kind} href={b.href} onClick={go(b.href)} {...(external?{target:'_blank',rel:'noopener noreferrer'}:{})} className={b.kind==='join_now'?BTN_JOIN:BTN_MORE}>{b.label}</a>;})}</div>}
+ const links=buttons.map(b=>{const external=!b.href.startsWith('/');return <a key={b.kind} href={b.href} onClick={go(b.href)} {...(external?{target:'_blank',rel:'noopener noreferrer'}:{})} className={b.kind==='join_now'?BTN_JOIN:BTN_MORE}>{b.label}</a>;});
+ if(overlay)return <div className="banner-overlay pointer-events-none absolute bottom-[6%] right-[3%] z-10 hidden max-w-[60%] sm:block">
+  <div className="pointer-events-auto flex items-center gap-3 rounded-full bg-navy/75 py-2 pl-5 pr-2 text-navy-foreground shadow-card backdrop-blur-sm lg:gap-4">
+   {showText&&<p className="min-w-0 truncate font-display text-base font-bold text-gold lg:text-xl" title={banner.subtitle||banner.title}>{banner.title}</p>}
+   {buttons.length>0&&<div className="flex shrink-0 gap-2 lg:gap-3">{links}</div>}
+  </div>
+ </div>;
+ return <div className={`banner-caption flex flex-col gap-3 bg-navy px-4 py-3 text-navy-foreground sm:hidden ${showText?'':'items-center'}`}>
+  {showText&&<div className="min-w-0"><h2 className="font-display text-lg font-bold leading-tight text-gold">{banner.title}</h2>{banner.subtitle&&<p className="line-clamp-2 text-sm opacity-90">{banner.subtitle}</p>}</div>}
+  {buttons.length>0&&<div className="flex shrink-0 flex-wrap gap-3">{links}</div>}
  </div>;
 }
 
 /** One slide's artwork with its caption strip; also used as the admin live preview. */
 export function BannerSlide({banner,eager=false}:{banner:WebsiteBanner;eager?:boolean}){
- return <div className="banner-slide w-full overflow-hidden bg-navy"><BannerImage banner={banner} eager={eager}/><BannerCaption banner={banner}/></div>;
+ return <div className="banner-slide w-full overflow-hidden bg-navy"><div className="relative"><BannerImage banner={banner} eager={eager}/><BannerCaption banner={banner} overlay/></div><BannerCaption banner={banner}/></div>;
 }
 
 function BannerSlider({banners}:{banners:WebsiteBanner[]}){
@@ -59,7 +66,7 @@ function BannerSlider({banners}:{banners:WebsiteBanner[]}){
   onKeyDown={e=>{if(e.key==='ArrowLeft')goTo(current-1);if(e.key==='ArrowRight')goTo(current+1);}}>
   <div className="relative overflow-hidden">
    <div className="banner-track flex w-full transition-transform duration-500 ease-out motion-reduce:transition-none" style={{transform:`translateX(-${current*100}%)`}}>
-    {banners.map((b,i)=><div key={b.id} role="group" aria-roledescription="slide" aria-label={`${i+1} / ${count}`} aria-hidden={i!==current} inert={i!==current} className="w-full shrink-0"><BannerImage banner={b} eager={i===0}/></div>)}
+    {banners.map((b,i)=><div key={b.id} role="group" aria-roledescription="slide" aria-label={`${i+1} / ${count}`} aria-hidden={i!==current} inert={i!==current} className="relative w-full shrink-0"><BannerImage banner={b} eager={i===0}/><BannerCaption banner={b} overlay/></div>)}
    </div>
    {count>1&&<>
     <button type="button" onClick={()=>goTo(current-1)} aria-label={t('banner_prev')} className="absolute left-3 top-1/2 hidden h-10 w-10 -translate-y-1/2 place-items-center rounded-full bg-navy/60 text-navy-foreground backdrop-blur transition hover:bg-navy/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring sm:grid"><ChevronLeft className="h-5 w-5"/></button>
