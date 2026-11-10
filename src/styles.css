@@ -281,16 +281,6 @@ html { scroll-padding-top: 80px; }
 .splash-topline,.splash-candles { display:none; }
 .splash-name { color:var(--gold); }
 .splash-tagline { color:var(--gold-light); }
-@media (max-width: 639px) {
-.course-row { display:grid; grid-template-columns:90px minmax(0,1fr); gap:12px; padding:12px 0; border:0; border-bottom:1px solid var(--border); border-radius:0; box-shadow:none; }
-.course-row .course-cover { height:106px; border-radius:5px; padding:0; overflow:hidden; }
-.course-row .course-body { padding:0; }
-.course-row h3 { font-size:16px; line-height:1.3; }
-.course-row .course-cta { display:none; }
-.course-row .course-price { margin-top:6px; }
-.course-row .course-price > div { flex-wrap:wrap; gap:5px; }
-.course-row .course-price span:first-child { font-size:16px; }
-}
 .course-cover { position:relative; }
 .course-cover img { width:100%; height:100%; object-fit:cover; }
 .student-main .course-cover img { width:100%; height:100%; object-fit:cover; }
@@ -299,9 +289,12 @@ html { scroll-padding-top: 80px; }
 .catalog-screen > h1,.catalog-screen > p { display:none; }
 .catalog-screen .catalog-controls { margin-top:0; }
 .catalog-screen input { border-radius:6px; }
-.catalog-screen .catalog-tabs { gap:3px; flex-wrap:nowrap; }
+.catalog-screen .catalog-tabs { gap:6px; flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; -webkit-overflow-scrolling:touch; margin:0 -16px; padding:0 16px 2px; }
+.catalog-screen .catalog-tabs::-webkit-scrollbar { display:none; }
+.catalog-screen .catalog-tabs button { flex-shrink:0; white-space:nowrap; }
 .catalog-tabs button { font-size:12px; padding:4px 9px; height:30px; min-height:30px; border-radius:5px; }
-@media (max-width: 639px) { .catalog-screen .catalog-list { margin-top:8px; gap:0 24px; } }
+@media (max-width: 639px) { .catalog-screen .catalog-list { margin-top:14px; gap:16px; } }
+@media (min-width: 1024px) { .catalog-screen .catalog-tabs { margin:0; padding:0; overflow:visible; } }
 .screen-title { display:flex; align-items:center; gap:12px; padding:14px 16px; background:var(--navy); color:var(--navy-foreground); margin:0 -16px 16px; font-size:18px; }
 .home-greeting { margin:0 -16px; padding:18px 16px 32px; background:var(--navy); color:var(--navy-foreground); }
 .home-greeting .text-foreground,.home-greeting .text-muted-foreground { color:var(--navy-foreground); }
