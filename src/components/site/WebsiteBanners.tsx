@@ -68,6 +68,6 @@ function BannerSlider({banners}:{banners:WebsiteBanner[]}){
     <div className="absolute bottom-1 left-1/2 flex -translate-x-1/2 gap-1.5">{banners.map((b,i)=><button key={b.id} type="button" onClick={()=>goTo(i)} aria-label={`${t('banner_go_to')} ${i+1}`} aria-current={i===current} className="grid h-6 min-h-0 place-items-center px-0.5"><span className={`block h-2 rounded-full shadow transition-all ${i===current?'w-6 bg-gold':'w-2 bg-navy-foreground/70 hover:bg-navy-foreground'}`}/></button>)}</div>
    </>}
   </div>
-  <BannerCaption banner={banners[current]}/>
+  {banners[current]&&<BannerCaption banner={banners[current]}/>}
  </section>;
 }
