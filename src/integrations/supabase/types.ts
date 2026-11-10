@@ -1245,6 +1245,8 @@ export type Database = {
       }
       membership_plans: {
         Row: {
+          access_categories: string[]
+          access_days: number
           billing_period: string
           created_at: string
           features_en: string
@@ -1258,6 +1260,8 @@ export type Database = {
           status: string
         }
         Insert: {
+          access_categories?: string[]
+          access_days?: number
           billing_period?: string
           created_at?: string
           features_en?: string
@@ -1271,6 +1275,8 @@ export type Database = {
           status?: string
         }
         Update: {
+          access_categories?: string[]
+          access_days?: number
           billing_period?: string
           created_at?: string
           features_en?: string
@@ -1287,6 +1293,7 @@ export type Database = {
       }
       memberships: {
         Row: {
+          access_categories: string[]
           created_at: string
           expires_at: string | null
           id: string
@@ -1297,6 +1304,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          access_categories?: string[]
           created_at?: string
           expires_at?: string | null
           id?: string
@@ -1307,6 +1315,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          access_categories?: string[]
           created_at?: string
           expires_at?: string | null
           id?: string
@@ -2125,6 +2134,7 @@ export type Database = {
       get_course_quiz: { Args: { _course_id: string }; Returns: Json }
       has_active_membership: { Args: { _user: string }; Returns: boolean }
       has_course_access: { Args: { _course: string }; Returns: boolean }
+      has_membership_category: { Args: { _category: string }; Returns: boolean }
       has_panel_permission: {
         Args: { _action: string; _section: string }
         Returns: boolean
@@ -2143,6 +2153,10 @@ export type Database = {
       issue_purchase_bill: { Args: { _order_id: string }; Returns: string }
       make_short_referral_code: { Args: never; Returns: string }
       member_enroll: { Args: { _course_id: string }; Returns: undefined }
+      membership_category_matches: {
+        Args: { _categories: string[]; _category: string }
+        Returns: boolean
+      }
       my_ebook_resource: { Args: { _ebook_id: string }; Returns: string }
       my_membership: { Args: never; Returns: Json }
       my_referral_members: {
