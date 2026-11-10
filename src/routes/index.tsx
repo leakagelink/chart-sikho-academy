@@ -101,7 +101,6 @@ function Index() {
             <div className="flex min-w-0 flex-1 flex-col p-4">
               <h3 className="break-words font-display text-lg font-semibold leading-snug">{book.title}</h3>
               {book.description&&<p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{book.description}</p>}
-              <p className="mt-auto pt-3 text-lg font-bold text-primary">{inr(book.price)}</p>
               <EbookPurchase book={book}/>
             </div>
           </article>)}

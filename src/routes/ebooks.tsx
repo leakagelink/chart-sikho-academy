@@ -45,7 +45,6 @@ function EbooksPage() {
               <div className="flex flex-1 flex-col p-3">
                 <h2 className="line-clamp-2 font-semibold text-foreground">{b.title}</h2>
                 {b.description && <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{b.description}</p>}
-                <p className="mt-auto pt-2 text-lg font-bold text-primary">{inr(Number(b.price))}</p>
                 <EbookPurchase book={b} />
               </div>
             </article>

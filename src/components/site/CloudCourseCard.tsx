@@ -1,14 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { BookOpen, User } from "lucide-react";
 import { inr } from "@/lib/courses";
-import { useLang } from "@/lib/i18n";
 import { ProductSocial } from './ProductSocial';
 import { CoursePurchaseButton } from './CoursePurchase';
+import { coursePaymentAmount } from '@/lib/payment-upi';
 
 type C = { id: string; title: string; price: number; sale_price: number | null; thumbnail_url: string; instructor: string; description: string };
 
 export function CloudCourseCard({ course: c }: { course: C }) {
-  const { t } = useLang();
   const sale = c.sale_price != null && c.sale_price < c.price ? c.sale_price : null;
   const now = sale ?? c.price;
   const off = sale != null && c.price > 0 ? Math.round((1 - sale / c.price) * 100) : 0;
@@ -32,7 +31,7 @@ export function CloudCourseCard({ course: c }: { course: C }) {
           <span className="text-lg font-bold text-gold">{now ? inr(now) : "FREE"}</span>
           {sale != null && <span className="text-xs text-muted-foreground line-through">{inr(c.price)}</span>}
         </div>
-        <CoursePurchaseButton course={c} amount={now}/>
+        <CoursePurchaseButton course={c} amount={coursePaymentAmount(c)}/>
       </div>
     </article>
   );
