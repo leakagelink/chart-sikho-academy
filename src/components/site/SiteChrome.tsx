@@ -88,11 +88,11 @@ export function Header() {
           <LangToggle />
           {session ? (
             <>
-              <Button asChild className="hidden sm:inline-flex"><Link to="/dashboard">{t("my_learning")}</Link></Button>
-              <Button asChild variant="secondary" size="icon" className="hidden h-11 w-11 shrink-0 rounded-full sm:inline-flex"><Link to="/profile" aria-label={t("profile")}><User className="h-5 w-5" /></Link></Button>
+              <Button asChild className="hidden lg:inline-flex"><Link to="/dashboard">{t("my_learning")}</Link></Button>
+              <Button asChild variant="secondary" size="icon" className="hidden h-11 w-11 shrink-0 rounded-full lg:inline-flex"><Link to="/profile" aria-label={t("profile")}><User className="h-5 w-5" /></Link></Button>
             </>
           ) : (
-            <Button asChild className="hidden sm:inline-flex"><Link to="/auth" search={{ redirect: undefined }}>{t("login")} / {t("signup")}</Link></Button>
+            <Button asChild className="hidden lg:inline-flex"><Link to="/auth" search={{ redirect: undefined }}>{t("login")} / {t("signup")}</Link></Button>
           )}
         </div>
       </div>
