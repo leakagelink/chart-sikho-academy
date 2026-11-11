@@ -27,3 +27,19 @@ export function useIsNativeApp(): boolean {
   }, []);
   return native;
 }
+
+/** Phone-size screens (below the desktop breakpoint) — matches the bottom-bar navigation breakpoint. */
+export const PHONE_LAYOUT_QUERY = "(max-width: 1023px)";
+
+/** True in the installed app or on any phone/tablet-size screen; false on desktop and during SSR. */
+export function useIsPhoneLayout(): boolean {
+  const [phone, setPhone] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia(PHONE_LAYOUT_QUERY);
+    const update = () => setPhone(isNativeAppEnv(window as unknown as NativeWindowLike) || mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+  return phone;
+}
