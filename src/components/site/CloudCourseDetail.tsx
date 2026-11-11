@@ -4,7 +4,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/use-auth';
 import { useLang } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import { ArrowLeft, BookOpen, CheckCircle2, Circle, Star, User } from 'lucide-react';
 import { useServerFn } from '@tanstack/react-start';
 import { getCourseReviews } from '@/lib/student.functions';
@@ -69,11 +70,14 @@ export function CloudCourseDetail({course}:{course:{id:string;title:string;price
   <div className={`max-lg:[&>section]:mt-0 ${only('reviews')}`}><CourseReviews courseId={course.id} canReview={!!enrolled.data}/></div>
   <p className="text-xs text-muted-foreground">{t('disclaimer')}</p>
   <div className="h-24 lg:hidden" aria-hidden="true"/>
-  <div className="course-buy-bar fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-30 border-t border-border bg-card px-4 py-3 shadow-card lg:hidden">
+  <BodyPortal><div className="course-buy-bar fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-30 border-t border-border bg-card px-4 py-3 shadow-card lg:hidden">
    <div className="mx-auto grid max-w-3xl grid-cols-[minmax(0,1fr)_minmax(0,11rem)] items-center gap-3">
     <div className="min-w-0"><p className="text-xs text-muted-foreground">{t('course_fee')}</p><p className="flex flex-wrap items-baseline gap-x-2"><span className="font-display text-2xl font-bold text-gold">{amount?inr(amount):t('session_free')}</span>{amount!==course.price&&<s className="text-sm text-muted-foreground">{inr(course.price)}</s>}</p></div>
     <div className="min-w-0 [&_button]:w-full [&_a]:w-full">{action}</div>
    </div>
-  </div>
+  </div></BodyPortal>
  </ProductDetailLayout>;
 }
+
+/** Fixed bars must live outside animated (transformed) page wrappers, or they scroll with the page. */
+function BodyPortal({children}:{children:ReactNode}){const [el,setEl]=useState<HTMLElement|null>(null);useEffect(()=>setEl(document.body),[]);return el?createPortal(children,el):null;}
