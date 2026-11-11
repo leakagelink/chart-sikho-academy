@@ -28,7 +28,7 @@ export function SessionCard({ session: s, heading = 'h3' }: { session: SessionCa
   const { t } = useLang();
   const Heading = heading;
   const upcoming = Date.parse(s.starts_at) >= Date.now();
-  const place = seminarPlace(s as Parameters<typeof seminarPlace>[0]);
+  const place = seminarPlace(s);
   return <article className="live-class-card session-card flex h-full min-w-0 flex-col overflow-hidden rounded-lg border border-border bg-card shadow-card">
     <div className="relative">
       <LiveClassThumbnail title={s.title} thumbnailUrl={s.thumbnail_url} />
