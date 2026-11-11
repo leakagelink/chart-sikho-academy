@@ -839,6 +839,12 @@ html { scroll-padding-top: 80px; }
   .profile-screen .profile-details > h2:not(:first-child) { margin-top: 24px; padding-top: 0; border-top: 0; }
   .profile-logout { border-radius: 12px; min-height: 46px; }
 
+  /* Simple list screens (notifications, support, certificates, KYC) */
+  .app-list { padding-top: 12px; }
+  .app-list > article { margin-top: 12px; padding: 16px; border: 1px solid var(--app-line); border-radius: 18px; background: var(--app-card-gradient); box-shadow: var(--app-shadow); }
+  .app-list > form { padding: 16px; border: 1px solid var(--app-line); border-radius: 18px; background: var(--app-card-gradient); }
+  .app-list :where(input, textarea, select) { border-radius: 12px; }
+
   /* Dashboard */
   .dashboard-screen { padding-top: 14px; }
   .dashboard-screen .dash-hello { padding: 18px 16px; border-radius: 20px; background: var(--app-hero-gradient); border: 1px solid color-mix(in oklab, var(--gold) 28%, transparent); box-shadow: var(--app-shadow); }
