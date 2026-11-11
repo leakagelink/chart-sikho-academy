@@ -1,3 +1,4 @@
+import { TreeCanvas, TreeZoomControls, type TreeCanvasHandle } from './TreeCanvas';
 import {useMemo,useRef,useState} from 'react';
 import {Link} from '@tanstack/react-router';
 import {ArrowLeft,ArrowRight,CalendarDays,CheckCircle2,Crown,Eye,GitBranch,Mail,MapPin,Network,Phone,RotateCcw,Search,Users,UserRound,Wallet,X} from 'lucide-react';
@@ -16,7 +17,7 @@ export function AdminTeamTree({data,rootId}:{data:AdminData;rootId?:string}) {
   const [rank,setRank]=useState('all');
   const [focus,setFocus]=useState<string>();
   const [selected,setSelected]=useState<string>();
-  const viewport=useRef<HTMLDivElement>(null);
+  const viewport=useRef<TreeCanvasHandle>(null);
   const nodes=useMemo(()=>{
     const result=teamTreeNodes(data.affiliates,focus||rootId);
     if(result.length) return result;
@@ -91,10 +92,10 @@ export function AdminTeamTree({data,rootId}:{data:AdminData;rootId?:string}) {
       {!rootId&&<select aria-label={t('admin_team_root')} value={root} onChange={e=>setRoot(e.target.value)}><option value="all">{t('tree_all_roots')}</option>{roots.map(n=><option key={n.id} value={n.id}>{name(n.id)}</option>)}</select>}
       <select aria-label={t('admin_level')} value={level} onChange={e=>setLevel(e.target.value)}><option value="all">{t('tree_all_levels')}</option>{levels.map(l=><option key={l} value={l}>{l===0?t('admin_team_root'):`${t('admin_level')} ${l}`}</option>)}</select>
       <select aria-label={t('admin_rank')} value={rank} onChange={e=>setRank(e.target.value)}><option value="all">{t('admin_rank')}: {t('filter_all')}</option><option value="none">{t('admin_no_rank')}</option>{data.ranks.map(r=><option key={r.id} value={r.name}>{r.name}</option>)}</select>
-      <div className="tree-canvas-controls"><span>{t('tree_levels')}: <strong>{levels.filter(l=>l>0).length}</strong></span><Button variant="outline" size="icon" title={t('tree_reset_view')} aria-label={t('tree_reset_view')} onClick={()=>{setFocus(undefined);setRoot('all');setLevel('all');setRank('all');setQuery('');setSelected(undefined);viewport.current?.scrollTo({left:0,top:0});}}><RotateCcw size={16}/></Button><Button variant="outline" size="icon" title={t('tree_previous')} aria-label={t('tree_previous')} onClick={()=>viewport.current?.scrollBy({left:-320,behavior:'smooth'})}><ArrowLeft size={18}/></Button><Button variant="outline" size="icon" title={t('tree_next')} aria-label={t('tree_next')} onClick={()=>viewport.current?.scrollBy({left:320,behavior:'smooth'})}><ArrowRight size={18}/></Button></div>
+      <div className="tree-canvas-controls"><span>{t('tree_levels')}: <strong>{levels.filter(l=>l>0).length}</strong></span><Button variant="outline" size="icon" title={t('tree_reset_view')} aria-label={t('tree_reset_view')} onClick={()=>{setFocus(undefined);setRoot('all');setLevel('all');setRank('all');setQuery('');setSelected(undefined);viewport.current?.scrollTo({left:0,top:0});}}><RotateCcw size={16}/></Button><TreeZoomControls canvas={viewport}/><Button variant="outline" size="icon" title={t('tree_previous')} aria-label={t('tree_previous')} onClick={()=>viewport.current?.scrollBy({left:-320,behavior:'smooth'})}><ArrowLeft size={18}/></Button><Button variant="outline" size="icon" title={t('tree_next')} aria-label={t('tree_next')} onClick={()=>viewport.current?.scrollBy({left:320,behavior:'smooth'})}><ArrowRight size={18}/></Button></div>
     </div>
     <div className={`tree-workspace ${chosen?'tree-with-inspector':''}`}>
-      <div ref={viewport} className="team-tree-viewport" tabIndex={0} role="region" aria-label={t('admin_teamtree_real')}>{shown.length?<ul className="team-tree-roots">{roots.filter(n=>included.has(n.id)).map(renderBranch)}</ul>:<p className="tree-empty">{t('admin_empty')}</p>}</div>
+      <TreeCanvas ref={viewport} label={t('admin_teamtree_real')}>{shown.length?<ul className="team-tree-roots">{roots.filter(n=>included.has(n.id)).map(renderBranch)}</ul>:<p className="tree-empty">{t('admin_empty')}</p>}</TreeCanvas>
       {chosen&&<aside className="tree-inspector" aria-label={t('tree_details')}>
         <header className="tree-inspector-header"><Button variant="ghost" size="icon" className="tree-inspector-close" aria-label={t('admin_close_team')} title={t('admin_close_team')} onClick={()=>setSelected(undefined)}><X size={21}/></Button>{avatar(chosen.id,true)}<div className="min-w-0"><h3>{name(chosen.id)}</h3><span className={`tree-account-status ${member?.account_status==='active'?'tree-account-active':''}`}><CheckCircle2 size={14}/>{member?status(member.account_status):'—'}</span><p className="tree-inspector-id">{member?.referral_code||'—'}</p></div></header>
         <dl className="tree-inspector-rows">{rows.map(([label,value,Icon])=><div key={label}><dt><Icon size={18}/>{t(label)}</dt><dd>{value}</dd></div>)}</dl>
