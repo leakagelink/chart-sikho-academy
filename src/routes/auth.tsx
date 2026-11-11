@@ -147,7 +147,7 @@ function AuthPage() {
             )}
             {mode === "signup" && field(Gift, <input aria-label={t("signup_referral_code")} placeholder={t("signup_referral_code")} autoCapitalize="characters" autoComplete="off" maxLength={40} value={form.referral} onChange={set("referral")} className={nativeInput} />)}
             {mode === "login" && (
-              <div className="text-right"><button type="button" onClick={() => { setMode("forgot"); setMsg(null); }} className="text-sm font-semibold text-accent">{t("forgot_q")}</button></div>
+              <div className="text-right"><button type="button" onClick={() => { setMode("forgot"); setMsg(null); }} className="text-sm font-semibold text-gold">{t("forgot_q")}</button></div>
             )}
             {msg && <p role="status" className={`text-center text-sm ${msg.ok ? "text-success" : "text-destructive"}`}>{msg.text}</p>}
             <button type="submit" disabled={busy} className="blueprint-gold w-full rounded-2xl py-4 font-display text-xl font-bold shadow-card disabled:opacity-60">
