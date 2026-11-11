@@ -310,6 +310,17 @@ html { scroll-padding-top: 80px; }
 .catalog-tabs button { font-size:12px; padding:4px 9px; height:30px; min-height:30px; border-radius:5px; }
 @media (max-width: 639px) { .catalog-screen .catalog-list { margin-top:14px; gap:16px; } }
 @media (min-width: 1024px) { .catalog-screen .catalog-tabs { margin:0; padding:0; overflow:visible; } }
+/* Phone/app catalog (reference): roomy search, outlined filter chips, row cards. */
+@media (max-width: 1023px) {
+  .catalog-screen { padding-top:12px; }
+  .catalog-screen .catalog-controls input { border-radius:14px; padding:14px 16px 14px 48px; font-size:15px; border-color:var(--border); }
+  .catalog-screen .catalog-search-icon { left:16px; width:20px; height:20px; color:var(--gold); }
+  .catalog-screen .catalog-tabs { gap:10px; }
+  .catalog-screen .catalog-tabs button { font-size:14px; height:38px; min-height:38px; padding:0 16px; border-radius:10px; }
+  .catalog-screen .catalog-tabs button[data-active=false] { background:transparent; border:1px solid var(--border); color:var(--foreground); }
+  .catalog-screen .catalog-list { gap:16px; }
+  body:has(.course-buy-bar) .support-float { bottom: calc(10rem + env(safe-area-inset-bottom)); }
+}
 .screen-title { display:flex; align-items:center; gap:12px; padding:14px 16px; background:var(--navy); color:var(--navy-foreground); margin:0 -16px 16px; font-size:18px; }
 .home-greeting { margin:0 -16px; padding:18px 16px 32px; background:var(--navy); color:var(--navy-foreground); }
 .home-greeting .text-foreground,.home-greeting .text-muted-foreground { color:var(--navy-foreground); }

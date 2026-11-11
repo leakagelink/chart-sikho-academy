@@ -6,12 +6,12 @@ import { ChevronLeft } from 'lucide-react';
  * Shared product detail page: header (title + cover), sticky purchase panel and body.
  * Mobile order: header → purchase → body. Desktop: two columns with the purchase panel pinned on the right.
  */
-export function ProductDetailLayout({ back, header, aside, children }: { back: ReactNode; header: ReactNode; aside: ReactNode; children?: ReactNode }) {
+export function ProductDetailLayout({ back, header, aside, children, asideClassName = '' }: { back: ReactNode; header: ReactNode; aside: ReactNode; children?: ReactNode; asideClassName?: string }) {
   return <main className="product-detail mx-auto w-full min-w-0 max-w-7xl px-4 py-5 sm:px-6 lg:py-8">
     {back}
     <div className="mt-4 grid min-w-0 gap-5 xl:grid-cols-[minmax(0,1fr)_340px] xl:gap-8 2xl:grid-cols-[minmax(0,1fr)_380px]">
       <header className="min-w-0 space-y-4 xl:col-start-1 xl:row-start-1">{header}</header>
-      <aside className="min-w-0 self-start rounded-xl border border-border bg-card p-4 shadow-card sm:p-5 xl:sticky xl:top-20 xl:col-start-2 xl:row-span-2 xl:row-start-1">{aside}</aside>
+      <aside className={`min-w-0 self-start rounded-xl border border-border bg-card p-4 shadow-card sm:p-5 xl:sticky xl:top-20 xl:col-start-2 xl:row-span-2 xl:row-start-1 ${asideClassName}`}>{aside}</aside>
       <div className="min-w-0 space-y-6 xl:col-start-1 xl:row-start-2">{children}</div>
     </div>
   </main>;

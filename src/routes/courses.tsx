@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Search, BookOpen, Video } from "lucide-react";
+import { Search, BookOpen, Video, ArrowLeft } from "lucide-react";
 import hero from "@/assets/hero-bull.jpg";
 import { LiveClassThumbnail, SessionDateSocial } from "@/components/site/LiveClassCard";
 import { SessionPurchase } from "@/components/site/SessionPurchase";
 import { EbookPurchase } from "@/components/site/EbookPurchase";
 import { CloudCourseCard } from "@/components/site/CloudCourseCard";
+import { CatalogRow, CourseRowCard } from "@/components/site/CatalogRow";
 import { useLang, type DictKey } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { useSuspenseQuery } from '@tanstack/react-query';
@@ -56,8 +57,12 @@ function CoursesPage() {
   const total = realCourses.length + ebooks.length + sessions.length;
   return (
     <div className="catalog-screen w-full px-4 pt-8">
+      <div className="mb-4 flex items-center gap-3 lg:hidden">
+        <Link to="/" aria-label={t("nav_home")} className="-ml-1 grid size-10 shrink-0 place-items-center rounded-full text-gold"><ArrowLeft className="size-6" /></Link>
+        <h1 className="truncate font-display text-2xl font-bold">{t("nav_courses")}</h1>
+      </div>
       <WebsiteBanners page="courses" fallback={
-      <section className="relative overflow-hidden rounded-3xl bg-navy text-navy-foreground">
+      <section className="relative hidden overflow-hidden rounded-3xl lg:block bg-navy text-navy-foreground">
         <img src={hero} alt="" width={1280} height={832} className="absolute inset-0 h-full w-full object-cover opacity-50 md:left-1/3 md:w-2/3 md:opacity-90" />
         <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-transparent" />
         <div className="relative max-w-xl p-6 sm:p-10 md:py-14">
@@ -71,21 +76,27 @@ function CoursesPage() {
       }/>
       <div className="catalog-controls mt-6 flex flex-col gap-3 lg:flex-row lg:items-center">
         <label className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <input aria-label={t("search")} value={q} onChange={(e) => navigate({search:prev=>({...prev,q:e.target.value}),replace:true})} placeholder={t("search")} className="w-full rounded-full border border-input bg-card py-2.5 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-ring" />
+          <Search className="catalog-search-icon absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <input aria-label={t("search")} value={q} onChange={(e) => navigate({search:prev=>({...prev,q:e.target.value}),replace:true})} placeholder={t("catalog_search_ph")} className="w-full rounded-full border border-input bg-card py-2.5 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-ring" />
         </label>
         <div className="catalog-tabs flex flex-wrap gap-2">
           {filters.map((x) => (
-            <Button variant={f === x.key ? "default" : "secondary"} aria-pressed={f === x.key} key={x.key} onClick={() => navigate({search:prev=>({...(prev.q ? {q:prev.q} : {}),type:x.key})})} className="rounded-full">
+            <Button variant={f === x.key ? "default" : "secondary"} data-active={f === x.key} aria-pressed={f === x.key} key={x.key} onClick={() => navigate({search:prev=>({...(prev.q ? {q:prev.q} : {}),type:x.key})})} className="rounded-full">
               {t(x.label)}
             </Button>
           ))}
         </div>
       </div>
       <div className="catalog-list mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-        {realCourses.map(c=><CloudCourseCard key={c.id} course={c}/>)}
-        {ebooks.map(b=><article key={b.id} className="flex h-full min-w-0 flex-col overflow-hidden rounded-lg border border-border bg-card"><div className="grid aspect-video place-items-center bg-muted">{b.cover_url?<img src={b.cover_url} alt={b.title} className="h-full w-full object-contain"/>:<BookOpen className="h-12 w-12 text-primary"/>}</div><div className="flex flex-1 flex-col gap-3 p-4"><p className="text-xs text-muted-foreground">{t('nav_ebooks')}</p><h2 className="font-semibold">{b.title}</h2><p className="line-clamp-2 text-sm text-muted-foreground">{b.description}</p><EbookPurchase book={b}/></div></article>)}
-        {sessions.map(s=><article key={s.id} className="flex h-full min-w-0 flex-col overflow-hidden rounded-lg border border-border bg-card"><LiveClassThumbnail title={s.title} thumbnailUrl={s.thumbnail_url}/><div className="flex flex-1 flex-col gap-3 p-4"><p className="text-xs text-muted-foreground">{t(s.type==='webinars'?'cat_webinars':s.type==='seminars'?'cat_seminars':'cat_live')}</p><h2 className="font-semibold"><Link to="/live/$classId" params={{classId:s.id}} className="hover:text-primary hover:underline">{s.title}</Link></h2><SessionDateSocial session={s}/><SessionPurchase session={s}/></div></article>)}
+        {realCourses.map(c=><div key={c.id} className="contents"><div className="min-w-0 lg:hidden"><CourseRowCard course={c}/></div><div className="hidden h-full min-w-0 lg:block"><CloudCourseCard course={c}/></div></div>)}
+        {ebooks.map(b=><div key={b.id} className="contents">
+          <div className="min-w-0 lg:hidden"><CatalogRow thumb={b.cover_url} label={t('nav_ebooks')} fallbackIcon={<BookOpen className="size-7 text-gold" aria-hidden="true"/>} title={b.title} meta={b.description?<p className="line-clamp-2 text-sm text-muted-foreground">{b.description.replace(/^#+\s*/gm,'').replace(/\*\*|__|`/g,'')}</p>:null} footer={<EbookPurchase book={b}/>}/></div>
+          <article className="hidden h-full min-w-0 flex-col overflow-hidden rounded-lg border border-border bg-card lg:flex"><div className="grid aspect-video place-items-center bg-muted">{b.cover_url?<img src={b.cover_url} alt={b.title} className="h-full w-full object-contain"/>:<BookOpen className="h-12 w-12 text-primary"/>}</div><div className="flex flex-1 flex-col gap-3 p-4"><p className="text-xs text-muted-foreground">{t('nav_ebooks')}</p><h2 className="font-semibold">{b.title}</h2><p className="line-clamp-2 text-sm text-muted-foreground">{b.description}</p><EbookPurchase book={b}/></div></article>
+        </div>)}
+        {sessions.map(s=>{const label=t(s.type==='webinars'?'cat_webinars':s.type==='seminars'?'cat_seminars':'cat_live');const title=<Link to="/live/$classId" params={{classId:s.id}} className="hover:text-primary hover:underline">{s.title}</Link>;return <div key={s.id} className="contents">
+          <div className="min-w-0 lg:hidden"><CatalogRow thumb={s.thumbnail_url} label={label} fallbackIcon={<Video className="size-7 text-gold" aria-hidden="true"/>} title={title} meta={<SessionDateSocial session={s}/>} footer={<SessionPurchase session={s}/>}/></div>
+          <article className="hidden h-full min-w-0 flex-col overflow-hidden rounded-lg border border-border bg-card lg:flex"><LiveClassThumbnail title={s.title} thumbnailUrl={s.thumbnail_url}/><div className="flex flex-1 flex-col gap-3 p-4"><p className="text-xs text-muted-foreground">{label}</p><h2 className="font-semibold">{title}</h2><SessionDateSocial session={s}/><SessionPurchase session={s}/></div></article>
+        </div>;})}
       </div>
       {total === 0 && <p className="mt-10 text-center text-muted-foreground">{t("no_results")}</p>}
     </div>
