@@ -23,7 +23,6 @@
 - Admin operations are validated/audited; confirmed member batches reuse permission-checked single-record actions and report failures. Finance stays read-only except review/rejection; only role-checked manual UPI approval creates paid orders/enrollments. Why: browsers cannot grant payment or bypass permissions.
 - Capacitor builds launch the primary public domain and allow in-WebView navigation to it plus the lovable.app host that redirects to it (never the private preview); why: a redirect to an unlisted host opens the external browser.
 - Student affiliates use own-only paginated queries; admin tree uses cycle-safe all-depth levels and permission-gated signed photos. Why: student direct-team access cannot expose deeper members; admin trees show real relationships.
-- Shared page motion observes only newly added content for one-shot intersection entrances, excludes video surfaces, and uses CSS interactions with reduced-motion support; why: animations avoid repeated full-page scans and video-control interference.
 - Shared navigation switches to a bottom bar below the desktop breakpoint, with grid-based mobile headers and safe-area spacing; why: bilingual navigation remains accessible without header crowding across screen sizes.
 - The branded splash wraps the shared app shell and dismisses locally on each full app load, with reduced-motion support; why: every entry page gets the same launch experience without replaying on internal navigation or changing account data.
 - All UI copy goes through `src/lib/i18n.tsx` (`t(key)` with en/hi values); why: every screen must switch between Hindi and English.
@@ -40,4 +39,3 @@
 - Admin notifications flagged show_popup appear once as a homepage/dashboard popup and stay in the inbox; sent push Campaigns create one in-app notification via a role-checked trigger. Why: one delivery path for inbox and popup without duplicates.
 
 - Membership purchases snapshot product-category entitlements and custom-day or calendar duration; every resource access uses category-aware server checks. Why: a live-only plan must not unlock unrelated products, and plan edits affect new purchases only.
-- App-only screens detect the Capacitor phone app client-side (bridge or appendUserAgent marker) after hydration; why: the website and app share one domain, so browsers must keep the web design and SSR stays consistent.
