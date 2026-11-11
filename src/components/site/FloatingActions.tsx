@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { ArrowRight, ChevronRight, MessageCircle, Users, Wallet, X } from "lucide-react";
+import { ArrowRight, Users, Wallet, X } from "lucide-react";
+import { AppSupport, AppWallet } from "./AppIcons";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useLang } from "@/lib/i18n";
@@ -18,7 +19,7 @@ export function FloatingActions() {
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button aria-label={t(open ? "hide_wallet" : "show_wallet")} title={t(open ? "hide_wallet" : "show_wallet")} className="h-10 gap-0 rounded-l-none rounded-r-lg px-1 shadow-card">
-            <Wallet className="size-5" />
+            <AppWallet className="size-5" />
             {open && <X className="size-3" />}
           </Button>
         </PopoverTrigger>
@@ -34,6 +35,6 @@ export function FloatingActions() {
         </PopoverContent>
       </Popover>
     </div>
-    <Button asChild size="icon" className="support-float fixed right-3 z-40 h-10 w-10 rounded-full shadow-card"><Link to="/support" aria-label={t("support")} title={t("support")}><MessageCircle className="size-5" /></Link></Button>
+    <Button asChild size="icon" className="support-float fixed right-3 z-40 h-10 w-10 rounded-full shadow-card"><Link to="/support" aria-label={t("support")} title={t("support")}><AppSupport className="size-5" /></Link></Button>
   </>;
 }

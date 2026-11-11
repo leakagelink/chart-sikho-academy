@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
-import { BookOpen, Calendar, PlayCircle, Trophy, Users } from "lucide-react";
+import { AppChart, AppCourses, AppLive } from "@/components/site/AppIcons";
 import { supabase } from "@/integrations/supabase/client";
 import { CloudCourseCard } from "@/components/site/CloudCourseCard";
 import { catalogQuery } from "@/lib/catalog-query";
@@ -53,20 +53,22 @@ function Dashboard() {
   const name=profile.data?.full_name||user.email?.split('@')[0];
   const avg=mine.length?Math.round(mine.reduce((sum,m)=>sum+m.progress,0)/mine.length):0;
   return (
-    <div className="w-full px-4 pt-8">
-      <p className="text-muted-foreground">{t("namaste")} 👋</p>
-      <h1 className="font-display text-3xl font-bold text-foreground">{name}</h1>
+    <div className="dashboard-screen w-full px-4 pt-8">
+      <div className="dash-hello">
+        <p className="text-muted-foreground">{t("namaste")} 👋</p>
+        <h1 className="font-display text-3xl font-bold text-foreground">{name}</h1>
+      </div>
       <KycStatus />
       <WebsiteBanners page="dashboard" />
 
-      <div className="mt-6 grid grid-cols-1 gap-3 min-[360px]:grid-cols-3">
+      <div className="dash-stats mt-6 grid grid-cols-1 gap-3 min-[360px]:grid-cols-3">
         {[
-          { icon: BookOpen, v: mine.length, l: t("my_courses") },
-          { icon: Trophy, v: `${avg}%`, l: t("avg_progress") },
-          { icon: Calendar, v: products.sessions.filter(s=>s.kind==='class').length, l: t("upcoming_short") },
+          { icon: AppCourses, v: mine.length, l: t("my_courses") },
+          { icon: AppChart, v: `${avg}%`, l: t("avg_progress") },
+          { icon: AppLive, v: products.sessions.filter(s=>s.kind==='class').length, l: t("upcoming_short") },
         ].map(({ icon: I, v, l }) => (
           <div key={l} className="rounded-2xl border border-border bg-card p-4 shadow-card">
-            <I className="h-5 w-5 text-primary" />
+            <span className="dash-stat-icon inline-grid"><I className="h-5 w-5 text-primary" /></span>
             <p className="mt-2 text-2xl font-bold text-foreground">{v}</p>
             <p className="text-xs text-muted-foreground">{l}</p>
           </div>
