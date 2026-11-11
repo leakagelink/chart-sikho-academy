@@ -313,7 +313,7 @@ html { scroll-padding-top: 80px; }
 /* Phone/app catalog (reference): roomy search, outlined filter chips, row cards. */
 @media (max-width: 1023px) {
   .catalog-screen { padding-top:12px; }
-  .catalog-screen .catalog-controls input { border-radius:14px; padding:14px 16px 14px 48px; font-size:15px; border-color:color-mix(in oklab, var(--accent-blue, var(--ring)) 45%, var(--border)); }
+  .catalog-screen .catalog-controls input { border-radius:14px; padding:14px 16px 14px 48px; font-size:15px; border-color:var(--border); }
   .catalog-screen .catalog-search-icon { left:16px; width:20px; height:20px; color:var(--gold); }
   .catalog-screen .catalog-tabs { gap:10px; }
   .catalog-screen .catalog-tabs button { font-size:14px; height:38px; min-height:38px; padding:0 16px; border-radius:10px; }
