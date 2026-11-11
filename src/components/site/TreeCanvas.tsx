@@ -17,9 +17,15 @@ export const TreeCanvas = forwardRef<TreeCanvasHandle, { children: ReactNode; la
   const viewport = useRef<HTMLDivElement>(null);
   const transform = useRef<ReactZoomPanPinchRef>(null);
   const duration = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 160;
+  const reset = (api: ReactZoomPanPinchRef, time: number) => {
+    const wrapper = api.instance.wrapperComponent;
+    const content = api.instance.contentComponent;
+    if (!wrapper || !content) return;
+    void api.setTransform((wrapper.clientWidth - content.offsetWidth) / 2, 0, 1, time);
+  };
   useImperativeHandle(ref, () => ({
     scrollTo: options => {
-      if (phone) void transform.current?.resetTransform(duration());
+      if (phone && transform.current) reset(transform.current, duration());
       else viewport.current?.scrollTo(options);
     },
     scrollBy: options => {
@@ -30,7 +36,7 @@ export const TreeCanvas = forwardRef<TreeCanvasHandle, { children: ReactNode; la
     zoomOut: () => { void transform.current?.zoomOut(0.2, duration()); },
   }), [phone]);
   return <div ref={viewport} className={`team-tree-viewport ${phone ? 'tree-zoom-viewport' : ''}`} tabIndex={0} role="region" aria-label={label}>
-    {phone ? <TransformWrapper ref={transform} minScale={0.2} maxScale={2.5} initialScale={1} centerOnInit doubleClick={{ disabled: true }} panning={{ velocityDisabled: true }}>
+    {phone ? <TransformWrapper ref={transform} minScale={0.2} maxScale={2.5} initialScale={1} onInit={api => reset(api, 0)} doubleClick={{ disabled: true }} panning={{ velocityDisabled: true }}>
       <TransformComponent wrapperClass="tree-zoom-wrapper" contentClass="tree-zoom-content">{children}</TransformComponent>
     </TransformWrapper> : children}
   </div>;
