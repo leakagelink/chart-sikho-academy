@@ -319,6 +319,7 @@ html { scroll-padding-top: 80px; }
   .catalog-screen .catalog-tabs button { font-size:14px; height:38px; min-height:38px; padding:0 16px; border-radius:10px; }
   .catalog-screen .catalog-tabs button[data-active=false] { background:transparent; border:1px solid var(--border); color:var(--foreground); }
   .catalog-screen .catalog-list { gap:16px; }
+  body:has(.course-buy-bar) .support-float { bottom: calc(10rem + env(safe-area-inset-bottom)); }
 }
 .screen-title { display:flex; align-items:center; gap:12px; padding:14px 16px; background:var(--navy); color:var(--navy-foreground); margin:0 -16px 16px; font-size:18px; }
 .home-greeting { margin:0 -16px; padding:18px 16px 32px; background:var(--navy); color:var(--navy-foreground); }
