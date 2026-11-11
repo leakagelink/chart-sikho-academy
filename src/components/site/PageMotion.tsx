@@ -18,11 +18,16 @@ export function PageMotion({ children }: { children: ReactNode }) {
       });
     }, { threshold: 0.08 });
     function scan(container: Element) {
-      const selector = "h1, section > h2, article, .grid > div";
+      const phone = window.matchMedia("(max-width: 1023px)").matches;
+      const selector = phone
+        ? "h1, section > h2, article, .grid > div, .home-categories, .home-product-shelf, .home-membership, .profile-banner, .profile-menu, .dash-hello, .app-list > form"
+        : "h1, section > h2, article, .grid > div";
       const elements = [...container.querySelectorAll(selector)];
       if (container.matches(selector)) elements.unshift(container);
       elements.forEach((element) => {
-        if (seen.has(element)) return;
+        if (seen.has(element) || element.closest(".lesson-screen") || element.querySelector("video, iframe")) return;
+        // Animate the outer group once, not every nested card at the same time.
+        if (phone && elements.some((parent) => parent !== element && parent.contains(element))) return;
         seen.add(element);
         element.setAttribute("data-motion", "ready");
         observer.observe(element);
