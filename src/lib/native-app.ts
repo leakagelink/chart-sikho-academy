@@ -43,3 +43,24 @@ export function useIsPhoneLayout(): boolean {
   }, []);
   return phone;
 }
+
+/**
+ * Android hardware back inside the installed app: close an open popup first,
+ * then go to the previous screen; only leave the app from the very first screen.
+ */
+export function useNativeBackButton(): void {
+  useEffect(() => {
+    if (!isNativeAppEnv(window as unknown as NativeWindowLike)) return;
+    let remove: (() => void) | undefined;
+    let cancelled = false;
+    import("@capacitor/app").then(({ App }) => App.addListener("backButton", ({ canGoBack }) => {
+      if (document.querySelector('[role="dialog"][data-state="open"], [role="alertdialog"][data-state="open"]')) {
+        document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+        return;
+      }
+      if (canGoBack || window.history.length > 1) window.history.back();
+      else void App.exitApp();
+    })).then((h) => { if (cancelled) void h.remove(); else remove = () => void h.remove(); }).catch(() => {});
+    return () => { cancelled = true; remove?.(); };
+  }, []);
+}
