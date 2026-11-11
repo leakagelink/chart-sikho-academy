@@ -811,7 +811,7 @@ html { scroll-padding-top: 80px; }
   .session-screen .session-filters::-webkit-scrollbar { display: none; }
   .session-screen .session-filters > div { display: flex; flex-shrink: 0; }
   .session-screen .session-filters > div + div { padding-left: 8px; border-left: 1px solid var(--border); }
-  .session-screen .session-filters > div > p { display: none; }
+  .session-screen .session-filters > div > p { align-self: center; margin: 0 8px 0 0; font-size: 11px; white-space: nowrap; }
   .session-screen .session-filters [role=group] { flex-wrap: nowrap; gap: 8px; margin: 0; }
   .session-screen .session-filters button { flex-shrink: 0; height: 36px; min-height: 36px; padding: 0 16px; border-radius: 999px; white-space: nowrap; }
   .session-screen .session-filters button[data-active=false] { background: transparent; border-color: var(--border); }
