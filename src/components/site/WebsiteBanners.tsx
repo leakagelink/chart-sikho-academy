@@ -16,6 +16,9 @@ export function WebsiteBanners({page,fallback}:{page:'home'|'courses'|'dashboard
 
 const BTN_JOIN='inline-flex items-center rounded-full bg-gold px-5 py-2 text-sm font-semibold text-navy shadow-card transition hover:bg-gold/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring sm:px-6 sm:py-2.5 sm:text-base';
 const BTN_MORE='inline-flex items-center rounded-full border border-navy-foreground/70 px-5 py-2 text-sm font-semibold text-navy-foreground transition hover:bg-navy-foreground/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring sm:px-6 sm:py-2.5 sm:text-base';
+/* Overlay pill buttons: compact on phones so the desktop-style pill fits the short banner artwork. */
+const BTN_JOIN_OVERLAY='inline-flex items-center rounded-full bg-gold px-3 py-1.5 text-xs font-semibold text-navy shadow-card transition hover:bg-gold/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring sm:px-6 sm:py-2.5 sm:text-base';
+const BTN_MORE_OVERLAY='inline-flex items-center rounded-full border border-navy-foreground/70 px-3 py-1.5 text-xs font-semibold text-navy-foreground transition hover:bg-navy-foreground/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring sm:px-6 sm:py-2.5 sm:text-base';
 
 /** Full, uncropped artwork with no overlay; a blurred copy fills any side space. */
 function BannerImage({banner,eager=false}:{banner:WebsiteBanner;eager?:boolean}){
