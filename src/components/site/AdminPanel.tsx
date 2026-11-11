@@ -22,6 +22,7 @@ import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, PieChart, Pi
 import { Button } from '@/components/ui/button';
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel } from '@/components/ui/alert-dialog';
 import { useLang, type DictKey } from '@/lib/i18n';
+import { AdminAccountSettings } from '@/components/site/AdminAccountSettings';
 import { supabase } from '@/integrations/supabase/client';
 import { adminSections, coursePublishIssues, fraudFlags, rankFor, teamStats, type AdminSection, type AdminDeleteResource, deleteResourceForSection, removalArchivesHistory } from '@/lib/admin-rules';
 import { changeAdminRecord, getAdminData, deleteAdminRecord, duplicateCourse, moveCurriculumItem } from '@/lib/admin.functions';
@@ -147,6 +148,7 @@ export function AdminPanel({ section, query, status, cat, when, rank, ustate='al
     {finance&&section!=='payments'&&<p className="mb-5 border-l-2 border-primary pl-3 text-sm text-muted-foreground">{t('admin_money_off')}</p>}
     {['classes','webinars','seminars'].includes(section)&&<p className="mb-5 text-sm text-muted-foreground">{t('admin_live_off')}</p>}
     {['affiliates','commissions','settings'].includes(section)&&<p className="mb-5 text-sm text-muted-foreground">{t('admin_real_commission')}</p>}
+    {section==='settings'&&<AdminAccountSettings/>}
     {section==='settings'&&can('edit')&&<LogoSettings logoUrl={String(data.settings[0]?.['logo_url']??'')} busy={uploading||mutation.isPending} onPick={pickLogo} onReset={()=>saveLogo('')}/>}
     {section==='settings'&&canAccess(data.access,'payments')&&<Button asChild variant="outline" className="mb-5"><Link to="/admin/$section" params={{section:'payments'}} search={{q:'',status:'all',cat:'all',when:'all',rank:'all',state:'all',city:'all'}}><Receipt size={17}/>{t('pay_settings_title')}</Link></Button>}
     {section==='notifications'&&<p className="mb-5 text-sm text-muted-foreground">{t('admin_external_off')}</p>}
