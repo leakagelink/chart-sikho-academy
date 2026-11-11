@@ -995,3 +995,9 @@ html { scroll-padding-top: 80px; }
   .team-tree-children .team-tree-children .team-tree-children > .team-tree-branch::before { left: -10px; width: 8px; }
 }
 @media (max-width: 1023px) { .tree-canvas-controls > button:nth-of-type(n+2) { display: none; } }
+@media (max-width: 1023px) {
+  /* Indented levels must shrink with their margin, never add it on top of 100% width. */
+  .team-tree-children, .team-tree-children > .team-tree-branch, .team-tree-children .team-tree-member { width: auto; max-width: 100%; }
+  .team-tree-member { overflow: hidden; }
+  .tree-node-footer { min-width: 0; }
+}
