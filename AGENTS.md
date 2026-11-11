@@ -40,3 +40,4 @@
 - Admin notifications flagged show_popup appear once as a homepage/dashboard popup and stay in the inbox; sent push Campaigns create one in-app notification via a role-checked trigger. Why: one delivery path for inbox and popup without duplicates.
 
 - Membership purchases snapshot product-category entitlements and custom-day or calendar duration; every resource access uses category-aware server checks. Why: a live-only plan must not unlock unrelated products, and plan edits affect new purchases only.
+- App-only screens detect the Capacitor phone app client-side (bridge or appendUserAgent marker) after hydration; why: the website and app share one domain, so browsers must keep the web design and SSR stays consistent.
