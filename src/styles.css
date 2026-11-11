@@ -994,3 +994,4 @@ html { scroll-padding-top: 80px; }
   .team-tree-children .team-tree-children .team-tree-children { margin-left: 4px; padding-left: 10px; }
   .team-tree-children .team-tree-children .team-tree-children > .team-tree-branch::before { left: -10px; width: 8px; }
 }
+@media (max-width: 1023px) { .tree-canvas-controls > button:nth-of-type(n+2) { display: none; } }
