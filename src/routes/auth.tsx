@@ -8,6 +8,8 @@ import { useAuth } from "@/hooks/use-auth";
 import { useLang } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { normalizeSignupReferral, signupReferralFormatValid } from '@/lib/signup-referral';
+import { useIsNativeApp } from "@/lib/native-app";
+import { Eye, EyeOff, Gift, IdCard, Lock, Mail, Phone, type LucideIcon } from "lucide-react";
 
 // Social buttons stay hidden while the client tests the app; flip to true at go-live.
 const SHOW_SOCIAL_LOGIN = false;
@@ -30,7 +32,9 @@ export const Route = createFileRoute("/auth")({
 });
 
 function AuthPage() {
-  const { t } = useLang();
+  const { t, lang, setLang } = useLang();
+  const native = useIsNativeApp();
+  const [showPw, setShowPw] = useState(false);
   const { session } = useAuth();
   const brandLogo = useBranding();
   const { redirect, ref, mode: startMode } = Route.useSearch();
@@ -89,6 +93,74 @@ function AuthPage() {
       navigate({ to: safePath(saved), replace: true });
     }
   }, [session, navigate]);
+
+  if (native) {
+    const field = (Icon: LucideIcon, el: React.ReactNode, end?: React.ReactNode) => (
+      <div className="flex items-center gap-3 rounded-2xl bg-paper px-4 py-3.5 text-ink shadow-card">
+        <Icon className="size-5 shrink-0 opacity-60" aria-hidden="true" />
+        {el}
+        {end}
+      </div>
+    );
+    const nativeInput = "min-w-0 flex-1 bg-transparent text-base text-ink outline-none placeholder:text-ink/50";
+    return (
+      <div className="native-auth fixed inset-0 z-50 overflow-y-auto bg-background text-foreground">
+        <div className="mx-auto flex min-h-full w-full max-w-md flex-col px-6 pb-[max(2rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))]">
+          <div className="flex justify-end">
+            <div className="flex rounded-full border border-border p-0.5 text-xs font-semibold">
+              {(["en", "hi"] as const).map((l) => (
+                <button key={l} type="button" onClick={() => setLang(l)} aria-pressed={lang === l} className={`rounded-full px-3 py-1 ${lang === l ? "bg-gold text-primary-foreground" : "text-muted-foreground"}`}>
+                  {l === "en" ? "EN" : "हिं"}
+                </button>
+              ))}
+            </div>
+          </div>
+          {brandLogo ? <img src={brandLogo} alt="Chartसीखो" width={96} height={96} className="mx-auto mt-4 h-24 w-24 object-contain" /> : <div className="mx-auto mt-4 h-24 w-24" aria-hidden="true" />}
+          <p className="mt-2 text-center font-display text-4xl font-bold leading-tight">Chart<span className="text-gold">सीखो</span></p>
+          <p className="text-center text-sm">{t("splash_tagline")}</p>
+          <div className="mx-auto mt-6 h-px w-full bg-gradient-to-r from-transparent via-gold to-transparent" aria-hidden="true" />
+          {mode === "forgot" ? (
+            <h1 className="mt-6 text-center font-display text-xl font-bold">{t("forgot_title")}</h1>
+          ) : (
+            <div className="mt-6 grid grid-cols-2" role="tablist">
+              {(["login", "signup"] as const).map((m) => (
+                <button key={m} type="button" role="tab" aria-selected={mode === m} onClick={() => { setMode(m); setMsg(null); }} className={`flex flex-col items-center gap-2 py-2 font-display text-xl font-semibold ${mode === m ? "text-foreground" : "text-muted-foreground"}`}>
+                  {m === "login" ? t("login") : t("signup")}
+                  <span className={`h-1 w-24 rounded-full ${mode === m ? "bg-gold" : "bg-transparent"}`} aria-hidden="true" />
+                </button>
+              ))}
+            </div>
+          )}
+          <form onSubmit={submit} className="mt-6 space-y-4">
+            {mode === "signup" && (
+              <>
+                {field(IdCard, <input required aria-label={t("full_name")} placeholder={t("full_name")} value={form.name} onChange={set("name")} autoComplete="name" className={nativeInput} />)}
+                {field(Phone, <input type="tel" aria-label={t("phone")} placeholder={t("phone")} value={form.phone} onChange={set("phone")} autoComplete="tel" className={nativeInput} />)}
+              </>
+            )}
+            {field(Mail, <input required type="email" aria-label={t("email")} placeholder={t("email")} value={form.email} onChange={set("email")} autoComplete="email" inputMode="email" className={nativeInput} />)}
+            {mode !== "forgot" && field(Lock,
+              <input required type={showPw ? "text" : "password"} minLength={6} aria-label={mode === "signup" ? t("create_password") : t("password")} placeholder={mode === "signup" ? t("create_password") : t("password")} value={form.password} onChange={set("password")} autoComplete={mode === "signup" ? "new-password" : "current-password"} className={nativeInput} />,
+              <button type="button" onClick={() => setShowPw((v) => !v)} aria-label={showPw ? t("hide_password") : t("show_password")} className="shrink-0 opacity-60">
+                {showPw ? <Eye className="size-5" /> : <EyeOff className="size-5" />}
+              </button>,
+            )}
+            {mode === "signup" && field(Gift, <input aria-label={t("signup_referral_code")} placeholder={t("signup_referral_code")} autoCapitalize="characters" autoComplete="off" maxLength={40} value={form.referral} onChange={set("referral")} className={nativeInput} />)}
+            {mode === "login" && (
+              <div className="text-right"><button type="button" onClick={() => { setMode("forgot"); setMsg(null); }} className="text-sm font-semibold text-gold">{t("forgot_q")}</button></div>
+            )}
+            {msg && <p role="status" className={`text-center text-sm ${msg.ok ? "text-success" : "text-destructive"}`}>{msg.text}</p>}
+            <button type="submit" disabled={busy} className="blueprint-gold w-full rounded-2xl py-4 font-display text-xl font-bold shadow-card disabled:opacity-60">
+              {mode === "login" ? t("login") : mode === "signup" ? t("signup") : t("send_reset")}
+            </button>
+            {mode === "forgot" && (
+              <div className="text-center"><button type="button" onClick={() => { setMode("login"); setMsg(null); }} className="text-sm font-semibold text-gold">← {t("login")}</button></div>
+            )}
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   const input = "w-full rounded-lg border border-input bg-card px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-ring";
   return (
