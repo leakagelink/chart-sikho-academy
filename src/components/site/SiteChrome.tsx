@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { Bell, BookOpen, FileText, GraduationCap, Home, Search, User, Video } from "lucide-react";
+import { Bell, Search, User } from "lucide-react";
+import { AppCourses, AppEbook, AppHome, AppLive, AppProfile } from "./AppIcons";
 import { useEffect, useRef, useState } from "react";
 import type { DictKey } from "@/lib/i18n";
 import { useBranding } from "@/lib/branding";
@@ -46,7 +47,7 @@ export function NotificationsBell() {
   }, [open]);
   return (
     <div ref={ref} className="relative">
-      <Button variant="ghost" size="icon" aria-label={t("notif_title")} aria-expanded={open} onClick={() => setOpen((v) => !v)} className="relative h-11 w-11 shrink-0 rounded-full text-muted-foreground">
+      <Button variant="ghost" size="icon" aria-label={t("notif_title")} aria-expanded={open} onClick={() => setOpen((v) => !v)} className="app-bell relative h-11 w-11 shrink-0 rounded-full text-muted-foreground">
         <Bell className="h-5 w-5" />
         {notifications.data?.some(n=>!n.read_at)&&<span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-destructive" />}
       </Button>
@@ -66,7 +67,7 @@ export function Header() {
   const panelAccess = usePanelAccess();
   const brandLogo = useBranding();
   return (
-    <header className="blueprint-chrome sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
+    <header className="app-header blueprint-chrome sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
       <div className="grid min-h-16 grid-cols-[minmax(0,1fr)_auto] items-center gap-1 px-3 sm:flex sm:gap-3 sm:px-4">
         <Link to="/" className="flex min-w-0 items-center gap-1.5 sm:shrink-0 sm:gap-2">
           {brandLogo ? <img src={brandLogo} alt="" width={40} height={40} className="h-8 w-8 shrink-0 object-contain sm:h-10 sm:w-10" /> : <span className="h-8 w-8 shrink-0 sm:h-10 sm:w-10" aria-hidden="true" />}
@@ -102,14 +103,18 @@ export function Header() {
 export function MobileNav() {
   const { t } = useLang();
   const { session } = useAuth();
-  const cls = "flex min-w-0 flex-1 flex-col items-center justify-center gap-1 px-1 py-2 text-center text-[11px] leading-tight text-muted-foreground [&_svg]:shrink-0";
+  // Floating app dock: the active tab gets a gold pill (TanStack sets data-status="active"); Live sits raised in the centre.
+  const item = "app-dock-item flex min-w-0 flex-1 flex-col items-center justify-center gap-1 px-0.5 text-center text-[10.5px] font-semibold leading-tight";
+  const pill = "app-dock-pill grid h-8 w-12 place-items-center rounded-full";
   return (
-    <nav className="mobile-navigation fixed inset-x-0 bottom-0 z-40 flex min-h-16 border-t border-border bg-background lg:hidden">
-      <Link to="/" activeOptions={{ exact: true }} activeProps={{ className: "!text-primary" }} className={cls}><Home className="h-5 w-5" />{t("nav_home")}</Link>
-      <Link to="/courses" activeProps={{ className: "!text-primary" }} className={cls}><BookOpen className="h-5 w-5" />{t("nav_courses")}</Link>
-      <Link to="/live-classes" activeProps={{ className: "!text-primary" }} className={cls}><Video className="h-5 w-5" />{t("cat_live")}</Link>
-      <Link to="/ebooks" activeProps={{ className: "!text-primary" }} className={cls}><FileText className="h-5 w-5" />{t("nav_ebooks")}</Link>
-      <Link to={session ? "/profile" : "/auth"} className={cls}><User className="h-5 w-5" />{t("profile")}</Link>
+    <nav aria-label={t("nav_home")} className="mobile-navigation app-dock fixed inset-x-0 bottom-0 z-40 lg:hidden">
+      <div className="app-dock-bar mx-auto flex h-16 max-w-xl items-stretch">
+        <Link to="/" activeOptions={{ exact: true }} className={item}><span className={pill}><AppHome size={22} /></span><span className="truncate">{t("nav_home")}</span></Link>
+        <Link to="/courses" className={item}><span className={pill}><AppCourses size={22} /></span><span className="truncate">{t("nav_courses")}</span></Link>
+        <Link to="/live-classes" className={`${item} app-dock-center`}><span className="app-dock-live grid place-items-center rounded-full"><AppLive size={26} /></span><span className="truncate">{t("cat_live")}</span></Link>
+        <Link to="/ebooks" className={item}><span className={pill}><AppEbook size={22} /></span><span className="truncate">{t("nav_ebooks")}</span></Link>
+        <Link to={session ? "/profile" : "/auth"} className={item}><span className={pill}><AppProfile size={22} /></span><span className="truncate">{t("profile")}</span></Link>
+      </div>
     </nav>
   );
 }
