@@ -11,6 +11,8 @@ const config: CapacitorConfig = {
   webDir: 'capacitor-web',
   // Lets the website show app-only screens (e.g. the app sign-in design).
   appendUserAgent: 'ChartSikhoApp',
+  // Brand navy behind the page while it loads or overscrolls.
+  backgroundColor: '#0B2460',
   server: {
     url: 'https://chartsikho.in',
     androidScheme: 'https',

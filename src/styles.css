@@ -994,3 +994,11 @@ html { scroll-padding-top: 80px; }
 
 /* Edge-to-edge app: header fills the status-bar area (inset is 0 in browsers). */
 .app-header { padding-top: env(safe-area-inset-top); }
+
+/* Phone dock fills the full width down to the screen edge, so page content never shows beneath it. */
+@media (max-width: 1023px) {
+  .app-dock { padding: 0 0 env(safe-area-inset-bottom); pointer-events: auto; background: color-mix(in oklab, var(--navy) 90%, black); border-top: 1px solid color-mix(in oklab, var(--gold) 24%, transparent); box-shadow: 0 -12px 28px -16px oklch(0 0 0 / 85%); }
+  .app-dock-bar { border: 0; border-radius: 0; background: transparent; box-shadow: none; backdrop-filter: none; }
+  .app-dock-live { border-color: color-mix(in oklab, var(--navy) 90%, black); }
+  html { background-color: color-mix(in oklab, var(--navy) 85%, black); }
+}
