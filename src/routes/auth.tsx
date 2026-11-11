@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState, type FormEvent } from "react";
 import "@lovable.dev/cloud-auth-js/styles.css";
 import { useBranding } from "@/lib/branding";
@@ -8,8 +8,8 @@ import { useAuth } from "@/hooks/use-auth";
 import { useLang } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { normalizeSignupReferral, signupReferralFormatValid } from '@/lib/signup-referral';
-import { useIsNativeApp } from "@/lib/native-app";
-import { Eye, EyeOff, Gift, IdCard, Lock, Mail, Phone, type LucideIcon } from "lucide-react";
+import { useIsPhoneLayout } from "@/lib/native-app";
+import { ArrowLeft, Eye, EyeOff, Gift, IdCard, Lock, Mail, Phone, type LucideIcon } from "lucide-react";
 
 // Social buttons stay hidden while the client tests the app; flip to true at go-live.
 const SHOW_SOCIAL_LOGIN = false;
@@ -33,7 +33,7 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const { t, lang, setLang } = useLang();
-  const native = useIsNativeApp();
+  const native = useIsPhoneLayout();
   const [showPw, setShowPw] = useState(false);
   const { session } = useAuth();
   const brandLogo = useBranding();
@@ -106,7 +106,8 @@ function AuthPage() {
     return (
       <div className="native-auth fixed inset-0 z-50 overflow-y-auto bg-background text-foreground">
         <div className="mx-auto flex min-h-full w-full max-w-md flex-col px-6 pb-[max(2rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))]">
-          <div className="flex justify-end">
+          <div className="flex items-center justify-between">
+            <Link to="/" className="flex items-center gap-1.5 rounded-full px-2 py-1 text-sm font-semibold text-muted-foreground"><ArrowLeft className="size-4" aria-hidden="true" />{t("nav_home")}</Link>
             <div className="flex rounded-full border border-border p-0.5 text-xs font-semibold">
               {(["en", "hi"] as const).map((l) => (
                 <button key={l} type="button" onClick={() => setLang(l)} aria-pressed={lang === l} className={`rounded-full px-3 py-1 ${lang === l ? "bg-gold text-primary-foreground" : "text-muted-foreground"}`}>
