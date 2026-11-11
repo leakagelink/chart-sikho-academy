@@ -6,6 +6,8 @@ import { AppBell, AppCertificate, AppCourses, AppRupee, AppSettings, AppSupport,
 import { supabase } from "@/integrations/supabase/client";
 import { useLang } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useIsPhoneLayout } from "@/lib/native-app";
 import { studentProfileOptions, profilePhotoAllowed, profileValues } from '@/lib/student-profile';
 import { usePanelAccess } from '@/hooks/use-panel-access';
 
@@ -28,6 +30,7 @@ function ProfilePage() {
   const { t, setLang, lang } = useLang();
   const panelAccess = usePanelAccess();
   const { user } = Route.useRouteContext();
+  const isPhone = useIsPhoneLayout();
   const qc = useQueryClient();
   const navigate = useNavigate();
   const q = useSuspenseQuery(studentProfileOptions(user.id));
@@ -121,6 +124,7 @@ function ProfilePage() {
     { icon: AppCertificate, label: t('up_certificates'), to: '/certificates', tone: 'royal' },
     { icon: AppTeam, label: t('student_team'), to: '/team', tone: 'red' },
   ] as const;
+  const cancelEdit = () => { setEditing(false); setPhoto(null); setRemovePhoto(false); setMessage(''); };
   return (
     <div className="profile-screen w-full px-4 pb-8 pt-0">
       <div className="profile-banner flex flex-wrap items-center gap-4">
@@ -142,7 +146,7 @@ function ProfilePage() {
       <div className="mt-6 grid min-w-0 gap-8 xl:grid-cols-[minmax(0,2fr)_minmax(240px,1fr)]">
         <section className="profile-details min-w-0">
           <h2 className="mb-5 font-display text-xl font-semibold">{t('profile_personal')}</h2>
-          {editing ? <form onSubmit={save} className="space-y-5">
+          {editing && !isPhone ? <form onSubmit={save} className="space-y-5">
             <fieldset disabled={saving} className="space-y-5">
               <div className="flex flex-wrap gap-2">
                 <input ref={fileRef} aria-label={t('profile_photo')} type="file" accept="image/png,image/jpeg,image/webp" className="hidden" onChange={e => {
@@ -158,7 +162,7 @@ function ProfilePage() {
                 {field('state', t('state'))}{field('city', t('city'))}
               </div>
               {field('address', t('profile_address'))}{field('bio', t('profile_bio'))}
-              <div className="flex gap-3"><Button type="submit" disabled={saving}><Save className="h-4 w-4" />{saving ? t('profile_saving') : t('save')}</Button><Button type="button" variant="outline" onClick={() => { setEditing(false); setPhoto(null); setRemovePhoto(false); setMessage(''); }}>{t('pay_cancel')}</Button></div>
+              <div className="flex gap-3"><Button type="submit" disabled={saving}><Save className="h-4 w-4" />{saving ? t('profile_saving') : t('save')}</Button><Button type="button" variant="outline" onClick={cancelEdit}>{t('pay_cancel')}</Button></div>
             </fieldset>
           </form> : <dl className="grid gap-x-6 gap-y-5 sm:grid-cols-2">
             {detail(t('full_name'), q.data.full_name)}{detail(t('phone'), q.data.phone)}{detail(t('profile_dob'), q.data.date_of_birth)}{detail(t('pref_lang'), q.data.preferred_language === 'hi' ? 'हिंदी' : 'English')}{detail(t('state'), q.data.state)}{detail(t('city'), q.data.city)}{detail(t('profile_address'), q.data.address)}{detail(t('profile_bio'), q.data.bio)}
@@ -172,6 +176,31 @@ function ProfilePage() {
         </nav>
       </div>
       <Button onClick={signOut} variant="outline" className="profile-logout mt-6 w-full border-destructive/50 text-destructive lg:hidden"><LogOut className="h-4 w-4" />{t('logout')}</Button>
+      {isPhone && <Dialog open={editing} onOpenChange={(o) => { if (!o) cancelEdit(); }}>
+        <DialogContent className="max-h-[90vh] w-[calc(100vw-2rem)] max-w-lg overflow-y-auto rounded-2xl">
+          <DialogHeader><DialogTitle>{t('edit_profile')}</DialogTitle></DialogHeader>
+          {message && failed && <p role="alert" className="text-sm text-destructive">{message}</p>}
+          <form onSubmit={save} className="space-y-5">
+            <fieldset disabled={saving} className="space-y-5">
+              <div className="flex flex-wrap gap-2">
+                <input ref={fileRef} aria-label={t('profile_photo')} type="file" accept="image/png,image/jpeg,image/webp" className="hidden" onChange={e => {
+                  const file = e.target.files?.[0]; e.target.value = ''; if (!file) return;
+                  if (!profilePhotoAllowed(file)) { setFailed(true); setMessage(t('profile_photo_error')); return; }
+                  setPhoto(file); setRemovePhoto(false); setMessage('');
+                }} />
+                <Button type="button" variant="outline" onClick={() => fileRef.current?.click()}><Camera className="h-4 w-4" />{t('profile_photo_change')}</Button>
+                {(photoUrl || photo) && <Button type="button" variant="ghost" onClick={() => { setPhoto(null); setRemovePhoto(true); }}><Trash2 className="h-4 w-4" />{t('profile_photo_remove')}</Button>}
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">{field('full_name', t('full_name'))}{field('phone', t('phone'))}{field('date_of_birth', t('profile_dob'))}
+                <label className="block text-sm font-medium">{t('pref_lang')}<select className={input} value={f.preferred_language} onChange={e => setF({ ...f, preferred_language: e.target.value })}><option value="en">English</option><option value="hi">हिंदी</option></select></label>
+                {field('state', t('state'))}{field('city', t('city'))}
+              </div>
+              {field('address', t('profile_address'))}{field('bio', t('profile_bio'))}
+              <div className="flex gap-3"><Button type="submit" disabled={saving}><Save className="h-4 w-4" />{saving ? t('profile_saving') : t('save')}</Button><Button type="button" variant="outline" onClick={cancelEdit}>{t('pay_cancel')}</Button></div>
+            </fieldset>
+          </form>
+        </DialogContent>
+      </Dialog>}
     </div>
   );
 }
