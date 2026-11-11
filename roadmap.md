@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [ ] Compact phone Team Tree cards and shared chrome; audit mobile screens and fix layout issues without changing records or desktop styling.
 - [x] Added phone dock selection bounce/glint and tap feedback, short outer-card/form entrances, focus and notification effects with reduced-motion support. Signed-in Home/Courses/Live Classes/eBooks/Profile dock navigation passed at 393px, five screens at 320px had no overflow/errors; reduced motion and unchanged desktop verified, eight app/navigation tests passed. No publishing or account/payment changes.
 - [x] Phone/app redesign (navy + gold): custom duotone icon set, floating bottom dock with raised Live button, Home shortcuts/shelves/membership, Live Classes/Webinars/Seminars badges + chip filters, 2-column eBooks, Profile card/shortcuts/menu, Dashboard, Wallet/KYC/Support/Certificates/Notifications title bars. Signed-in 393px checks: no overflow or page errors, dock navigation, Join now popup, Hindi switch; desktop 1280px unchanged.
 - [x] New phone launcher icon + launch screen made from the selected logo in the Capacitor assets folder; applied on the user's PC with the icon generator command.

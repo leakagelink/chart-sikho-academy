@@ -1,7 +1,7 @@
 # Product interactions
 - Student referral surfaces read their all-level downline (names, member codes, parent, level, join date and net commission income only) through the own-network RPC, never broader profile reads. Why: students see the same team relationships as Admin without exposing private profile fields or other teams.
 - Affiliate Team Tree dialogs keep close controls outside bounded scrolling content and use viewport-sized width. Why: wide/deep teams cannot hide dismissal controls or overflow the page.
-- Admin Team Tree keeps compact selectable nodes and a separate inspector inside a bounded canvas workspace. Why: opening private permitted member details must not reflow the relationship branches.
+- Admin and student Team Trees use compact horizontal phone nodes and a separate inspector inside a bounded scrolling canvas, retaining all descendant branches. Why: more relationships fit on phones without shrinking touch targets or reflowing branches when details open.
 - Home uses a shared horizontal shelf with responsive widths and accessible previous/next controls; full catalogs keep grids. Why: all saved products remain reachable without multi-row Home sections or changes to admin branding.
 - Use ProductSocial for every product card/detail; own-only RLS writes and safe metadata RPCs supply persistent engagement, and shared URLs never contain private resources or meeting links. Why: every product surface shares behavior without exposing participant identities or paid files.- Website banners render through one shared slider whose button rules live in website-banners helpers; links accept only site paths or https. Why: admin-edited slides cannot inject unsafe links and preview matches the live slide.
 
