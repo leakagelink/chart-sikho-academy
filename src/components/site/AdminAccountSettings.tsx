@@ -2,10 +2,10 @@ import { useEffect, useState, type FormEvent } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useI18n } from '@/lib/i18n';
+import { useLang } from '@/lib/i18n';
 
 export function AdminAccountSettings() {
-  const { t } = useI18n();
+  const { t } = useLang();
   const [current, setCurrent] = useState('');
   const [email, setEmail] = useState('');
   const [curPw, setCurPw] = useState('');
