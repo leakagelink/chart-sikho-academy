@@ -41,9 +41,6 @@ export function CloudCourseDetail({course}:{course:{id:string;title:string;price
    {course.instructor&&<p className="flex items-center gap-2 text-sm text-muted-foreground"><User className="h-4 w-4 shrink-0 text-primary"/>{course.instructor}</p>}
    {reviewCount>0&&<p className="flex items-center gap-2 text-sm text-muted-foreground"><Star className="size-4 fill-gold text-gold" aria-hidden="true"/><span className="font-bold text-gold">{avg.toFixed(1)}</span>({reviewCount} {t('reviews_count')})</p>}
    <div className="max-lg:order-first max-lg:rounded-2xl max-lg:ring-1 max-lg:ring-gold/50"><DetailCover src={course.thumbnail_url} alt={course.title} fallback={<BookOpen className="h-12 w-12"/>}/></div>
-   <div role="tablist" aria-label={t('course_details')} className="mt-2 grid grid-cols-3 rounded-t-lg border-b border-border bg-card lg:hidden">
-    {(['overview','curriculum','reviews'] as const).map(k=><button key={k} type="button" role="tab" aria-selected={tab===k} onClick={()=>setTab(k)} className={`border-b-2 px-2 py-3 text-sm font-semibold ${tab===k?'border-gold text-gold':'border-transparent text-muted-foreground'}`}>{t(k==='overview'?'tab_overview':k==='curriculum'?'tab_curriculum':'tab_reviews')}</button>)}
-   </div>
   </div>}
   aside={<div className="space-y-4">
    <div className="max-lg:hidden space-y-4">
@@ -53,6 +50,9 @@ export function CloudCourseDetail({course}:{course:{id:string;title:string;price
    {(toggle.isError||enroll.isError||memberEnroll.isError)&&<p role="alert" className="text-sm text-destructive">{t('admin_error')}</p>}
    <ProductSocial kind="course" id={course.id} title={course.title}/>
   </div>}>
+   <div role="tablist" aria-label={t('course_details')} className="grid grid-cols-3 rounded-t-lg border-b border-border bg-card lg:hidden">
+    {(['overview','curriculum','reviews'] as const).map(k=><button key={k} type="button" role="tab" aria-selected={tab===k} onClick={()=>setTab(k)} className={`border-b-2 px-2 py-3 text-sm font-semibold ${tab===k?'border-gold text-gold':'border-transparent text-muted-foreground'}`}>{t(k==='overview'?'tab_overview':k==='curriculum'?'tab_curriculum':'tab_reviews')}</button>)}
+   </div>
   {course.description&&<section className={`rounded-xl border border-border bg-card p-4 sm:p-5 max-lg:border-0 max-lg:bg-transparent max-lg:p-0 ${only('overview')}`}><h2 className="mb-3 font-display text-xl font-bold lg:hidden">{t('about_course')}</h2><DetailDescription text={course.description}/></section>}
   <section className={`min-w-0 ${only('curriculum')}`}>
    <h2 className="font-display text-xl font-bold">{t('lessons')}</h2>
