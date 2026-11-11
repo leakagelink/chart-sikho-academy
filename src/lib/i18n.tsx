@@ -968,7 +968,7 @@ const dict = {
   join_live: { en: "Join Live", hi: "लाइव जॉइन करें" },
   remind: { en: "Remind Me", hi: "याद दिलाएँ" },
   joining: { en: "joining", hi: "जुड़ रहे हैं" },
-  lessons: { en: "lessons", hi: "लेसन" },
+  lessons: { en: "Lessons", hi: "लेसन" },
   enroll: { en: "View Course", hi: "कोर्स देखें" },
   membership_t: { en: "Chartसीखो Membership", hi: "Chartसीखो मेंबरशिप" },
   membership_s: {
