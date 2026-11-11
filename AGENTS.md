@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Rules
+- Motion stays shared; why: fewer mobile inconsistencies.
 - Admin and checkout QR share payment-upi helpers; an uploaded QR (private bucket) overrides the generated one. Why: students see the saved destination.
 - Home/catalog purchasing uses published Cloud courses, never sample IDs; category/banner/plan visibility stays public and admin CRUD stays scoped. Why: purchases require real products; plans grant no undefined access.
 - Wallet reads explicitly scope every financial query to the caller; withdrawal destinations are owner-private preferences snapshotted immutably on request. Why: later bank/UPI edits cannot reroute pending withdrawals; deposits and bonuses never inflate commission balance.

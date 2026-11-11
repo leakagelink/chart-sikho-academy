@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [x] Added phone dock selection bounce/glint and tap feedback, short outer-card/form entrances, focus and notification effects with reduced-motion support. Signed-in Home/Courses/Live Classes/eBooks/Profile dock navigation passed at 393px, five screens at 320px had no overflow/errors; reduced motion and unchanged desktop verified, eight app/navigation tests passed. No publishing or account/payment changes.
 - [x] Phone/app redesign (navy + gold): custom duotone icon set, floating bottom dock with raised Live button, Home shortcuts/shelves/membership, Live Classes/Webinars/Seminars badges + chip filters, 2-column eBooks, Profile card/shortcuts/menu, Dashboard, Wallet/KYC/Support/Certificates/Notifications title bars. Signed-in 393px checks: no overflow or page errors, dock navigation, Join now popup, Hindi switch; desktop 1280px unchanged.
 - [x] New phone launcher icon + launch screen made from the selected logo in the Capacitor assets folder; applied on the user's PC with the icon generator command.
 - [x] Mobile pass across all screens: audited ~70 public/student/admin pages at 320/360/393px with no sideways overflow; student Team/Commission/Wallet tables stack as cards on phones, styled upload fields, slimmer wallet tab, compact empty charts. Build OK.

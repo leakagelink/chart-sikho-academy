@@ -735,6 +735,8 @@ html { scroll-padding-top: 80px; }
   --app-shadow: 0 12px 28px -14px oklch(0 0 0 / 70%);
   --app-gold-shadow: 0 10px 22px -10px color-mix(in oklab, var(--gold) 60%, transparent);
   --app-line: color-mix(in oklab, var(--gold) 18%, var(--border));
+  --app-motion-glint: color-mix(in oklab, var(--navy-foreground) 55%, transparent);
+  --app-motion-ring: color-mix(in oklab, var(--gold) 38%, transparent);
 }
 /* Coloured icon tiles (profile menu and shortcuts). */
 .app-tile-gold { background: color-mix(in oklab, var(--gold) 16%, transparent); color: var(--gold); }
@@ -865,4 +867,50 @@ html { scroll-padding-top: 80px; }
 @media (prefers-reduced-motion: reduce) {
   .session-dot { animation: none; }
   .app-dock-item, .app-dock-pill, .app-dock-live { transition: none; }
+}
+
+/* Phone-only micro-interactions: finite entrances, no perpetual dock motion. */
+@media (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
+  .app-dock-bar { animation: app-dock-enter 420ms cubic-bezier(.22,1,.36,1) both; }
+  .app-dock-pill, .app-dock-live { position: relative; isolation: isolate; }
+  .app-dock-pill { overflow: hidden; }
+  .app-dock-item[data-status=active] .app-dock-pill,
+  .app-dock-center[data-status=active] .app-dock-live { animation: app-tab-settle 380ms cubic-bezier(.22,1,.36,1); }
+  .app-dock-item[data-status=active] .app-dock-pill::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(110deg, transparent 30%, var(--app-motion-glint) 50%, transparent 70%);
+    animation: app-tab-glint 650ms ease-out both;
+  }
+  .app-dock-item > span:last-child { transition: opacity 180ms ease; }
+  .app-dock-item:active > span:last-child { opacity: .65; }
+  .app-dock-item:active .app-dock-pill,
+  .app-dock-item:active .app-dock-live { animation: none; transform: scale(.9); }
+  .app-dock-item:focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; border-radius: 12px; }
+
+  .student-surface [data-motion=revealed] { animation-duration: 420ms; }
+  .student-surface :where(.home-shortcut, .profile-quick-item, .profile-menu > a, .app-pagebar-back, .app-pagebar-action),
+  .app-bell, .support-float, .wallet-float button,
+  .native-auth button, .native-auth form > div,
+  .course-buy-bar .motion-control { transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease; }
+  .student-surface :where(.home-shortcut, .profile-quick-item, .profile-menu > a, .app-pagebar-back, .app-pagebar-action):active,
+  .app-bell:active, .support-float:active, .wallet-float button:active,
+  .native-auth button:not(:disabled):active,
+  .course-buy-bar .motion-control:not(:disabled):active { transform: scale(.96); }
+  .student-surface :where(.catalog-tabs, .session-filters, [role=tablist]) button[aria-selected=true],
+  .student-surface :where(.catalog-tabs, .session-filters) button[data-active=true] { animation: app-tab-settle 280ms ease-out; }
+  .native-auth form { animation: app-panel-enter 360ms ease-out both; }
+  .native-auth form > div:focus-within { box-shadow: 0 0 0 3px var(--app-motion-ring); }
+  .native-auth [role=status] { animation: app-panel-enter 240ms ease-out both; }
+  .app-bell[aria-expanded=true] svg { animation: app-bell-tilt 420ms ease-out; }
+  .app-bell[aria-expanded=true] + div { animation: app-panel-enter 240ms ease-out both; }
+}
+@keyframes app-dock-enter { from { opacity: .4; translate: 0 14px; } to { opacity: 1; translate: 0 0; } }
+@keyframes app-tab-settle { 0% { transform: scale(.9); } 65% { transform: scale(1.05); } 100% { transform: scale(1); } }
+@keyframes app-tab-glint { from { transform: translateX(-110%); } to { transform: translateX(110%); } }
+@keyframes app-panel-enter { from { opacity: .4; translate: 0 8px; } to { opacity: 1; translate: 0 0; } }
+@keyframes app-bell-tilt { 25% { rotate: -12deg; } 55% { rotate: 10deg; } 80% { rotate: -4deg; } to { rotate: 0deg; } }
+@media (max-width: 1023px) and (prefers-reduced-motion: reduce) {
+  .app-dock-item:active .app-dock-pill, .app-dock-item:active .app-dock-live { transform: none; }
+  .native-auth *, .course-buy-bar .motion-control, .app-bell, .support-float, .wallet-float button { animation: none !important; transition: none !important; }
+  [role=dialog][data-state], [role=alertdialog][data-state] { animation: none !important; transition: none !important; }
 }
