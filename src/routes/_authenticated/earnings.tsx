@@ -68,7 +68,7 @@ function EarningsPage() {
   const rows = filtered.slice(page*20,(page+1)*20);
   const label = (type: string) => type==='commission' ? t('wallet_commission') : type==='withdrawal' ? t('wallet_withdrawal') : type==='payment' ? t('wallet_payment') : type==='bonus' ? t('wallet_bonus') : t('wallet_refund');
   const ready = data.preferences && data.preferences.preferred_method !== 'none';
-  return <main className="min-w-0 w-full px-4 py-8">
+  return <main className="min-w-0 w-full px-4 py-8 max-lg:pt-3">
     <MobilePageBar title={t('wallet_title')}/>
     <h1 className="hidden font-display text-3xl font-bold lg:block">{t('wallet_title')}</h1>
     <div className="mt-6 grid grid-cols-2 gap-4 xl:grid-cols-3">
