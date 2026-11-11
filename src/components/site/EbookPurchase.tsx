@@ -13,8 +13,8 @@ import { inr } from '@/lib/courses';
 
 /** eBook card footer: price with compact Like / Comment / Share, then the buy/open action (payment opens in a popup). */
 export function EbookPurchase({ book }: { book: { id: string; title: string; price: number; has_file: boolean | null } }) {
-  return <div className="mt-auto pt-3">
-    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2"><p className="min-w-0 text-lg font-bold text-primary">{inr(Number(book.price))}</p><ProductSocial compact kind="ebook" id={book.id} title={book.title} className="-mr-2"/></div>
+  return <div className="ebook-foot mt-auto pt-3">
+    <div className="ebook-price-row grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2"><p className="min-w-0 text-lg font-bold text-primary">{inr(Number(book.price))}</p><ProductSocial compact kind="ebook" id={book.id} title={book.title} className="-mr-2"/></div>
     <EbookPurchaseAction book={book}/>
   </div>;
 }

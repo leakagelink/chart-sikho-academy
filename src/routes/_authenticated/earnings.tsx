@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { MobilePageBar } from '@/components/site/MobilePageBar';
 import { useMutation, useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -67,8 +68,9 @@ function EarningsPage() {
   const rows = filtered.slice(page*20,(page+1)*20);
   const label = (type: string) => type==='commission' ? t('wallet_commission') : type==='withdrawal' ? t('wallet_withdrawal') : type==='payment' ? t('wallet_payment') : type==='bonus' ? t('wallet_bonus') : t('wallet_refund');
   const ready = data.preferences && data.preferences.preferred_method !== 'none';
-  return <main className="min-w-0 w-full px-4 py-8">
-    <h1 className="font-display text-3xl font-bold">{t('wallet_title')}</h1>
+  return <main className="min-w-0 w-full px-4 py-8 max-lg:pt-3">
+    <MobilePageBar title={t('wallet_title')}/>
+    <h1 className="hidden font-display text-3xl font-bold lg:block">{t('wallet_title')}</h1>
     <div className="mt-6 grid grid-cols-2 gap-4 xl:grid-cols-3">
       {[[t('wallet_total_earned'),earned],[t('wallet_available'),w.available],[t('wallet_pending'),w.pending],[t('wallet_paid_out'),totals.paid],[t('wallet_processing'),totals.processing],[t('admin_comm_tds'),w.tds]].map(([label,v]) => <div key={String(label)} className="min-w-0 border-l-2 border-primary py-2 pl-4"><p className="text-xs text-muted-foreground">{label}</p><p className="mt-2 break-words font-display text-2xl font-bold">{money(Number(v))}</p></div>)}
     </div>

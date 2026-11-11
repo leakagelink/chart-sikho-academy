@@ -1,7 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { Award, Bell, ChevronRight, ClipboardList, IndianRupee, LifeBuoy, LogOut, Settings, Users, Wallet, Camera, Pencil, Save, Trash2 } from "lucide-react";
+import { ChevronRight, LogOut, Camera, Pencil, Save, Trash2 } from "lucide-react";
+import { AppBell, AppCertificate, AppCourses, AppRupee, AppSettings, AppSupport, AppTeam, AppTree, AppWallet } from "@/components/site/AppIcons";
 import { supabase } from "@/integrations/supabase/client";
 import { useLang } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
@@ -104,14 +105,21 @@ function ProfilePage() {
     return value || t('profile_empty');
   };
   const menu = [
-    { icon: Settings, label: t('admin_go'), to: '/admin' },
-    { icon: ClipboardList, label: t('my_courses'), to: '/dashboard' },
-    { icon: Award, label: t('my_certificates'), to: '/certificates' },
-    { icon: Users, label: t('referral_dashboard'), to: '/referrals' },
-    { icon: IndianRupee, label: t('my_earnings'), to: '/earnings' },
-    { icon: Wallet, label: t('payout_requests'), to: '/earnings' },
-    { icon: Bell, label: t('notifications'), to: '/notifications' },
-    { icon: LifeBuoy, label: t('support'), to: '/support' },
+    { icon: AppSettings, label: t('admin_go'), to: '/admin', tone: 'royal' },
+    { icon: AppCourses, label: t('my_courses'), to: '/dashboard', tone: 'gold' },
+    { icon: AppCertificate, label: t('my_certificates'), to: '/certificates', tone: 'green' },
+    { icon: AppTree, label: t('referral_dashboard'), to: '/referrals', tone: 'royal' },
+    { icon: AppRupee, label: t('my_earnings'), to: '/earnings', tone: 'green' },
+    { icon: AppWallet, label: t('payout_requests'), to: '/earnings', tone: 'gold' },
+    { icon: AppBell, label: t('notifications'), to: '/notifications', tone: 'red' },
+    { icon: AppSupport, label: t('support'), to: '/support', tone: 'royal' },
+  ] as const;
+  // Phone/app shortcut tiles under the profile card.
+  const quick = [
+    { icon: AppCourses, label: t('my_courses'), to: '/dashboard', tone: 'gold' },
+    { icon: AppWallet, label: t('wallet'), to: '/earnings', tone: 'green' },
+    { icon: AppCertificate, label: t('up_certificates'), to: '/certificates', tone: 'royal' },
+    { icon: AppTeam, label: t('student_team'), to: '/team', tone: 'red' },
   ] as const;
   return (
     <div className="profile-screen w-full px-4 pb-8 pt-0">
@@ -119,12 +127,20 @@ function ProfilePage() {
         <div className="grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-full bg-gold font-display text-2xl font-bold text-navy">
           {photoUrl ? <img src={photoUrl} alt={t('profile_photo')} className="h-full w-full object-cover" /> : name.charAt(0).toUpperCase()}
         </div>
-        <div className="min-w-0 flex-1"><h1 className="break-words font-display text-2xl font-bold text-foreground">{name}</h1><p className="break-all text-sm text-muted-foreground">{user.email}</p></div>
+        <div className="min-w-0 flex-1"><h1 className="break-words font-display text-2xl font-bold text-foreground">{name}</h1><p className="break-all text-sm text-muted-foreground">{user.email}</p>
+          <div className="profile-chips mt-2 flex flex-wrap gap-2 lg:hidden">
+            {q.data.referral_code && <span className="profile-chip">{t('profile_referral_code')}: <strong>{q.data.referral_code}</strong></span>}
+            <span className="profile-chip">{status(q.data.verification_status)}</span>
+          </div>
+        </div>
         {!editing && <Button onClick={edit} className="w-full sm:w-auto"><Pencil className="h-4 w-4" />{t('edit_profile')}</Button>}
       </div>
+      <nav aria-label={t('my_profile')} className="profile-quick mt-4 grid grid-cols-4 gap-2 lg:hidden">
+        {quick.map(({ icon: Icon, label, to, tone }) => <Link key={label} to={to} className="profile-quick-item flex min-w-0 flex-col items-center gap-1.5 rounded-2xl border border-border bg-card px-1 py-3 text-center text-[11px] font-semibold leading-tight"><span className={`app-tile app-tile-${tone} grid size-10 place-items-center rounded-xl`}><Icon size={22} /></span><span className="line-clamp-2">{label}</span></Link>)}
+      </nav>
       {message && <p role={failed ? 'alert' : 'status'} className={`mt-4 text-sm ${failed ? 'text-destructive' : 'text-success'}`}>{message}</p>}
       <div className="mt-6 grid min-w-0 gap-8 xl:grid-cols-[minmax(0,2fr)_minmax(240px,1fr)]">
-        <section className="min-w-0">
+        <section className="profile-details min-w-0">
           <h2 className="mb-5 font-display text-xl font-semibold">{t('profile_personal')}</h2>
           {editing ? <form onSubmit={save} className="space-y-5">
             <fieldset disabled={saving} className="space-y-5">
@@ -150,11 +166,12 @@ function ProfilePage() {
           <h2 className="mb-5 mt-8 border-t border-border pt-6 font-display text-xl font-semibold">{t('profile_account')}</h2>
           <dl className="grid gap-x-6 gap-y-5 sm:grid-cols-2">{detail(t('email'), user.email)}{detail(t('student_member_id'), user.id)}{detail(t('profile_status'), status(q.data.account_status))}{detail(t('profile_verification'), status(q.data.verification_status))}{detail(t('profile_referral_code'), q.data.referral_code)}{detail(t('profile_joined'), q.data.created_at ? new Date(q.data.created_at).toLocaleDateString(lang === 'hi' ? 'hi-IN' : 'en-IN') : '')}</dl>
         </section>
-        <nav className="profile-menu min-w-0" aria-label={t('my_profile')}>
-          {menu.filter(item => item.to !== '/admin' || panelAccess).map(({ icon: Icon, label, to }) => <Link key={label} to={to} className="flex items-center gap-3 border-b border-border p-4 text-sm hover:bg-muted/50"><Icon className="h-5 w-5 shrink-0" /><span className="flex-1">{label}</span><ChevronRight className="h-4 w-4" /></Link>)}
-          <Button onClick={signOut} variant="ghost" className="mt-3 w-full justify-start text-destructive"><LogOut className="h-4 w-4" />{t('logout')}</Button>
+        <nav className="profile-menu min-w-0 max-lg:order-first" aria-label={t('my_profile')}>
+          {menu.filter(item => item.to !== '/admin' || panelAccess).map(({ icon: Icon, label, to, tone }) => <Link key={label} to={to} className="flex items-center gap-3 border-b border-border p-4 text-sm hover:bg-muted/50"><span className={`app-tile app-tile-${tone} grid shrink-0 place-items-center`}><Icon className="h-5 w-5 shrink-0" /></span><span className="flex-1">{label}</span><ChevronRight className="profile-menu-chevron h-4 w-4" /></Link>)}
+          <Button onClick={signOut} variant="ghost" className="mt-3 w-full justify-start text-destructive max-lg:hidden"><LogOut className="h-4 w-4" />{t('logout')}</Button>
         </nav>
       </div>
+      <Button onClick={signOut} variant="outline" className="profile-logout mt-6 w-full border-destructive/50 text-destructive lg:hidden"><LogOut className="h-4 w-4" />{t('logout')}</Button>
     </div>
   );
 }

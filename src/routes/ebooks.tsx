@@ -5,6 +5,7 @@ import { BookOpen } from "lucide-react";
 import { EbookPurchase } from "@/components/site/EbookPurchase";
 import { supabase } from "@/integrations/supabase/client";
 import { useLang } from "@/lib/i18n";
+import { MobilePageBar } from "@/components/site/MobilePageBar";
 
 export const Route = createFileRoute("/ebooks")({
   head: () => ({
@@ -31,19 +32,20 @@ function EbooksPage() {
     },
   });
   return (
-    <div className="w-full px-4 pt-8">
-      <h1 className="font-display text-3xl font-bold text-foreground">{t("ebooks_t")}</h1>
-      <p className="mt-1 text-muted-foreground">{t("ebooks_s")}</p>
+    <div className="ebook-screen w-full px-4 pt-8">
+      <MobilePageBar title={t("nav_ebooks")} subtitle={t("ebooks_s")} />
+      <h1 className="hidden font-display text-3xl font-bold text-foreground lg:block">{t("ebooks_t")}</h1>
+      <p className="mt-1 hidden text-muted-foreground lg:block">{t("ebooks_s")}</p>
       {q.isLoading ? <p className="mt-8 text-muted-foreground">…</p> : !q.data?.length ? <p className="mt-8 text-muted-foreground">{t("ebooks_empty")}</p> : (
-        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+        <div className="ebook-grid mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {q.data.map((b) => (
-            <article key={b.id} id={`ebook-${b.id}`} className="flex min-w-0 flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card">
-              <div className="aspect-[3/4] w-full bg-muted">
+            <article key={b.id} id={`ebook-${b.id}`} className="ebook-card flex min-w-0 flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card">
+              <div className="ebook-cover aspect-[3/4] w-full bg-muted">
                 {b.cover_url ? <img src={b.cover_url} alt={b.title} loading="lazy" className="h-full w-full object-cover" /> : <div className="grid h-full place-items-center"><BookOpen className="h-10 w-10 text-muted-foreground" /></div>}
               </div>
               <div className="flex flex-1 flex-col p-3">
                 <h2 className="line-clamp-2 font-semibold text-foreground">{b.title}</h2>
-                {b.description && <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{b.description}</p>}
+                {b.description && <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{b.description.replace(/^#+\s*/gm, '').replace(/\*\*|__|`/g, '')}</p>}
                 <EbookPurchase book={b} />
               </div>
             </article>
