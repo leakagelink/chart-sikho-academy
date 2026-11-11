@@ -991,3 +991,6 @@ html { scroll-padding-top: 80px; }
   .tree-canvas-controls { flex-wrap: wrap; }
   .tree-canvas-controls > span { flex: 1 0 100%; }
 }
+
+/* Edge-to-edge app: header fills the status-bar area (inset is 0 in browsers). */
+.app-header { padding-top: env(safe-area-inset-top); }
