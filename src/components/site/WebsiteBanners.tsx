@@ -37,14 +37,14 @@ function BannerCaption({banner,overlay=false}:{banner:WebsiteBanner;overlay?:boo
  const showText=banner.show_text!==false&&!!banner.title;
  if(!showText&&!buttons.length)return null;
  const go=(href:string)=>(e:MouseEvent<HTMLAnchorElement>)=>{if(!href.startsWith('/')||e.metaKey||e.ctrlKey||e.shiftKey||e.button!==0)return;e.preventDefault();router.history.push(href);};
- const links=buttons.map(b=>{const external=!b.href.startsWith('/');return <a key={b.kind} href={b.href} onClick={go(b.href)} {...(external?{target:'_blank',rel:'noopener noreferrer'}:{})} className={b.kind==='join_now'?BTN_JOIN:BTN_MORE}>{b.label}</a>;});
- if(overlay)return <div className="banner-overlay pointer-events-none absolute bottom-[6%] right-[3%] z-10 hidden max-w-[60%] sm:block">
-  <div className="pointer-events-auto flex items-center gap-3 rounded-full bg-navy/30 py-2 pl-5 pr-2 text-navy-foreground shadow-card lg:gap-4">
-   {showText&&<p className="min-w-0 truncate font-display text-base font-bold text-gold lg:text-xl" title={banner.subtitle||banner.title}>{banner.title}</p>}
-   {buttons.length>0&&<div className="flex shrink-0 gap-2 lg:gap-3">{links}</div>}
+ const links=buttons.map(b=>{const external=!b.href.startsWith('/');const cls=overlay?(b.kind==='join_now'?BTN_JOIN_OVERLAY:BTN_MORE_OVERLAY):(b.kind==='join_now'?BTN_JOIN:BTN_MORE);return <a key={b.kind} href={b.href} onClick={go(b.href)} {...(external?{target:'_blank',rel:'noopener noreferrer'}:{})} className={cls}>{b.label}</a>;});
+ if(overlay)return <div className="banner-overlay pointer-events-none absolute bottom-[6%] right-[3%] z-10 max-w-[92%] sm:max-w-[60%]">
+  <div className="pointer-events-auto flex items-center gap-2 rounded-full bg-navy/30 py-1.5 pl-3 pr-1.5 text-navy-foreground shadow-card sm:gap-3 sm:py-2 sm:pl-5 sm:pr-2 lg:gap-4">
+   {showText&&<p className="min-w-0 truncate font-display text-xs font-bold text-gold sm:text-base lg:text-xl" title={banner.subtitle||banner.title}>{banner.title}</p>}
+   {buttons.length>0&&<div className="flex shrink-0 gap-1.5 sm:gap-2 lg:gap-3">{links}</div>}
   </div>
  </div>;
- return <div className={`banner-caption flex flex-col gap-3 bg-navy px-4 py-3 text-navy-foreground sm:hidden ${showText?'':'items-center'}`}>
+ return <div className={`banner-caption hidden flex-col gap-3 bg-navy px-4 py-3 text-navy-foreground ${showText?'':'items-center'}`}>
   {showText&&<div className="min-w-0"><h2 className="font-display text-lg font-bold leading-tight text-gold">{banner.title}</h2>{banner.subtitle&&<p className="line-clamp-2 text-sm opacity-90">{banner.subtitle}</p>}</div>}
   {buttons.length>0&&<div className="flex shrink-0 flex-wrap gap-3">{links}</div>}
  </div>;
