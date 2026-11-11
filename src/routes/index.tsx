@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Award, BookOpen, ChevronRight, Crown, FileText, PlayCircle, Radio, Users, Video } from "lucide-react";
+import { BookOpen, ChevronRight, Crown, PlayCircle } from "lucide-react";
+import { AppCertificate, AppCourses, AppEbook, AppLive, AppSeminar, AppWebinar } from "@/components/site/AppIcons";
 import hero from "@/assets/hero-bull.jpg";
 import { HomeProductShelf } from "@/components/site/HomeProductShelf";
 import { ScheduledLiveClasses } from "@/components/site/ScheduledLiveClasses";
@@ -33,12 +34,12 @@ function Index() {
   const {data:catalog}=useSuspenseQuery(catalogQuery());
   const { t } = useLang();
   const cats = [
-    { icon: Radio, label: t("cat_live"), to: "/live-classes" },
-    { icon: BookOpen, label: t("nav_courses"), to: "/courses" },
-    { icon: Video, label: t("cat_webinars"), to: "/webinars" },
-    { icon: FileText, label: t("cat_ebooks"), to: "/ebooks" },
-    { icon: Users, label: t("cat_seminars"), to: "/seminars" },
-    { icon: Award, label: t("cat_certificates"), to: "/certificates" },
+    { icon: AppLive, label: t("cat_live"), to: "/live-classes" },
+    { icon: AppCourses, label: t("nav_courses"), to: "/courses" },
+    { icon: AppWebinar, label: t("cat_webinars"), to: "/webinars" },
+    { icon: AppEbook, label: t("cat_ebooks"), to: "/ebooks" },
+    { icon: AppSeminar, label: t("cat_seminars"), to: "/seminars" },
+    { icon: AppCertificate, label: t("cat_certificates"), to: "/certificates" },
   ] as const;
   return (
     <div className="mobile-home w-full min-w-0 px-4">
@@ -68,8 +69,8 @@ function Index() {
       {/* Categories */}
       <section className="home-categories mt-6 grid grid-cols-3 gap-3 sm:grid-cols-6">
         {cats.map(({ icon: Icon, label, to }) => (
-          <Link key={label} to={to} className="flex flex-col items-center gap-2 rounded-2xl border border-border bg-card p-4 text-center shadow-card">
-            <span className="rounded-full bg-gold/15 p-3 text-gold"><Icon className="h-5 w-5" /></span>
+          <Link key={label} to={to} className="home-shortcut flex flex-col items-center gap-2 rounded-2xl border border-border bg-card p-4 text-center shadow-card">
+            <span className="home-shortcut-icon rounded-full bg-gold/15 p-3 text-gold"><Icon className="h-5 w-5" /></span>
             <span className="text-xs font-semibold">{label}</span>
           </Link>
         ))}
@@ -107,7 +108,7 @@ function Index() {
       </HomeProductShelf>
 
       {/* Membership */}
-      <section className="home-marketing mt-10 flex flex-col items-start gap-4 rounded-3xl bg-gradient-to-r from-primary to-navy p-6 text-primary-foreground sm:flex-row sm:items-center sm:p-8">
+      <section className="home-membership mt-10 flex flex-col items-start gap-4 rounded-3xl bg-gradient-to-r from-primary to-navy p-6 text-primary-foreground sm:flex-row sm:items-center sm:p-8">
         <Crown className="h-10 w-10 shrink-0 text-gold" />
         <div className="flex-1">
           <h2 className="font-display text-2xl font-bold">{t("membership_t")}</h2>
