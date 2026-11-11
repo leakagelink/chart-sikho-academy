@@ -982,3 +982,10 @@ html { scroll-padding-top: 80px; }
   .team-tree-member { min-width: 0; }
   .tree-node-footer { min-width: 0; }
 }
+.tree-workspace > .tree-zoom-viewport, .admin-team-dialog .tree-zoom-viewport { overflow: hidden; padding: 0; touch-action: none; }
+.tree-zoom-viewport .tree-zoom-wrapper { width: 100%; height: 100%; touch-action: none; }
+.tree-zoom-viewport .tree-zoom-content { width: max-content; padding: 24px 12px 28px; }
+@media (max-width: 1023px) {
+  .tree-canvas-controls { flex-wrap: wrap; }
+  .tree-canvas-controls > span { flex: 1 0 100%; }
+}

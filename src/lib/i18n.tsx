@@ -115,6 +115,8 @@ const dict = {
   tree_active_members:{en:'Active members',hi:'सक्रिय मेंबर'},
   tree_view_downline:{en:'View downline',hi:'डाउनलाइन देखें'},
   tree_reset_view:{en:'Reset tree',hi:'ट्री रीसेट करें'},
+  tree_zoom_in:{en:'Zoom in tree',hi:'ट्री ज़ूम बढ़ाएँ'},
+  tree_zoom_out:{en:'Zoom out tree',hi:'ट्री ज़ूम घटाएँ'},
   tree_previous:{en:'Scroll tree left',hi:'ट्री बाईं ओर देखें'},
   tree_next:{en:'Scroll tree right',hi:'ट्री दाईं ओर देखें'},
   tree_updated:{en:'Last updated',hi:'आखिरी अपडेट'},
