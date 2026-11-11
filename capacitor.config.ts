@@ -19,6 +19,11 @@ const config: CapacitorConfig = {
     // Never use '*' or '*.lovable.app': unrelated sites must remain external.
     allowNavigation: ['chartsikho.in', 'www.chartsikho.in', 'chart-sikho-course-hub.lovable.app'],
   },
+  // Draw the app edge-to-edge behind the status bar (full-screen look);
+  // the page pads its header with the safe-area inset.
+  plugins: {
+    SystemBars: { insetsHandling: 'css', style: 'DARK' },
+  },
 };
 
 export default config;
