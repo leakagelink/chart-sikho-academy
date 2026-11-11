@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Search, BookOpen, Video, ArrowLeft } from "lucide-react";
+import { Search, BookOpen, Video } from "lucide-react";
+import { MobilePageBar } from "@/components/site/MobilePageBar";
 import hero from "@/assets/hero-bull.jpg";
 import { LiveClassThumbnail, SessionDateSocial } from "@/components/site/LiveClassCard";
 import { SessionPurchase } from "@/components/site/SessionPurchase";
@@ -57,10 +58,7 @@ function CoursesPage() {
   const total = realCourses.length + ebooks.length + sessions.length;
   return (
     <div className="catalog-screen w-full px-4 pt-8">
-      <div className="mb-4 flex items-center gap-3 lg:hidden">
-        <Link to="/" aria-label={t("nav_home")} className="-ml-1 grid size-10 shrink-0 place-items-center rounded-full text-gold"><ArrowLeft className="size-6" /></Link>
-        <h1 className="truncate font-display text-2xl font-bold">{t("nav_courses")}</h1>
-      </div>
+      <MobilePageBar title={t("nav_courses")} />
       <WebsiteBanners page="courses" fallback={
       <section className="relative hidden overflow-hidden rounded-3xl lg:block bg-navy text-navy-foreground">
         <img src={hero} alt="" width={1280} height={832} className="absolute inset-0 h-full w-full object-cover opacity-50 md:left-1/3 md:w-2/3 md:opacity-90" />
