@@ -9,6 +9,8 @@ const config: CapacitorConfig = {
   appName: 'ChartSikho',
   // Offline fallback shell only; the live app comes from server.url.
   webDir: 'capacitor-web',
+  // Lets the website show app-only screens (e.g. the app sign-in design).
+  appendUserAgent: 'ChartSikhoApp',
   server: {
     url: 'https://chartsikho.in',
     androidScheme: 'https',
