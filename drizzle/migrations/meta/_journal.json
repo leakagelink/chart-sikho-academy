@@ -470,6 +470,13 @@
       "when": 1794453101532,
       "tag": "0066_notification_links_and_images",
       "breakpoints": true
+    },
+    {
+      "idx": 67,
+      "version": "7",
+      "when": 1794498551616,
+      "tag": "0067_app_download_policies",
+      "breakpoints": true
     }
   ]
 }

@@ -1,0 +1,4 @@
+create policy "App downloads listable" on storage.objects for select to anon, authenticated using (bucket_id = 'app-downloads');
+create policy "Admins upload app" on storage.objects for insert to authenticated with check (bucket_id = 'app-downloads' and public.has_role(auth.uid(), 'admin'));
+create policy "Admins update app" on storage.objects for update to authenticated using (bucket_id = 'app-downloads' and public.has_role(auth.uid(), 'admin'));
+create policy "Admins delete app" on storage.objects for delete to authenticated using (bucket_id = 'app-downloads' and public.has_role(auth.uid(), 'admin'));
