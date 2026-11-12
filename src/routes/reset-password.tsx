@@ -28,14 +28,17 @@ function ResetPage() {
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
   const [verified, setVerified] = useState(false);
+  const [checking, setChecking] = useState(false);
   const [success, setSuccess] = useState(false);
   useEffect(() => {
     let active = true;
     setVerified(false);
+    setChecking(false);
     if (ready && session && recovery) {
+      setChecking(true);
       supabase.auth.getUser().then(({ data, error }) => {
-        if (active) setVerified(!error && Boolean(data.user));
-      }).catch(() => { if (active) setVerified(false); });
+        if (active) { setVerified(!error && Boolean(data.user)); setChecking(false); }
+      }).catch(() => { if (active) { setVerified(false); setChecking(false); } });
     }
     return () => { active = false; };
   }, [ready, session, recovery]);
@@ -58,12 +61,12 @@ function ResetPage() {
     <div className="mx-auto max-w-md px-4 py-12">
       <form onSubmit={submit} className="space-y-4 rounded-3xl border border-border bg-card p-6 shadow-card">
         <h1 className="font-display text-2xl font-bold text-foreground">{t("new_password")}</h1>
-        {success ? <><p role="status" className="text-success">{t('reset_success')}</p><Button asChild className="w-full"><Link to="/dashboard">{t('nav_dashboard')}</Link></Button></> : verified ? <>
+        {success ? <><p role="status" className="text-success">{t('reset_success')}</p><Button asChild className="w-full"><Link to="/">{t('nav_home')}</Link></Button></> : verified ? <>
           <label className="block space-y-1 text-sm"><span>{t('password')}</span><input required type="password" autoComplete="new-password" minLength={6} value={pw} onChange={(e) => setPw(e.target.value)} className="w-full rounded-lg border border-input bg-card px-3 py-2.5 text-sm" /></label>
           <label className="block space-y-1 text-sm"><span>{t('reset_confirm_password')}</span><input required type="password" autoComplete="new-password" minLength={6} value={confirmation} onChange={(e) => setConfirmation(e.target.value)} className="w-full rounded-lg border border-input bg-card px-3 py-2.5 text-sm" /></label>
           {err && <p role="alert" className="text-sm text-destructive">{err}</p>}
           <Button disabled={busy} className="w-full" type="submit">{t(busy ? 'reset_saving' : 'save')}</Button>
-        </> : <><p role="status" className="text-sm text-muted-foreground">{t(!ready || (recovery && session) ? 'reset_checking' : 'reset_invalid')}</p><Button asChild variant="outline" className="w-full"><Link to="/auth">{t('forgot_title')}</Link></Button></>}
+        </> : <><p role="status" className="text-sm text-muted-foreground">{t(!ready || checking ? 'reset_checking' : 'reset_invalid')}</p><Button asChild variant="outline" className="w-full"><Link to="/auth">{t('forgot_title')}</Link></Button></>}
       </form>
     </div>
   );
