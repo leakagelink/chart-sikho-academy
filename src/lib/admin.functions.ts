@@ -252,7 +252,7 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
       result = await s.from('bonus_entries').insert(row).select('id').single(); break;
     }
     case 'notifications': {
-      const row = z.object({ title, message: z.string().trim().min(2).max(1000), audience: z.string().min(1).max(200).refine(v => v === 'all' || /^(city|state|user|course):.+$/.test(v)), status: z.enum(['draft','published']), image_url: storedImageReference.default(''), show_popup: z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]).default(false) }).parse(v);
+      const row = z.object({ title, message: z.string().trim().min(2).max(1000), audience: z.string().min(1).max(200).refine(v => v === 'all' || /^(city|state|user|course):.+$/.test(v)), status: z.enum(['draft','published']), image_url: storedImageReference.default(''), link_url: bannerLink.default(''), show_popup: z.union([z.boolean(), z.enum(['true','false']).transform(x => x === 'true')]).default(false) }).parse(v);
       result = data.id ? await s.from('notification_campaigns').update(row).eq('id',data.id).eq('status','draft').select('id').single() : await s.from('notification_campaigns').insert({ ...row, created_by: context.userId }).select('id').single(); break;
     }
     case 'payouts': {
@@ -399,7 +399,7 @@ export const changeAdminRecord = createServerFn({ method: 'POST' }).middleware([
 });
 
 export const getStudentNotifications = createServerFn({ method:'POST' }).middleware([requireSupabaseAuth]).handler(async ({ context }) => {
-  const r = await context.supabase.from('user_notifications').select('id,read_at,popup_seen_at,created_at,notification_campaigns(title,message,show_popup,image_url)').eq('user_id',context.userId).order('created_at',{ascending:false}).limit(50);
+  const r = await context.supabase.from('user_notifications').select('id,read_at,popup_seen_at,created_at,notification_campaigns(title,message,show_popup,image_url,link_url)').eq('user_id',context.userId).order('created_at',{ascending:false}).limit(50);
   if (r.error) throw new Error('Unable to load notifications');
   return r.data;
 });
