@@ -1,3 +1,4 @@
+import { AdminApkSettings } from './AppDownload';
 import { AdminImage } from './AdminImage';
 import { BannerSlide } from './WebsiteBanners';
 import { DEFAULT_JOIN_URL } from '@/lib/website-banners';
@@ -150,6 +151,7 @@ export function AdminPanel({ section, query, status, cat, when, rank, ustate='al
     {['affiliates','commissions','settings'].includes(section)&&<p className="mb-5 text-sm text-muted-foreground">{t('admin_real_commission')}</p>}
     {section==='settings'&&<AdminAccountSettings/>}
     {section==='settings'&&can('edit')&&<LogoSettings logoUrl={String(data.settings[0]?.['logo_url']??'')} busy={uploading||mutation.isPending} onPick={pickLogo} onReset={()=>saveLogo('')}/>}
+    {section==='settings'&&can('edit')&&<AdminApkSettings/>}
     {section==='settings'&&canAccess(data.access,'payments')&&<Button asChild variant="outline" className="mb-5"><Link to="/admin/$section" params={{section:'payments'}} search={{q:'',status:'all',cat:'all',when:'all',rank:'all',state:'all',city:'all'}}><Receipt size={17}/>{t('pay_settings_title')}</Link></Button>}
     {section==='notifications'&&<p className="mb-5 text-sm text-muted-foreground">{t('admin_external_off')}</p>}
     {section==='refunds'&&<p className="mb-5 text-sm text-muted-foreground">{t('admin_refund_note')}</p>}
