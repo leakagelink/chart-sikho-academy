@@ -116,6 +116,8 @@ function Index() {
         </div>
         <Link to="/plans" className="rounded-full bg-gold px-6 py-3 font-semibold text-navy hover:bg-gold/90">{t("membership_cta")}</Link>
       </section>
+
+      <AppDownloadCard />
     </div>
   );
 }

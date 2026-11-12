@@ -98,7 +98,6 @@ export function Header() {
           )}
         </div>
       </div>
-      <AppDownloadBar />
     </header>
   );
 }
