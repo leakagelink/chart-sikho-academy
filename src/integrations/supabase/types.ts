@@ -1383,6 +1383,7 @@ export type Database = {
           created_by: string
           id: string
           image_url: string
+          link_url: string
           message: string
           show_popup: boolean
           status: string
@@ -1395,6 +1396,7 @@ export type Database = {
           created_by?: string
           id?: string
           image_url?: string
+          link_url?: string
           message: string
           show_popup?: boolean
           status?: string
@@ -1407,6 +1409,7 @@ export type Database = {
           created_by?: string
           id?: string
           image_url?: string
+          link_url?: string
           message?: string
           show_popup?: boolean
           status?: string
