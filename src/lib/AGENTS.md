@@ -9,3 +9,4 @@
 - The phone sign-in design is chosen client-side after hydration (Capacitor bridge/user-agent marker or below the desktop breakpoint); why: one domain serves desktop, phone browsers and the app, and SSR markup stays consistent.
 - Password reset destinations use the shared canonical redirect helper rather than the requesting origin; why: preview-origin requests must not send recovery emails to preview pages.
 - Notification images become publicly served once their campaign is published (published-reference RPC), and optional notification links reuse the banner link rule (site paths or https only); why: recipients' image tags send no login and admin links cannot inject unsafe URLs.
+- The APK download link is signed server-side for one fixed file; the app-downloads bucket has admin-only storage reads. Why: visitors can download the app without being able to list or read other files in the bucket.
