@@ -1,3 +1,4 @@
+import { NotificationLink } from '@/components/site/NotificationLink';
 import { Link } from "@tanstack/react-router";
 import { Bell, Search, User } from "lucide-react";
 import { AppCourses, AppEbook, AppHome, AppLive, AppProfile } from "./AppIcons";
@@ -54,7 +55,7 @@ export function NotificationsBell() {
       {open && (
         <div className="fixed inset-x-3 top-16 z-50 max-h-[70dvh] overflow-y-auto rounded-lg border border-border bg-card p-2 shadow-card sm:absolute sm:inset-x-auto sm:right-0 sm:top-12 sm:w-80">
           <p className="px-3 py-2 font-display text-sm font-bold text-foreground">{t("notif_title")}</p>
-          {session ? <><Button asChild variant="link"><Link to="/notifications">{t('see_all')}</Link></Button>{notifications.data?.map(n=><div key={n.id} className="px-3 py-2"><p className="text-sm font-semibold">{n.notification_campaigns?.title}</p><p className="text-xs text-muted-foreground">{n.notification_campaigns?.message}</p></div>)}{!notifications.data?.length&&<p className="px-3 py-2 text-sm text-muted-foreground">{t('admin_empty')}</p>}</> : <p className="px-3 py-2 text-sm text-muted-foreground">{t('admin_empty')}</p>}
+          {session ? <><Button asChild variant="link"><Link to="/notifications">{t('see_all')}</Link></Button>{notifications.data?.map(n=><NotificationLink key={n.id} link={n.notification_campaigns?.link_url} onNavigate={()=>setOpen(false)} className="block rounded-md px-3 py-2 hover:bg-muted"><p className="text-sm font-semibold">{n.notification_campaigns?.title}</p><p className="line-clamp-2 text-xs text-muted-foreground">{n.notification_campaigns?.message}</p></NotificationLink>)}{!notifications.data?.length&&<p className="px-3 py-2 text-sm text-muted-foreground">{t('admin_empty')}</p>}</> : <p className="px-3 py-2 text-sm text-muted-foreground">{t('admin_empty')}</p>}
         </div>
       )}
     </div>

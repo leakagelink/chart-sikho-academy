@@ -1,5 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Link, useLocation } from '@tanstack/react-router';
+import { useLocation } from '@tanstack/react-router';
+import { NotificationLink } from '@/components/site/NotificationLink';
 import { Bell } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -23,14 +24,14 @@ export function NotificationPopup() {
   };
   return (
     <Dialog open onOpenChange={o => { if (!o) void close(); }}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-h-[90vh] w-[calc(100vw-2rem)] max-w-md overflow-y-auto rounded-2xl">
         <div className="flex items-center gap-2 text-primary"><Bell className="h-5 w-5" /></div>
-        {item.notification_campaigns?.image_url&&<img src={item.notification_campaigns.image_url} alt="" className="max-h-56 w-full rounded-md object-contain"/>}
+        {item.notification_campaigns?.image_url&&<NotificationLink link={item.notification_campaigns.link_url} onNavigate={() => void close()} className="block"><img src={item.notification_campaigns.image_url} alt="" className="max-h-56 w-full rounded-md object-contain"/></NotificationLink>}
         <DialogTitle className="font-display text-xl">{item.notification_campaigns?.title}</DialogTitle>
         <DialogDescription className="whitespace-pre-wrap">{item.notification_campaigns?.message}</DialogDescription>
         <div className="mt-2 flex justify-end gap-2">
           <Button variant="outline" onClick={() => void close()}>{t('notif_popup_close')}</Button>
-          <Button asChild onClick={() => void close()}><Link to="/notifications">{t('notif_popup_view')}</Link></Button>
+          <Button asChild><NotificationLink link={item.notification_campaigns?.link_url} onNavigate={() => void close()}>{t('notif_popup_view')}</NotificationLink></Button>
         </div>
       </DialogContent>
     </Dialog>
