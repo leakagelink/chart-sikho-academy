@@ -13,6 +13,7 @@ import { WebsiteBanners } from '@/components/site/WebsiteBanners';
 import { productQuery } from '@/lib/product-query';
 import { EbookPurchase } from '@/components/site/EbookPurchase';
 import { Button } from '@/components/ui/button';
+import { AppDownloadCard } from '@/components/site/AppDownload';
 
 export const Route = createFileRoute("/")({
   loader: async ({context}) => {await Promise.all([context.queryClient.ensureQueryData(catalogQuery()),context.queryClient.ensureQueryData(bannerQuery()),context.queryClient.ensureQueryData(productQuery())]);},

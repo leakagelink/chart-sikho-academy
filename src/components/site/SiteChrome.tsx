@@ -1,4 +1,3 @@
-import { AppDownloadBar } from "./AppDownload";
 import { NotificationLink } from '@/components/site/NotificationLink';
 import { Link } from "@tanstack/react-router";
 import { Bell, Search, User } from "lucide-react";
