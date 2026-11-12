@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Open
+- [x] Password reset requests now always use the owned-domain canonical destination, even from preview hosts. Current hosted Site URL and allow-list confirm chartsikho.in; live reset page returns 200. Four tests and intercepted UI request destination passed; build OK. No email sent or publication performed; old issued links remain unchanged.
 - [x] Hardened existing Cloud password recovery with confirmed-password validation, verified recovery session, invalid-link states and request failure handling; user approved Cloud delivery instead of unsupported Resend auth delivery. Eight tests passed; mobile/desktop forgot form and invalid-link states verified without overflow/errors; build OK.
 - [ ] Verify received reset email → new password save → sign-in with new password: requires access to the user's received recovery email; no real account password changed during checks.
 - [x] Compact phone Team Tree nodes (212px root / 164px descendants), photos, connectors, summaries, dock/header/support and small-phone shortcuts/profile; tablet header shortcuts stay desktop-only. Signed-in 70 screens / 112 size checks at 320/393/768px without page overflow/errors, course detail at 320/393/768/1280px and real 12-member tree inspector open/close verified; 12 tests passed. No publishing, records or payment changes; physical Android device not tested.
