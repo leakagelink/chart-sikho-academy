@@ -55,6 +55,7 @@ function AuthPage() {
     e.preventDefault();
     setBusy(true);
     setMsg(null);
+    try {
     if (mode === "login") {
       const { error } = await supabase.auth.signInWithPassword({ email: form.email, password: form.password });
       if (error) setMsg({ ok: false, text: error.message });
@@ -74,10 +75,12 @@ function AuthPage() {
       });
       setMsg(error ? { ok: false, text: error.message } : { ok: true, text: t("check_email") });
     } else {
-      const { error } = await supabase.auth.resetPasswordForEmail(form.email, { redirectTo: `${window.location.origin}/reset-password` });
+      const { error } = await supabase.auth.resetPasswordForEmail(form.email.trim(), { redirectTo: `${window.location.origin}/reset-password` });
       setMsg(error ? { ok: false, text: error.message } : { ok: true, text: t("reset_sent") });
     }
-    setBusy(false);
+    } catch {
+      setMsg({ ok: false, text: t('reset_request_failed') });
+    } finally { setBusy(false); }
   }
 
   async function social(p: "google" | "lovable") {
