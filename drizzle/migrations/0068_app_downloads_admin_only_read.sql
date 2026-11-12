@@ -1,0 +1,2 @@
+DROP POLICY IF EXISTS "App downloads listable" ON storage.objects;
+CREATE POLICY "Admins read app downloads" ON storage.objects FOR SELECT TO authenticated USING (bucket_id = 'app-downloads' AND public.has_role(auth.uid(), 'admin'));

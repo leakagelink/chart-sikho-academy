@@ -477,6 +477,13 @@
       "when": 1794498551616,
       "tag": "0067_app_download_policies",
       "breakpoints": true
+    },
+    {
+      "idx": 68,
+      "version": "7",
+      "when": 1794500599186,
+      "tag": "0068_app_downloads_admin_only_read",
+      "breakpoints": true
     }
   ]
 }
