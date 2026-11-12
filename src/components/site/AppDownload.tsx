@@ -17,7 +17,7 @@ async function apkLink(): Promise<string | null> {
 export function AppDownloadBar() {
   const { lang } = useLang();
   const [url, setUrl] = useState<string | null>(null);
-  useEffect(() => { if (!isNativeAppEnv()) apkLink().then(setUrl); }, []);
+  useEffect(() => { if (!isNativeAppEnv(window as never)) apkLink().then(setUrl); }, []);
   if (!url) return null;
   return (
     <div className="flex items-center justify-center gap-3 border-b border-border bg-navy px-3 py-1.5 text-sm text-navy-foreground">
