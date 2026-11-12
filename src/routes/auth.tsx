@@ -9,6 +9,7 @@ import { useLang } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { normalizeSignupReferral, signupReferralFormatValid } from '@/lib/signup-referral';
 import { useIsPhoneLayout } from "@/lib/native-app";
+import { passwordResetRedirect } from '@/lib/password-recovery';
 import { ArrowLeft, Eye, EyeOff, Gift, IdCard, Lock, Mail, Phone, type LucideIcon } from "lucide-react";
 
 // Social buttons stay hidden while the client tests the app; flip to true at go-live.
@@ -75,7 +76,7 @@ function AuthPage() {
       });
       setMsg(error ? { ok: false, text: error.message } : { ok: true, text: t("check_email") });
     } else {
-      const { error } = await supabase.auth.resetPasswordForEmail(form.email.trim(), { redirectTo: `${window.location.origin}/reset-password` });
+      const { error } = await supabase.auth.resetPasswordForEmail(form.email.trim(), { redirectTo: passwordResetRedirect() });
       setMsg(error ? { ok: false, text: error.message } : { ok: true, text: t("reset_sent") });
     }
     } catch {

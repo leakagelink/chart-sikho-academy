@@ -1,5 +1,9 @@
 import { expect, it } from 'vitest';
-import { isRecoveryHash, recoveryPasswordError } from './password-recovery';
+import { isRecoveryHash, recoveryPasswordError, passwordResetRedirect } from './password-recovery';
+
+it('password reset lands on the owned domain, never a Lovable host', () => {
+  expect(passwordResetRedirect()).toBe('https://chartsikho.in/reset-password');
+});
 
 it('recognizes only password recovery links', () => {
   expect(isRecoveryHash('#type=recovery')).toBe(true);
