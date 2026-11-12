@@ -13,6 +13,7 @@ import { WebsiteBanners } from '@/components/site/WebsiteBanners';
 import { productQuery } from '@/lib/product-query';
 import { EbookPurchase } from '@/components/site/EbookPurchase';
 import { Button } from '@/components/ui/button';
+import { AppDownloadCard } from '@/components/site/AppDownload';
 
 export const Route = createFileRoute("/")({
   loader: async ({context}) => {await Promise.all([context.queryClient.ensureQueryData(catalogQuery()),context.queryClient.ensureQueryData(bannerQuery()),context.queryClient.ensureQueryData(productQuery())]);},
@@ -116,6 +117,8 @@ function Index() {
         </div>
         <Link to="/plans" className="rounded-full bg-gold px-6 py-3 font-semibold text-navy hover:bg-gold/90">{t("membership_cta")}</Link>
       </section>
+
+      <AppDownloadCard />
     </div>
   );
 }

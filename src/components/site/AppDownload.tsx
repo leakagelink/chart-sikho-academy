@@ -13,20 +13,24 @@ async function apkLink(): Promise<string | null> {
   try { return await getAppDownloadUrl(); } catch { return null; }
 }
 
-/** Strip under the header; hidden inside the native app and when no APK is uploaded. */
-export function AppDownloadBar() {
+/** Phone-only offer card shown under the Home membership section; hidden inside the native app and when no APK is uploaded. */
+export function AppDownloadCard() {
   const { lang } = useLang();
+  const hi = lang === "hi";
   const [url, setUrl] = useState<string | null>(null);
   useEffect(() => { if (!isNativeAppEnv(window as never)) apkLink().then(setUrl); }, []);
   if (!url) return null;
   return (
-    <div className="flex items-center justify-center gap-3 border-b border-border bg-navy px-3 py-1.5 text-sm text-navy-foreground">
-      <Smartphone size={16} className="shrink-0 text-gold" />
-      <span className="truncate">{lang === "hi" ? "Chartसीखो मोबाइल ऐप पाएँ" : "Get the Chartसीखो mobile app"}</span>
-      <Button asChild size="sm" className="h-7 shrink-0 bg-gold px-3 text-navy hover:bg-gold/90">
-        <a href={url}><Download size={14} />{lang === "hi" ? "ऐप डाउनलोड" : "Download App"}</a>
+    <section className="app-download-card mt-4 flex items-center gap-3 rounded-2xl border border-gold/40 bg-navy p-4 text-navy-foreground lg:hidden">
+      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gold/15 text-gold"><Smartphone size={22} /></span>
+      <div className="min-w-0 flex-1">
+        <p className="font-display text-base font-bold leading-snug">{hi ? "Chartसीखो मोबाइल ऐप" : "Chartसीखो mobile app"}</p>
+        <p className="mt-0.5 text-xs opacity-80">{hi ? "क्लासेस, कोर्स और वीडियो अपने फ़ोन पर" : "Classes, courses and videos on your phone"}</p>
+      </div>
+      <Button asChild size="sm" className="h-9 shrink-0 bg-gold px-4 text-navy hover:bg-gold/90">
+        <a href={url}><Download size={15} />{hi ? "ऐप डाउनलोड" : "Download App"}</a>
       </Button>
-    </div>
+    </section>
   );
 }
 
@@ -59,7 +63,7 @@ export function AdminApkSettings() {
   return (
     <div className="mb-5 rounded-xl border border-border bg-card p-4">
       <p className="text-sm font-semibold">{hi ? "मोबाइल ऐप (APK)" : "Mobile app (APK)"}</p>
-      <p className="mt-1 text-xs text-muted-foreground">{hi ? "अपलोड की गई APK वेबसाइट हेडर के नीचे 'Download App' बटन से मिलेगी।" : "The uploaded APK is offered via the 'Download App' button below the website header."}</p>
+      <p className="mt-1 text-xs text-muted-foreground">{hi ? "अपलोड की गई APK होम पेज पर 'Chartसीखो Membership' के नीचे मोबाइल में 'Download App' बटन से मिलेगी।" : "The uploaded APK is offered via the 'Download App' button under the Chartसीखो Membership section on Home (phones only)."}</p>
       <p className="mt-2 text-xs">{info ?? (hi ? "अभी कोई APK नहीं" : "No APK uploaded yet")}</p>
       <div className="mt-3 flex flex-wrap items-center gap-3">
         <label className={`inline-flex cursor-pointer items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground ${busy ? "opacity-60" : ""}`}>
