@@ -1,3 +1,7 @@
+export function passwordResetRedirect(): string {
+  return new URL('/reset-password', 'https://chartsikho.in').toString();
+}
+
 export function isRecoveryHash(hash: string): boolean {
   const params = new URLSearchParams(hash.replace(/^#/, ''));
   return params.get('type') === 'recovery' && !params.has('error') && !params.has('error_code');
