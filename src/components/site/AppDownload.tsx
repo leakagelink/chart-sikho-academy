@@ -4,13 +4,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useLang } from "@/lib/i18n";
 import { isNativeAppEnv } from "@/lib/native-app";
+import { getAppDownloadUrl } from "@/lib/app-download.functions";
 
 const BUCKET = "app-downloads";
 const FILE = "chartsikho.apk";
 
 async function apkLink(): Promise<string | null> {
-  const { data } = await supabase.storage.from(BUCKET).createSignedUrl(FILE, 3600, { download: "ChartSikho.apk" });
-  return data?.signedUrl ?? null;
+  try { return await getAppDownloadUrl(); } catch { return null; }
 }
 
 /** Strip under the header; hidden inside the native app and when no APK is uploaded. */
