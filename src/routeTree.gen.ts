@@ -35,6 +35,7 @@ import { Route as LiveClassIdRouteImport } from './routes/live.$classId'
 import { Route as VerifyCertificateNoRouteImport } from './routes/verify.$certificateNo'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminSectionRouteImport } from './routes/_authenticated/admin.$section'
+import { Route as AuthenticatedReadEbookIdRouteImport } from './routes/_authenticated/read.$ebookId'
 import { Route as AuthenticatedAdminUserUserIdRouteImport } from './routes/_authenticated/admin.user.$userId'
 import { Route as ApiPublicSiteFileSectionFileRouteImport } from './routes/api/public/site-file.$section.$file'
 import { Route as ApiPublicSiteImageKindIdRouteImport } from './routes/api/public/site-image.$kind.$id'
@@ -171,6 +172,12 @@ const AuthenticatedAdminSectionRoute =
     path: '/$section',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedReadEbookIdRoute =
+  AuthenticatedReadEbookIdRouteImport.update({
+    id: '/read/$ebookId',
+    path: '/read/$ebookId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAdminUserUserIdRoute =
   AuthenticatedAdminUserUserIdRouteImport.update({
     id: '/user/$userId',
@@ -215,6 +222,7 @@ export interface FileRoutesByFullPath {
   '/live/$classId': typeof LiveClassIdRoute
   '/verify/$certificateNo': typeof VerifyCertificateNoRoute
   '/admin/$section': typeof AuthenticatedAdminSectionRoute
+  '/read/$ebookId': typeof AuthenticatedReadEbookIdRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/admin/user/$userId': typeof AuthenticatedAdminUserUserIdRoute
   '/api/public/site-file/$section/$file': typeof ApiPublicSiteFileSectionFileRoute
@@ -244,6 +252,7 @@ export interface FileRoutesByTo {
   '/live/$classId': typeof LiveClassIdRoute
   '/verify/$certificateNo': typeof VerifyCertificateNoRoute
   '/admin/$section': typeof AuthenticatedAdminSectionRoute
+  '/read/$ebookId': typeof AuthenticatedReadEbookIdRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/admin/user/$userId': typeof AuthenticatedAdminUserUserIdRoute
   '/api/public/site-file/$section/$file': typeof ApiPublicSiteFileSectionFileRoute
@@ -276,6 +285,7 @@ export interface FileRoutesById {
   '/live/$classId': typeof LiveClassIdRoute
   '/verify/$certificateNo': typeof VerifyCertificateNoRoute
   '/_authenticated/admin/$section': typeof AuthenticatedAdminSectionRoute
+  '/_authenticated/read/$ebookId': typeof AuthenticatedReadEbookIdRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/admin/user/$userId': typeof AuthenticatedAdminUserUserIdRoute
   '/api/public/site-file/$section/$file': typeof ApiPublicSiteFileSectionFileRoute
@@ -308,6 +318,7 @@ export interface FileRouteTypes {
     | '/live/$classId'
     | '/verify/$certificateNo'
     | '/admin/$section'
+    | '/read/$ebookId'
     | '/admin/'
     | '/admin/user/$userId'
     | '/api/public/site-file/$section/$file'
@@ -337,6 +348,7 @@ export interface FileRouteTypes {
     | '/live/$classId'
     | '/verify/$certificateNo'
     | '/admin/$section'
+    | '/read/$ebookId'
     | '/admin'
     | '/admin/user/$userId'
     | '/api/public/site-file/$section/$file'
@@ -368,6 +380,7 @@ export interface FileRouteTypes {
     | '/live/$classId'
     | '/verify/$certificateNo'
     | '/_authenticated/admin/$section'
+    | '/_authenticated/read/$ebookId'
     | '/_authenticated/admin/'
     | '/_authenticated/admin/user/$userId'
     | '/api/public/site-file/$section/$file'
@@ -576,6 +589,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminSectionRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/read/$ebookId': {
+      id: '/_authenticated/read/$ebookId'
+      path: '/read/$ebookId'
+      fullPath: '/read/$ebookId'
+      preLoaderRoute: typeof AuthenticatedReadEbookIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/admin/user/$userId': {
       id: '/_authenticated/admin/user/$userId'
       path: '/user/$userId'
@@ -627,6 +647,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedReferralsRoute: typeof AuthenticatedReferralsRoute
   AuthenticatedSupportRoute: typeof AuthenticatedSupportRoute
   AuthenticatedTeamRoute: typeof AuthenticatedTeamRoute
+  AuthenticatedReadEbookIdRoute: typeof AuthenticatedReadEbookIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -641,6 +662,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedReferralsRoute: AuthenticatedReferralsRoute,
   AuthenticatedSupportRoute: AuthenticatedSupportRoute,
   AuthenticatedTeamRoute: AuthenticatedTeamRoute,
+  AuthenticatedReadEbookIdRoute: AuthenticatedReadEbookIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
