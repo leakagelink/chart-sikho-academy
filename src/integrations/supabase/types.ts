@@ -2160,6 +2160,17 @@ export type Database = {
         Args: { _categories: string[]; _category: string }
         Returns: boolean
       }
+      my_ebook_library: {
+        Args: never
+        Returns: {
+          access: string
+          cover_url: string
+          has_file: boolean
+          id: string
+          price: number
+          title: string
+        }[]
+      }
       my_ebook_resource: { Args: { _ebook_id: string }; Returns: string }
       my_membership: { Args: never; Returns: Json }
       my_referral_members: {
