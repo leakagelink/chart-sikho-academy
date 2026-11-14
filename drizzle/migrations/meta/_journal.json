@@ -484,6 +484,13 @@
       "when": 1794500599186,
       "tag": "0068_app_downloads_admin_only_read",
       "breakpoints": true
+    },
+    {
+      "idx": 69,
+      "version": "7",
+      "when": 1794638243687,
+      "tag": "0069_my_membership_plan_ids",
+      "breakpoints": true
     }
   ]
 }
