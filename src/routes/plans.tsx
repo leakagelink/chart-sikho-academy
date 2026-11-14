@@ -33,7 +33,7 @@ function PlansPage() {
   const {data: plans} = useSuspenseQuery(plansQuery);
   const [userId, setUserId] = useState<string | null>(null);
   useEffect(() => { supabase.auth.getUser().then(r => setUserId(r.data.user?.id ?? null)); }, []);
-  const member = useQuery({ queryKey: ['my-membership', userId], enabled: !!userId, queryFn: async () => { const r = await supabase.rpc('my_membership'); if (r.error) throw r.error; return r.data as { active: boolean; plan_name?: string; expires_at?: string | null }; } });
+  const member = useQuery({ queryKey: ['my-membership', userId], enabled: !!userId, queryFn: async () => { const r = await supabase.rpc('my_membership'); if (r.error) throw r.error; return r.data as { active: boolean; plan_name?: string; expires_at?: string | null; plan_ids?: string[] }; } });
   return (
     <div className="w-full px-4 pt-8">
       <div className="text-center">
@@ -55,7 +55,7 @@ function PlansPage() {
                 <li key={i} className="flex items-start gap-2 break-words"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success" /><span className="min-w-0 break-words">{k}</span></li>
               ))}
             </ul>
-            {userId ? <ManualPay productType="plan" userId={userId} course={{ id: p.id, title: p.name_en, price: p.price }} /> : <Button asChild variant={p.popular?'default':'outline'} className="w-full"><Link to="/auth" search={{ redirect: '/plans' }}>{t("choose_plan")}</Link></Button>}
+            {userId && member.data?.plan_ids?.includes(p.id) ? <Button size="lg" variant="outline" disabled className="w-full border-success text-success disabled:opacity-100"><CheckCircle2 className="h-4 w-4" />{t('current_plan')}</Button> : userId ? <ManualPay productType="plan" userId={userId} course={{ id: p.id, title: p.name_en, price: p.price }} /> : <Button asChild variant={p.popular?'default':'outline'} className="w-full"><Link to="/auth" search={{ redirect: '/plans' }}>{t("choose_plan")}</Link></Button>}
             <ProductSocial kind="plan" id={p.id} title={p.name_en}/>
           </div>
         ))}
