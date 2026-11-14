@@ -1130,6 +1130,7 @@ const dict = {
   per_year: { en: "year", hi: "वर्ष" },
   most_popular: { en: "MOST POPULAR", hi: "सबसे लोकप्रिय" },
   choose_plan: { en: "Choose plan", hi: "प्लान चुनें" },
+  current_plan: { en: "Current plan", hi: "वर्तमान प्लान" },
   pf_1: { en: "All recorded courses unlocked", hi: "सभी रिकॉर्डेड कोर्स अनलॉक" },
   pf_2: { en: "Weekly live sessions with mentors", hi: "मेंटर्स के साथ साप्ताहिक लाइव सेशन" },
   pf_3: { en: "Members-only market notes", hi: "मेंबर्स-ओनली मार्केट नोट्स" },
