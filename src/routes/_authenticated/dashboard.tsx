@@ -13,6 +13,9 @@ import { KycStatus } from '@/components/site/KycStatus';
 import { WebsiteBanners } from '@/components/site/WebsiteBanners';
 import { bannerQuery } from '@/lib/banner-query';
 import { ProductSocial } from '@/components/site/ProductSocial';
+import { BookOpen } from 'lucide-react';
+import { ebookLibraryQuery } from '@/lib/ebook-library';
+import { siteImage } from '@/lib/site-image';
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   loader:({context})=>Promise.all([context.queryClient.ensureQueryData(bannerQuery()),context.queryClient.ensureQueryData(catalogQuery()),context.queryClient.ensureQueryData(productQuery())]),
@@ -46,6 +49,7 @@ function Dashboard() {
       return data;
     },
   });
+  const myEbooks=useQuery(ebookLibraryQuery(user.id));
   const cloudCourses=useQuery({queryKey:['my-cloud-courses',user.id],queryFn:async()=>{const r=await supabase.from('courses').select('id,title');if(r.error)throw r.error;return r.data;}});
 
   const mine=(enrolls.data??[]).flatMap(e=>{const course=cloudCourses.data?.find(c=>c.id===e.course_id);return course?[{...e,course}]:[];});
@@ -81,6 +85,22 @@ function Dashboard() {
         <h2 className="font-display text-2xl font-bold text-foreground">{t("my_courses")}</h2>
         {(enrolls.data??[]).filter(e=>cloudCourses.data?.some(c=>c.id===e.course_id)).map(e=><article key={e.course_id} className="mt-4 border-b border-border py-4"><h3 className="font-semibold">{cloudCourses.data?.find(c=>c.id===e.course_id)?.title}</h3><Button asChild className="mt-3"><Link to="/courses/$courseId" params={{courseId:e.course_id}}>{t('open_lesson')}</Link></Button><ProductSocial kind="course" id={e.course_id} title={cloudCourses.data?.find(c=>c.id===e.course_id)?.title??''}/></article>)}
         {!enrolls.isLoading&&!mine.length&&<p className="mt-4 text-muted-foreground">{t('no_enrollments')}</p>}
+      </section>
+
+      <section className="mt-10">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
+          <h2 className="font-display text-2xl font-bold text-foreground">{t("my_ebooks")}</h2>
+          <Link to="/ebooks" className="text-sm font-semibold text-primary">{t("see_all")} →</Link>
+        </div>
+        {myEbooks.isError && <p role="alert" className="mt-4 text-sm text-destructive">{t('admin_error')}</p>}
+        {!myEbooks.isPending && !myEbooks.isError && !myEbooks.data?.length && <p className="mt-4 text-muted-foreground">{t('my_ebooks_empty')}</p>}
+        <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          {(myEbooks.data ?? []).map(b => { const cover = siteImage('ebook', b.id, b.cover_url); return <article key={b.id} className="grid min-w-0 grid-cols-[64px_minmax(0,1fr)] items-center gap-3 rounded-2xl border border-border bg-card p-3 shadow-card">
+            <div className="aspect-[3/4] w-16 overflow-hidden rounded-lg bg-muted">{cover ? <img src={cover} alt={b.title} loading="lazy" className="h-full w-full object-cover" /> : <div className="grid h-full place-items-center"><BookOpen className="h-6 w-6 text-muted-foreground" /></div>}</div>
+            <div className="min-w-0"><h3 className="line-clamp-2 text-sm font-semibold">{b.title}</h3><p className="text-xs text-muted-foreground">{t(b.access === 'membership' ? 'ebook_via_membership' : b.access === 'free' ? 'ebook_free' : 'ebook_purchased')}</p>
+              {b.has_file ? <Button asChild size="sm" className="mt-2"><Link to="/read/$ebookId" params={{ ebookId: b.id }}><BookOpen className="h-4 w-4" />{t('ebook_open')}</Link></Button> : <p className="mt-2 text-xs text-muted-foreground">{t('ebook_file_missing')}</p>}</div>
+          </article>; })}
+        </div>
       </section>
 
       <section className="mt-10">
