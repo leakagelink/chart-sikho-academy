@@ -2,7 +2,7 @@ import { expect, it } from 'vitest';
 import { productSharePath, validProductComment } from './product-social';
 it('shares each product destination', () => {
   expect(productSharePath('course','123')).toBe('/courses/123');
-  expect(productSharePath('ebook','123')).toBe('/ebooks#ebook-123');
+  expect(productSharePath('ebook','123')).toBe('/ebooks?item=123#ebook-123');
   expect(productSharePath('session','123')).toBe('/live/123');
   expect(productSharePath('plan','123')).toBe('/plans#plan-123');
 });
