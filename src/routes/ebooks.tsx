@@ -15,7 +15,7 @@ const EBOOKS_DESC = "Stock-market eBooks from Chartसीखो in Hindi and Eng
 export const Route = createFileRoute("/ebooks")({
   // ?item=<id> is the shared link for one eBook, so link previews show that eBook's cover.
   validateSearch: (search: Record<string, unknown>): { item?: string } =>
-    typeof search.item === "string" && /^[0-9a-f-]{36}$/i.test(search.item) ? { item: search.item } : {},
+    typeof search['item'] === "string" && /^[0-9a-f-]{36}$/i.test(search['item']) ? { item: search['item'] } : {},
   loaderDeps: ({ search }) => ({ item: search.item }),
   loader: async ({ context, deps }) => {
     if (!deps.item) return { book: null };
