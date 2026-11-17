@@ -1,4 +1,6 @@
-export function pageMeta(title: string, description: string) {
+import { shareImageMeta } from "./share-image";
+
+export function pageMeta(title: string, description: string, image = "") {
   return { meta: [
     { title: `${title} — Chartसीखो` },
     { name: "description", content: description },
@@ -7,5 +9,6 @@ export function pageMeta(title: string, description: string) {
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
     { name: "robots", content: "noindex, nofollow" },
+    ...shareImageMeta(image),
   ] };
 }

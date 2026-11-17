@@ -5,9 +5,10 @@ import { CloudCourseDetail } from '@/components/site/CloudCourseDetail';
 import { Button } from '@/components/ui/button';
 import { useLang } from '@/lib/i18n';
 import { pageMeta } from '@/lib/route-meta';
+import { shareDescription, shareImageUrl } from '@/lib/share-image';
 export const Route=createFileRoute('/courses_/$courseId')({
  loader:async({context,params})=>{const items=await context.queryClient.ensureQueryData(catalogQuery());const course=items.find(c=>c.id===params.courseId);if(!course)throw notFound();return course;},
- head:({loaderData})=>pageMeta(loaderData?.title??'Course','Explore this published Chartसीखो course and its learning content.'),
+ head:({loaderData})=>pageMeta(loaderData?.title??'Course',shareDescription(loaderData?.description,'Explore this published Chartसीखो course and its learning content.'),shareImageUrl(loaderData?.thumbnail_url)),
  notFoundComponent:Unavailable,component:Screen,
 });
 function Screen(){const {courseId}=Route.useParams();const {data}=useSuspenseQuery(catalogQuery());const course=data.find(c=>c.id===courseId);return course?<CloudCourseDetail course={course}/>:<Unavailable/>;}

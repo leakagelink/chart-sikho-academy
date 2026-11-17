@@ -3,11 +3,12 @@ import { Calendar, Video } from 'lucide-react';
 import { SessionPurchase } from '@/components/site/SessionPurchase';
 import { productQuery } from '@/lib/product-query';
 import { pageMeta } from '@/lib/route-meta';
+import { shareImageUrl } from '@/lib/share-image';
 import { useLang } from '@/lib/i18n';
 import { SeminarVenue } from '@/components/site/SeminarVenue';
 import { DetailBackLink, DetailCover, ProductDetailLayout } from '@/components/site/ProductDetailLayout';
 
-export const Route=createFileRoute('/live/$classId')({loader:async({context,params})=>{const data=await context.queryClient.ensureQueryData(productQuery());const session=data.sessions.find(s=>s.id===params.classId);if(!session)throw notFound();return session;},head:({loaderData})=>pageMeta(loaderData?.title??'Live class','Chartसीखो scheduled class details.'),component:Screen,notFoundComponent:()=> <Missing/>});
+export const Route=createFileRoute('/live/$classId')({loader:async({context,params})=>{const data=await context.queryClient.ensureQueryData(productQuery());const session=data.sessions.find(s=>s.id===params.classId);if(!session)throw notFound();return session;},head:({loaderData})=>pageMeta(loaderData?.title??'Live class','Chartसीखो scheduled class details.',shareImageUrl(loaderData?.thumbnail_url)),component:Screen,notFoundComponent:()=> <Missing/>});
 function Missing(){const {t}=useLang();return <p className="p-8">{t('no_results')}</p>;}
 function Screen(){
   const session=Route.useLoaderData();const {t,lang}=useLang();
