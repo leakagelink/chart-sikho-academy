@@ -6,18 +6,39 @@ import { EbookPurchase } from "@/components/site/EbookPurchase";
 import { supabase } from "@/integrations/supabase/client";
 import { useLang } from "@/lib/i18n";
 import { MobilePageBar } from "@/components/site/MobilePageBar";
+import { productQuery } from "@/lib/product-query";
+import { shareDescription, shareImageMeta, shareImageUrl } from "@/lib/share-image";
+
+const EBOOKS_TITLE = "eBook Marketplace — Chartसीखो";
+const EBOOKS_DESC = "Stock-market eBooks from Chartसीखो in Hindi and English.";
 
 export const Route = createFileRoute("/ebooks")({
-  head: () => ({
-    meta: [
-      { title: "eBook Marketplace — Chartसीखो" },
-      { name: "description", content: "Stock-market eBooks from Chartसीखो in Hindi and English." },
-      { property: "og:title", content: "eBook Marketplace — Chartसीखो" },
-      { property: "og:description", content: "Stock-market eBooks from Chartसीखो in Hindi and English." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  // ?item=<id> is the shared link for one eBook, so link previews show that eBook's cover.
+  validateSearch: (search: Record<string, unknown>): { item?: string } =>
+    typeof search.item === "string" && /^[0-9a-f-]{36}$/i.test(search.item) ? { item: search.item } : {},
+  loaderDeps: ({ search }) => ({ item: search.item }),
+  loader: async ({ context, deps }) => {
+    if (!deps.item) return { book: null };
+    const data = await context.queryClient.ensureQueryData(productQuery()).catch(() => null);
+    const book = data?.ebooks.find((e) => e.id === deps.item);
+    return { book: book ? { title: book.title, description: book.description, cover_url: book.cover_url } : null };
+  },
+  head: ({ loaderData }) => {
+    const book = loaderData?.book;
+    const title = book ? `${book.title} — Chartसीखो` : EBOOKS_TITLE;
+    const description = book ? shareDescription(book.description, EBOOKS_DESC) : EBOOKS_DESC;
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:type", content: book ? "product" : "website" },
+        { name: "twitter:card", content: "summary_large_image" },
+        ...shareImageMeta(shareImageUrl(book?.cover_url)),
+      ],
+    };
+  },
   component: EbooksPage,
 });
 
