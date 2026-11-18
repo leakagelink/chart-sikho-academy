@@ -9,6 +9,8 @@ export function shareImageUrl(value: string | null | undefined): string {
   if (url.protocol !== 'https:') return '';
   // Uploaded artwork on the asset CDN can be resized with ?w=, keeping previews light.
   if (url.pathname.startsWith('/__l5e/assets-v1/') && !url.searchParams.has('w')) url.searchParams.set('w', '800');
+  // Admin uploads are resized by the site-file route; 600px keeps covers well under WhatsApp's size limit.
+  if (url.origin === SITE && url.pathname.startsWith('/api/public/site-file/') && !url.pathname.endsWith('.svg') && !url.searchParams.has('w')) url.searchParams.set('w', '600');
   return url.toString();
 }
 
